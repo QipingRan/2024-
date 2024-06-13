@@ -1,0 +1,1135 @@
+https://exercism.org/tracks/python/concepts
+
+# Define the EXPECTED_BAKE_TIME constant
+EXPECTED_BAKE_TIME = 40
+
+# Complete the bake_time_remaining() function
+def bake_time_remaining(elapsed_bake_time):
+    """Calculate the bake time remaining.
+
+    :param elapsed_bake_time: int - baking time already elapsed.
+    :return: int - remaining bake time (in minutes) derived from 'EXPECTED_BAKE_TIME'.
+
+    Function that takes the actual minutes the lasagna has been in the oven as
+    an argument and returns how many minutes the lasagna still needs to bake
+    based on the `EXPECTED_BAKE_TIME`.
+    """
+    return EXPECTED_BAKE_TIME - elapsed_bake_time
+
+# Define the preparation_time_in_minutes() function
+def preparation_time_in_minutes(number_of_layers):
+    """Calculate the preparation time in minutes.
+
+    :param number_of_layers: int - the number of layers of lasagna.
+    :return: int - preparation time (in minutes), assuming each layer takes 2 minutes to prepare.
+
+    Function that takes the number of layers and returns the total preparation time.
+    """
+    PREPARATION_TIME = 2
+    return number_of_layers * PREPARATION_TIME
+
+# Define the elapsed_time_in_minutes() function
+def elapsed_time_in_minutes(number_of_layers, elapsed_bake_time):
+    """Calculate the total elapsed time in minutes.
+
+    :param number_of_layers: int - the number of layers of lasagna.
+    :param elapsed_bake_time: int - baking time already elapsed.
+    :return: int - total elapsed time (in minutes) combining preparation and baking time.
+
+    Function that takes the number of layers and the elapsed baking time,
+    and returns the total time spent on making the lasagna.
+    """
+    return preparation_time_in_minutes(number_of_layers) + elapsed_bake_time
+def is_criticality_balanced(temperature, neutrons_emitted):
+    """Verify criticality is balanced.
+
+    :param temperature: int or float - temperature value in kelvin.
+    :param neutrons_emitted: int or float - number of neutrons emitted per second.
+    :return: bool - is criticality balanced?
+
+    A reactor is said to be critical if it satisfies the following conditions:
+    - The temperature is less than 800 K.
+    - The number of neutrons emitted per second is greater than 500.
+    - The product of temperature and neutrons emitted per second is less than 500000.
+    """
+    return temperature < 800 and neutrons_emitted > 500 and (temperature * neutrons_emitted) < 500000
+
+
+def reactor_efficiency(voltage, current, theoretical_max_power):
+    """Assess reactor efficiency zone.
+
+    :param voltage: int or float - voltage value.
+    :param current: int or float - current value.
+    :param theoretical_max_power: int or float - power that corresponds to a 100% efficiency.
+    :return: str - one of ('green', 'orange', 'red', or 'black').
+
+    Efficiency can be grouped into 4 bands:
+
+    1. green -> efficiency of 80% or more,
+    2. orange -> efficiency of less than 80% but at least 60%,
+    3. red -> efficiency below 60%, but still 30% or more,
+    4. black ->  less than 30% efficient.
+
+    The percentage value is calculated as
+    (generated power / theoretical max power) * 100
+    where generated power = voltage * current
+    """
+    generated_power = voltage * current
+    efficiency_percentage = (generated_power / theoretical_max_power) * 100
+
+    if efficiency_percentage >= 80:
+        return 'green'
+    elif 60 <= efficiency_percentage < 80:
+        return 'orange'
+    elif 30 <= efficiency_percentage < 60:
+        return 'red'
+    else:
+        return 'black'
+
+
+def fail_safe(temperature, neutrons_produced_per_second, threshold):
+    """Assess and return status code for the reactor.
+
+    :param temperature: int or float - value of the temperature in kelvin.
+    :param neutrons_produced_per_second: int or float - neutron flux.
+    :param threshold: int or float - threshold for category.
+    :return: str - one of ('LOW', 'NORMAL', 'DANGER').
+
+    1. 'LOW' -> `temperature * neutrons per second` < 90% of `threshold`
+    2. 'NORMAL' -> `temperature * neutrons per second` +/- 10% of `threshold`
+    3. 'DANGER' -> `temperature * neutrons per second` is not in the above-stated ranges
+    """
+    product = temperature * neutrons_produced_per_second
+    if product < 0.9 * threshold:
+        return 'LOW'
+    elif 0.9 * threshold <= product <= 1.1 * threshold:
+        return 'NORMAL'
+    else:
+        return 'DANGER'
+def add_prefix_un(word):
+    """Take the given word and add the 'un' prefix.
+
+    :param word: str - containing the root word.
+    :return: str - of root word prepended with 'un'.
+    """
+    return 'un' + word
+
+
+def make_word_groups(vocab_words):
+    """Transform a list containing a prefix and words into a string with the prefix followed by the words with prefix prepended.
+
+    :param vocab_words: list - of vocabulary words with prefix in first index.
+    :return: str - of prefix followed by vocabulary words with
+            prefix applied.
+
+    This function takes a `vocab_words` list and returns a string
+    with the prefix and the words with prefix applied, separated
+     by ' :: '.
+
+    For example: list('en', 'close', 'joy', 'lighten'),
+    produces the following string: 'en :: enclose :: enjoy :: enlighten'.
+    """
+    prefix = vocab_words[0]
+    return ' :: '.join([prefix + word for word in vocab_words])
+
+
+def remove_suffix_ness(word):
+    """Remove the suffix from the word while keeping spelling in mind.
+
+    :param word: str - of word to remove suffix from.
+    :return: str - of word with suffix removed & spelling adjusted.
+
+    For example: "heaviness" becomes "heavy", but "sadness" becomes "sad".
+    """
+    if word.endswith('ness'):
+        base_word = word[:-4]
+        if base_word.endswith('i'):
+            return base_word[:-1] + 'y'
+        return base_word
+    return word
+
+
+def adjective_to_verb(sentence, index):
+    """Change the adjective within the sentence to a verb.
+
+    :param sentence: str - that uses the word in sentence.
+    :param index: int - index of the word to remove and transform.
+    :return: str - word that changes the extracted adjective to a verb.
+
+    For example, ("It got dark as the sun set.", 2) becomes "darken".
+    """
+    words = sentence.split()
+    adjective = words[index].strip('.,')
+    return adjective + 'en'
+
+def value_of_card(card):
+    """Determine the scoring value of a card.
+
+    :param card: str - given card.
+    :return: int - value of a given card.  See below for values.
+
+    1.  'J', 'Q', or 'K' (otherwise known as "face cards") = 10
+    2.  'A' (ace card) = 1
+    3.  '2' - '10' = numerical value.
+    """
+    if card in ['J', 'Q', 'K']:
+        return 10
+    elif card == 'A':
+        return 1
+    else:
+        return int(card)
+
+
+def higher_card(card_one, card_two):
+    """Determine which card has a higher value in the hand.
+
+    :param card_one, card_two: str - cards dealt in hand.  See below for values.
+    :return: str or tuple - resulting Tuple contains both cards if they are of equal value.
+
+    1.  'J', 'Q', or 'K' (otherwise known as "face cards") = 10
+    2.  'A' (ace card) = 1
+    3.  '2' - '10' = numerical value.
+    """
+    value_one = value_of_card(card_one)
+    value_two = value_of_card(card_two)
+
+    if value_one > value_two:
+        return card_one
+    elif value_two > value_one:
+        return card_two
+    else:
+        return (card_one, card_two)
+
+
+def value_of_ace(card_one, card_two):
+    """Calculate the most advantageous value for the ace card.
+
+    :param card_one, card_two: str - card dealt. See below for values.
+    :return: int - either 1 or 11 value of the upcoming ace card.
+
+    1.  'J', 'Q', or 'K' (otherwise known as "face cards") = 10
+    2.  'A' (ace card) = 11 (if already in hand)
+    3.  '2' - '10' = numerical value.
+    """
+    other_cards_value = value_of_card(card_one) + value_of_card(card_two)
+    if 'A' in [card_one, card_two]:
+        other_cards_value += 10
+    return 11 if other_cards_value <= 10 else 1
+
+
+def is_blackjack(card_one, card_two):
+    """Determine if the hand is a 'natural' or 'blackjack'.
+
+    :param card_one, card_two: str - card dealt. See below for values.
+    :return: bool - is the hand is a blackjack (two cards worth 21).
+
+    1.  'J', 'Q', or 'K' (otherwise known as "face cards") = 10
+    2.  'A' (ace card) = 11 (if already in hand)
+    3.  '2' - '10' = numerical value.
+    """
+    return (card_one == 'A' and value_of_card(card_two) == 10) or (card_two == 'A' and value_of_card(card_one) == 10)
+
+
+def can_split_pairs(card_one, card_two):
+    """Determine if a player can split their hand into two hands.
+
+    :param card_one, card_two: str - cards dealt.
+    :return: bool - can the hand be split into two pairs? (i.e. cards are of the same value).
+    """
+    return value_of_card(card_one) == value_of_card(card_two)
+
+
+def can_double_down(card_one, card_two):
+    """Determine if a blackjack player can place a double down bet.
+
+    :param card_one, card_two: str - first and second cards in hand.
+    :return: bool - can the hand can be doubled down? (i.e. totals 9, 10 or 11 points).
+    """
+    total = value_of_card(card_one) + value_of_card(card_two)
+    return total in [9, 10, 11]
+
+
+def capitalize_title(title):
+    """Convert the first letter of each word in the title to uppercase if needed.
+
+    :param title: str - title string that needs title casing.
+    :return: str - title string in title case (first letters capitalized).
+    """
+    return title.title()
+
+
+def check_sentence_ending(sentence):
+    """Check the ending of the sentence to verify that a period is present.
+
+    :param sentence: str - a sentence to check.
+    :return: bool - return True if punctuated correctly with period, False otherwise.
+    """
+    return sentence.endswith('.')
+
+
+def clean_up_spacing(sentence):
+    """Verify that there isn't any whitespace at the start and end of the sentence.
+
+    :param sentence: str - a sentence to clean of leading and trailing space characters.
+    :return: str - a sentence that has been cleaned of leading and trailing space characters.
+    """
+    return sentence.strip()
+
+
+def replace_word_choice(sentence, old_word, new_word):
+    """Replace a word in the provided sentence with a new one.
+
+    :param sentence: str - a sentence to replace words in.
+    :param old_word: str - word to replace.
+    :param new_word: str - replacement word.
+    :return: str - input sentence with new words in place of old words.
+    """
+    return sentence.replace(old_word, new_word)
+def get_rounds(number):
+    """Create a list containing the current and next two round numbers.
+
+    :param number: int - current round number.
+    :return: list - current round and the two that follow.
+    """
+    return [number, number + 1, number + 2]
+
+
+def concatenate_rounds(rounds_1, rounds_2):
+    """Concatenate two lists of round numbers.
+
+    :param rounds_1: list - first rounds played.
+    :param rounds_2: list - second set of rounds played.
+    :return: list - all rounds played.
+    """
+    return rounds_1 + rounds_2
+
+
+def list_contains_round(rounds, number):
+    """Check if the list of rounds contains the specified number.
+
+    :param rounds: list - rounds played.
+    :param number: int - round number.
+    :return: bool - was the round played?
+    """
+    return number in rounds
+
+
+def card_average(hand):
+    """Calculate and returns the average card value from the list.
+
+    :param hand: list - cards in hand.
+    :return: float - average value of the cards in the hand.
+    """
+    return sum(hand) / len(hand)
+
+
+def approx_average_is_average(hand):
+    """Return if the (average of first and last card values) OR ('middle' card) == calculated average.
+
+    :param hand: list - cards in hand.
+    :return: bool - does one of the approximate averages equal the `true average`?
+    """
+    true_average = card_average(hand)
+    approx_average = (hand[0] + hand[-1]) / 2
+    middle_card = hand[len(hand) // 2]
+    return approx_average == true_average or middle_card == true_average
+
+
+def average_even_is_average_odd(hand):
+    """Return if the (average of even indexed card values) == (average of odd indexed card values).
+
+    :param hand: list - cards in hand.
+    :return: bool - are even and odd averages equal?
+    """
+    even_cards = hand[0::2]
+    odd_cards = hand[1::2]
+    return card_average(even_cards) == card_average(odd_cards)
+
+
+def maybe_double_last(hand):
+    """Multiply a Jack card value in the last index position by 2.
+
+    :param hand: list - cards in hand.
+    :return: list - hand with Jacks (if present) value doubled.
+    """
+    if hand[-1] == 11:  # Assuming 11 represents a Jack
+        hand[-1] *= 2
+    return hand
+def add_me_to_the_queue(express_queue, normal_queue, ticket_type, person_name):
+    """Add a person to the 'express' or 'normal' queue depending on the ticket number.
+
+    :param express_queue: list - names in the Fast-track queue.
+    :param normal_queue: list - names in the normal queue.
+    :param ticket_type: int - type of ticket. 1 = express, 0 = normal.
+    :param person_name: str - name of person to add to a queue.
+    :return: list - the (updated) queue the name was added to.
+    """
+    if ticket_type == 1:
+        express_queue.append(person_name)
+        return express_queue
+    else:
+        normal_queue.append(person_name)
+        return normal_queue
+
+
+def find_my_friend(queue, friend_name):
+    """Search the queue for a name and return their queue position (index).
+
+    :param queue: list - names in the queue.
+    :param friend_name: str - name of friend to find.
+    :return: int - index at which the friend's name was found.
+    """
+    return queue.index(friend_name)
+
+
+def add_me_with_my_friends(queue, index, person_name):
+    """Insert the late arrival's name at a specific index of the queue.
+
+    :param queue: list - names in the queue.
+    :param index: int - the index at which to add the new name.
+    :param person_name: str - the name to add.
+    :return: list - queue updated with new name.
+    """
+    queue.insert(index, person_name)
+    return queue
+
+
+def remove_the_mean_person(queue, person_name):
+    """Remove the mean person from the queue by the provided name.
+
+    :param queue: list - names in the queue.
+    :param person_name: str - name of mean person.
+    :return: list - queue updated with the mean person's name removed.
+    """
+    queue.remove(person_name)
+    return queue
+
+
+def how_many_namefellows(queue, person_name):
+    """Count how many times the provided name appears in the queue.
+
+    :param queue: list - names in the queue.
+    :param person_name: str - name you wish to count or track.
+    :return: int - the number of times the name appears in the queue.
+    """
+    return queue.count(person_name)
+
+
+def remove_the_last_person(queue):
+    """Remove the person in the last index from the queue and return their name.
+
+    :param queue: list - names in the queue.
+    :return: str - name that has been removed from the end of the queue.
+    """
+    return queue.pop()
+
+
+def sorted_names(queue):
+    """Sort the names in the queue in alphabetical order and return the result.
+
+    :param queue: list - names in the queue.
+    :return: list - copy of the queue in alphabetical order.
+    """
+    return sorted(queue)
+def round_scores(student_scores):
+    """Round all provided student scores.
+
+    :param student_scores: list - float or int of student exam scores.
+    :return: list - student scores *rounded* to nearest integer value.
+    """
+    return [round(score) for score in student_scores]
+
+
+def count_failed_students(student_scores):
+    """Count the number of failing students out of the group provided.
+
+    :param student_scores: list - containing int student scores.
+    :return: int - count of student scores at or below 40.
+    """
+    return sum(1 for score in student_scores if score <= 40)
+
+
+def above_threshold(student_scores, threshold):
+    """Determine how many of the provided student scores were 'the best' based on the provided threshold.
+
+    :param student_scores: list - of integer scores.
+    :param threshold: int - threshold to cross to be the "best" score.
+    :return: list - of integer scores that are at or above the "best" threshold.
+    """
+    return [score for score in student_scores if score >= threshold]
+
+
+def letter_grades(highest):
+    """Create a list of grade thresholds based on the provided highest grade.
+
+    :param highest: int - value of highest exam score.
+    :return: list - of lower threshold scores for each D-A letter grade interval.
+            For example, where the highest score is 100, and failing is <= 40,
+            The result would be [41, 56, 71, 86]:
+
+            41 <= "D" <= 55
+            56 <= "C" <= 70
+            71 <= "B" <= 85
+            86 <= "A" <= 100
+    """
+    interval = (highest - 40) // 4
+    return [41 + i * interval for i in range(4)]
+
+
+def student_ranking(student_scores, student_names):
+    """Organize the student's rank, name, and grade information in descending order.
+
+    :param student_scores: list - of scores in descending order.
+    :param student_names: list - of string names by exam score in descending order.
+    :return: list - of strings in format ["<rank>. <student name>: <score>"].
+    """
+    return [f"{rank + 1}. {student_names[rank]}: {score}" for rank, score in enumerate(student_scores)]
+
+
+def perfect_score(student_info):
+    """Create a list that contains the name and grade of the first student to make a perfect score on the exam.
+
+    :param student_info: list - of [<student name>, <score>] lists.
+    :return: list - first `[<student name>, 100]` or `[]` if no student score of 100 is found.
+    """
+    for info in student_info:
+        if info[1] == 100:
+            return info
+    return []
+def get_coordinate(record):
+    """Return coordinate value from a tuple containing the treasure name, and treasure coordinate.
+
+    :param record: tuple - with a (treasure, coordinate) pair.
+    :return: str - the extracted map coordinate.
+    """
+    return record[1]
+
+
+def convert_coordinate(coordinate):
+    """Split the given coordinate into tuple containing its individual components.
+
+    :param coordinate: str - a string map coordinate.
+    :return: tuple - the string coordinate split into its individual components.
+    """
+    return tuple(coordinate)
+
+
+def compare_records(azara_record, rui_record):
+    """Compare two record types and determine if their coordinates match.
+
+    :param azara_record: tuple - a (treasure, coordinate) pair.
+    :param rui_record: tuple - a (location, tuple(coordinate_1, coordinate_2), quadrant) trio.
+    :return: bool - do the coordinates match?
+    """
+    azara_coordinate = convert_coordinate(azara_record[1])
+    rui_coordinate = rui_record[1]
+    return azara_coordinate == rui_coordinate
+
+
+def create_record(azara_record, rui_record):
+    """Combine the two record types (if possible) and create a combined record group.
+
+    :param azara_record: tuple - a (treasure, coordinate) pair.
+    :param rui_record: tuple - a (location, coordinate, quadrant) trio.
+    :return: tuple or str - the combined record (if compatible), or the string "not a match" (if incompatible).
+    """
+    if compare_records(azara_record, rui_record):
+        return azara_record + rui_record
+    else:
+        return "not a match"
+
+
+def clean_up(combined_record_group):
+    """Clean up a combined record group into a multi-line string of single records.
+
+    :param combined_record_group: tuple - everything from both participants.
+    :return: str - everything "cleaned", excess coordinates and information are removed.
+
+    The return statement should be a multi-lined string with items separated by newlines.
+    """
+    cleaned_records = []
+    for record in combined_record_group:
+        cleaned_record = (record[0], record[2], record[3], record[4])
+        cleaned_records.append(str(cleaned_record))
+    return "\n".join(cleaned_records) + "\n"
+def create_inventory(items):
+    """Create a dict that tracks the amount (count) of each element on the `items` list.
+
+    :param items: list - list of items to create an inventory from.
+    :return: dict - the inventory dictionary.
+    """
+    inventory = {}
+    for item in items:
+        if item in inventory:
+            inventory[item] += 1
+        else:
+            inventory[item] = 1
+    return inventory
+
+
+def add_items(inventory, items):
+    """Add or increment items in inventory using elements from the items `list`.
+
+    :param inventory: dict - dictionary of existing inventory.
+    :param items: list - list of items to update the inventory with.
+    :return: dict - the inventory updated with the new items.
+    """
+    for item in items:
+        if item in inventory:
+            inventory[item] += 1
+        else:
+            inventory[item] = 1
+    return inventory
+
+
+def decrement_items(inventory, items):
+    """Decrement items in inventory using elements from the `items` list.
+
+    :param inventory: dict - inventory dictionary.
+    :param items: list - list of items to decrement from the inventory.
+    :return: dict - updated inventory with items decremented.
+    """
+    for item in items:
+        if item in inventory and inventory[item] > 0:
+            inventory[item] -= 1
+    return inventory
+
+
+def remove_item(inventory, item):
+    """Remove item from inventory if it matches `item` string.
+
+    :param inventory: dict - inventory dictionary.
+    :param item: str - item to remove from the inventory.
+    :return: dict - updated inventory with item removed. Current inventory if item does not match.
+    """
+    if item in inventory:
+        del inventory[item]
+    return inventory
+
+
+def list_inventory(inventory):
+    """Create a list containing only available (item_name, item_count > 0) pairs in inventory.
+
+    :param inventory: dict - an inventory dictionary.
+    :return: list of tuples - list of key, value pairs from the inventory dictionary.
+    """
+    return [(item, count) for item, count in inventory.items() if count > 0]
+
+
+def add_item(current_cart, items_to_add):
+    """Add items to shopping cart.
+
+    :param current_cart: dict - the current shopping cart.
+    :param items_to_add: iterable - items to add to the cart.
+    :return: dict - the updated user cart dictionary.
+    """
+    for item in items_to_add:
+        if item in current_cart:
+            current_cart[item] += 1
+        else:
+            current_cart[item] = 1
+    return current_cart
+
+
+def read_notes(notes):
+    """Create user cart from an iterable notes entry.
+
+    :param notes: iterable of items to add to cart.
+    :return: dict - a user shopping cart dictionary.
+    """
+    cart = {}
+    for item in notes:
+        if item in cart:
+            cart[item] += 1
+        else:
+            cart[item] = 1
+    return cart
+
+
+def update_recipes(ideas, recipe_updates):
+    """Update the recipe ideas dictionary.
+
+    :param ideas: dict - The "recipe ideas" dict.
+    :param recipe_updates: dict - dictionary with updates for the ideas section.
+    :return: dict - updated "recipe ideas" dict.
+    """
+    ideas.update(recipe_updates)
+    return ideas
+
+
+def sort_entries(cart):
+    """Sort a users shopping cart in alphabetically order.
+
+    :param cart: dict - a users shopping cart dictionary.
+    :return: dict - users shopping cart sorted in alphabetical order.
+    """
+    return dict(sorted(cart.items()))
+
+
+def send_to_store(cart, aisle_mapping):
+    """Combine users order to aisle and refrigeration information.
+
+    :param cart: dict - users shopping cart dictionary.
+    :param aisle_mapping: dict - aisle and refrigeration information dictionary.
+    :return: dict - fulfillment dictionary ready to send to store.
+    """
+    fulfillment = {}
+    for item, quantity in cart.items():
+        if item in aisle_mapping:
+            fulfillment[item] = {
+                'quantity': quantity,
+                'aisle': aisle_mapping[item]['aisle'],
+                'refrigeration': aisle_mapping[item].get('refrigeration', False)
+            }
+    return fulfillment
+
+
+def update_store_inventory(fulfillment_cart, store_inventory):
+    """Update store inventory levels with user order.
+
+    :param fulfillment_cart: dict - fulfillment cart to send to store.
+    :param store_inventory: dict - store available inventory
+    :return: dict - store_inventory updated.
+    """
+    for item, details in fulfillment_cart.items():
+        if item in store_inventory:
+            store_inventory[item] -= details['quantity']
+    return store_inventory
+
+
+def add_item(current_cart, items_to_add):
+    """Add items to shopping cart.
+
+    :param current_cart: dict - the current shopping cart.
+    :param items_to_add: iterable - items to add to the cart.
+    :return: dict - the updated user cart dictionary.
+    """
+    for item in items_to_add:
+        if item in current_cart:
+            current_cart[item] += 1
+        else:
+            current_cart[item] = 1
+    return current_cart
+
+
+def read_notes(notes):
+    """Create user cart from an iterable notes entry.
+
+    :param notes: iterable of items to add to cart.
+    :return: dict - a user shopping cart dictionary.
+    """
+    cart = {}
+    for item in notes:
+        if item in cart:
+            cart[item] += 1
+        else:
+            cart[item] = 1
+    return cart
+
+
+def update_recipes(ideas, recipe_updates):
+    """Update the recipe ideas dictionary.
+
+    :param ideas: dict - The "recipe ideas" dict.
+    :param recipe_updates: dict - dictionary with updates for the ideas section.
+    :return: dict - updated "recipe ideas" dict.
+    """
+    ideas.update(recipe_updates)
+    return ideas
+
+
+def sort_entries(cart):
+    """Sort a users shopping cart in alphabetically order.
+
+    :param cart: dict - a users shopping cart dictionary.
+    :return: dict - users shopping cart sorted in alphabetical order.
+    """
+    return dict(sorted(cart.items()))
+
+
+def send_to_store(cart, aisle_mapping):
+    """Combine users order to aisle and refrigeration information.
+
+    :param cart: dict - users shopping cart dictionary.
+    :param aisle_mapping: dict - aisle and refrigeration information dictionary.
+    :return: dict - fulfillment dictionary ready to send to store.
+    """
+    fulfillment = {}
+    for item, quantity in cart.items():
+        if item in aisle_mapping:
+            aisle_info = aisle_mapping[item]
+            fulfillment[item] = [quantity, aisle_info[0], aisle_info[1]]
+    
+    # Sorting the dictionary in reverse alphabetical order
+    fulfillment = dict(sorted(fulfillment.items(), key=lambda x: x[0], reverse=True))
+    
+    return fulfillment
+
+
+def update_store_inventory(fulfillment_cart, store_inventory):
+    """Update store inventory levels with user order.
+
+    :param fulfillment_cart: dict - fulfillment cart to send to store.
+    :param store_inventory: dict - store available inventory.
+    :return: dict - store_inventory updated.
+    """
+    for item, details in fulfillment_cart.items():
+        quantity_ordered = details[0]
+        if item in store_inventory:
+            store_inventory[item][0] -= quantity_ordered
+            if store_inventory[item][0] <= 0:
+                store_inventory[item][0] = "Out of Stock"
+    return store_inventory
+
+from sets_categories_data import (VEGAN, VEGETARIAN, KETO, PALEO, OMNIVORE, ALCOHOLS, SPECIAL_INGREDIENTS)
+
+def clean_ingredients(dish_name, dish_ingredients):
+    """Remove duplicates from `dish_ingredients`.
+
+    :param dish_name: str - containing the dish name.
+    :param dish_ingredients: list - dish ingredients.
+    :return: tuple - containing (dish_name, ingredient set).
+
+    This function should return a `tuple` with the name of the dish as the first item,
+    followed by the de-duped `set` of ingredients as the second item.
+    """
+    return dish_name, set(dish_ingredients)
+
+def check_drinks(drink_name, drink_ingredients):
+    """Append "Cocktail" (alcohol) or "Mocktail" (no alcohol) to `drink_name`, based on `drink_ingredients`.
+
+    :param drink_name: str - name of the drink.
+    :param drink_ingredients: list - ingredients in the drink.
+    :return: str - drink_name appended with "Mocktail" or "Cocktail".
+    """
+    if any(ingredient in ALCOHOLS for ingredient in drink_ingredients):
+        return f"{drink_name} Cocktail"
+    else:
+        return f"{drink_name} Mocktail"
+
+def categorize_dish(dish_name, dish_ingredients):
+    """Categorize `dish_name` based on `dish_ingredients`.
+
+    :param dish_name: str - dish to be categorized.
+    :param dish_ingredients: list - ingredients for the dish.
+    :return: str - the dish name appended with ": <CATEGORY>".
+
+    This function should return a string with the `dish name: <CATEGORY>` (which meal category the dish belongs to).
+    `<CATEGORY>` can be any one of (VEGAN, VEGETARIAN, PALEO, KETO, or OMNIVORE).
+    All dishes will "fit" into one of the categories imported from `sets_categories_data.py`
+    """
+    if set(dish_ingredients).issubset(VEGAN):
+        category = "VEGAN"
+    elif set(dish_ingredients).issubset(VEGETARIAN):
+        category = "VEGETARIAN"
+    elif set(dish_ingredients).issubset(PALEO):
+        category = "PALEO"
+    elif set(dish_ingredients).issubset(KETO):
+        category = "KETO"
+    else:
+        category = "OMNIVORE"
+    return f"{dish_name}: {category}"
+
+def tag_special_ingredients(dish):
+    """Compare `dish` ingredients to `SPECIAL_INGREDIENTS`.
+
+    :param dish: tuple - of (dish name, list of dish ingredients).
+    :return: tuple - containing (dish name, dish special ingredients).
+
+    Return the dish name followed by the `set` of ingredients that require a special note on the dish description.
+    For the purposes of this exercise, all allergens or special ingredients that need to be tracked are in the
+    SPECIAL_INGREDIENTS constant imported from `sets_categories_data.py`.
+    """
+    dish_name, dish_ingredients = dish
+    special_ingredients = set(dish_ingredients) & SPECIAL_INGREDIENTS
+    return dish_name, special_ingredients
+
+def compile_ingredients(dishes):
+    """Create a master list of ingredients.
+
+    :param dishes: list - of dish ingredient sets.
+    :return: set - of ingredients compiled from `dishes`.
+
+    This function should return a `set` of all ingredients from all listed dishes.
+    """
+    all_ingredients = set()
+    for dish in dishes:
+        all_ingredients.update(dish)
+    return all_ingredients
+
+def separate_appetizers(dishes, appetizers):
+    """Determine which `dishes` are designated `appetizers` and remove them.
+
+    :param dishes: list - of dish names.
+    :param appetizers: list - of appetizer names.
+    :return: list - of dish names that do not appear on appetizer list.
+
+    The function should return the list of dish names with appetizer names removed.
+    Either list could contain duplicates and may require de-duping.
+    """
+    return list(set(dishes) - set(appetizers))
+
+def singleton_ingredients(dishes, intersection):
+    """Determine which `dishes` have a singleton ingredient (an ingredient that only appears once across dishes).
+
+    :param dishes: list - of ingredient sets.
+    :param intersection: constant - can be one of `<CATEGORY>_INTERSECTIONS` constants imported from `sets_categories_data.py`.
+    :return: set - containing singleton ingredients.
+
+    Each dish is represented by a `set` of its ingredients.
+
+    Each `<CATEGORY>_INTERSECTIONS` is an `intersection` of all dishes in the category. `<CATEGORY>` can be any one of:
+        (VEGAN, VEGETARIAN, PALEO, KETO, or OMNIVORE).
+
+    The function should return a `set` of ingredients that only appear in a single dish.
+    """
+    all_ingredients = compile_ingredients(dishes)
+    singleton_ingredients = all_ingredients - intersection
+    return singleton_ingredients
+def get_list_of_wagons(*wagons):
+    """Return a list of wagons.
+
+    :param wagons: arbitrary number of wagons.
+    :return: list - list of wagons.
+    """
+    return list(wagons)
+
+def fix_list_of_wagons(each_wagons_id, missing_wagons):
+    """Fix the list of wagons.
+
+    :param each_wagons_id: list - the list of wagons.
+    :param missing_wagons: list - the list of missing wagons.
+    :return: list - list of wagons.
+    """
+    # Move the first two wagons to the end of the list
+    each_wagons_id = each_wagons_id[2:] + each_wagons_id[:2]
+    
+    # Find the position of the locomotive ID (which is 1)
+    pos_locomotive = each_wagons_id.index(1)
+    
+    # Insert the missing wagons after the locomotive
+    fixed_wagons = each_wagons_id[:pos_locomotive + 1] + missing_wagons + each_wagons_id[pos_locomotive + 1:]
+    
+    return fixed_wagons
+
+def add_missing_stops(route, **stops):
+    """Add missing stops to route dict.
+
+    :param route: dict - the dict of routing information.
+    :param stops: arbitrary number of stops.
+    :return: dict - updated route dictionary.
+    """
+    route['stops'] = list(stops.values())
+    return route
+
+def extend_route_information(route, more_route_information):
+    """Extend route information with more_route_information.
+
+    :param route: dict - the route information.
+    :param more_route_information: dict - extra route information.
+    :return: dict - extended route information.
+    """
+    route.update(more_route_information)
+    return route
+
+def fix_wagon_depot(wagons_rows):
+    """Fix the list of rows of wagons.
+
+    :param wagons_rows: list[list[tuple]] - the list of rows of wagons.
+    :return: list[list[tuple]] - list of rows of wagons.
+    """
+    # Transpose the rows to columns
+    transposed = list(zip(*wagons_rows))
+    
+    # Unzip the transposed list into separate color lists
+    color_dict = {}
+    for row in transposed:
+        for wagon in row:
+            color = wagon[1]
+            if color not in color_dict:
+                color_dict[color] = []
+            color_dict[color].append(wagon)
+    
+    # Create fixed rows by combining one wagon of each color
+    fixed_rows = [list(wagon_group) for wagon_group in zip(*color_dict.values())]
+    
+    return fixed_rows
+
+# Testing the function with the provided example
+example_wagons_rows = [
+    [(2, "red"), (4, "red"), (8, "red")],
+    [(5, "blue"), (9, "blue"), (13, "blue")],
+    [(3, "orange"), (7, "orange"), (11, "orange")]
+]
+
+expected_result = [
+    [(2, "red"), (5, "blue"), (3, "orange")],
+    [(4, "red"), (9, "blue"), (7, "orange")],
+    [(8, "red"), (13, "blue"), (11, "orange")]
+]
+
+actual_result = fix_wagon_depot(example_wagons_rows)
+print("Result:", actual_result)
+print("Test Passed:", actual_result == expected_result)
+
+# Additional test cases
+input_data = (
+    [[(2, 'red'), (4, 'red'), (8, 'red')], [(5, 'blue'), (9, 'blue'), (13, 'blue')], [(3, 'orange'), (7, 'orange'), (11, 'orange')]],
+    [[(6, 'blue'), (10, 'blue'), (14, 'blue')], [(7, 'red'), (4, 'red'), (2, 'red')], [(3, 'orange'), (11, 'orange'), (15, 'orange')]],
+    [[(7, 'pink'), (4, 'pink'), (2, 'pink')], [(10, 'green'), (6, 'green'), (14, 'green')], [(9, 'yellow'), (5, 'yellow'), (13, 'yellow')]],
+    [[(3, 'purple'), (11, 'purple'), (15, 'purple')], [(20, 'black'), (16, 'black'), (12, 'black')], [(19, 'white'), (17, 'white'), (18, 'white')]]
+)
+
+output_data = (
+    [[(2, 'red'), (5, 'blue'), (3, 'orange')], [(4, 'red'), (9, 'blue'), (7, 'orange')], [(8, 'red'), (13, 'blue'), (11, 'orange')]],
+    [[(6, 'blue'), (7, 'red'), (3, 'orange')], [(10, 'blue'), (4, 'red'), (11, 'orange')], [(14, 'blue'), (2, 'red'), (15, 'orange')]],
+    [[(7, 'pink'), (10, 'green'), (9, 'yellow')], [(4, 'pink'), (6, 'green'), (5, 'yellow')], [(2, 'pink'), (14, 'green'), (13, 'yellow')]],
+    [[(3, 'purple'), (20, 'black'), (19, 'white')], [(11, 'purple'), (16, 'black'), (17, 'white')], [(15, 'purple'), (12, 'black'), (18, 'white')]]
+)
+
+for variant, (input_case, expected) in enumerate(zip(input_data, output_data), start=1):
+    actual_result = fix_wagon_depot(input_case)
+    error_msg = (f'Called fix_wagon_depot({input_case}). '
+                 f'The function returned {actual_result}, but the '
+                 f'tests expected: {expected} as the wagon depot list.')
+
+    assert actual_result == expected, error_msg
+
+print("All tests passed.")
+class Alien:
+    """Create an Alien object with location x_coordinate and y_coordinate.
+
+    Attributes
+    ----------
+    (class) total_aliens_created: int
+    x_coordinate: int - Position on the x-axis.
+    y_coordinate: int - Position on the y-axis.
+    health: int - Number of health points.
+
+    Methods
+    -------
+    hit(): Decrement Alien health by one point.
+    is_alive(): Return a boolean for if Alien is alive (if health is > 0).
+    teleport(new_x_coordinate, new_y_coordinate): Move Alien object to new coordinates.
+    collision_detection(other): Implementation TBD.
+    """
+
+    total_aliens_created = 0
+
+    def __init__(self, x_coordinate, y_coordinate):
+        self.x_coordinate = x_coordinate
+        self.y_coordinate = y_coordinate
+        self.health = 3
+        Alien.total_aliens_created += 1
+
+    def hit(self):
+        """Decrement Alien health by one point."""
+        self.health -= 1
+
+    def is_alive(self):
+        """Return a boolean for if Alien is alive (if health is > 0)."""
+        return self.health > 0
+
+    def teleport(self, new_x_coordinate, new_y_coordinate):
+        """Move Alien object to new coordinates."""
+        self.x_coordinate = new_x_coordinate
+        self.y_coordinate = new_y_coordinate
+
+    def collision_detection(self, other):
+        """Implementation TBD."""
+        pass
+
+def new_aliens_collection(coordinates):
+    """Create a list of Alien objects from a list of coordinates.
+
+    :param coordinates: list of tuples - Each tuple contains (x_coordinate, y_coordinate).
+    :return: list of Alien objects.
+    """
+    return [Alien(x, y) for x, y in coordinates]
+
+# Example usage
+coordinates = [(0, 0), (1, 2), (3, 5)]
+aliens = new_aliens_collection(coordinates)
+
+for alien in aliens:
+    print(f"Alien at ({alien.x_coordinate}, {alien.y_coordinate}) with health {alien.health}")
+
+print(f"Total aliens created: {Alien.total_aliens_created}")
+"""Functions to automate Conda airlines ticketing system."""
+
+import string
+
+
+def generate_seat_letters(number):
+    """Generate a series of letters for airline seats.
+
+    :param number: int - total number of seat letters to be generated.
+    :return: generator - generator that yields seat letters.
+
+    Seat letters are generated from A to D.
+    After D it should start again with A.
+
+    Example: A, B, C, D
+
+    """
+    letters = 'ABCD'
+    for i in range(number):
+        yield letters[i % 4]
+
+
+def generate_seats(number):
+    """Generate a series of identifiers for airline seats.
+
+    :param number: int - total number of seats to be generated.
+    :return: generator - generator that yields seat numbers.
+
+    A seat number consists of the row number and the seat letter.
+
+    There is no row 13.
+    Each row has 4 seats.
+
+    Seats should be sorted from low to high.
+
+    Example: 3C, 3D, 4A, 4B
+
+    """
+    row = 1
+    seats_generated = 0
+    seat_letters_gen = generate_seat_letters(number)
+    
+    while seats_generated < number:
+        if row == 13:
+            row += 1
+        for _ in range(4):
+            if seats_generated >= number:
+                break
+            seat_letter = next(seat_letters_gen)
+            yield f"{row}{seat_letter}"
+            seats_generated += 1
+        row += 1
+
+
+def assign_seats(passengers):
+    """Assign seats to passengers.
+
+    :param passengers: list[str] - a list of strings containing names of passengers.
+    :return: dict - with the names of the passengers as keys and seat numbers as values.
+
+    Example output: {"Adele": "1A", "Björk": "1B"}
+
+    """
+    num_passengers = len(passengers)
+    seats_gen = generate_seats(num_passengers)
+    return {passenger: next(seats_gen) for passenger in passengers}
+
+
+def generate_codes(seat_numbers, flight_id):
+    """Generate codes for a ticket.
+
+    :param seat_numbers: list[str] - list of seat numbers.
+    :param flight_id: str - string containing the flight identifier.
+    :return: generator - generator that yields 12 character long ticket codes.
+    """
+    for seat in seat_numbers:
+        yield f"{seat}{flight_id}".ljust(12, '0')
+

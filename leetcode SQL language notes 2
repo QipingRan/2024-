@@ -1,0 +1,1841 @@
+Article Views I
+Solution
+Table: Views
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| article_id    | int     |
+| author_id     | int     |
+| viewer_id     | int     |
+| view_date     | date    |
++---------------+---------+
+There is no primary key (column with unique values) for this table, the table may have duplicate rows.
+Each row of this table indicates that some viewer viewed an article (written by some author) on some date. 
+Note that equal author_id and viewer_id indicate the same person.
+ 
+Write a solution to find all the authors that viewed at least one of their own articles.
+Return the result table sorted by id in ascending order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Views table:
++------------+-----------+-----------+------------+
+| article_id | author_id | viewer_id | view_date  |
++------------+-----------+-----------+------------+
+| 1          | 3         | 5         | 2019-08-01 |
+| 1          | 3         | 6         | 2019-08-02 |
+| 2          | 7         | 7         | 2019-08-01 |
+| 2          | 7         | 6         | 2019-08-02 |
+| 4          | 7         | 1         | 2019-07-22 |
+| 3          | 4         | 4         | 2019-07-21 |
+| 3          | 4         | 4         | 2019-07-21 |
++------------+-----------+-----------+------------+Output: 
++------+
+| id   |
++------+
+| 4    |
+| 7    |
++------+
+
+MySQL
+import pandas as pd
+
+def article_views(views: pd.DataFrame) -> pd.DataFrame:
+    df = views[views['author_id'] == views['viewer_id']]
+
+    df.drop_duplicates(subset=['author_id'], inplace=True)
+    df.sort_values(by=['author_id'], inplace=True)
+    df.rename(columns={'author_id':'id'}, inplace=True)
+
+    df = df[['id']]
+
+return df
+
+
+SELECT DISTINCT author_id AS id FROM Views WHERE author_id = viewer_id ORDER BY id
+
+Aggregate FunctionsReport Issue
+
+What You Will Learn
+1.Common SQL keywords for statistics such as COUNT, SUM, AVG, and others.
+2.Usage for common SQL functions and practical considerations.
+
+Tips: What is the function?
+A function is a technique commonly used in programming languages. Its purpose is to wrap complex logical operations and replace them with a single word or phrase. Usually, it can also include a set of parentheses, and inside the parentheses are the data that would be used for complex operations.
+For example, suppose there is a function called eat(), the details of which may include chewing, swallowing, digesting, etc., but we don't need to know the details of how it works, just know that we can call eat(cake), eat(noodles), to quickly complete complex logic.
+Therefore, we can find that the word we used to call a keyword, like JSON_EXTRACT, is actually a function.
+
+Overview
+In the previous chapters, I believe you will have an impression of the keyword COUNT(), with which you can make simple statistics in SQL, and such keywords in SQL are called Aggregate Functions. SQL's aggregate functions are of course more than just COUNT(). This chapter will introduce you to some common aggregate functions.
+Sample data
+id	name	age	height
+1	John	40	150
+2	May	30	140
+3	Tim	25	180
+4	Jay	40	160
+To help solidify the new concepts, you can follow along by editing the provided table below:
+
+Counting: COUNT
+The first one to introduce is the most familiar one to warm up. COUNT() can help us make a simple calculation about how many pieces of eligible data records exist:
+SELECT COUNT(*) AS `user_count` FROM `new_schema`.`users` WHERE id > 1;
+Result:
+user_count
+3
+This tells us that there are 3 users with an id greater than 1. Specifically, May, Tim, and Jay.
+
+Total: SUM
+SUM can help us to aggregate the final results of a specific column. It is a very common function. In practice, it will be used to aggregate different data such as order price, user points...etc.
+SELECT SUM(`age`) AS `sum_of_user_ages` FROM `new_schema`.`users`;
+Result:
+sum_of_user_ages
+135
+
+Average: AVG
+Since there is an aggregate, of course, there will also be an average. The average is often used in various statistical reports, and it is also a very common SQL aggregate function.
+SELECT AVG(`height`) AS `avg_user_height` FROM `new_schema`.`users`;
+Result:
+avg_user_height
+157.5
+
+Minimum & Maximum: MIN & MAX
+Since there are count, sum, and average, of course, the minimum and maximum are indispensable. After learning the previous aggregate functions, the language used to obtain the minimum and maximum values of a specific column will feel natural:
+SELECT MIN(`height`) AS `user_min` FROM `new_schema`.`users`;
+Result:
+user_min
+140
+SELECT MAX(`height`) AS `user_max` FROM `new_schema`.`users`;
+Result:
+user_max
+180
+In addition to the most common aggregate functions mentioned in this chapter, it is recommended that you can refer to MySQL Aggregate Functions to see what other statistical tools are available in the typical database software!
+
+Other Functions
+In addition to aggregate functions often used in statistical analysis, SQL offers a variety of functions for convenient data manipulation. One commonly used function is CONCAT(), which allows you to combine column values into a single string. Here’s how you can use it:
+SELECT CONCAT(`id`, '-', `name`) AS `identification`, `age` FROM `new_schema`.`users`;
+Result:
+identification	age
+1-John	40
+2-May	30
+3-Tim	25
+4-Jay	40
+At this point, you might wonder: Can we use a condition like WHERE identification LIKE '%J%' to filter the data based on the identification column we just created?
+Technically, no; but with a workaround, yes.
+Why is it directly not possible?
+The WHERE clause in SQL operates on existing columns in a table. Since the identification column is a result of concatenation performed within the SELECT statement, it doesn't exist as a standalone column in the table. Therefore, you cannot directly use WHERE to filter on this dynamically created column.
+This limitation is common in SQL, especially when dealing with complex queries in legacy systems.
+How can we make it possible?
+SQL provides the HAVING clause, which allows filtering on calculated or aggregated columns. However, it’s important to note that the direct use of HAVING without GROUP BY is a misuse of SQL syntax. The correct approach involves using a subquery or a Common Table Expression (CTE) to first define the calculated column, then applying the WHERE clause on that result. Here’s how:
+Using a subquery:
+SELECT * FROM (
+  SELECT CONCAT(`id`, '-', `name`) AS `identification`, `age` 
+  FROM `new_schema`.`users`) AS subqueryWHERE `identification` LIKE '%J%';
+Or using a CTE:
+WITH CTE_Users AS (
+  SELECT CONCAT(`id`, '-', `name`) AS `identification`, `age`
+  FROM `new_schema`.`users`)SELECT * FROM CTE_UsersWHERE `identification` LIKE '%J%';
+A Common Misunderstanding
+Some might think that WHERE and HAVING can be used interchangeably. However, over-relying on HAVING can lead to performance issues as data volume grows. This is because HAVING is designed for filtering aggregate functions or the results of calculations done within the query, and its misuse can impact database efficiency.
+Performance Considerations
+The difference in performance between WHERE and HAVING is tied to how SQL databases index and retrieve data. WHERE is applied before data is grouped, making it more efficient for initial data filtration. HAVING, on the other hand, is applied after, making it less efficient for initial filtering. Understanding and using indexes effectively will be discussed in a future chapter titled "SQL in Business: Index"!
+
+
+Daily Leads and Partners
+Solution
+Table: DailySales
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| date_id     | date    |
+| make_name   | varchar |
+| lead_id     | int     |
+| partner_id  | int     |
++-------------+---------+
+There is no primary key (column with unique values) for this table. It may contain duplicates.
+This table contains the date and the name of the product sold and the IDs of the lead and partner it was sold to.
+The name consists of only lowercase English letters.
+ 
+For each date_id and make_name, find the number of distinct lead_id's and distinct partner_id's.
+Return the result table in any order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+DailySales table:
++-----------+-----------+---------+------------+
+| date_id   | make_name | lead_id | partner_id |
++-----------+-----------+---------+------------+
+| 2020-12-8 | toyota    | 0       | 1          |
+| 2020-12-8 | toyota    | 1       | 0          |
+| 2020-12-8 | toyota    | 1       | 2          |
+| 2020-12-7 | toyota    | 0       | 2          |
+| 2020-12-7 | toyota    | 0       | 1          |
+| 2020-12-8 | honda     | 1       | 2          |
+| 2020-12-8 | honda     | 2       | 1          |
+| 2020-12-7 | honda     | 0       | 1          |
+| 2020-12-7 | honda     | 1       | 2          |
+| 2020-12-7 | honda     | 2       | 1          |
++-----------+-----------+---------+------------+Output: 
++-----------+-----------+--------------+-----------------+
+| date_id   | make_name | unique_leads | unique_partners |
++-----------+-----------+--------------+-----------------+
+| 2020-12-8 | toyota    | 2            | 3               |
+| 2020-12-7 | toyota    | 1            | 2               |
+| 2020-12-8 | honda     | 2            | 2               |
+| 2020-12-7 | honda     | 3            | 2               |
++-----------+-----------+--------------+-----------------+Explanation: 
+For 2020-12-8, toyota gets leads = [0, 1] and partners = [0, 1, 2] while honda gets leads = [1, 2] and partners = [1, 2].
+For 2020-12-7, toyota gets leads = [0] and partners = [1, 2] while honda gets leads = [0, 1, 2] and partners = [1, 2].
+
+MySQL
+import pandas as pd
+
+def daily_leads_and_partners(daily_sales: pd.DataFrame) -> pd.DataFrame:
+    # Approach: Group by Aggregation
+    # Let us utilize the .groupby() method using 'date_id' and 'make_name'
+    # as the grouping criterion and aggregate 'lead_id' and 'partner_id'
+    # with methods 'nunique', which counts the unique elements within each group
+    df = daily_sales.groupby(['date_id', 'make_name']).agg({
+        'lead_id': 'nunique',
+        'partner_id': 'nunique'
+    }).reset_index()
+    
+    # Rename resulting DataFrame and rename columns
+    df = df.rename(columns={
+        'lead_id': 'unique_leads',
+        'partner_id': 'unique_partners'
+    })
+
+    # Return DataFrame
+    return df
+
+SELECT date_id, make_name, COUNT(DISTINCT lead_id) AS unique_leads, COUNT(DISTINCT partner_id) AS unique_partners FROM DailySales GROUP BY date_id, make_name;
+
+Find Followers Count
+Solution
+Table: Followers
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| user_id     | int  |
+| follower_id | int  |
++-------------+------+
+(user_id, follower_id) is the primary key (combination of columns with unique values) for this table.
+This table contains the IDs of a user and a follower in a social media app where the follower follows the user.
+ 
+Write a solution that will, for each user, return the number of followers.
+Return the result table ordered by user_id in ascending order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Followers table:
++---------+-------------+
+| user_id | follower_id |
++---------+-------------+
+| 0       | 1           |
+| 1       | 0           |
+| 2       | 0           |
+| 2       | 1           |
++---------+-------------+Output: 
++---------+----------------+
+| user_id | followers_count|
++---------+----------------+
+| 0       | 1              |
+| 1       | 1              |
+| 2       | 2              |
++---------+----------------+Explanation: 
+The followers of 0 are {1}
+The followers of 1 are {0}
+The followers of 2 are {0,1}
+SELECT user_id, COUNT(user_id) AS followers_count FROM followers GROUP BY user_id ORDER BY user_id ASC;
+
+Game Play Analysis I
+Solution
+Table: Activity
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| player_id    | int     |
+| device_id    | int     |
+| event_date   | date    |
+| games_played | int     |
++--------------+---------+
+(player_id, event_date) is the primary key (combination of columns with unique values) of this table.
+This table shows the activity of players of some games.
+Each row is a record of a player who logged in and played a number of games (possibly 0) before logging out on someday using some device.
+ 
+Write a solution to find the first login date for each player.
+Return the result table in any order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Activity table:
++-----------+-----------+------------+--------------+
+| player_id | device_id | event_date | games_played |
++-----------+-----------+------------+--------------+
+| 1         | 2         | 2016-03-01 | 5            |
+| 1         | 2         | 2016-05-02 | 6            |
+| 2         | 3         | 2017-06-25 | 1            |
+| 3         | 1         | 2016-03-02 | 0            |
+| 3         | 4         | 2018-07-03 | 5            |
++-----------+-----------+------------+--------------+Output: 
++-----------+-------------+
+| player_id | first_login |
++-----------+-------------+
+| 1         | 2016-03-01  |
+| 2         | 2017-06-25  |
+| 3         | 2016-03-02  |
++-----------+-------------+
+
+
+SELECT A.player_id, MIN(A.event_date) AS first_login FROM Activity A GROUP BY A.player_id;
+
+SELECT X.player_id, X.event_date AS first_login FROM ( SELECT A.player_id, A.event_date, RANK() OVER ( PARTITION BY A.player_id ORDER BY A.event_date ) AS rnk FROM Activity A ) X WHERE X.rnk = 1;
+
+able: Person
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| email       | varchar |
++-------------+---------+
+id is the primary key (column with unique values) for this table.
+Each row of this table contains an email. The emails will not contain uppercase letters.
+ 
+Write a solution to report all the duplicate emails. Note that it's guaranteed that the email field is not NULL.
+Return the result table in any order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Person table:
++----+---------+
+| id | email   |
++----+---------+
+| 1  | a@b.com |
+| 2  | c@d.com |
+| 3  | a@b.com |
++----+---------+Output: 
++---------+
+| Email   |
++---------+
+| a@b.com |
++---------+Explanation: a@b.com is repeated two times.
+import pandas as pd
+
+def duplicate_emails(person: pd.DataFrame) -> pd.DataFrame:   
+  # Group by 'Email' and count occurrences
+  email_counts = person.groupby('email').size().reset_index(name='num')
+  
+  # Filter for emails that occur more than once
+  duplicated_emails_df = email_counts[email_counts['num'] > 1][['email']]
+  
+  return duplicated_emails_df
+
+
+import pandas as pd
+
+def duplicate_emails(person: pd.DataFrame) -> pd.DataFrame:
+  duplicated_emails_df = person.groupby('email').filter(lambda x: len(x) > 1)[['email']].drop_duplicates()
+  
+  return duplicated_emails_df
+
+select Email from ( select Email, count(Email) as num from Person group by Email ) as statistic where num > 1 ;
+
+select Email from Person group by Email having count(Email) > 1;
+Actors and Directors Who Cooperated At Least Three Times
+Solution
+Table: ActorDirector
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| actor_id    | int     |
+| director_id | int     |
+| timestamp   | int     |
++-------------+---------+
+timestamp is the primary key (column with unique values) for this table.
+ 
+Write a solution to find all the pairs (actor_id, director_id) where the actor has cooperated with the director at least three times.
+Return the result table in any order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+ActorDirector table:
++-------------+-------------+-------------+
+| actor_id    | director_id | timestamp   |
++-------------+-------------+-------------+
+| 1           | 1           | 0           |
+| 1           | 1           | 1           |
+| 1           | 1           | 2           |
+| 1           | 2           | 3           |
+| 1           | 2           | 4           |
+| 2           | 1           | 5           |
+| 2           | 1           | 6           |
++-------------+-------------+-------------+Output: 
++-------------+-------------+
+| actor_id    | director_id |
++-------------+-------------+
+| 1           | 1           |
++-------------+-------------+Explanation: The only pair is (1, 1) where they cooperated exactly 3 times.
+import pandas as pd def actors_and_directors(actor_director: pd.DataFrame) -> pd.DataFrame: cnts = actor_director.groupby(['actor_id', 'director_id']).size().reset_index(name='counts') return cnts[cnts['counts'] >= 3][['actor_id', 'director_id']]
+
+SELECT actor_id, director_id FROM ActorDirector GROUP BY actor_id, director_id HAVING COUNT(timestamp) >= 3;
+
+  RelationshipsReport Issue
+
+What You Will Learn
+1.The meaning and usage of relationships in SQL.
+2.About types of relationships, including one to one, one to many, many to many.
+
+What is a Relationship in SQL
+In the previous chapters, we have performed operations and discussions on a single table. But in most real-world situations, we will need more than one table, and there are many tasks that need to be completed by combining different tables.
+So here comes the question: how do we define the relationship between two different tables?
+The answer is that we should depend on the technology of relationships in SQL. And like the MySQL used in our series of demonstrations, it is classified as Relational Database Management System, the most important thing is to have the design of Relationship, which is also one of the standard equipment of most mature commercial databases on the market.
+In SQL, we don't need to use a new statement, the key point is to establish the correct field correspondence, such as the id column of the users table corresponds to the user_id column of the orders table
+Now, let's take a look at how to design the correct relationship.
+
+One to One
+Imagine a situation where our database has two tables: transportations and orders. Each transportation is only responsible for one order, and each order is only be assigned to one transportation. Then, they have One to One relationship.
+
+In the database, of course, there is no relationship without doing anything. We have to define the following two tables:
+transportations
+id	order_id	address
+1	1	U.S
+2	2	India
+orders
+id	note
+1	some information
+2	some comments
+Please focus on transportations, we add a column order_id, and use this column to record which order corresponds to which transportation. In the one to one relationship, you can also put the responsibility for recording id to another table, which means to add a new column transportation_id to orders.
+
+One to Many
+The One to Many relationship is very common in the design of actual database table architecture. It can be imagined as the relationship between users and orders. Usually, a user can have many orders, but an order can only belong to one user.
+
+In this case, we can design the following tables:
+users
+id	name	age
+1	John	40
+2	May	30
+orders
+id	user_id	note
+1	1	some information
+2	2	some comments
+3	2	no comments
+Let's focus on the user_id column in orders here. We set the id of another table in the table which belongs to the other table, and it is different from one to one, so the settings cannot be exchanged here.
+The reason is that if we set order_id in users, then each user will be limited to only have one order, which does not meet the data relationship we want!
+
+Many to Many
+The Many to Many relationship is a relatively complex relationship. Usually, two tables with this relationship require a third new table be created just to record the relationship between the two original tables.
+For example, the relationship between orders and products, an order can have many products, and a product can also belong to many orders.
+
+Rendered table associations such as:
+orders
+id	user_id	note
+1	1	some information
+2	2	some comments
+3	2	no comments
+products
+id	name
+1	table
+2	chair
+3	apple
+orders_products
+id	order_id	product_id
+1	1	1
+2	1	2
+3	2	2
+4	3	1
+5	3	3
+Let's focus on the orders_products table, this table is specially used to record the relationship between orders and products, so only the ids of orders and products can be seen. Through this table, we can understand The following associations: 1. order 1 has two products, table and chair. 2. order 2 has one product, chair. 3. order 3 has two products, table and apple.
+And that's all there is to it!
+
+Meaningful Transformation
+Finally, readers who are familiar with the business field may notice that this orders_products table is very similar to order_items. Can we use this table to record order details?
+Of course! And orders_products can be reasonably expanded to:
+order_items
+id	order_id	product_id	quantity
+1	1	1	1
+2	1	2	3
+3	2	2	5
+4	3	1	3
+5	3	3	8
+Here, each row represents an ordered item. As a real-world example, here, a user purchased 3 items in their order which has a specific order id, and each item will have its own product id and the quantity purchased in this order.
+
+It becomes a table with practical use, and it can record the relationship between the other two tables at the same time. We call this an intermediate table of the other two tables.
+This is a very common database design logic that is worth remembering, as it will be helpful for database system design in the future!
+  JOINReport Issue
+
+What You Will Learn
+1.How to combine tables with LEFT, RIGHT, and INNER JOIN.
+2.How to select the columns we need through JOIN.
+So far, we have learned how to create multiple tables and set up the relationships with each other, but suppose we now have a report requirement, which needs to display all orders and the details of users who have the order. What do we do?
+The JOIN keyword in SQL is responsible for this kind of work, combining different tables together. So let's start learning how to use this tool!
+
+LEFT JOIN
+When using JOIN, the first thing we are familiar with is LEFT JOIN, which can be imagined as treating the table on the left side of the statement as the main table, and the other table as the attached table. When using the JOIN related syntax, all columns from both tables are displayed. However, if any the specific record of main table does not include any attached table records, the values of the columns in the attached table will be set to NULL.
+This idea will be easier to understand with an example. Let's assume we have two tables:
+orders
+id	user_id	note
+1	1	some information
+2	2	some comments
+3	2	no comments
+4	NULL	weird
+users
+id	name	age
+1	John	40
+2	May	30
+3	Tim	25
+To help solidify the new concepts, you can follow along by editing the provided table below:
+Suppose we want to use users as the main table and combine orders as the attached table, then we can say users left join orders and write the following query:
+SELECT * FROM `new_schema`.`users`LEFT JOIN `new_schema`.`orders` ON `users`.`id` = `orders`.`user_id`;
+Here we can focus on the LEFT JOIN line and split it into 2 parts: 1. LEFT JOIN: In the above case, the main table is users. This is followed by the table used as an attached table, that is, orders. 2. ON: This keyword is to let SQL know how to connect the two tables. So you can notice that we set the id column of users to be connected to the user_id column of orders. This is the most important usage of how to apply relationships since we learned about relationships in the previous chapter.
+Result:
+id	name	age	id	user_id	note
+1	John	40	1	1	some information
+2	May	30	2	2	some comments
+2	May	30	3	2	no comments
+3	Tim	25	NULL	NULL	NULL
+We can see that because users is the main table, even if there is a user record without corresponding order data, the record will still be fetched. But the columns of orders in that record will contain a NULL value. For example, here there are no records in the orders table that have a user_id equal to 3, so for Tim (whose id is 3), we fill in the remaining columns with NULL.
+
+RIGHT JOIN
+Since there is LEFT JOIN, there must also be RIGHT JOIN, and RIGHT JOIN can actually be thought of as the opposite usage of LEFT JOIN. It makes the table on the right the main table, and the table on the left the attached table.
+And suppose our SQL statement is as follows:
+SELECT * FROM `new_schema`.`users`RIGHT JOIN `new_schema`.`orders` ON `users`.`id` = `orders`.`user_id`;
+Result:
+id	name	age	id	user_id	note
+1	John	40	1	1	some information
+2	May	30	2	2	some comments
+2	May	30	3	2	no comments
+NULL	NULL	NULL	4	NULL	weird
+We can see that when it fetches all the orders data, the parts without users data in front will be filled with NULL.
+Some of you may have noticed a trick:
+If we reverse the order of the two tables when using LEFT JOIN, won't this be the same as using a RIGHT JOIN?
+That's right! In fact, the above RIGHT JOIN statement is equivalent to:
+SELECT * FROM `new_schema`.`orders`LEFT JOIN `new_schema`.`users` ON `users`.`id` = `orders`.`user_id`;
+The only difference will be the order in which the columns are displayed. When applying this trick with other programming languages, most of them can ignore this difference and use the data we provide normally!
+
+INNER JOIN
+Although we have learned to combine data, do you occasionally find it strange to see data with NULL? At this time, we can learn how to use INNER JOIN to fetch records where both tables can be linked together. That is a common scenario for filtering data in practice, and the concept is like taking an intersection).
+
+SQL syntax:
+SELECT * FROM `new_schema`.`users`INNER JOIN `new_schema`.`orders` ON `users`.`id` = `orders`.`user_id`;
+Result:
+id	name	age	id	user_id	note
+1	John	40	1	1	some information
+2	May	30	2	2	some comments
+2	May	30	3	2	no comments
+
+How to Select the Needed Column With the Same Name?
+Notice that both tables have an id column in the above example. Suppose we only want to display the id of the order table. What should we do? Can we write it directly as SELECT id?
+If this is the case, you cannot directly write the name of the column. When we select a column, and there is a duplicate column name present, we must specify which column we want by including the table name. However, columns with non-overlapping names can be written directly. Here is an example:
+SELECT `orders`.`id` AS order_id , `name` FROM `new_schema`.`users`INNER JOIN `new_schema`.`orders` ON `users`.`id` = `orders`.`user_id`;
+Result:
+order_id	name
+1	John
+2	May
+3	May
+Note: Except MySQL, most database software systems usually support FULL OUTER JOIN, please refer to Oracle - FULL OUTER JOIN for more details
+  Customer Who Visited but Did Not Make Any Transactions
+Solution
+Table: Visits
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| visit_id    | int     |
+| customer_id | int     |
++-------------+---------+
+visit_id is the column with unique values for this table.
+This table contains information about the customers who visited the mall.
+ 
+Table: Transactions
++----------------+---------+
+| Column Name    | Type    |
++----------------+---------+
+| transaction_id | int     |
+| visit_id       | int     |
+| amount         | int     |
++----------------+---------+
+transaction_id is column with unique values for this table.
+This table contains information about the transactions made during the visit_id.
+ 
+Write a solution to find the IDs of the users who visited without making any transactions and the number of times they made these types of visits.
+Return the result table sorted in any order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Visits
++----------+-------------+
+| visit_id | customer_id |
++----------+-------------+
+| 1        | 23          |
+| 2        | 9           |
+| 4        | 30          |
+| 5        | 54          |
+| 6        | 96          |
+| 7        | 54          |
+| 8        | 54          |
++----------+-------------+
+Transactions
++----------------+----------+--------+
+| transaction_id | visit_id | amount |
++----------------+----------+--------+
+| 2              | 5        | 310    |
+| 3              | 5        | 300    |
+| 9              | 5        | 200    |
+| 12             | 1        | 910    |
+| 13             | 2        | 970    |
++----------------+----------+--------+Output: 
++-------------+----------------+
+| customer_id | count_no_trans |
++-------------+----------------+
+| 54          | 2              |
+| 30          | 1              |
+| 96          | 1              |
++-------------+----------------+Explanation: 
+Customer with id = 23 visited the mall once and made one transaction during the visit with id = 12.
+Customer with id = 9 visited the mall once and made one transaction during the visit with id = 13.
+Customer with id = 30 visited the mall once and did not make any transactions.
+Customer with id = 54 visited the mall three times. During 2 visits they did not make any transactions, and during one visit they made 3 transactions.
+Customer with id = 96 visited the mall once and did not make any transactions.
+As we can see, users with IDs 30 and 96 visited the mall one time wi
+import pandas as pd
+
+def find_customers(visits: pd.DataFrame, transactions: pd.DataFrame) -> pd.DataFrame:
+
+   visits_no_trans = visits[~visits.visit_id.isin(transactions.visit_id)]
+   
+   df = visits_no_trans.groupby('customer_id', as_index=False)['visit_id'].count()
+    
+   return df.rename(columns={'visit_id': 'count_no_trans'})
+
+import pandas as pd
+
+def find_customers(visits: pd.DataFrame, transactions: pd.DataFrame) -> pd.DataFrame:
+
+   visits_no_trans = visits.merge(transactions, on='visit_id', how='left')
+
+   visits_no_trans = visits_no_trans[visits_no_trans.transaction_id.isna()]
+
+   df = visits_no_trans.groupby('customer_id', as_index=False)['visit_id'].count()
+
+   return df.rename(columns={'visit_id': 'count_no_trans'})
+
+SELECT customer_id, COUNT(visit_id) AS count_no_trans FROM Visits WHERE visit_id NOT IN ( SELECT visit_id FROM Transactions ) GROUP BY customer_id
+
+SELECT customer_id, COUNT(*) AS count_no_trans FROM Visits AS v LEFT JOIN Transactions AS t ON v.visit_id = t.visit_id WHERE t.visit_id IS NULL GROUP BY customer_id
+
+Combine Two Tables
+Solution
+Table: Person
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| personId    | int     |
+| lastName    | varchar |
+| firstName   | varchar |
++-------------+---------+
+personId is the primary key (column with unique values) for this table.
+This table contains information about the ID of some persons and their first and last names.
+ 
+Table: Address
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| addressId   | int     |
+| personId    | int     |
+| city        | varchar |
+| state       | varchar |
++-------------+---------+
+addressId is the primary key (column with unique values) for this table.
+Each row of this table contains information about the city and state of one person with ID = PersonId.
+ 
+Write a solution to report the first name, last name, city, and state of each person in the Person table. If the address of a personId is not present in the Address table, report null instead.
+Return the result table in any order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Person table:
++----------+----------+-----------+
+| personId | lastName | firstName |
++----------+----------+-----------+
+| 1        | Wang     | Allen     |
+| 2        | Alice    | Bob       |
++----------+----------+-----------+
+Address table:
++-----------+----------+---------------+------------+
+| addressId | personId | city          | state      |
++-----------+----------+---------------+------------+
+| 1         | 2        | New York City | New York   |
+| 2         | 3        | Leetcode      | California |
++-----------+----------+---------------+------------+Output: 
++-----------+----------+---------------+----------+
+| firstName | lastName | city          | state    |
++-----------+----------+---------------+----------+
+| Allen     | Wang     | Null          | Null     |
+| Bob       | Alice    | New York City | New York |
++-----------+----------+---------------+----------+Explanation: 
+There is no address in the address table for the personId = 1 so we return null in their city and state.
+addressId = 1 contains information about the address of personId = 2.
+import pandas as pd
+
+def combine_two_tables(person: pd.DataFrame, address: pd.DataFrame) -> pd.DataFrame:
+    result = pd.merge(person, address, on='personId', how='left')
+    result = result[['firstName', 'lastName', 'city', 'state']]
+    return result
+
+
+select FirstName, LastName, City, State from Person left join Address on Person.PersonId = Address.PersonId ;
+
+Market Analysis I
+Solution
+Table: Users
++----------------+---------+
+| Column Name    | Type    |
++----------------+---------+
+| user_id        | int     |
+| join_date      | date    |
+| favorite_brand | varchar |
++----------------+---------+
+user_id is the primary key (column with unique values) of this table.
+This table has the info of the users of an online shopping website where users can sell and buy items.
+ 
+Table: Orders
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| order_id      | int     |
+| order_date    | date    |
+| item_id       | int     |
+| buyer_id      | int     |
+| seller_id     | int     |
++---------------+---------+
+order_id is the primary key (column with unique values) of this table.
+item_id is a foreign key (reference column) to the Items table.
+buyer_id and seller_id are foreign keys to the Users table.
+ 
+Table: Items
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| item_id       | int     |
+| item_brand    | varchar |
++---------------+---------+
+item_id is the primary key (column with unique values) of this table.
+ 
+Write a solution to find for each user, the join date and the number of orders they made as a buyer in 2019.
+Return the result table in any order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Users table:
++---------+------------+----------------+
+| user_id | join_date  | favorite_brand |
++---------+------------+----------------+
+| 1       | 2018-01-01 | Lenovo         |
+| 2       | 2018-02-09 | Samsung        |
+| 3       | 2018-01-19 | LG             |
+| 4       | 2018-05-21 | HP             |
++---------+------------+----------------+
+Orders table:
++----------+------------+---------+----------+-----------+
+| order_id | order_date | item_id | buyer_id | seller_id |
++----------+------------+---------+----------+-----------+
+| 1        | 2019-08-01 | 4       | 1        | 2         |
+| 2        | 2018-08-02 | 2       | 1        | 3         |
+| 3        | 2019-08-03 | 3       | 2        | 3         |
+| 4        | 2018-08-04 | 1       | 4        | 2         |
+| 5        | 2018-08-04 | 1       | 3        | 4         |
+| 6        | 2019-08-05 | 2       | 2        | 4         |
++----------+------------+---------+----------+-----------+
+Items table:
++---------+------------+
+| item_id | item_brand |
++---------+------------+
+| 1       | Samsung    |
+| 2       | Lenovo     |
+| 3       | LG         |
+| 4       | HP         |
++---------+------------+Output: 
++-----------+------------+----------------+
+| buyer_id  | join_date  | orders_in_2019 |
++-----------+------------+----------------+
+| 1         | 2018-01-01 | 1              |
+| 2         | 2018-02-09 | 2              |
+| 3         | 2018-01-19 | 0              |
+| 4         | 2018-05-21 | 0              |
++-----------+------------+----------------+
+
+import pandas as pd
+
+def market_analysis(
+    users: pd.DataFrame, orders: pd.DataFrame, items: pd.DataFrame
+) -> pd.DataFrame:
+
+    # Step 1: Filter the orders dataframe to only include orders from the year 2019.
+    df = orders.query("order_date.dt.year==2019").merge(
+        # Step 2: Merge the filtered orders with the users dataframe on buyer_id and user_id.
+        users,
+        left_on="buyer_id",
+        right_on="user_id",
+        how="right",
+    )
+
+    # Step 3: Group the merged dataframe by user_id and join_date, then count the number of items (orders) for each user.
+    result = df.groupby(["user_id", "join_date"]).item_id.count()
+
+    # Step 4: Format the output by resetting the index and renaming the columns for clarity.
+    return result.reset_index().rename(
+        columns={"user_id": "buyer_id", "item_id": "orders_in_2019"}
+    )
+
+SELECT u.user_id AS buyer_id, join_date, COUNT(o.order_id) AS orders_in_2019 FROM Users u LEFT JOIN Orders o ON u.user_id = o.buyer_id AND YEAR(order_date)= '2019' GROUP BY u.user_id ORDER BY u.user_id
+
+
+What You Will Learn
+1.How to use subquery on equal and contain conditions.
+2.How to prevent making common mistakes when writing a subquery.
+
+Sample Tables
+users
+id	name	age
+1	John	40
+2	May	30
+3	Tim	22
+orders
+id	user_id	note
+1	1	some information
+2	2	some comments
+3	2	no comments
+4	3	more comments
+Subquery is a technique used to simplify SQL statements, and it is the first threshold for advanced SQL syntax. In the actual database system, a table often has dozens of columns. If JOIN is used to combine tables according to certain conditions, it may cause many redundant columns to be fetched.
+Consider a situation: Suppose we want to find all the order records for a user whose name is "John", but I don't want to get the columns of the users table, and I don't want to use SELECT to define the columns to display one by one, what should I do?
+At this point, subquery is a great tool for you.
+To help solidify the new concepts, you can follow along by editing the provided table below:
+
+Equal Condition
+First of all, let's take a look at a SQL statement used to address the above situation:
+SELECT * FROM `new_schema`.`orders`WHERE user_id = (
+  SELECT id FROM `new_schema`.`users`
+  WHERE name = 'John');
+Result:
+id	user_id	note
+1	1	some information
+The special part of this SQL is the query condition of the WHERE keyword. Its condition is the result of another SQL statement. This is the subquery technique, which uses nested query statements to complete a conditional query.
+So if we want to analyze this SQL statement, we can look at the SQL statement of the subquery independently first:
+SELECT id FROM `new_schema`.`users`WHERE name = 'john';
+Its result is:
+id
+1
+Since the retrieved data is very simple, with only one record, the original SQL statement can be transformed into the following search statement through the "=" operator:
+SELECT * FROM `new_schema`.`orders`WHERE user_id = 1;
+
+Contain Condition
+In addition to the determination of equality, we can also change the SQL into a statement that can solve the condition that contains lots of data. In order to do that, we have to update the operator from = to IN. The reason is that we can use the IN keyword to filter out the data with multiple conditions.
+Suppose our situation is: We need to find all order records for the user whose name contains the letter "j".
+SELECT * FROM `new_schema`.`orders`WHERE user_id IN (
+  SELECT id FROM `new_schema`.`users`
+  WHERE name LIKE '%j%');
+Just like the previous equal example, we can first split the above SQL statement into:
+SELECT id FROM `new_schema`.`users`WHERE name LIKE '%j%'
+This gives us the following result:
+id
+1
+3
+Through the result, our entire SQL can be transformed into:
+SELECT * FROM `new_schema`.`orders`WHERE user_id IN (1, 3);
+And the execution result is:
+id	user_id	note
+1	1	some information
+4	3	more comments
+
+Common Mistakes
+Singular and Plural problem
+In the previous examples that use "equal" and "contain", it is important to note that both can be used when only one record is fetched by the subquery. But if multiple records are fetched, we can only use the contain method. The reason is that if we use the = operator, only a single value is accepted. That is to say, the following SQL will cause an execution error if the subquery has multiple records:
+SELECT * FROM `new_schema`.`orders`WHERE user_id = (
+  SELECT id FROM `new_schema`.`users`
+  WHERE name LIKE '%j%');
+Therefore, we should update the statement to:
+SELECT * FROM `new_schema`.`orders`WHERE user_id IN (
+  SELECT id FROM `new_schema`.`users`
+  WHERE name LIKE '%j%');
+Redundant Columns in Subqueries
+Another common mistake is to use subqueries that do not properly use SELECT to get the appropriate columns. As previously demonstrated, SELECT * can help us avoid writing out all of the columns one by one, but it may also cause us to forget to write them out when we only want a few specific columns.
+For example, in the example used in this article, our subquery only needs the id column. Suppose it is written as *, so the name, age, and other columns are all retrieved. This will lead to an execution error:
+SELECT * FROM `new_schema`.`orders`WHERE user_id IN (
+  SELECT * FROM `new_schema`.`users`
+  WHERE name LIKE '%j%');
+These two mistakes are very common when first learning how to use subqueries. We want to share them with you, and we hope you can use them smoothly in the future!
+Contest
+Discuss
+
+Interview
+
+
+Store
+
+0
+
+  Back to Chapter
+SQL Data Structure
+  Schema
+  Table
+  Column
+SQL Syntax
+  SELECT, INSERT, UPDATE and DELETE
+  WHERE
+  Big Countries
+  Recyclable and Low Fat Products
+  Find Customer Referee
+  Calculate Special Bonus
+  JSON in SQL
+  Swap Salary
+  Auxiliary SELECT Statements
+  Article Views I
+  Aggregate Functions
+  Daily Leads and Partners
+  Find Followers Count
+  Game Play Analysis I
+  Duplicate Emails
+  Actors and Directors Who Cooperated At Least Three Times
+  Syntax Quiz
+SQL Relationship
+  Relationships
+  JOIN
+  Customer Who Visited but Did Not Make Any Transactions
+  Combine Two Tables
+  Market Analysis I
+  Subqueries
+  Sales Person
+  Customers Who Never Order
+  Customer Placing the Largest Number of Orders
+  Top Travellers
+  Employees With Missing Information
+Intermediate SQL
+
+Discuss
+13 topics
+
+Go to Discuss
+ PreviousNext 
+  Sales Person
+Solution
+Table: SalesPerson
++-----------------+---------+
+| Column Name     | Type    |
++-----------------+---------+
+| sales_id        | int     |
+| name            | varchar |
+| salary          | int     |
+| commission_rate | int     |
+| hire_date       | date    |
++-----------------+---------+
+sales_id is the primary key (column with unique values) for this table.
+Each row of this table indicates the name and the ID of a salesperson alongside their salary, commission rate, and hire date.
+ 
+Table: Company
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| com_id      | int     |
+| name        | varchar |
+| city        | varchar |
++-------------+---------+
+com_id is the primary key (column with unique values) for this table.
+Each row of this table indicates the name and the ID of a company and the city in which the company is located.
+ 
+Table: Orders
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| order_id    | int  |
+| order_date  | date |
+| com_id      | int  |
+| sales_id    | int  |
+| amount      | int  |
++-------------+------+
+order_id is the primary key (column with unique values) for this table.
+com_id is a foreign key (reference column) to com_id from the Company table.
+sales_id is a foreign key (reference column) to sales_id from the SalesPerson table.
+Each row of this table contains information about one order. This includes the ID of the company, the ID of the salesperson, the date of the order, and the amount paid.
+ 
+Write a solution to find the names of all the salespersons who did not have any orders related to the company with the name "RED".
+Return the result table in any order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+SalesPerson table:
++----------+------+--------+-----------------+------------+
+| sales_id | name | salary | commission_rate | hire_date  |
++----------+------+--------+-----------------+------------+
+| 1        | John | 100000 | 6               | 4/1/2006   |
+| 2        | Amy  | 12000  | 5               | 5/1/2010   |
+| 3        | Mark | 65000  | 12              | 12/25/2008 |
+| 4        | Pam  | 25000  | 25              | 1/1/2005   |
+| 5        | Alex | 5000   | 10              | 2/3/2007   |
++----------+------+--------+-----------------+------------+
+Company table:
++--------+--------+----------+
+| com_id | name   | city     |
++--------+--------+----------+
+| 1      | RED    | Boston   |
+| 2      | ORANGE | New York |
+| 3      | YELLOW | Boston   |
+| 4      | GREEN  | Austin   |
++--------+--------+----------+
+Orders table:
++----------+------------+--------+----------+--------+
+| order_id | order_date | com_id | sales_id | amount |
++----------+------------+--------+----------+--------+
+| 1        | 1/1/2014   | 3      | 4        | 10000  |
+| 2        | 2/1/2014   | 4      | 5        | 5000   |
+| 3        | 3/1/2014   | 1      | 1        | 50000  |
+| 4        | 4/1/2014   | 1      | 4        | 25000  |
++----------+------------+--------+----------+--------+Output: 
++------+
+| name |
++------+
+| Amy  |
+| Mark |
+| Alex |
++------+Explanation: 
+According to orders 3 and 4 in the Orders table, it is easy 
+import pandas as pd
+
+def sales_person(sales_person: pd.DataFrame, company: pd.DataFrame, orders: pd.DataFrame) -> pd.DataFrame:
+    df = pd.merge(orders, company, on='com_id')
+
+    red_orders = df[df['name'] == 'RED']
+
+    invalid_ids = red_orders.sales_id.unique()
+
+    valid_sales_person = sales_person[~sales_person['sales_id'].isin(invalid_ids)]    
+
+    return valid_sales_person[['name']]
+
+SELECT s.name FROM salesperson s WHERE s.sales_id NOT IN (SELECT o.sales_id FROM orders o LEFT JOIN company c ON o.com_id = c.com_id WHERE c.name = 'RED') ;
+
+ustomers Who Never Order
+Solution
+Table: Customers
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| name        | varchar |
++-------------+---------+
+id is the primary key (column with unique values) for this table.
+Each row of this table indicates the ID and name of a customer.
+ 
+Table: Orders
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| id          | int  |
+| customerId  | int  |
++-------------+------+
+id is the primary key (column with unique values) for this table.
+customerId is a foreign key (reference columns) of the ID from the Customers table.
+Each row of this table indicates the ID of an order and the ID of the customer who ordered it.
+ 
+Write a solution to find all customers who never order anything.
+Return the result table in any order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Customers table:
++----+-------+
+| id | name  |
++----+-------+
+| 1  | Joe   |
+| 2  | Henry |
+| 3  | Sam   |
+| 4  | Max   |
++----+-------+
+Orders table:
++----+------------+
+| id | customerId |
++----+------------+
+| 1  | 3          |
+| 2  | 1          |
++----+------------+Output: 
++-----------+
+| Customers |
++-----------+
+| Henry     |
+| Max       |
++-----------+
+import pandas as pd def find_customers(customers: pd.DataFrame, orders: pd.DataFrame) -> pd.DataFrame: # Select the rows which `id` is not present in orders['customerId']. df = customers[~customers['id'].isin(orders['customerId'])] # Build a dataframe that only contains the column `name` # and rename the column `name` as `Customers`. df = df[['name']].rename(columns={'name': 'Customers'}) return df
+
+import pandas as pd
+
+def customers_who_never_order(customers: pd.DataFrame, orders: pd.DataFrame) -> pd.DataFrame:
+    df = customers.merge(orders, left_on='id', right_on='customerId', how='left')
+    df = df[df['customerId'].isna()]
+    df = df[['name']].rename(columns={'name': 'Customers'})
+    return df
+
+select customers.name as 'Customers' from customers where customers.id not in ( select customerid from orders );
+
+SELECT name AS 'Customers' FROM Customers LEFT JOIN Orders ON Customers.Id = Orders.CustomerId WHERE Orders.CustomerId IS NULL
+
+  Customer Placing the Largest Number of Orders
+Solution
+Table: Orders
++-----------------+----------+
+| Column Name     | Type     |
++-----------------+----------+
+| order_number    | int      |
+| customer_number | int      |
++-----------------+----------+
+order_number is the primary key (column with unique values) for this table.
+This table contains information about the order ID and the customer ID.
+ 
+Write a solution to find the customer_number for the customer who has placed the largest number of orders.
+The test cases are generated so that exactly one customer will have placed more orders than any other customer.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Orders table:
++--------------+-----------------+
+| order_number | customer_number |
++--------------+-----------------+
+| 1            | 1               |
+| 2            | 2               |
+| 3            | 3               |
+| 4            | 3               |
++--------------+-----------------+Output: 
++-----------------+
+| customer_number |
++-----------------+
+| 3               |
++-----------------+Explanation: 
+The customer with number 3 has two orders, which is greater than either customer 1 or 2 because each of them only has one order. 
+So the result is customer_number 3.
+import pandas as pd
+
+def largest_orders(orders: pd.DataFrame) -> pd.DataFrame:
+    # If orders is empty, return an empty DataFrame.
+    if orders.empty:
+        return pd.DataFrame({'customer_number': []})
+
+    df = orders.groupby('customer_number').size().reset_index(name='count')
+    df.sort_values(by='count', ascending = False, inplace=True)
+    return df[['customer_number']][0:1]
+
+SELECT customer_number FROM orders GROUP BY customer_number ORDER BY COUNT(*) DESC LIMIT 1 ;
+
+  Top Travellers
+Solution
+Table: Users
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| id            | int     |
+| name          | varchar |
++---------------+---------+
+id is the column with unique values for this table.
+name is the name of the user.
+ 
+Table: Rides
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| id            | int     |
+| user_id       | int     |
+| distance      | int     |
++---------------+---------+
+id is the column with unique values for this table.
+user_id is the id of the user who traveled the distance "distance".
+ 
+Write a solution to report the distance traveled by each user.
+Return the result table ordered by travelled_distance in descending order, if two or more users traveled the same distance, order them by their name in ascending order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Users table:
++------+-----------+
+| id   | name      |
++------+-----------+
+| 1    | Alice     |
+| 2    | Bob       |
+| 3    | Alex      |
+| 4    | Donald    |
+| 7    | Lee       |
+| 13   | Jonathan  |
+| 19   | Elvis     |
++------+-----------+
+Rides table:
++------+----------+----------+
+| id   | user_id  | distance |
++------+----------+----------+
+| 1    | 1        | 120      |
+| 2    | 2        | 317      |
+| 3    | 3        | 222      |
+| 4    | 7        | 100      |
+| 5    | 13       | 312      |
+| 6    | 19       | 50       |
+| 7    | 7        | 120      |
+| 8    | 19       | 400      |
+| 9    | 7        | 230      |
++------+----------+----------+Output: 
++----------+--------------------+
+| name     | travelled_distance |
++----------+--------------------+
+| Elvis    | 450                |
+| Lee      | 450                |
+| Bob      | 317                |
+| Jonathan | 312                |
+| Alex     | 222                |
+| Alice    | 120                |
+| Donald   | 0                  |
++----------+--------------------+Explanation: 
+Elvis and Lee traveled 450 miles, Elvis is the top traveler as his name is alphabetically smaller than Lee.
+Bob, Jonathan, Alex, and Alice have only one ride and we just order them by the total distances of the ride.
+Donald did not have any rides, the distance traveled by him is 0.
+SELECT u.name, IFNULL(SUM(distance),0) AS travelled_distance FROM Users u LEFT JOIN Rides r ON u.id = r.user_id GROUP BY u.id ORDER BY 2 DESC, 1 ASC
+
+mployees With Missing Information
+Solution
+Table: Employees
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| employee_id | int     |
+| name        | varchar |
++-------------+---------+
+employee_id is the column with unique values for this table.
+Each row of this table indicates the name of the employee whose ID is employee_id.
+ 
+Table: Salaries
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| employee_id | int     |
+| salary      | int     |
++-------------+---------+
+employee_id is the column with unique values for this table.
+Each row of this table indicates the salary of the employee whose ID is employee_id.
+ 
+Write a solution to report the IDs of all the employees with missing information. The information of an employee is missing if:
+The employee's name is missing, or
+The employee's salary is missing.
+Return the result table ordered by employee_id in ascending order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Employees table:
++-------------+----------+
+| employee_id | name     |
++-------------+----------+
+| 2           | Crew     |
+| 4           | Haven    |
+| 5           | Kristian |
++-------------+----------+
+Salaries table:
++-------------+--------+
+| employee_id | salary |
++-------------+--------+
+| 5           | 76071  |
+| 1           | 22517  |
+| 4           | 63539  |
++-------------+--------+Output: 
++-------------+
+| employee_id |
++-------------+
+| 1           |
+| 2           |
++-------------+Explanation: 
+Employees 1, 2, 4, and 5 are working at this company.
+The name of employee 1 is missing.
+The salary of employee 2 is missing.
+
+
+import pandas as pd
+
+def find_employees(employees: pd.DataFrame, salaries: pd.DataFrame) -> pd.DataFrame:
+
+    return pd.DataFrame(
+        {"employee_id": sorted(set(employees.employee_id) ^ set(salaries.employee_id))}
+    )
+
+import pandas as pd
+
+def find_employees(employees: pd.DataFrame, salaries: pd.DataFrame) -> pd.DataFrame:
+    # Merge the employees and salaries DataFrames on 'employee_id', including all records from both.
+    merged_df = pd.merge(employees, salaries, on="employee_id", how="outer")
+
+    # Identify rows with missing values in any column.
+    missing_data_df = merged_df[merged_df.isna().any(axis=1)]
+
+    # Select only the 'employee_id' column and sort the IDs.
+    result_df = missing_data_df[["employee_id"]].sort_values(by="employee_id")
+
+    return result_df
+
+
+SELECT T.employee_id FROM ( SELECT * FROM Employees LEFT JOIN Salaries USING(employee_id) UNION SELECT * FROM Employees RIGHT JOIN Salaries USING(employee_id) ) AS T WHERE T.salary IS NULL OR T.name IS NULL ORDER BY employee_id;
+
+SELECT employee_id FROM Employees WHERE employee_id NOT IN ( SELECT employee_id FROM Salaries ) UNION SELECT employee_id FROM Salaries WHERE employee_id NOT IN ( SELECT employee_id FROM Employees ) ORDER BY employee_id ASC
+
+ Foreign KeyReport Issue
+
+What You Will Learn
+1.What is the foreign key, and what is it used for.
+2.How to set different protection mechanisms for data by the foreign key.
+
+What Problems Can Foreign Keys Solve?
+Congratulations on making it to the more advanced chapters!
+In the first chapter, the concept FOREIGN KEY, which we have mentioned in the previous chapters, will be interpreted. In fact, a foreign key is the column of binding external data such as user_id, order_id that we set in the past.
+In the past, we recorded data with relative columns and used our brains to determine whether they were related. But in practice, we can actually set a CONSTRAINT for the foreign key through the SQL to help us make automatic checks and protect data security.
+What is data security? Let’s imagine a situation where a customer has a large amount of order data, but one day an engineer deletes the customer's order data by mistake. So if someone needs to inquire about the customer's order history in the future, they won't know that the deleted orders belong to this customer. This is a disaster in business.
+Fortunately, through FOREIGN KEY, we can automatically and effectively avoid such problems. Let's see how to use it!
+
+Sample table
+users
+id	name	age
+1	John	40
+2	May	30
+3	Jack	22
+orders
+id	user_id	note
+1	1	some information
+2	2	some comments
+3	2	no comments
+4	3	more comments
+To help solidify the new concepts, you can follow along by editing the provided table below:
+
+Basic syntax & Usage
+The setting of the foreign key needs to be done for the table, so the ALTER TABLE keywords need to be used as follows:
+ALTER TABLE `new_schema`.`orders`
+    ADD CONSTRAINT `orders_user_id_key`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `new_schema`.`users` (`id`);
+Here we can divide it into four parts: 1. ALTER TABLE: We have used this statement several times already; this statement specifies which table to set. 2. ADD CONSTRAINT: This comes before the name of the constraint you want to add. We set orders_user_id_key as the name of the constraint. 3. FOREIGN KEY: Refers to the foreign key you want to bind. We set user_id in this table as our foreign key. 4. REFERENCES: Specify the external data table to which the foreign key is bound. We set it to the id column in the users table.
+Protection from DELETE
+After the previous statement has been executed, if we try to execute the delete statement to delete a user:
+DELETE FROM `new_schema`.`users` WHERE (`id` = '1');
+If we try to execute this command, an error message like this will appear to prevent us from deleting the user:
+ERROR 1451: 1451: Cannot delete or update a parent row: a foreign key constraint fails
+The reason for this message is that the user, whose id is 1, has been bound to the user_id column of some records in the orders table. This execution triggers the protection mechanism, thus preventing a missing data problem.
+Protection from UPDATE
+Another scenario, assuming that we do not remove the data, but update the foreign key of the original users data, will also trigger the constraint which has the mechanism to protect the data. E.g:
+UPDATE `new_schema`.`users` SET `id` = '6' WHERE (`id` = '1');
+We will get the same error message:
+ERROR 1451: 1451: Cannot delete or update a parent row: a foreign key constraint fails
+The reason for the error is that we want to modify the user whose id is 1 and update its id to 6, which will cause the corresponding order records to find the inappropriate user and make an error. So our constraint kicks in to save us.
+However, if we execute the following statements, no execution error will be encountered:
+UPDATE `new_schema`.`users` SET `name` = 'Tony' WHERE (`id` = '1');UPDATE `new_schema`.`orders` SET `user_id` = '3' WHERE (`id` = '1');
+The reason is that the SQL we executed does not violate the logical correctness of the constraint. We only modify the value in other columns like name, or update the relative users record to another like Jack.
+Remove a Constraint
+Since we can create a constraint, we must also be able to remove a constraint. The syntax for removing is as follows:
+ALTER TABLE `new_schema`.`orders`
+    DROP FOREIGN KEY `orders_user_id_key`;
+It is worth mentioning that if you want to update a constraint, you need to remove the constraint first and then add the new constraint. There is no update relative statement.
+
+Diverse Constraints
+In SQL, there are various modes for constraints, and we can set constraints individually for UPDATE and DELETE actions.
+In addition to the settings for different behaviors, you can also set modes. As in the previous example, if you don't specify the mode when creating a constraint, the default mode is the NO ACTION.
+NO ACTION is equivalent to RESTRICT mode in MySQL. As we observed, this mode protects data by prohibiting UPDATE and DELETE from being implemented when the command disobeys the constraint. If you are familiar with other SQL database systems, we recommend checking the details of the relevant official documents! But usually, these functions are similar for each database system.
+
+Syntax
+In the syntax part, you can set the modes of different behaviors as follows:
+ALTER TABLE `new_schema`.`orders`
+    ADD CONSTRAINT `orders_user_id_key`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `new_schema`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE RESTRICT;
+You can focus on the two new phrases ON DELETE and ON UPDATE. With these two phrases, the mode can be set for DELETE and UPDATE behavior, and the name of the mode can be added directly after the phrases.
+
+Referential Actions
+In the constraint, the official name for NO ACTION & RESTRICT is called Referential Actions, and these actions are commonly used. In addition to this, SQL usually provides the following two other modes:
+1.CASCADE: Dynamically adjust the foreign key of another table when the constraint is triggered. For example, if the user's id is changed to 6, the user_id of the corresponding order records will also be updated to 6 together.
+2.SET NULL: You can control to dynamically set the foreign key of another table to null when the behavior occurs. For example, if the user's id is changed to 6, the user_id corresponding to the order records will be changed to null.
+For more details on the use of referential actions, it is recommended that you refer to MySQL Manual - FOREIGN KEY Constraints. Let's find out what kind of changes will be made!
+### Foreign Key Detailed Explanation
+
+A foreign key is a critical concept in relational databases, used to maintain referential integrity between two tables. It establishes a relationship between the columns of two tables by ensuring that the value in one table must match a value in another table.
+
+#### Key Characteristics of Foreign Keys
+
+1. **Referential Integrity**: 
+   - Ensures that a value in one table (child table) corresponds to a value in another table (parent table). This helps in maintaining the consistency and integrity of the data.
+
+2. **Relationship Establishment**:
+   - A foreign key in one table points to a primary key or a unique key in another table, creating a parent-child relationship.
+
+3. **Cascading Actions**:
+   - Actions such as `ON DELETE CASCADE` or `ON UPDATE CASCADE` can be specified to automatically update or delete related rows in child tables when the corresponding rows in the parent table are updated or deleted.
+
+#### Example
+
+Consider two tables: `Orders` and `Customers`. Each order must be associated with a customer, thus `Orders` will have a foreign key that references the primary key of `Customers`.
+
+**Customers Table**:
+```sql
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL
+);
+```
+
+**Orders Table**:
+```sql
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    OrderDate DATE NOT NULL,
+    CustomerID INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+```
+
+#### Explanation
+
+1. **Primary Key in Customers Table**:
+   - `CustomerID` is the primary key in the `Customers` table. This means each customer has a unique identifier.
+
+2. **Foreign Key in Orders Table**:
+   - `CustomerID` in the `Orders` table is defined as a foreign key.
+   - This foreign key references the `CustomerID` column in the `Customers` table, establishing a relationship between the `Orders` and `Customers` tables.
+   - The `ON DELETE CASCADE` clause ensures that if a record in the `Customers` table is deleted, all related records in the `Orders` table are automatically deleted.
+   - The `ON UPDATE CASCADE` clause ensures that if the `CustomerID` in the `Customers` table is updated, the corresponding `CustomerID` in the `Orders` table is also updated.
+
+#### Benefits of Foreign Keys
+
+1. **Data Integrity**:
+   - Ensures that the data across tables remains consistent. For instance, it prevents creating an order without a valid customer.
+
+2. **Cascade Operations**:
+   - Simplifies the management of related data with cascading updates and deletes, reducing the need for manual data maintenance.
+
+3. **Query Efficiency**:
+   - Enables efficient querying by establishing clear relationships between tables, allowing for more effective joins and data retrieval.
+
+#### Additional Examples
+
+**Example 1: Simple Foreign Key Relationship**:
+```sql
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY,
+    DepartmentName VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    EmployeeName VARCHAR(100) NOT NULL,
+    DepartmentID INT,
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+);
+```
+- This setup ensures that each employee belongs to a valid department.
+
+**Example 2: Foreign Key with Cascading Deletes**:
+```sql
+CREATE TABLE Authors (
+    AuthorID INT PRIMARY KEY,
+    AuthorName VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Books (
+    BookID INT PRIMARY KEY,
+    Title VARCHAR(100) NOT NULL,
+    AuthorID INT,
+    FOREIGN KEY (AuthorID) REFERENCES Authors(AuthorID)
+    ON DELETE CASCADE
+);
+```
+- Deleting an author will automatically delete all their books.
+
+### Summary
+
+A foreign key is essential for ensuring referential integrity in relational databases, linking tables together through parent-child relationships. By establishing these relationships, foreign keys help maintain consistent and reliable data, enable cascading actions for easier data management, and enhance query efficiency. Understanding and properly implementing foreign keys is crucial for designing robust and reliable database systems.
+
+### 什么是事务（Transaction）
+
+在数据库管理系统中，事务（Transaction）是一个不可分割的操作序列，它要么全部执行，要么全部不执行。事务保证了数据库的完整性和一致性，即使在系统故障或其他异常情况下。事务是数据库中的基本单元，用于确保数据的可靠性和一致性。
+
+#### 事务的ACID特性
+
+事务具有四个重要的属性，称为ACID特性：
+
+1. **原子性 (Atomicity)**：
+   - **定义**：事务是一个不可分割的操作单元。要么所有操作都成功，要么所有操作都不执行。
+   - **示例**：如果一个事务包括转账操作，要么钱从一个账户转到另一个账户，要么整个操作都不执行。
+
+2. **一致性 (Consistency)**：
+   - **定义**：事务在完成时，必须使数据库从一个一致性状态转换到另一个一致性状态。事务开始前和结束后，数据库的完整性约束不能被破坏。
+   - **示例**：转账后，两个账户的总金额应与转账前相同。
+
+3. **隔离性 (Isolation)**：
+   - **定义**：一个事务的操作在未提交之前对其他事务是不可见的。并发事务之间的操作互不干扰。
+   - **示例**：在一个事务中查询数据时，不会看到其他事务中未提交的数据修改。
+
+4. **持久性 (Durability)**：
+   - **定义**：一旦事务提交，其结果是永久性的，即使系统故障也不会丢失。
+   - **示例**：转账操作完成并提交后，即使系统崩溃，转账结果也会保留。
+
+#### 事务的使用
+
+事务通常用于需要保证数据完整性的操作中，如银行转账、订单处理等。通过使用事务，可以确保这些关键操作的可靠性和一致性。
+
+#### 事务的基本操作
+
+在SQL中，事务的操作主要包括：
+
+1. **BEGIN TRANSACTION**：
+   - 开始一个新的事务。
+   ```sql
+   BEGIN TRANSACTION;
+   ```
+
+2. **COMMIT**：
+   - 提交事务，将事务中的所有操作永久保存到数据库。
+   ```sql
+   COMMIT;
+   ```
+
+3. **ROLLBACK**：
+   - 回滚事务，撤销事务中的所有操作，使数据库恢复到事务开始之前的状态。
+   ```sql
+   ROLLBACK;
+   ```
+
+#### 示例
+
+考虑一个银行账户转账的示例：
+
+```sql
+BEGIN TRANSACTION;
+
+UPDATE Accounts
+SET balance = balance - 100
+WHERE account_id = 'A123';
+
+UPDATE Accounts
+SET balance = balance + 100
+WHERE account_id = 'B456';
+
+COMMIT;
+```
+
+在这个示例中：
+
+1. 使用 `BEGIN TRANSACTION` 开始一个新的事务。
+2. 执行两个更新操作，分别从账户 `A123` 中扣款100元，并向账户 `B456` 中存款100元。
+3. 使用 `COMMIT` 提交事务，确保两个更新操作都成功。如果其中一个操作失败，可以使用 `ROLLBACK` 撤销整个事务。
+
+#### 事务的隔离级别
+
+为了管理并发事务的隔离性，数据库系统提供了不同的隔离级别：
+
+1. **读未提交 (Read Uncommitted)**：
+   - 允许一个事务读取另一个事务未提交的数据，可能导致脏读（Dirty Read）。
+
+2. **读已提交 (Read Committed)**：
+   - 只能读取已提交的数据，防止脏读，但可能会出现不可重复读（Non-repeatable Read）。
+
+3. **可重复读 (Repeatable Read)**：
+   - 在一个事务内，保证多次读取数据的结果一致，防止脏读和不可重复读，但可能出现幻读（Phantom Read）。
+
+4. **序列化 (Serializable)**：
+   - 最高的隔离级别，完全隔离事务，防止所有并发问题，但性能较低。
+
+#### 总结
+
+事务是确保数据库操作可靠性和一致性的关键机制。通过使用事务，数据库系统能够在出现系统故障或并发操作时，依然保证数据的一致性和完整性。理解事务及其ACID特性对于设计和实现可靠的数据库应用程序至关重要。
+
+  TransactionReport Issue
+
+What You Will Learn
+1.What kind of problem transactions can be solved, and how important they are.
+2.Transaction usage under normal conditions.
+3.Transaction usage under abnormal conditions.
+Transactions are the core function of maintaining data consistency in the SQL world. Basically, all mainstream relational databases support the transaction feature, and even some non-relational databases software can support the transaction feature (e.g. Mongo DB - Transaction). You can imagine its importance in practical systems.
+Transactions are important because there are some statements that we want to completely succeed or to completely fail, but a partial success is not an option. An example is transferring money to the bank.
+Therefore, we highly recommend that you learn this concept well!
+
+Sample table
+products
+id	price	title
+1	10	chair
+2	100	desk
+3	200	bike
+4	200	motorcycle
+5	300	headphone
+6	300	phone
+To help solidify the new concepts, you can follow along by editing the provided table below:
+
+Concept
+The usage of transaction syntax is somewhat different from other SQL syntax. The grammar we learned in the past was one-time execution, and the implementation result is simple, either success or failure.
+When using transaction, it's like a box in which you can put many SQL statements and execute them together.
+The transaction has state, when we execute the transaction, all SQL statements in the transaction will be marked as queries belonging to the transaction state. With subsequent logical judgments, you can decide the results of these queries are indeed stored, or restore the results caused by these queries.
+
+Basic Statement
+First of all, let's see how to set the transaction state for our database:
+--First QuerySTART TRANSACTION;
+-- Second QueriesUPDATE `new_schema`.`products` SET `price` = '500' WHERE id = 5;UPDATE `new_schema`.`products` SET `price` = '500' WHERE id = 6;
+Before starting, notice that this example is divided into two parts which are executed at different times. The first part is START TRANSACTION, and the second part consists of two UPDATE statements.
+First, let's consider the START TRANSACTION keyword. When this statement is executed, the SQL we execute later on will enter the transaction state. That is to say, when we execute the UPDATE statements that update the price of the product id = 5 and id = 6 to 500, it will be marked as a transaction state.
+When an SQL statement is marked as transactional, it means that its execution result will not be stored until the COMMIT command has been executed.
+So, the complete command with COMMIT will be as follows:
+-- First QuerySTART TRANSACTION;
+-- Second QueriesUPDATE `new_schema`.`products` SET `price` = '500' WHERE id = 5;UPDATE `new_schema`.`products` SET `price` = '500' WHERE id = 6;
+-- Third QueryCOMMIT;
+In MySQL, if you use MySQL Workbench to simulate our samples, it will use the auto-commit mode in default. It means that commit will be executed in the background by default, which will affect query test results that don't include "START TRASACTION". For those who are interested in learning more, please refer to: MySQL Autocommit Description.
+
+Restore Statement
+Real life is always full of surprises, and the probability of encountering bugs in the code is very high. Thus, there is a transaction mechanism for solving this problem.
+Take the previous example, and suppose that a bug is triggered when we are only halfway through the queries for updating the price. In this case, the whole batch of updates should be discarded.. In order to undo the changes caused by these queries, we need to use the ROLLBACK keyword.
+Here is an example of how to use ROLLBACK:
+-- First QuerySTART TRANSACTION;
+-- Second QueriesUPDATE `new_schema`.`products` SET `price` = '500' WHERE id = 5;..-- error happened here!..UPDATE `new_schema`.`products` SET `price` = '500' WHERE id = 6;
+-- Third QueryROLLBACK;
+Please pay attention to how we arranged the statements. In the Second Queries section, if an error occurs in the middle, we will skip the second UPDATE statement and directly jump to the third section (ROLLBACK). This will then restore all the results to what they were before we started the transaction.
+By rolling back when we encounter an error, we can avoid inconsistencies in the data (some product prices have been updated, while others are still at their original prices).
+In most projects, transaction, commit, and rollback will be controlled by applications in other programming languages. However, in some large projects, it is possible to have transaction statements that are purely controlled by SQL. At this time, other SQL functions are usually used like this:
+START TRANSACTION;
+SELECT `new_schema`.`products` WHERE id = 5;UPDATE `new_schema`.`products` SET `price` = '500' WHERE id = 5;
+IF (@correct) THEN
+  COMMIT;ELSE
+  ROLLBACK;END IF;
+The logic of this code is if there are no errors, then we will commit, otherwise, we will roll back.
+It has a relatively more complex structure than a normal SQL statement. Interested readers are welcome to refer to MySQL Compound Statement about the control process in SQL.
+st
+Discuss
+
+Interview
+
+
+Store
+
+0
+
+  Back to Chapter
+SQL Data Structure
+  Schema
+  Table
+  Column
+SQL Syntax
+  SELECT, INSERT, UPDATE and DELETE
+  WHERE
+  Big Countries
+  Recyclable and Low Fat Products
+  Find Customer Referee
+  Calculate Special Bonus
+  JSON in SQL
+  Swap Salary
+  Auxiliary SELECT Statements
+  Article Views I
+  Aggregate Functions
+  Daily Leads and Partners
+  Find Followers Count
+  Game Play Analysis I
+  Duplicate Emails
+  Actors and Directors Who Cooperated At Least Three Times
+  Syntax Quiz
+SQL Relationship
+  Relationships
+  JOIN
+  Customer Who Visited but Did Not Make Any Transactions
+  Combine Two Tables
+  Market Analysis I
+  Subqueries
+  Sales Person
+  Customers Who Never Order
+  Customer Placing the Largest Number of Orders
+  Top Travellers
+  Employees With Missing Information
+Intermediate SQL
+  Foreign Key
+  Transaction
+  ACID
+  Index
+  User Privilege
+
+Discuss
+13 topics
+
+ PreviousNext 
+  ACIDReport Issue
+
+What You Will Learn
+1.What is the ACID, and why is it important.
+2.Become familiar with the connotation of ACID through practical cases.
+ACID represents four important elements in the database that ensure that the transaction works as we expect. They are atomicity, consistency, isolation, and durability.
+Basically, almost every mainstream database software will make their transaction meet these four requirements. Although the way of compliance may be slightly different, the general target they want to achieve is the same.
+When we are facing the so-called distributed system design problem, in the database layer, ACID is a very important basic concept. Without familiarity with these basic concepts, it is difficult to design a reliable database system that can handle large traffic (high concurrency problem).
+First, please imagine a classic case: Our system initiates a transaction that transfers money from bank account A to bank account B. Later, we will use this case as an example to help you understand the concept of ACID.
+
+Atomicity: The Smallest Unit
+If we want to use transaction, then we should regard a group of queries as the smallest execution unit in SQL. That is to say, even if there are multiple statements in a transaction, we have to treat them as one. The reason is if a bug is triggered when we are half way through a group of queries for updating anything, the whole batch of updates should be discarded..
+Through the design of atomicity, the database can ensure that SQL statements are completely bound together and will not be split.
+Otherwise, it would be terrible if a crash event caused a large transaction to fail halfway through execution, and the execution result of SQL was cut into two parts, where the first half was executed, but the second half wasn't.
+Example
+Take the case of this chapter as an example when we want to perform a bank transaction between accounts A and B. Without atomicity, it is possible that after the database finishes the deduction of account A, it crashes without handling the money transfer to B. In this case, it is a disaster because A has been debited, but B will not receive the money.
+That's because, without atomicity implemented by the database, the execution results of the withdrawal and deposit statements are split and not treated as a complete set.
+
+Consistency: Always Make Data Consistent
+In the database, we will set many diverse constraints. In the case of many transaction operation successes and failures, a database with the ability to remain consistent can ensure that these constraints are satisfied.
+Therefore, consistency focuses on a key point, keep the data in the correct appearance. We learned how to use the ROLLBACK keyword in the previous chapter to ensure the correctness of the data and return it to the correct state (before the transaction started). Consistency helps us to ensure that data remains in the correct state.
+Example
+In the case of this chapter, with consistency, we can use the ROLLBACK keyword to go back to the original if there is any crash event that happens during the execution.
+
+Isolation: Transactions Do Not Affect Each Other
+Remember we mentioned at the beginning that the concept of ACID is a must-have basic knowledge to undertake systems with a large amount of traffic? Isolation is used to solve data problems when traffic increases; it ensures that transactions do not affect each other.
+When many transactions occur, some transactions that are not exempted may need to modify the same record, which will make the problem become very complicated, and it will be a challenge to determine which version is correct.
+Isolation requires the database to ensure that transactions will not affect each other to a certain extent. To understand to what extent, you can refer to Isolation Levels. The implementation is similar across different databases.
+Example
+Consider a public account A where different people can withdraw money from A at the same time. Isolation can ensure that the data columns that are required for both are locked by one first, and the other transaction is queued until the record has been unlocked.
+Locked means the database prohibits any other transaction from modifying the locked record.
+But be careful, an inappropriate lock mechanism may cause a deadlock error and cause the database to crash, so still pay attention to the possibility of related problems.
+
+Durability: Always Exist
+In addition to software crashes, there may also be hardware-level failures such as power outages in the real world. For such events, a database with durability capability can ensure that as long as a result has been committed, it must exist in the hard disk data permanently.
+This is a relatively simple concept, but it is vital that we ensure the data will not be lost.
+Example
+A temporary power outage in the data center where our transaction database is stored resulted in a few minutes of application downtime. After recovery, we find many data that should have executed "commit" are lost. This is an example of the problem of no durability.
+  IndexReport Issue
+
+What You Will Learn
+1.What is the index.
+2.How to use the index with different constraints.
+3.How to use the index correctly.
+The index is very valuable in practice and also a ​​popular area of interview questions. The index is responsible for the performance optimization of the database, so the proper use of the index can help the database improve performance substantially and the related user experience.
+As such, the index is a very important piece of technology for daily work in the database field.
+
+Understand Index
+Concept & Pros
+The core concept of index technology is to mark specific columns in the table and extract them to be stored additionally and in an organized manner. When an SQL statement is executed, you can directly search for data based on these indexes.
+Assuming no indexes are set, SQL may have to go around the entire table to find the data. The following are two images that demonstrate the differences in query operation with and without index:
+Without INDEX: In the index layer, no index is found, so many redundant query paths may be taken to retrieve data.
+With index: In the index layer, if an index is found and it has relative information to your query, then you can directly know which data to fetch without taking a detour.
+However, the index is not effective in all situations, mainly when data exceeds 100,000 records in a single table, the user will gradually feel the difference in performance. Or, in a transaction or function with a huge number of SQL statements, the difference in performance will again be noticeable to the user.
+Cons
+Using an index is not a silver bullet. There is one significant defect we should be aware of.
+Assuming that our table will have high-frequency data writing actions, it will cause the database to build an index for the table frequently, which requires operation time.
+Therefore, assuming a table with such characteristics, it is recommended to make a good evaluation and make a trade-off to avoid the dilemma that the query speed is 1 second faster, but inserting new data is 2 seconds slower.
+
+Syntax
+The syntax for adding an index is very simple, similar to the syntax for adding FOREIGN KEY:
+ALTER TABLE `new_schema`.`users`
+    ADD INDEX `name_index` (`name`);
+The first line denotes the table to add the index to, and the second line starts the code of the index. name_index is the name of the index, and name is the column to be indexed.
+The sample code above can also be written in another format with the exact same functionality:
+CREATE INDEX `name_index` ON `new_schema`.`users` (`name`);
+When you want to delete an index, the syntax is even simpler, you don't even need to bring a column, just specify the index name with DROP keyword:
+ALTER TABLE `new_schema`.`users`
+    DROP INDEX `name_index`;
+
+Categories
+There are many categories of Index, if we do not specify it, in MySQL, it will be set to the INDEX category by default. In addition to INDEX, we will introduce the three most commonly used categories.
+PRIMARY KEY
+We are already familiar with the PRIMARY KEY (which we will refer to as PK). In the Chapter 1-2 SQL Data Structure: Table, we learned that it represents the unique key of a table and cannot be repeated. We also reserved a foreshadowing in this chapter to mention that PK is very important for the efficiency of searching for data. The reason will be revealed in this section.
+When setting the PK for the database, an index is also created, and PRIMARY KEY is used as the index category. The advantage of using this category is that when we use the JOIN to combine two tables together, it will effectively increase the processing speed.
+You may have noticed that when we are concatenating, it is usually id to id. At this time, the index of PK will take effect, which brings extremely high speed. Therefore, when using JOIN, try to connect with PK to ensure the execution speed!
+UNIQUE INDEX
+Using UNIQUE INDEX is similar to the column unique setting we learned in the past, and it is often created together. After using UNIQUE INDEX, a constraint will be created to limit the column to only store unique values, avoid duplication, and improve the efficiency of index usage.
+Also, please note that PRIMARY KEY is one category of UNIQUE INDEX.
+FULL TEXT
+FULL TEXT is an index specially designed for keyword search. If you want to do a keyword search engine related application, you will have the opportunity to use the full text index.
+Especially, not all languages support full text indexes, and it is necessary to check the supported languages of each different database software.
+
+Six Principles About Index Best Pratices
+When using an index, we recommend mastering these six principles so that the index can play a high-quality role in our code. 1. Try to choose UNIQUE INDEX, otherwise, use KEY. 2. Add an index for the column that is often referenced by complex operations, such as GROUP BY. 3. Index the hotspot column that is frequently queried in WHERE, but make sure that the differences in the column values are large enough. For example, adding an index to the identify_number column is better than adding an index to country_of_birth. 4. The index actually uses the disk space, so pay attention to the space used in the hard disk. 5. Index the column with a small value. For example, the index title of the article is better than the index content of the article 6. Try to avoid index on columns with NULL, which may affect the query efficiency.
+The above is the syntax of the index and the 6 basic principles that need to be mastered. I hope it can help you use the index more correctly!
+
+Interview
+
+
+Store
+
+0
+
+  Back to Chapter
+SQL Data Structure
+  Schema
+  Table
+  Column
+SQL Syntax
+  SELECT, INSERT, UPDATE and DELETE
+  WHERE
+  Big Countries
+  Recyclable and Low Fat Products
+  Find Customer Referee
+  Calculate Special Bonus
+  JSON in SQL
+  Swap Salary
+  Auxiliary SELECT Statements
+  Article Views I
+  Aggregate Functions
+  Daily Leads and Partners
+  Find Followers Count
+  Game Play Analysis I
+  Duplicate Emails
+  Actors and Directors Who Cooperated At Least Three Times
+  Syntax Quiz
+SQL Relationship
+  Relationships
+  JOIN
+  Customer Who Visited but Did Not Make Any Transactions
+  Combine Two Tables
+  Market Analysis I
+  Subqueries
+  Sales Person
+  Customers Who Never Order
+  Customer Placing the Largest Number of Orders
+  Top Travellers
+  Employees With Missing Information
+Intermediate SQL
+  Foreign Key
+  Transaction
+  ACID
+  Index
+  User Privilege
+
+Discuss
+13 topics
+
+ PreviousNext 
+  User PrivilegeReport Issue
+
+What You Will Learn
+1.How to manage users of database software in SQL.
+2.How to set correct permissions for users.
+Usually, when you use SQL, you must log in first, and you will use the SQL user account when logging in. The management of these user accounts is an integral part of ensuring database security. This chapter will show you how to manage user accounts in SQL.
+
+Create a User
+Before you can manage an account, you must first have an account managed. The syntax for creating a user is as follows:
+CREATE USER 'john'@'localhost' IDENTIFIED BY 'password';
+This statement can be split into 3 parts for analysis: 1. CREATE USER: A keyword used by SQL to create a user, just like the concept of CREATE SCHEMA, CREATE TABLE. 2. 'john'@'localhost': The former john is our user's account, just like the default user root common in SQL; the latter localhost refers to the network context where the account can use the database from. We will cover this in detail later. 3. IDENTIFIED BY 'password': IDENTIFIED BY is the keyword used by SQL to set the password, 'password' is the password we set for the user john.
+
+Network Context
+Regarding the network context mentioned in the previous section, it refers to the context of how users connect to the database. There are three main types: 1. localhost: Let me introduce it first. There is often a website system situation where the website server and the database server run on the same machine. localhost means that the database can only be connected from the same machine. Users can execute SQL statements only through the functions provided by the website application, but cannot directly connect to the database in their homes or other places. 2. 110.78.9.12 (or any IP): Here 110.78.9.12 is just an arbitrary IP. If you specify the IP, you restrict that the user is only allowed to connect database from that specific IP. 3. %: The percent symbol means the user can connect to the database from anywhere. This is a very powerful setting, and it should be used with great care. Otherwise, it is possible that strangers could connect to our database when the password is leaked.
+
+Show a User
+If we want to see our newly added users, we can execute:
+SELECT * FROM `mysql`.`user`
+We will get results like the following:
+Host	User	Select_priv	...other priv
+localhost	root	Y	Y or N...
+localhost	john	N	Y or N...
+You may wonder: what is priv? The next section will explain this!
+
+Grant a User
+After the user is established, we will set the permissions again. Let's take a look at the SQL statements we will use when setting permissions:
+GRANT ALL ON `new_schema`.`orders` TO 'john'@'localhost';GRANT SELECT ON `new_schema`.* TO 'root'@'150.10.12.1';
+Here we can focus on the following syntax: 1. GRANT [privilege] ON: This is the syntax for setting privileges in SQL. GRANT and ON are fixed, and [privilege] can be replaced with the privilege name provided by SQL. For example, ALL refers to all privileges, and SELECT refers to the permissions of the SELECT syntax for the user. 2. TO: The latter is directly connected to the user who has been set the permission.
+The names of privileges are not the same in different databases. Regarding the MySQL used in this chapter, if you would like to learn more, you can refer to MySQL privileges-provided.

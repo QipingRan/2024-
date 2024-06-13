@@ -1,0 +1,918 @@
+  SchemaReport Issue
+
+What You Will Learn
+1.The basic structure for database software.
+2.The basic SQL syntax.
+3.How to create a new schema and confirm its contents are correct.
+
+The image above describes what the architecture looks like in a typical database software ecosystem. 1. Database Software: It can be regarded as common database software, such as MySQL, Postgre SQL, MsSQL, etc. We will use MySQL here because it's one of the most widely used database software in the world. 2. Database: We can divide different databases' structures into database software. In general, we can separate data entities with different commercial meanings. For example, the US stock data can be set in one database, and the London stock data can be set in another database. 3. Schema: This is a collection of Tables, which can be split and grouped according to logic, and some table details meta settings can be set on this layer, like a blueprint. But in some database software, such as MySQL, Schema and Database are integrated into one. 4. Table: The key section of the database. Tables record different data entities, such as users, products, etc. Each table is responsible for recording the column size, type, and default value... of each row data in the database. 5. Data: The most valuable part of the database is the data itself. Different types of data can be stored.
+
+Schema Syntax
+Basic SQL Syntax
+Usually in the database, when we want to create a Schema, the corresponding SQL syntax structure is as follows:
+CREATE SCHEMA `new_schema` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+Here are a few basic points of SQL syntax: - The all-capital part is the so-called 『 keyword 』, which is the vocabulary that the SQL programming language needs to use. Because it has special meanings in SQL language, we cannot use it to name our schema, table..etc. - A pair of 『 ` 』 symbols, the word 『 new_schema 』 enclosed together, this is part of our own input, declaring that the name of the schema we want to create is new_schema
+Create Schema
+The above statement can be divided into three parts to make it easier to understand:
+1.The first component is the simplest; it creates a Schema and gives it a name.
+CREATE SCHEMA `new_schema`
+1.Set the character encoding because the symbols used for human language are very diverse. For example, Japanese and Arabic will have different symbol systems, so the corresponding software also has many character encoding methods; we set a common character 4-Byte UTF-8 Unicode Encoding series here.
+在计算机科学和信息系统中，"schema"（模式）是指数据组织和结构的定义。模式在不同的上下文中具有不同的意义，但它们都涉及到数据如何被组织、存储和解释。以下是一些常见的 "schema" 类型及其应用：
+
+1. **数据库模式 (Database Schema)**：
+   - **定义**：数据库模式定义了数据库的逻辑结构。它描述了数据的表、字段、数据类型、约束、关系等。
+   - **应用**：用于关系数据库管理系统 (RDBMS)，如 MySQL、PostgreSQL、Oracle 等。
+   - **示例**：一个简单的关系数据库模式可能定义一个包含客户信息的表，表结构如下：
+     ```sql
+     CREATE TABLE Customers (
+         CustomerID int PRIMARY KEY,
+         FirstName varchar(255),
+         LastName varchar(255),
+         Email varchar(255),
+         DateOfBirth date
+     );
+     ```
+
+2. **XML 模式 (XML Schema)**：
+   - **定义**：XML 模式是一种描述 XML 文档结构和内容的语言。常用的 XML 模式语言有 DTD（文档类型定义）和 XSD（XML Schema Definition）。
+   - **应用**：用于验证和描述 XML 文档的格式和数据类型。
+   - **示例**：一个简单的 XML 模式定义可以如下：
+     ```xml
+     <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:element name="person">
+             <xs:complexType>
+                 <xs:sequence>
+                     <xs:element name="firstName" type="xs:string"/>
+                     <xs:element name="lastName" type="xs:string"/>
+                     <xs:element name="age" type="xs:integer"/>
+                 </xs:sequence>
+             </xs:complexType>
+         </xs:element>
+     </xs:schema>
+     ```
+
+3. **JSON 模式 (JSON Schema)**：
+   - **定义**：JSON 模式用于描述和验证 JSON 数据的结构。它定义了 JSON 数据的属性、数据类型、必需属性等。
+   - **应用**：用于 API 数据验证、配置文件验证等。
+   - **示例**：一个简单的 JSON 模式定义可以如下：
+     ```json
+     {
+         "$schema": "http://json-schema.org/draft-07/schema#",
+         "title": "Person",
+         "type": "object",
+         "properties": {
+             "firstName": {
+                 "type": "string"
+             },
+             "lastName": {
+                 "type": "string"
+             },
+             "age": {
+                 "type": "integer",
+                 "minimum": 0
+             }
+         },
+         "required": ["firstName", "lastName"]
+     }
+     ```
+
+4. **数据库设计中的模式 (Schema in Database Design)**：
+   - **概念模式 (Conceptual Schema)**：描述了数据库的高层次结构，独立于具体的数据库技术。
+   - **逻辑模式 (Logical Schema)**：描述了数据库的逻辑结构，包括表、列、数据类型、约束等。
+   - **物理模式 (Physical Schema)**：描述了数据在存储设备上的物理布局，包括索引、分区等。
+
+5. **数据仓库模式 (Data Warehouse Schema)**：
+   - **星型模式 (Star Schema)**：中心是事实表，周围是维度表。
+   - **雪花模式 (Snowflake Schema)**：扩展了星型模式，维度表进一步规范化。
+   - **星座模式 (Constellation Schema)**：多个事实表共享维度表。
+
+总结来说，"schema" 在不同的上下文中有不同的具体应用和定义，但核心思想是对数据结构和组织方式的定义和描述。这对于数据的存储、查询、验证和管理都至关重要。
+### Basic SQL Syntax for Creating a Schema
+
+When creating a schema in a database, the corresponding SQL syntax structure is typically as follows:
+
+```sql
+CREATE SCHEMA `new_schema` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+Let's break down this statement to understand its components and some basic points of SQL syntax:
+
+1. **Keywords**: 
+   - The all-capital part like `CREATE SCHEMA`, `DEFAULT CHARACTER SET`, and `COLLATE` are keywords. These are reserved words in the SQL programming language that have special meanings and cannot be used for naming schemas, tables, etc.
+
+2. **Schema Name**:
+   - The part enclosed in backticks `` ` `` like `new_schema` is a user-defined name. This specifies the name of the schema you want to create.
+
+### Create Schema Explained
+
+The SQL statement can be divided into three parts for easier understanding:
+
+1. **Create a Schema**:
+   - This is the simplest part. It creates a schema and assigns it a name.
+   ```sql
+   CREATE SCHEMA `new_schema`
+   ```
+
+2. **Set Character Encoding**:
+   - This part sets the character encoding for the schema. Different languages use different symbol systems, so corresponding software must support various character encoding methods. Here, we set a common 4-Byte UTF-8 Unicode Encoding series.
+   ```sql
+   DEFAULT CHARACTER SET utf8mb4
+   ```
+
+3. **Set Collation**:
+   - In character encoding, there are also derivatives. The example uses `utf8mb4_unicode_ci`, which is a collation that can handle emoji-related symbols. This is just shown as an example.
+   ```sql
+   COLLATE utf8mb4_unicode_ci;
+   ```
+
+### Additional Notes
+
+- **Semicolon `;`**:
+  - Most importantly, after the SQL statement is written, you need a semicolon `;` to indicate the end of the program execution. 
+
+### Example Follow-up Statement
+
+After the schema is created, you can use the following SQL statement to verify the creation:
+
+```sql
+SELECT * FROM INFORMATION_SCHEMA.SCHEMATA;
+```
+
+This query retrieves information about all schemas in the database, allowing you to verify that `new_schema` has been successfully created.
+
+### Additional Information
+
+- **UTF-8 Encoding**:
+  - To learn more about encoding, especially UTF-8, you can refer to resources that explain what UTF-8 encoding is and how it is used to handle a wide range of characters and symbols.
+
+This detailed breakdown should help you understand the basic SQL syntax for creating a schema and the importance of each part of the SQL statement.
+### What is a Primary Key?
+
+The primary key is a crucial concept in database design and management. It serves as the unique identifier for each record (row) within a table. Here are the key characteristics and functions of a primary key:
+
+1. **Uniqueness**:
+   - The primary key ensures that each record in the table is unique. No two rows can have the same primary key value.
+
+2. **Non-null**:
+   - A primary key column cannot contain null values. Every record must have a value for the primary key.
+
+3. **Single Column or Composite Key**:
+   - A primary key can be a single column or a combination of multiple columns (composite key). When using multiple columns, the combination of values in these columns must be unique across the table.
+
+4. **Single Primary Key per Table**:
+   - There can only be one primary key in a table. This means that a table cannot have multiple sets of unique identifiers for its rows.
+
+### Importance of Primary Key
+
+1. **Data Integrity**:
+   - The primary key helps maintain data integrity by ensuring that each record is uniquely identifiable.
+
+2. **Efficient Data Retrieval**:
+   - Primary keys are often indexed by the database management system (DBMS), which significantly improves the speed and efficiency of data retrieval operations.
+
+3. **Table Relationships**:
+   - Primary keys are used to establish and enforce relationships between tables. For example, a primary key in one table can be referenced as a foreign key in another table to create a relationship between the two tables.
+
+### Example
+
+Consider the following `Customers` table:
+
+| CustomerID | FirstName | LastName | Email              | DateOfBirth |
+|------------|-----------|----------|--------------------|-------------|
+| 1          | John      | Doe      | john.doe@example.com | 1980-01-01  |
+| 2          | Jane      | Smith    | jane.smith@example.com | 1985-05-15  |
+| 3          | Alice     | Johnson  | alice.j@example.com | 1990-07-22  |
+
+In this table, `CustomerID` is the primary key. It uniquely identifies each customer record and cannot be null or duplicated.
+
+### Creating a Primary Key
+
+To define a primary key when creating a table in SQL, you use the `PRIMARY KEY` constraint. Here’s an example:
+
+```sql
+CREATE TABLE Customers (
+    CustomerID int PRIMARY KEY,
+    FirstName varchar(255),
+    LastName varchar(255),
+    Email varchar(255),
+    DateOfBirth date
+);
+```
+
+### Composite Primary Key
+
+If you need to create a composite primary key, you can do so by defining multiple columns in the primary key constraint. For example:
+
+```sql
+CREATE TABLE Orders (
+    OrderID int,
+    ProductID int,
+    Quantity int,
+    PRIMARY KEY (OrderID, ProductID)
+);
+```
+
+In this `Orders` table, the combination of `OrderID` and `ProductID` serves as the primary key, ensuring that each product within an order is unique.
+
+### Summary
+
+The primary key is a vital component in database design, ensuring the uniqueness and integrity of records. It is essential for efficient data retrieval and for establishing relationships between tables. Understanding how to define and use primary keys is fundamental to working with relational databases. If you want to delve deeper into the technical aspects of primary keys, you can refer to additional resources and documentation on database design and management.
+
+  TableReport Issue
+
+What You Will Learn
+1.How to create, read, delete, and clean tables.
+2.What a table does and what a table is responsible for.
+
+Concept
+A table is like the nanny of all data, and it is a cornerstone of the database. It can be said that a good table design can significantly improve the maintainability and performance speed of the database.
+First, let’s introduce the four characteristics of tables: 1. Tables record the metadata of each column, including the data type, default value, comments, etc. 2. Tables are responsible for managing the index, which can improve the speed of searching for data in the table. 3. Provide relationship definitions with other tables. There will be associations between data tables. For example, a user in the users table may have many order records in the orders table, and this part of the affiliation needs to be managed in the table. 4. You can set the location where the data is actually stored in the computer hard drive.
+
+SQL Syntax
+Create Table
+A practical table in SQL will look like this:
+id	name	age
+1	John	40
+2	May	30
+3	Tim	25
+In order to create a table (to keep things simple, we'll start with an empty table), we can use the following statement:
+The statement can be split into three parts:
+1. The first part is the easiest to understand, but the syntax changes from SCHEMA to TABLE; that is, the establishment of the table itself. Also, pay attention to the statement new_schema.new_table because there will be many schemas in our database software, and we must describe in which schema the database should create the table. Finally, new_table is the name of the table we want to create.
+CREATE TABLE `new_schema`.`new_table` (
+    -- other settings);
+2. The second part is to define the details of each field. We will explain this part in detail in the next chapter. Here, we will simply introduce the meaning of the syntax:
+`id` INT NOT NULL COMMENT 'This is a primary index';
+id is the column name
+INT is the data type that will be stored in this column.
+NOT NULL is a kind of column attribute function. We will cover this in more detail in the next chapter.
+This column has a COMMENT with the display text This is a primary index.
+3. The last part is to declare the metadata of this table (not for the column). For example, here is how to set the primary key of this table to be id.
+PRIMARY KEY (`id`)
+What is Primary Key?
+The Primary Key is a vital part of each table in the database system. It can be any column or a group of multiple columns, and there can only be one primary key in a table. The value cannot be repeated or null.
+It is a very important field for concatenating data tables and improving the efficiency of searching data. If you want to learn more about the technical aspects of the primary key, you can do so here: Primary Key.
+Read Table
+Edit the provided table (above) to practice writing and running each of the following queries.
+After creating the table, we can check whether the column settings are as we expected, or if there is a typo in any of the column names, we can use the SHOW FULL COLUMNS statement to view the content of the defined table:
+SHOW FULL COLUMNS FROM `new_schema`.`new_table`;
+The result should be:
+Field	Type	Collation	Null	Key	Default	Extra	Privileges	Comment
+id	int(11)		NO	PRI			select, insert, update, references	This is a primary index
+By the way, SHOW is a very common statement when retrieving information from the database system level. Here is a reference for different things you can show: MySQL SHOW Statements.
+Destroy Table
+The statement for deleting a table is as simple:
+DROP TABLE `new_schema`.`new_table`;
+The DROP keyword means to remove a table in the database, and it is also a very dangerous statement. If we are not careful, we may lose important data, so in practical applications, we rarely use this statement.
+Clean Table
+While we rarely delete a table, when we want to test our application, we can reset the data state inside the table.
+In order to regenerate the test data, we clear the table frequently, then we will use the TRUNCATE statement, to delete all data, but not the table. Note that this statement should also be used with caution:
+TRUNCATE `new_schema`.`new_table`;
+ ColumnReport Issue
+
+What You Will Learn
+1.The different data types and when to use them.
+2.The common column attribute functions that are provided by SQL.
+3.The create and update column setting statements.
+This article will focus on a very small dimension - the column. Each column is responsible for limiting the type and size of values that the data can store. Besides that, the column can enable some database functions as well.
+
+Data Types
+First of all, we can observe the type of data that will actually be stored. In fact, it is not very diverse.
+It can be divided to three types: number, datetime, and text. In database software, we can use these three type and their extensions to set different data types. In addition to these data types, SQL also has some special data types, which will be introduced later.
+Number
+1.BIGINT, INT, MEDIUMINT, SMALLINT, TINYINT: Represent integers. The farther to the left, the larger the number that can be stored. The most common setting is INT, which can store values ranging from -2147483648 to 2147483647.
+2.DOUBLE, FLOAT, DECIMAL: Represent decimals, DECIMAL can be set to DECIMAL(5, 2), which means that the value of the column must be 5 digits, and two of the digits occur after the decimal point, such as a value like 666.88.
+It should be noted that the values stored in DOUBLE and FLOAT are not precise. When you store 2.5 for related operations, it is likely to be calculated as 2.500000002. Therefore, DECIMAL is recommended for high-accuracy data system requirements.
+Datetime
+1.DATE, MONTH, YEAR: Set to date, month, and year.
+2.DATETIME, TIMESTAMP: A relatively complete date data format, in addition to the year, month, and day, it will also include hours, minutes, and seconds, which is more precise than DATE. DATETIME can accept a purely datetime value format like 8888-01-01 00:00:00, but TIMESTAMP is limited to between 1970-01-01 00:00:01 and 2038-01-19 03:14:07
+Text
+1.CHAR, VARCHAR: Store plain text, the former is suitable for data with fixed text length, such as currency abbreviations. The latter is suitable for data whose length will change, and the length of the text that can be stored needs to be set. The most common default setting is VARCHAR(45) for MySQL, which means each item in the column can store 45 characters. This is a point where many SQL beginners make mistakes when setting the column data type. Setting a size that is too small leads to exceeding the column size limit error.
+2.TEXT, LONGTEXT: If you want to store text data whose maximum length is unknown, you can use TEXT related data type settings.
+Special Data Types
+There are also several special data types: 1. BINARY, BLOB: Store data of file type, such as images or videos. BLOB (Binary Large Object) is not only for those types but also for large unstructured data. However, it is rarely used in practice because it is difficult to manage files through database software. 2. BOOLEAN: Store the data of the logical operand. In simple terms, it is the data true or false. The database will replace it with 1 or 0 respectively. Suppose there is a column called is_alive, then each value is either true or false. 3. JSON: A very common data format in modern data exchange. We will provide more details on this data type in the SQL Syntax: JSON chapter.
+
+Column Attribute Functions
+In a demonstration statement from the previous page, the column attribute function NOT NULL was added to the id column. The purpose of the column attribute function is to ensure that when new data is added to the table, the database will process the data format or content in advance.
+Through the column attribute function, users can more easily maintain the correctness of the data. Let's take a moment to understand the most common column attribute functions: 1. NOT NULL: It means that the value in the field cannot be NULL. So when we use NOT NULL, we are forcing the column to NOT accept null values, which means the field must always contain a value. In the world of programming languages, NULL means nothing. For example, if the value is blank text, it means at least blank text, but it cannot be anything. In the real world, it can be imagined that it is like the contrast between air and vacuum. Although air cannot be seen, it is still there, but the vacuum is really nothing. 2. AUTO_INCREMENT: In the database, it will automatically generate the column's values one by one using numbers. It is similar to a serial number. The database software will help us avoid the problem of repeated serial numbers, so you don't need to write your own programs to compare and set the value. 3. DEFAULT: You can set the default value of the column because the data to be inserted in the field may be empty in some circumstances.
+Suppose we create a new table, and its two columns (id and name) have different column attribute function settings. This can be written as follows:
+In different database systems, it may appear in different forms. For example, in PostgreSQL, the function of AUTO_INCREMENT will be replaced by the SERIAL setting, and Oracle will use IDENTITY. Therefore, by focusing on what each function can do rather than "what each function is," you can become more adaptable to different database systems.
+
+Create and Update Column
+Columns are not static; just like data in the real world, they will change all the time. When we want to add or change columns, we can use the following statements (based on the preceding create table example).
+Edit the table above and practice by implementing the following statements.
+Create
+ALTER TABLE `new_schema`.`users`ADD COLUMN `age` INT NULL AFTER `name`;
+This can be divided into two parts: 1. ALTER TABLE: When changing the column settings, we need to declare that we want to alter the table. 2. ADD COLUMN: Use the ADD COLUMN keyword, and then add the setting which be used when we create a table. Pay attention to that you can use the AFTER to set the column order, This increases readability when viewing the table column setting.
+Update
+In the SQL, updating a column is more like generate a new rule and overwrite original version, the statement is as follows:
+ALTER TABLE `new_schema`.`users`CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT,CHANGE COLUMN `name` `user_name` VARCHAR(45) NOT NULL DEFAULT 'No Name';
+This statement uses CHANGE COLUMN and then adds new rules. It is worth noting that the grammar will first correspond to two consecutive words like id - id and name - user_name. The first is the existing column name, and the second is the new column name, followed by the new rules for the column.
+So if you don't want to change the column name, it is necessary to keep the two consistent, like id id shown above.
+The new table results will be as shown in the "Results" tab:
+### Column Attribute Functions in SQL
+
+Column attribute functions help maintain the integrity and correctness of data within a database table. Let's explore the most common column attribute functions:
+
+#### 1. NOT NULL
+
+- **Definition**: The `NOT NULL` constraint ensures that a column cannot have a `NULL` value. This means the field must always contain a value, and inserting a `NULL` into this column will result in an error.
+- **Usage**: To enforce that certain fields are mandatory and must contain valid data.
+- **Analogy**: In programming, `NULL` represents the absence of a value. It's like the difference between air and a vacuum; air is invisible but present, while a vacuum is truly empty.
+
+**Example**:
+```sql
+CREATE TABLE Users (
+    UserID int PRIMARY KEY,
+    Username varchar(255) NOT NULL,
+    Email varchar(255) NOT NULL
+);
+```
+In this example, both `Username` and `Email` columns cannot be `NULL`, ensuring that each user must have a username and an email address.
+
+#### 2. AUTO_INCREMENT
+
+- **Definition**: The `AUTO_INCREMENT` attribute automatically generates a unique number for each new record in a column. This is typically used for primary key columns to ensure each record has a unique identifier.
+- **Usage**: To automatically generate unique identifiers for records, eliminating the need for manual input and reducing the risk of duplicates.
+- **Analogy**: It's like a serial number generator that automatically assigns the next number in sequence for each new item.
+
+**Example**:
+```sql
+CREATE TABLE Orders (
+    OrderID int AUTO_INCREMENT,
+    OrderDate date NOT NULL,
+    PRIMARY KEY (OrderID)
+);
+```
+Here, `OrderID` will automatically increment with each new order, providing a unique identifier for each record.
+
+#### 3. DEFAULT
+
+- **Definition**: The `DEFAULT` attribute allows you to specify a default value for a column. If no value is provided for the column during an insert operation, the default value is used.
+- **Usage**: To ensure that a column has a value even if the user does not provide one, preventing `NULL` values or undefined states.
+- **Analogy**: Think of it as a fallback value that is used if no other value is specified.
+
+**Example**:
+```sql
+CREATE TABLE Products (
+    ProductID int PRIMARY KEY,
+    ProductName varchar(255) NOT NULL,
+    Quantity int DEFAULT 0
+);
+```
+In this example, if no quantity is provided when a new product is added, the `Quantity` column will default to `0`.
+
+### Summary
+
+Understanding and using column attribute functions correctly is crucial for maintaining data integrity and ensuring the accuracy of your database. Here’s a quick recap:
+
+- **NOT NULL**: Ensures that a column must always contain a value, preventing `NULL` entries.
+- **AUTO_INCREMENT**: Automatically generates unique numeric values for new records, typically used for primary keys.
+- **DEFAULT**: Provides a default value for a column if no value is specified during data insertion.
+
+These functions help in defining the constraints and default behaviors of your database columns, making data management more efficient and reliable.
+
+### Detailed Explanation of SQL Statements for Altering Tables
+
+#### 1. Adding a Column to a Table
+
+The `ALTER TABLE` statement is used to modify the structure of an existing table. Below is an example of how to add a new column to an existing table.
+
+**Example**:
+```sql
+ALTER TABLE `new_schema`.`users`
+ADD COLUMN `age` INT NULL AFTER `name`;
+```
+
+This statement can be divided into two parts for better understanding:
+
+1. **ALTER TABLE**:
+   - **Explanation**: The `ALTER TABLE` clause is used to specify the table that you want to modify.
+   - **Usage**: `ALTER TABLE `new_schema`.`users`` indicates that we are modifying the `users` table within the `new_schema` schema.
+
+2. **ADD COLUMN**:
+   - **Explanation**: The `ADD COLUMN` keyword is used to add a new column to the table. The new column's definition follows this keyword.
+   - **Details**:
+     - **Column Definition**: `age` is the name of the new column, `INT` specifies the data type as an integer, and `NULL` indicates that this column can have `NULL` values.
+     - **Column Order**: The `AFTER `name`` clause specifies that the new column should be added after the `name` column in the table. This can increase readability when viewing the table structure.
+
+#### 2. Updating Columns in a Table
+
+Updating columns in SQL often involves creating a new rule and overwriting the original version. The `CHANGE COLUMN` clause is used for this purpose.
+
+**Example**:
+```sql
+ALTER TABLE `new_schema`.`users`
+CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT,
+CHANGE COLUMN `name` `user_name` VARCHAR(45) NOT NULL DEFAULT 'No Name';
+```
+
+This statement can be broken down as follows:
+
+1. **CHANGE COLUMN**:
+   - **Explanation**: The `CHANGE COLUMN` clause is used to change an existing column's definition, including its name, data type, constraints, and default value.
+   - **Details**:
+     - **Syntax**: `CHANGE COLUMN `old_column_name` `new_column_name` column_definition`.
+     - **Column `id`**: 
+       - The statement `CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT` changes the column `id` to have a data type of `INT(11)`, makes it `NOT NULL`, and enables `AUTO_INCREMENT`. The column name remains the same (`id`).
+     - **Column `name`**:
+       - The statement `CHANGE COLUMN `name` `user_name` VARCHAR(45) NOT NULL DEFAULT 'No Name'` changes the column `name` to `user_name`, changes its data type to `VARCHAR(45)`, sets it to `NOT NULL`, and provides a default value of `'No Name'`.
+
+#### Summary
+
+- **ALTER TABLE**: Used to declare modifications to an existing table.
+- **ADD COLUMN**: Adds a new column to the table.
+  - **Example**: `ALTER TABLE `new_schema`.`users` ADD COLUMN `age` INT NULL AFTER `name`;`
+- **CHANGE COLUMN**: Changes an existing column’s definition, including its name and attributes.
+  - **Example**: 
+    ```sql
+    ALTER TABLE `new_schema`.`users`
+    CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT,
+    CHANGE COLUMN `name` `user_name` VARCHAR(45) NOT NULL DEFAULT 'No Name';
+    ```
+
+These SQL statements are essential for managing and updating the structure of tables in a database, allowing you to add new columns or modify existing ones to meet evolving data requirements.
+
+Find Customer Referee
+Solution
+Table: Customer
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| name        | varchar |
+| referee_id  | int     |
++-------------+---------+
+In SQL, id is the primary key column for this table.
+Each row of this table indicates the id of a customer, their name, and the id of the customer who referred them.
+ 
+Find the names of the customer that are not referred by the customer with id = 2.
+Return the result table in any order.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Customer table:
++----+------+------------+
+| id | name | referee_id |
++----+------+------------+
+| 1  | Will | null       |
+| 2  | Jane | null       |
+| 3  | Alex | 2          |
+| 4  | Bill | null       |
+| 5  | Zack | 1          |
+| 6  | Mark | 2          |
++----+------+------------+Output: 
++------+
+| name |
++------+
+| Will |
+| Jane |
+| Bill |
+| Zack |
++------+
+Approach: Using <>(!=) and IS NULL [Accepted]
+Intuition
+Some people come out the following solution by intuition.
+SELECT name FROM customer WHERE referee_Id <> 2;
+However, this query will only return one result:Zack although there are 4 customers not referred by Jane (including Jane herself). All the customers who were referred by nobody at all (NULL value in the referee_id column) don’t show up. But why?
+Algorithm
+MySQL uses three-valued logic -- TRUE, FALSE and UNKNOWN. Anything compared to NULL evaluates to the third value: UNKNOWN. That “anything” includes NULL itself! That’s why MySQL provides the IS NULL and IS NOT NULL operators to specifically check for NULL.
+Thus, one more condition 'referee_id IS NULL' should be added to the WHERE clause as below.
+MySQL
+SELECT name FROM customer WHERE referee_id <> 2 OR referee_id IS NULL;
+or
+SELECT name FROM customer WHERE referee_id != 2 OR referee_id IS NULL;
+Tips
+The following solution is also wrong for the same reason as mentioned above. The key is to always use IS NULL or IS NOT NULL operators to specifically check for NULL value.
+SELECT name FROM customer WHERE referee_id = NULL OR referee_id <> 2;
+ Calculate Special Bonus
+Solution
+Table: Employees
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| employee_id | int     |
+| name        | varchar |
+| salary      | int     |
++-------------+---------+
+employee_id is the primary key (column with unique values) for this table.
+Each row of this table indicates the employee ID, employee name, and salary.
+ 
+Write a solution to calculate the bonus of each employee. The bonus of an employee is 100% of their salary if the ID of the employee is an odd number and the employee's name does not start with the character 'M'. The bonus of an employee is 0 otherwise.
+Return the result table ordered by employee_id.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Employees table:
++-------------+---------+--------+
+| employee_id | name    | salary |
++-------------+---------+--------+
+| 2           | Meir    | 3000   |
+| 3           | Michael | 3800   |
+| 7           | Addilyn | 7400   |
+| 8           | Juan    | 6100   |
+| 9           | Kannon  | 7700   |
++-------------+---------+--------+Output: 
++-------------+-------+
+| employee_id | bonus |
++-------------+-------+
+| 2           | 0     |
+| 3           | 0     |
+| 7           | 7400  |
+| 8           | 0     |
+| 9           | 7700  |
++-------------+-------+Explanation: 
+The employees with IDs 2 and 8 get 0 bonus because they have an even employee_id.
+The employee with ID 3 gets 0 bonus because their name starts with 'M'.
+The rest of the employees get a 100% bonus.
+import pandas as pd
+
+def calculate_special_bonus(employees: pd.DataFrame) -> pd.DataFrame:
+    employees['bonus'] = employees.apply(
+        lambda x: x['salary'] if x['employee_id'] % 2 and not x['name'].startswith('M') else 0, 
+        axis=1
+    )
+
+    df = employees[['employee_id', 'bonus']].sort_values('employee_id')
+return df
+
+SELECT employee_id, IF(employee_id % 2 = 1 AND name NOT REGEXP '^M', salary, 0) AS bonus FROM employees ORDER BY employee_id
+
+### Detailed Explanation of Reading Data from JSON Columns in SQL
+
+#### Introduction
+
+When working with JSON data in SQL, it is crucial to know how to extract and manipulate specific data from JSON columns. Here's how you can achieve this using `SELECT`, `JSON_EXTRACT`, and other relevant functions.
+
+### Querying JSON Data
+
+To display specific JSON column data, you use the `SELECT` statement along with `JSON_EXTRACT`. Let's go through this step by step using an example.
+
+#### Example Data
+
+Consider a table `users` in the schema `new_schema` with the following sample data:
+```sql
++----+-----------------------------------------+
+| id | contact                                 |
++----+-----------------------------------------+
+|  1 | {"phone": "123-456", "email": "a@a.com"}|
+|  2 | {"phone": "888-99", "email": "b@b.com"} |
+|  3 | {"phone": "1236", "email": "c@c.com"}   |
+|  4 | {"phone": "321-6", "email": "d@d.com"}  |
++----+-----------------------------------------+
+```
+
+#### Basic Query to Extract JSON Data
+
+To view only the `phone` data from the `contact` JSON column:
+```sql
+SELECT `id`, JSON_EXTRACT(contact, '$.phone') AS phone
+FROM `new_schema`.`users`;
+```
+
+**Result**:
+```plaintext
++----+----------+
+| id | phone    |
++----+----------+
+|  1 | "123-456"|
+|  2 | "888-99" |
+|  3 | "1236"   |
+|  4 | "321-6"  |
++----+----------+
+```
+
+### Analysis
+
+The query can be divided into two main parts for analysis:
+
+1. **JSON_EXTRACT**:
+   - **Syntax**: `JSON_EXTRACT(json_column, '$.json_path')`
+   - **Explanation**: This function extracts data from a JSON column. 
+     - The first argument is the JSON column (`contact`).
+     - The second argument is the JSON path (`'$.phone'`), where `$` refers to the root of the JSON object, and `.phone` accesses the `phone` attribute.
+
+2. **AS**:
+   - **Usage**: `AS` is used to rename the resulting column for better readability.
+   - **Example**: `JSON_EXTRACT(contact, '$.phone') AS phone` renames the extracted JSON data to `phone` in the result set. Without `AS`, the result column name would be `JSON_EXTRACT(contact, '$.phone')`.
+
+### Removing Quotes from JSON Data
+
+The previous result has a flaw where each phone number is enclosed in double quotes. To remove the quotes, use `JSON_UNQUOTE`:
+
+```sql
+SELECT `id`, JSON_UNQUOTE(JSON_EXTRACT(contact, '$.phone')) AS phone
+FROM `new_schema`.`users`;
+```
+
+**Result**:
+```plaintext
++----+---------+
+| id | phone   |
++----+---------+
+|  1 | 123-456 |
+|  2 | 888-99  |
+|  3 | 1236    |
+|  4 | 321-6   |
++----+---------+
+```
+
+### Filtering Data Using JSON Columns
+
+You can also use `JSON_EXTRACT` in the `WHERE` clause to filter data. For instance, to find phone numbers that contain `456`:
+
+```sql
+SELECT `id`, JSON_UNQUOTE(JSON_EXTRACT(contact, '$.phone')) AS phone
+FROM `new_schema`.`users`
+WHERE JSON_EXTRACT(contact, '$.phone') LIKE '%456%';
+```
+
+**Result**:
+```plaintext
++----+---------+
+| id | phone   |
++----+---------+
+|  1 | 123-456 |
++----+---------+
+```
+
+### Summary
+
+- **JSON_EXTRACT**: Used to extract specific data from a JSON column.
+  - **Syntax**: `JSON_EXTRACT(json_column, '$.json_path')`
+- **JSON_UNQUOTE**: Removes quotes from JSON data.
+  - **Syntax**: `JSON_UNQUOTE(JSON_EXTRACT(...))`
+- **AS**: Renames the resulting column for clarity.
+  - **Syntax**: `SELECT column AS new_name`
+- **Filtering with JSON_EXTRACT**: You can use `JSON_EXTRACT` in the `WHERE` clause to filter data based on JSON column values.
+  - **Syntax**: `WHERE JSON_EXTRACT(json_column, '$.json_path') LIKE '%value%'`
+
+These techniques allow you to efficiently query and manipulate JSON data within your SQL database, making it easier to work with complex data structures.
+ JSON in SQLReport Issue
+
+What You Will Learn
+1.What is JSON.
+2.How to read, store, and modify data in JSON format.
+
+What is JSON?
+This section will introduce you to a very common data format in a modern network system - JSON.
+The full name of JSON is JavaScript Object Notation, which is known for its simplicity, high flexibility, and high compatibility. To learn more about JSON, please refer to MDN documentation.
+The JSON has three prominent characteristics: 1. Wrap the data in curly brackets {}. 2. The text in double quotation marks can be used as the column name like "{"place": "U.S"}", followed by the value of the column. 3. The square brackets [] can wrap multiple, similar data.
+
+JSON Data Sample
+{
+    "orderId": 54321,
+    "info": [
+        {
+            "productID": 34,
+            "productName": "productOne",
+            "quantity": 1
+        },
+        {
+            "productID": 56,
+            "productName": "productTwo",
+            "quantity": 3
+        },
+    ],
+    "orderCompleted": true}
+We can observe that the above JSON describes an order with an order_id of 54321; its info includes two products, one whose id is 34 and the other whose id is 56.
+In the modern age, where JSON is becoming more and more common, databases provide SQL functionalities that specifically handle the JSON format. There are even databases specially designed to handle data structures like JSON.
+However, the syntax for using JSON differs across database systems, and the difference is more significant than the difference for basic syntax such as SELECT and UPDATE.
+The mainstream database systems, MySQL, Oracle SQL, and MsSQL, have similar usage methods, while PostgreSQL is more special. Here, we will use MySQL style for each example.
+
+Sample data
+First of all, the data type of the column can be set to "JSON", which is convenient to use JSON-related syntax to retrieve data. It is written like:
+ALTER TABLE `new_schema`.`users` ADD COLUMN `contact` JSON NULL AFTER `id`;
+The search results for this chapter will refer to this sample dataset:
+id	name	contact
+1	John	{"phone": "123-456", "address": "New York"}
+2	May	{"phone": "888-99", "address": "LA"}
+3	Tim	{"phone": "1236"}
+4	Jay	{"phone": "321-6", "address": "Boston"}
+To help solidify the new concepts, you can follow along by editing the provided table below:
+
+Read Data
+The first thing we need to learn is how to use SELECT to display the JSON columns we want to view. As can be seen from the sample data, if the structure of the JSON data is more complex, the readability may be significantly reduced. If we only want to see the phone column data, we can use the following query:
+SELECT `id`, JSON_EXTRACT(contact, '$.phone') AS phoneFROM `new_schema`.`users`;
+The result is:
+id	phone
+1	"123-456"
+2	"888-99"
+3	"1236"
+4	"321-6"
+Let's divide this into two parts for analysis: 1. JSON_EXTRACT: This keyword needs to be combined with a pair of parentheses, and the words written inside are separated by commas. The first word is the outer column name, the second is the JSON column name (which is prefixed with a $. symbol). 2. AS: This is actually an additional keyword because it is not exclusively used for JSON. AS can be used to rename the selected column as phone. If we did not include AS, then the column name in the result would be JSON_EXTRACT(contact, '$.phone').
+However, you will notice that there is a flaw in the data here, that is, each data has a pair of double quotes, so I recommend using JSON_UNQUOTE to remove the flaw:
+SELECT `id`, JSON_UNQUOTE(JSON_EXTRACT(contact, '$.phone')) AS phoneFROM `new_schema`.`users`;
+Result:
+id	phone
+1	123-456
+2	888-99
+3	1236
+4	321-6
+After solving the data format problem, we will have another question: how to find the qualified data by the JSON column. For example, to find phone numbers that contain 456, we could write the following query:
+SELECT `id`, JSON_UNQUOTE(JSON_EXTRACT(contact, '$.phone')) AS phoneFROM `new_schema`.`users`WHERE JSON_EXTRACT(contact, '$.phone') like '%456%';
+Result:
+id	phone
+1	123-456
+We can see the JSON_EXTRACT can not only be used on SELECT but also can be used on WHERE for filtering data.
+
+Add Data
+If you want to add data in the column with JSON format, you do not need to write the JSON data structure in a string format such as {"phone": "123123"}. Instead, you can use JSON_OBJECT to make it more accessible and readable by wrapping the JSON data that needs to be stored. For example:
+INSERT INTO `new_schema`.`users` (`id`, `name`, `contact`) VALUES (5, 'Harry', JSON_OBJECT('phone', '1231123', 'address', 'Miami'));
+Result:
+id	name	contact
+1	John	{"phone": "123-456", "address": "New York"}
+2	May	{"phone": "888-99", "address": "LA"}
+3	Tim	{"phone": "1236"}
+4	Jay	{"phone": "321-6", "address": "Boston"}
+5	Harry	{"phone": "1231123", "address": "Miami"}
+Pass the column names and values in the string format and separate them with commas. The first two are a pair: first is the JSON column name, and the second is the corresponding value.
+
+Updates
+To update a value, if MySQL did not provide JSON-specific operation syntax, it would be particularly troublesome to write, but through the JSON_SET keyword, it looks very pleasing to our brains:
+UPDATE `new_schema`.`users` SET `contact` = JSON_SET(contact, '$.phone', '6666', '$.phone_2', '888') WHERE `id` = 2;
+Result:
+id	name	contact
+1	John	{"phone": "123-456", "address": "New York"}
+2	May	{"phone": "6666", "address": "LA", "phone_2": "888"}
+3	Tim	{"phone": "1236"}
+4	Jay	{"phone": "321-6", "address": "Boston"}
+5	Harry	{"phone": "1231123", "address": "Miami"}
+Notice that if the column set to JSON_SET is not in the original JSON column name, a new pair will be generated directly, which is a very convenient setting. Likewise, since we did not include "address" while updating the JSON, the previous address was retained.
+Swap Salary
+Solution
+Table: Salary
++-------------+----------+
+| Column Name | Type     |
++-------------+----------+
+| id          | int      |
+| name        | varchar  |
+| sex         | ENUM     |
+| salary      | int      |
++-------------+----------+
+id is the primary key (column with unique values) for this table.
+The sex column is ENUM (category) value of type ('m', 'f').
+The table contains information about an employee.
+ 
+Write a solution to swap all 'f' and 'm' values (i.e., change all 'f' values to 'm' and vice versa) with a single update statement and no intermediate temporary tables.
+Note that you must write a single update statement, do not write any select statement for this problem.
+The result format is in the following example.
+ 
+Example 1:
+Input: 
+Salary table:
++----+------+-----+--------+
+| id | name | sex | salary |
++----+------+-----+--------+
+| 1  | A    | m   | 2500   |
+| 2  | B    | f   | 1500   |
+| 3  | C    | m   | 5500   |
+| 4  | D    | f   | 500    |
++----+------+-----+--------+Output: 
++----+------+-----+--------+
+| id | name | sex | salary |
++----+------+-----+--------+
+| 1  | A    | f   | 2500   |
+| 2  | B    | m   | 1500   |
+| 3  | C    | f   | 5500   |
+| 4  | D    | m   | 500    |
++----+------+-----+--------+Explanation: 
+(1, A) and (3, C) were changed from 'm' to 'f'.
+(2, B) and (4, D) were changed from 'f' to 'm'.
+
+Approach: Using UPDATE and CASE...WHEN [Accepted]
+Algorithm
+To dynamically set a value to a column, we can use UPDATE statement together when CASE...WHEN... flow control statement.
+MySQL
+UPDATE salarySET    sex = CASE sex        WHEN 'm' THEN 'f'        ELSE 'm'    END;
+Auxiliary SELECT StatementsReport Issue
+
+What You Will Learn
+1.How to find the data without duplicates.
+2.How to paginate the result.
+3.How to sort the result.
+4.How to group the data into specified columns.
+We have covered the usage of SQL syntax in some depth through the previous sections, and by now, you can fetch the data you want from a specific table according to your needs.
+However, in the workplace, it is not possible to complete the task by pulling out the data only. In fact, there will be a lot of changes in different situations, such as limiting the first 50 results or sorting by specific columns, and this chapter will help you learn the most commonly used auxiliary statements.
+
+Sample Data
+id	name	age	height
+1	John	40	150
+2	May	30	140
+3	Tim	25	170
+4	Jay	60	185
+5	Maria	30	190
+6	Tom	53	200
+7	Carter	40	145
+To help solidify the new concepts, you can follow along by editing the provided table below:
+
+Uniqueness: DISTINCT
+When the number of data becomes very large, there is usually a problem that you need to find the results that are not repeated in a specific column. At this time, we can use DISTINCT to limit the results to avoid repeated values:
+SELECT DISTINCT age FROM `new_schema`.`users`;
+Result:
+age
+40
+30
+25
+60
+53
+Notice that while both Maria and May are 30, and both John and Carter are 40, the numbers 30 and 40 each appear only once in the result.
+
+Pagination: LIMIT & OFFSET
+LIMIT and OFFSET are often used when the result has too much data. The syntax logic used by the page feed display function is a very important syntax. These two keywords will provide the functions of limiting the number of items displayed and skipping the first specified number of items.
+SELECT * FROM `new_schema`.`users` LIMIT 3 OFFSET 1;
+Result:
+id	name	age	height
+2	May	30	140
+3	Tim	25	170
+4	Jay	60	185
+From the results, we note particularly that the number after LIMIT represents how many records are displayed, and the number after OFFSET refers to the number of pieces of data to be offset, that is the result will skip a specific number of results.
+Therefore, many SQL programs provide paging functions by dynamically generating the numbers after OFFSET. For example, if the requirement is that every 3 rows is a page, one option is to dynamically generate the following queries:
+SELECT * FROM `new_schema`.`users` LIMIT 3 OFFSET 0;
+SELECT * FROM `new_schema`.`users` LIMIT 3 OFFSET 3;
+SELECT * FROM `new_schema`.`users` LIMIT 3 OFFSET 6;
+And the result will be:
+First page
+id	name	age	height
+1	John	40	150
+2	May	30	140
+3	Tim	25	170
+Second page
+id	name	age	height
+4	Jay	60	185
+5	Maria	30	190
+6	Tom	53	200
+Third page
+id	name	age	height
+7	Carter	40	145
+
+Sorting: ORDER
+ORDER is usually used at the end of the query to optimize the search results, so that the data can be sorted according to a certain column.
+That is convenient for us to visually analyze the appearance of the data with the column like updated_time, or order_price and to sort them from big to small or small to big.
+SELECT * FROM `new_schema`.`users` ORDER BY age;
+Result:
+id	name	age	height
+3	Tim	25	170
+2	May	30	140
+5	Maria	30	190
+1	John	40	150
+7	Carter	40	145
+6	Tom	53	200
+4	Jay	60	185
+As shown in the above results, it will be sorted in ascending by age, from small to large, and this statement is actually an abbreviation of the following sentence:
+SELECT * FROM `new_schema`.`users` ORDER BY age ASC;
+Therefore, by replacing the ASC the keyword at the back of the age, with DESC, the data can be sorted in descending order, that is, from large to small:
+SELECT * FROM `new_schema`.`users` ORDER BY age DESC;
+Result:
+id	name	age	height
+4	Jay	60	185
+6	Tom	53	200
+7	Carter	40	145
+1	John	40	150
+5	Maria	30	190
+2	May	30	140
+3	Tim	25	170
+Multi-column Sorting
+In addition to sorting by a single column, the result can also be sorted by multiple columns. When two records have the same value in the first column, they will be sorted according to the values in the second column, for example:
+SELECT * FROM `new_schema`.`users` ORDER BY age DESC, height DESC;
+Result:
+id	name	age	height
+4	Jay	60	185
+6	Tom	53	200
+1	John	40	150
+7	Carter	40	145
+5	Maria	30	190
+2	May	30	140
+3	Tim	25	170
+
+Grouping: GROUP BY
+This is a key concept that was mentioned at the beginning of this series: the SQL programming language focuses on grouping logic. The keyword GROUP BY is the embodiment of this concept, and the keyword can be used like this:
+SELECT `age` FROM `new_schema`.`users` GROUP BY age;
+Result:
+age
+40
+30
+25
+60
+53
+You will find that the result of this statement is very similar to using DISTINCT, but GROUP BY also supports Aggregate Function statements, so the data can be combined to generate results like reports (to learn more about aggregate functions, see the following chapters!).
+For example, suppose we want to find out how many records there are in each age group, then we can write:
+SELECT COUNT(*), `age` FROM `new_schema`.`users` GROUP BY age;
+Result:
+count(*)	age
+2	40
+2	30
+1	25
+1	60
+1	53
+And here, we can use the various optimizing SELECT statements we have learned to optimize the results. For example, we can use AS to change the name of the count(*) column to make it easier to read, and we can sort the results from small to large:
+SELECT COUNT(*) AS `age_count`, `age`FROM `new_schema`.`users`GROUP BY ageORDER BY `age_count`;
+Result:
+age_count	age
+1	25
+1	60
+1	53
+2	40
+2	30
+Finally, a quick tip to readers is that when practicing and using SQL, you can divide your thinking into two parts. 1. The first part is how to write a query that meets the given conditions. 2. The second part is how to display the generated result.

@@ -1,0 +1,1555 @@
+https://courses.csail.mit.edu/6.042/spring18/mcs.pdf?fbclid=IwZXh0bgNhZW0CMTEAAR1xCFk8v86FP_C-M6MbAy69GB9sTjkS6By9GjS9dVKoI6k4XmfCiYiBBJ0_aem_ZmFrZWR1bW15MTZieXRlcw
+
+### 解释以下问题（请用中文解释每个问题，确保每个问题至少有一个段落的解释，并包含适当的插图）
+
+#### Cn, 507, 521
+**Cn** 是指一个 **n** 边形（n-sided polygon）。当 n = 507 或 n = 521 时，Cn 就分别是一个 507 边形或 521 边形。这些是数学图形，通常用于几何研究中。
+
+#### IE , indicator for event E, 858
+**IE** 是事件 **E** 的指示符（indicator for event E）。它是一个二值函数，用于表示事件 E 是否发生。如果事件 E 发生，IE 的值为 1，否则为 0。这个概念在概率论和统计学中非常重要。
+
+#### K3;3, 575
+**K3;3** 是一个特殊的完全二分图（complete bipartite graph），其中两组顶点分别包含 3 个顶点。它表示为 \( K_{3,3} \)，是一种在图论中研究的重要图形结构。
+
+#### K5, 575
+**K5** 是一个包含 5 个顶点的完全图（complete graph），每对顶点之间都有一条边。K5 是图论中的基本概念，用于研究图的性质和特点。
+
+#### big omega, 636
+**Big Omega (Ω)** 是一种渐近符号，用于描述算法的下界。对于一个函数 f(n)，如果存在常数 c 和 n0，使得对于所有的 n ≥ n0，有 f(n) ≥ c*g(n)，则 f(n) = Ω(g(n))。这是计算复杂度分析中的重要工具。
+
+#### OR-of-literals, 58
+**OR-of-literals** 是指一组文字的或操作。例如，对于文字 A 和 B，OR-of-literals 就是 A ∨ B。在逻辑和计算机科学中，OR 操作是基本的布尔运算之一。
+
+#### ‚./, 633
+这个符号组合在特定上下文中有特定含义，例如在正则表达式或编程语言中的特殊符号。需要更多上下文来确定其具体含义。
+
+#### bij, 116
+**bij** 是双射（bijective）的简称。双射是一种函数，它既是单射（injective）又是满射（surjective），即每个元素都有唯一的对应关系。双射在数学特别是集合论中非常重要。
+
+#### .G/, 516
+这个符号组合在特定上下文中有特定含义，例如在数学或编程语言中的特殊符号。需要更多上下文来确定其具体含义。
+
+#### Ex2
+这个符号通常表示某个变量或表达式的平方。例如，x 的平方可以表示为 \( x^2 \)。
+
+#### ŒR, 923
+这个符号组合在特定上下文中有特定含义，例如在特定的科学或技术文档中。需要更多上下文来确定其具体含义。
+
+#### inj, 116
+**inj** 是单射（injective）的简称。单射是一种函数，每个输入都有唯一的输出，没有两个不同的输入映射到相同的输出。在数学中，单射函数的重要性在于其保持元素的唯一性。
+
+#### , 630
+这个符号表示逗号，用于分隔项或表达式。在数学和编程语言中，逗号常用于分隔列表、参数等。
+
+#### surj, 116
+**surj** 是满射（surjective）的简称。满射是一种函数，每个输出至少有一个对应的输入，即函数覆盖其定义域中的每个元素。满射在数学中用于描述函数的覆盖性。
+
+#### k-edge connected, 525
+**k-edge connected** 指图中的任意两个顶点之间至少有 k 条边不相交的路径。k-edge connectivity 是图论中的一个重要概念，用于描述图的鲁棒性和连通性。
+
+#### k-way independent, 827, 860
+**k-way independent** 指在概率论和统计学中，一组随机变量是 k 重独立的，即每 k 个变量之间相互独立。这是研究随机变量依赖结构的重要概念。
+
+#### r-permutation, 701
+**r-permutation** 指从 n 个元素中选出 r 个元素的排列。排列考虑顺序，因此不同顺序的选取被认为是不同的排列。排列问题在组合数学中非常常见。
+
+#### IQ, 916, 922
+**IQ** 通常表示智商（Intelligence Quotient）。智商是一种通过标准化测试评估人的智力水平的指标。高智商通常与较强的认知能力和问题解决能力相关。
+
+#### AND-clause, 57
+**AND-clause** 是一组文字的与操作。例如，对于文字 A 和 B，AND-clause 就是 A ∧ B。在逻辑和计算机科学中，AND 操作是基本的布尔运算之一。
+
+#### AND-of-literals, 57
+**AND-of-literals** 类似于 AND-clause，指一组文字的与操作。例如，对于文字 A 和 B，AND-of-literals 就是 A ∧ B。
+
+#### OR-clauses, 58
+**OR-clauses** 是一组子句的或操作。例如，对于子句 A 和 B，OR-clauses 就是 A ∨ B。这在逻辑表达式的标准形式（如合取范式）中非常常见。
+
+#### absolute value, 24, 344
+**absolute value**（绝对值）是一个数的非负值，不考虑其符号。例如，|−3| = 3。绝对值用于距离和测量中的许多应用。
+
+#### Ackermann function, 227
+**Ackermann function**（阿克曼函数）是一个快速增长的递归函数，用于理论计算机科学中复杂性研究的例子。它是一个非原始递归函数，展示了递归函数的强大能力。
+
+#### acyclic, see also directed graph, 431
+**acyclic**（无环）表示一个图中没有循环路径。无环图在许多算法中很重要，如拓扑排序。对于有向图，无环性确保了图可以线性排序。
+
+#### adjacency matrix, 427
+**adjacency matrix**（邻接矩阵）是一种表示图的方法，其中矩阵的行和列表示顶点，元素表示顶点之间是否有边。例如，矩阵元素 A[i][j] 为 1 表示顶点 i 和 j 之间有边。
+
+#### walk counting matrix, 428
+**walk counting matrix** 是一个矩阵，其中元素 A[i][j] 表示从顶点 i 到顶点 j 的所有步数的计数。它用于研究图中的路径和连通性。
+
+#### Adleman, Leonard, 378
+**Leonard Adleman** 是著名的计算机科学家之一，因其在计算复杂性理论和密码学方面的贡献而闻名。他是 RSA 公钥加密算法的共同发明者之一。
+
+#### Akra-Bazzi formula, 1011
+**Akra-Bazzi formula** 是一种用于解决递归关系的数学公式，特别是那些不易用传统方法解决的递归关系。它在计算机科学中用于分析算法的时间复杂度。
+
+#### Akra-Bazzi Theorem, 1013, 1019
+**Akra-Bazzi Theorem** 是 Akra-Bazzi 公式的基础，为解决复杂递归关系提供了一种系统的方法。该定理在递归方程的求解中非常有用。
+
+#### annuity, 605, 606
+**annuity**（年金）是一系列定期支付的款项，通常用于金融和保险行业。年金可以是固定的或变动的，用于描述长期的资金流动。
+
+#### antichain, 438
+**antichain**（反链）是在一个偏序集（partially ordered set）中，任何两个元素都不相互比较的一组元素。反链在组合数学和排序问题中有重要应用。
+
+#### antisymmetric relation, 441
+**antisymmetric relation**（反对称关系）是一种二元关系，如果 aRb 且 bRa，则 a = b。反对称关系用于数学和逻辑中，描述特定类型的关系。
+
+#### a posteriori, 816
+**a posteriori**（后验）是拉丁语，表示基于经验或事实的知识。在统计学和哲学中，它表示基于观察和经验得出的结论。
+
+#### asymmetric relation, 441, 471
+**asymmetric relation**（非对称关系）是一种二元关系，如果 aRb，则 bRa 不成立。非对称关系在数学和计算机科学中用于描述单向关系。
+
+#### asymptotic notation, 630
+**asymptotic notation**（渐近符号）是用于描述函数增长率的数学符号，如 Big O, Big Ω, 和 Big Θ。这些符号在算法分析中非常重要。
+
+#### asymptotically smaller, o, little o
+**asymptotically smaller, o, little o**（渐近小于，小 o 符号）描述一个函数相对于另一个函数的
+
+增长速度，表示 f(n) 相对于 g(n) 的增长率渐近趋于零。
+
+### 解释以下问题（请用中文解释每个问题，确保每个问题至少有一个段落的解释，并包含适当的插图）
+
+#### asymptotic equality, 624
+**asymptotic equality**（渐近等式）用于描述两个函数在趋向无穷时的相对增长情况。通常表示为 f(n) ~ g(n)，意为当 n 趋向无穷时，f(n) 和 g(n) 的比值趋向于 1。在算法分析中，渐近等式帮助我们理解函数的长期行为。
+
+#### big O, 631
+**Big O**（大 O 记号）是一种渐近符号，用于描述算法的上界。它表示一个函数的增长率。例如，若 f(n) = O(g(n))，则存在常数 c 和 n0 使得对于所有 n ≥ n0，有 f(n) ≤ c * g(n)。Big O 记号在计算复杂度分析中非常重要，用于描述算法的最坏情况性能。
+
+#### big Omega, 636
+**Big Omega (Ω)** 是一种渐近符号，用于描述算法的下界。若 f(n) = Ω(g(n))，则存在常数 c 和 n0 使得对于所有 n ≥ n0，有 f(n) ≥ c * g(n)。这表示 g(n) 是 f(n) 的一个渐近下界。
+
+#### little omega, 636
+**little omega (ω)** 是一种渐近符号，表示一个函数相对于另一个函数的增长速度。若 f(n) = ω(g(n))，则对于任意常数 c，存在 n0 使得对于所有 n ≥ n0，有 f(n) > c * g(n)。这表示 f(n) 的增长速度比 g(n) 快。
+
+#### asymptotic relations, 645
+**asymptotic relations**（渐近关系）描述函数在趋向无穷时的相对增长情况。常见的渐近关系包括 Big O, Big Omega, 和 Big Theta。这些关系在算法复杂度分析中用于比较不同算法的性能。
+
+#### average, 915
+**average**（平均值）是统计学中的一个基本概念，表示一组数据的中心值。它可以通过将所有数值相加后除以数值的数量来计算。平均值用于描述数据的集中趋势。
+
+#### average degree, 565
+**average degree**（平均度）是图论中的一个概念，表示图中顶点的平均连接数。它是所有顶点的度的总和除以顶点的数量。平均度用于分析图的连通性和稠密性。
+
+#### AVL tree, 251
+**AVL tree**（AVL 树）是一种自平衡二叉搜索树，每个节点的两个子树的高度差至多为 1。AVL 树通过旋转操作来维持平衡，从而确保查找、插入和删除操作的时间复杂度为 O(log n)。
+
+#### axiomatic method, 9
+**axiomatic method**（公理方法）是数学中的一种方法，通过一组公理（axioms）建立理论体系。这些公理是不言自明的真理，通过逻辑推理，从这些公理出发，可以推导出其他命题。公理方法在数学和逻辑学中应用广泛。
+
+#### ZFC axioms, 9, 312
+**ZFC axioms** 是集合论的一个公理体系，包括选择公理（axiom of choice）、外延公理（axiom of extensionality）、配对公理（axiom of pairing）、基础公理（foundation axiom）、无穷公理（infinity axiom）、幂集公理（power set axiom）、替代公理（replacement axiom）、子集公理（subset axiom）和并集公理（union axiom）。这些公理是现代集合论的基础。
+
+#### axiom of choice, 313, 315, 333
+**axiom of choice**（选择公理）是 ZFC 公理中的一个，允许从每个非空集合中选择一个元素，即使没有具体的选择规则。选择公理在数学中有重要应用，特别是在拓扑学和泛函分析中。
+
+#### axiom of extensionality, 106, 312
+**axiom of extensionality**（外延公理）声明两个集合相等当且仅当它们包含相同的元素。这个公理是集合论的基础之一，用于定义集合的相等性。
+
+#### axiom of pairing, 312
+**axiom of pairing**（配对公理）声明对于任意两个集合 A 和 B，存在一个集合 C，使得 A 和 B 都是 C 的元素。这是 ZFC 公理中的一个，确保可以构造包含任意两个集合的集合。
+
+#### foundation axiom, 313
+**foundation axiom**（基础公理）声明每个非空集合 A 至少包含一个元素 B，使得 A 和 B 没有共同元素。这个公理防止了集合的自我包含，确保集合论的基本一致性。
+
+#### infinity axiom, 312
+**infinity axiom**（无穷公理）声明存在一个包含空集的集合，并且对于集合中的每个元素，存在其后继元素。这个公理确保了无穷集合的存在，是 ZFC 公理体系的一部分。
+
+#### power set axiom, 313
+**power set axiom**（幂集公理）声明对于任意集合 A，存在一个集合 P，使得 P 的元素是 A 的所有子集。这个公理确保了幂集的存在，用于构造更复杂的集合。
+
+#### replacement axiom, 313
+**replacement axiom**（替代公理）声明如果一个函数在一个集合 A 上定义，那么这个函数的值的集合也是一个集合。这个公理用于构造新集合，确保替代操作的合法性。
+
+#### subset axiom, 312
+**subset axiom**（子集公理）声明对于任何集合 A，存在一个集合 B，使得 B 包含 A 的所有子集。这个公理确保了子集的存在，是 ZFC 公理体系的一部分。
+
+#### union axiom, 312
+**union axiom**（并集公理）声明对于任意集合 A，存在一个集合 B，使得 B 包含 A 的所有元素的并集。这个公理确保了并集的存在，是 ZFC 公理体系的一部分。
+
+#### Banach-Tarski Theorem, 315
+**Banach-Tarski Theorem**（巴拿赫-塔尔斯基定理）声明在三维空间中，可以将一个球分割成有限个部分，然后通过移动和旋转这些部分，可以得到两个与原球同样大小的球。这个定理依赖于选择公理，展示了数学中一些反直觉的结果。
+
+#### Bayes’ Rule, 816
+**Bayes’ Rule**（贝叶斯规则）是概率论中的一个基本定理，描述了事件 A 发生的条件下事件 B 发生的概率。它的公式为：
+\[ P(A|B) = \frac{P(B|A)P(A)}{P(B)} \]
+贝叶斯规则在统计学、机器学习和数据分析中有广泛应用。
+
+#### Bayes Theorem, 829
+**Bayes Theorem**（贝叶斯定理）是贝叶斯规则的一个广义版本，用于更新事件概率。它在贝叶斯统计中起重要作用，特别是在处理条件概率和推断中。
+
+#### Bernoulli distribution, 863
+**Bernoulli distribution**（伯努利分布）是指在一次实验中只有两个可能结果的离散概率分布，结果分别为成功（概率 p）和失败（概率 1-p）。伯努利分布是二项分布的特例。
+
+#### Bernoulli variable, 923
+**Bernoulli variable**（伯努利变量）是指服从伯努利分布的随机变量。它只有两个可能取值，通常为 0 和 1，用于表示成功和失败的结果。
+
+#### Bezout’s lemma, 349
+**Bezout’s lemma**（贝祖引理）声明对于任意两个整数 a 和 b，如果 d 是它们的最大公约数，则存在整数 x 和 y，使得：
+\[ ax + by = d \]
+这个引理在数论中有重要应用，用于解决二元线性不定方程。
+
+#### biased, 965
+**biased**（偏差）是指在统计学和概率论中，估计量的期望值与参数的真实值不相等。偏差可以导致系统性的错误，影响统计推断的准确性。
+
+你好！以下是对不同章节的解释，帮助你更好地理解 GRE 备考的各个方面：
+
+### 第 1 章：认识 GRE
+**认识 GRE**：GRE，全称 Graduate Record Examination，是一种用于评估考生在研究生阶段学习能力的标准化考试。它主要包括三部分：定量推理（Quantitative Reasoning）、口头推理（Verbal Reasoning）和分析性写作（Analytical Writing）。了解 GRE 的结构、评分标准和考试内容，是备考的第一步。
+
+### 第二章：如何学习
+**如何学习**：这章提供了有效备考 GRE 的学习策略和方法。包括制定学习计划、分配时间、使用学习资源、进行自我评估以及保持良好的学习习惯。合理的学习方法可以帮助你更高效地复习，提升考试成绩。
+
+### 第 3 章：GRE 定量推理
+**GRE 定量推理**：这部分主要考察数学能力和定量推理技巧。包括算术、代数、几何和数据分析等内容。备考时需要熟悉基本数学概念、练习解题技巧、以及熟练使用计算器。
+
+### 第 4 章：GRE 口头推理
+**GRE 口头推理**：这部分测试你的阅读理解、文字推理和词汇能力。题型包括阅读理解、填空题和句子等价题。备考时需要大量阅读英文文章、扩展词汇量、以及练习逻辑推理。
+
+### 第 5 章：GRE 分析性写作评估
+**GRE 分析性写作评估**：这部分考察考生的写作能力，包括分析论证写作（Analyze an Argument）和分析问题写作（Analyze an Issue）。需要考生在规定时间内完成两篇文章。备考时需要练习快速构思、组织结构和清晰表达。
+
+### 第 6 章：GRE 模拟考试
+**GRE 模拟考试**：通过模拟考试，可以帮助你熟悉考试流程、时间管理和题型。模拟考试是检测复习效果、调整备考策略的重要环节。建议在备考后期进行多次模拟测试，提升应试能力。
+
+### 附录：Magoosh 词汇表
+**Magoosh 词汇表**：Magoosh 提供的 GRE 词汇表，涵盖了考试中常见的重要词汇。熟练掌握这些词汇，有助于在口头推理部分取得好成绩。
+
+### 学生致谢
+**学生致谢**：这一部分通常是感谢参与制作和贡献资源的学生们，表彰他们在备考资料中的付出和努力。
+
+### 去测试吧！
+**去测试吧！**：在完成各个章节的学习后，可以通过自我测试或参加在线测试，评估自己的学习效果和备考进度，找到需要改进的地方。
+
+希望这些解释能帮助你更好地备考 GRE，祝你取得好成绩！
+
+
+大 O，参见渐近符号
+双射，参见二元关系
+二元 GCD，387
+二元关系，111，173，430
+反对称，448
+不对称，448
+bij，116
+双射，113，296
+定义域，115
+等价，448
+图像，114
+inj，116
+注入，113
+非自反，447
+线性，448
+关系乘积，444
+属性，439，441，447，471
+自反，447
+集合上的关系，111
+支持，115
+surj，116
+满射，113，296
+对称，447
+总计，113
+传递， 448
+二进制反转
+逆图像，115
+二叉树，260
+比奈公式，168，746，1005
+二项分布，863
+二项分布，867，926
+二项定理，670
+二项式，670
+二项式系数，670
+装箱，934
+二分图，509，513，588
+度约束，513
+生日原则，791
+黑白着色，531
+书籍堆叠问题，618
+布尔不等式，793
+布尔，乔治，48
+布尔变量，48
+博雷尔-坎泰利引理，963
+瓶颈，513
+边界条件，1003
+桥梁， 584
+Brin, Sergey, 421, 975
+忙碌, 902, 903
+规范 DNF
+析取范式, 61
+Cantor, Georg, 296
+基数, 115
+笛卡尔积, 108, 123
+CDO, 962
+上限, 1028
+链, 435
+特征方程, 1006
+切比雪夫定理, 919, 931
+切比雪夫界, 961
+切比雪夫界, 947, 948
+单侧, 951
+切尔诺夫界, 934, 935
+中国开胃菜问题, 917
+中国剩余定理, 404
+色数, 516
+封闭形式, 605
+封闭行走, 519
+CNF，参见合取范式
+陪域，109，111
+担保债务凭证，962
+Collat​​z 猜想，226
+合谋，878，880
+可着色，515
+着色，492，515
+黑白，531
+组合证明，691，732
+组合变量，61
+
+big O, see asymptotic notation
+bijection, see binary relation
+Binary GCD, 387
+binary relation, 111, 173, 430
+antisymmetric, 448
+asymmetric, 448
+bij, 116
+bijection, 113, 296
+domain of definition, 115
+equivalence, 448
+image, 114
+inj, 116
+injection, 113
+irreflexive, 447
+linear, 448
+product of relations, 444
+properties, 439, 441, 447, 471
+reflexive, 447
+relation on a set, 111
+support, 115
+surj, 116
+surjection, 113, 296
+symmetric, 447
+total, 113
+transitive, 448
+binary reversing
+inverse image, 115
+binary trees, 260
+Binet’s formula, 168, 746, 1005
+Binomial distribution, 863
+binomial distribution, 867, 926
+Binomial Theorem, 670
+binomial, 670
+binomial coefficient, 670
+bin packing, 934
+bipartite graph, 509, 513, 588
+degree-constrained, 513
+birthday principle, 791
+black-white coloring, 531
+Book Stacking Problem, 618
+Boole’s inequality, 793
+Boole, George, 48
+Boolean variable, 48
+Borel-Cantelli Lemma, 963
+bottleneck, 513
+boundary conditions, 1003
+bridge, 584
+Brin, Sergey, 421, 975
+busy, 902, 903
+canonical DNF
+disjunctive normal form, 61
+Cantor, Georg, 296
+cardinality, 115
+Cartesian product, 108, 123
+CDO, 962
+ceiling, 1028
+chain, 435
+characteristic equation, 1006
+Chebyshev’s Theorem, 919, 931
+Chebyshev Bound, 961
+Chebyshev bound, 947, 948
+one-sided, 951
+Chernoff Bound, 934, 935
+Chinese Appetizer problem, 917
+Chinese Remainder Theorem, 404
+chromatic number, 516
+closed forms, 605
+closed walk, 519
+CNF, see conjunctive normal form
+codomain, 109, 111
+collateralized debt obligation, 962
+Collatz conjecture, 226
+collusion, 878, 880
+colorable, 515
+coloring, 492, 515
+black-white, 531
+combinatorial proof, 691, 732
+combined variables, 61
+
+### 中英文对照解释
+
+#### Big O, see asymptotic notation
+**Big O，参见渐近符号**  
+Big O 是一种用于描述算法复杂度的渐近符号，用于表示函数的上界。例如，如果 f(n) = O(g(n))，则 f(n) 的增长速度不会超过 g(n) 的常数倍。
+
+#### Bijection, see binary relation
+**双射，参见二元关系**  
+双射是一种特殊的函数关系，每个输入都有唯一的输出，并且每个输出也有唯一的输入。它既是单射又是满射。
+
+#### Binary GCD, 387
+**二进制最大公约数算法，387**  
+二进制 GCD 算法是一种用于计算两个整数最大公约数的高效算法，使用了二进制表示和位操作。
+
+#### Binary relation, 111, 173, 430
+**二元关系，111, 173, 430**  
+二元关系是集合论中的基本概念，描述了两个集合之间的关系。例如，aRb 表示 a 与 b 之间有关系 R。
+
+#### Antisymmetric, 448
+**反对称，448**  
+反对称关系是指如果 aRb 且 bRa，则 a = b。这种关系常用于描述不对称的情况。
+
+#### Asymmetric, 448
+**非对称，448**  
+非对称关系是指如果 aRb，则 bRa 不成立。这种关系在描述一方向的关系时很重要。
+
+#### Bij, 116
+**双射，116**  
+双射是指一个函数，它同时是单射和满射，保证每个元素有且只有一个对应关系。
+
+#### Bijection, 113, 296
+**双射，113, 296**  
+参见上文，双射是既是单射又是满射的函数。
+
+#### Domain of definition, 115
+**定义域，115**  
+定义域是指函数的所有可能输入值的集合。
+
+#### Equivalence, 448
+**等价关系，448**  
+等价关系是一种反身、对称和传递的二元关系，用于划分集合中的元素。
+
+#### Image, 114
+**像，114**  
+像是指通过函数映射后的输出值集合。
+
+#### Inj, 116
+**单射，116**  
+单射是指每个输入都有唯一的输出，没有两个不同的输入映射到相同的输出。
+
+#### Injection, 113
+**单射，113**  
+参见上文，单射是一种函数关系，每个输入都有唯一的输出。
+
+#### Irreflexive, 447
+**非反射，447**  
+非反射关系是指没有任何元素与自身有关系，即对于所有 a，不存在 aRa。
+
+#### Linear, 448
+**线性关系，448**  
+线性关系是指两个变量之间的关系可以用线性方程表示，常用于描述比例关系。
+
+#### Product of relations, 444
+**关系的积，444**  
+关系的积是指两个关系的组合，表示复合关系。
+
+#### Properties, 439, 441, 447, 471
+**性质，439, 441, 447, 471**  
+这些属性描述了二元关系的各种特性，包括反射性、对称性、传递性等。
+
+#### Reflexive, 447
+**反射，447**  
+反射关系是指每个元素都与自身有关系，即对于所有 a，有 aRa。
+
+#### Relation on a set, 111
+**集合上的关系，111**  
+集合上的关系是指定义在同一集合中的二元关系。
+
+#### Support, 115
+**支持，115**  
+支持是指函数的非零输入值的集合。
+
+#### Surj, 116
+**满射，116**  
+满射是指函数的每个输出值至少有一个对应的输入值。
+
+#### Surjection, 113, 296
+**满射，113, 296**  
+参见上文，满射是一种函数关系，每个输出值都有至少一个对应的输入值。
+
+#### Symmetric, 447
+**对称，447**  
+对称关系是指如果 aRb，则 bRa。这种关系在描述互相之间的关系时很重要。
+
+#### Total, 113
+**完全关系，113**  
+完全关系是指在关系定义域中的所有元素都参与了关系。
+
+#### Transitive, 448
+**传递，448**  
+传递关系是指如果 aRb 且 bRc，则 aRc。传递性是许多数学关系的重要性质。
+
+#### Binary reversing
+**二进制反转**  
+二进制反转是指将二进制数的位顺序颠倒，例如将 101 变为 101。
+
+#### Inverse image, 115
+**逆像，115**  
+逆像是指函数的输出值对应的输入值集合。
+
+#### Binary trees, 260
+**二叉树，260**  
+二叉树是一种树形数据结构，每个节点最多有两个子节点，分别称为左子节点和右子节点。
+
+#### Binet’s formula, 168, 746, 1005
+**毕达哥拉斯公式，168, 746, 1005**  
+毕达哥拉斯公式用于计算斐波那契数列中的第 n 项，公式为：
+\[ F(n) = \frac{\phi^n - (1 - \phi)^n}{\sqrt{5}} \]
+其中，\(\phi = \frac{1 + \sqrt{5}}{2}\) 是黄金比例。
+
+#### Binomial distribution, 863
+**二项分布，863**  
+二项分布是指 n 次独立实验中成功次数的概率分布，每次实验的成功概率为 p。公式为：
+\[ P(X = k) = \binom{n}{k} p^k (1-p)^{n-k} \]
+
+#### Binomial Theorem, 670
+**二项式定理，670**  
+二项式定理描述了 \((a + b)^n\) 的展开式，公式为：
+\[ (a + b)^n = \sum_{k=0}^n \binom{n}{k} a^{n-k} b^k \]
+
+#### Binomial coefficient, 670
+**二项式系数，670**  
+二项式系数是二项式定理中的系数，表示为 \(\binom{n}{k}\)，计算方法为：
+\[ \binom{n}{k} = \frac{n!}{k!(n-k)!} \]
+
+#### Bin packing, 934
+**装箱问题，934**  
+装箱问题是一种组合优化问题，目标是将一组物品放入最少数量的固定容量的箱子中。
+
+#### Bipartite graph, 509, 513, 588
+**二分图，509, 513, 588**  
+二分图是一种图，顶点集可以分为两个不相交的子集，使得每条边连接的顶点分别来自不同的子集。
+
+#### Degree-constrained, 513
+**度约束，513**  
+度约束是指在图论中，限制每个顶点的度（即与其连接的边的数量）不能超过某个值。
+
+#### Birthday principle, 791
+**生日原理，791**  
+生日原理是指在一定人数的集合中，两人生日相同的概率。这个原理用于概率论中的碰撞问题。
+
+#### Black-white coloring, 531
+**黑白着色，531**  
+黑白着色是一种图的着色方法，将图的顶点分成两类，使得每条边连接的顶点分别来自不同的类。
+
+#### Book Stacking Problem, 618
+**书堆问题，618**  
+书堆问题是一个经典的物理和数学问题，研究如何堆叠书本使堆叠的高度最大而不倒塌。
+
+#### Boole’s inequality, 793
+**布尔不等式，793**  
+布尔不等式是概率论中的一个基本定理，用于估计多个事件的联合概率。
+
+#### Boole, George, 48
+**乔治·布尔，48**  
+乔治·布尔是布尔代数的创始人，他的工作为计算机科学和逻辑学奠定了基础。
+
+#### Boolean variable, 48
+**布尔变量，48**  
+布尔变量是一种取值为真（True）或假（False）的变量，在计算机科学和逻辑学中广泛应用。
+
+#### Borel-Cantelli Lemma, 963
+**波莱尔-康特利引理，963**  
+波莱尔-康特利引理是概率论中的一个重要结果，用于判断无限多个事件的发生情况。
+
+#### Bottleneck, 513
+**瓶颈，513**  
+瓶颈是指在系统或过程中的限制因素，限制了整体性能或效率。
+
+#### Boundary conditions, 1003
+**边界条件，1003**  
+边界条件是在求解微分方程或其他数学问题时给定的特定条件，用于确定唯一解。
+
+#### Bridge, 584
+**桥，
+
+communcation net
+2-dimensional array, 495
+latency, 483
+communication net, 421, 481
+2-dimensional array, 485
+2-layer array, 495
+Benes net, ˇ 488
+butterfly net, 486, 498
+complete binary tree, 481
+congestion, 484
+for min-latency, 497, 498
+diameter, 482
+latency
+for min-congestion, 497, 498
+Reasoner net, 498
+routing, 482
+commutative ring, 367
+ring of formal power series, 753
+ring of intergers modulo n, 367
+complement, see st105
+Complement Rule, 793
+complete bipartite graph, 575
+complete graph, 575
+complete tree, 249
+composite, see prime
+composition
+of relations, 430
+Comprehension Axiom, 312
+concatenation, 219, 243, 426
+concatentation, 274
+conditional expectation, 872
+confidence, 959
+confidence level, 933
+congestion, see communication net
+congruence, see also modular arithemtic,
+362
+conjunctive normal form, 58, 83
+connected, 430, 521, 526
+k-edge, 526
+k-vertex, 526
+edge, 526
+connected components, 522
+continuous faces, 579
+Continuum Hypothesis, 315
+contrapositive, 13, 55
+converse, 55
+convex function, 940
+Convolution, 739
+convolution, 739
+Convolution Counting Principle, 756
+corollary, 9
+countable, 299, 316, 320
+countably infinite, 299
+counter-model, 68
+coupon collector problem, 885
+covering edge, 466
+critical path, 437, 461
+cumulative distribution function, 861
+cut edge, 526
+cycle, see directed graph, simple graph,
+516, 519
+of length n, 507
+cycle of a graph, 521
+DAG, 339, see directed graph
+de Bruijn, Nicolaas, 450
+degree d linear recurrence, 750
+degree-constrained, 513, 683, 714
+De Morgan’s Laws, see also equivalence (logic), 59
+De Morgan’s Laws for Quantifiers, 66
+derived variables, 185
+deviation from the mean, 915
+diagonal argument, 304
+diameter, 563, 566
+Die Hard, 344
+Difference Rule, 793
+digraph, see directed graph
+Dilworth’s lemma,
+
+通信网络
+2 维数组，495
+延迟，483
+通信网络，421，481
+2 维数组，485
+2 层数组，495
+Benes 网络，ˇ 488
+蝴蝶网络，486，498
+完全二叉树，481
+拥塞，484
+最小延迟，497，498
+直径，482
+延迟
+最小拥塞，497，498
+推理网络，498
+路由，482
+交换环，367
+形式幂级数环，753
+模 n 的整数环，367
+补码，参见 st105
+补码规则，793
+完全二分图，575
+完全图，575
+完全树， 249
+复合，参见素数
+关系的合成，430
+理解公理，312
+连接，219，243，426
+连接，274
+条件期望，872
+置信度，959
+置信度，933
+拥塞，参见通信网络
+一致性，参见模块化算法，362
+连接范式，58，83
+连通，430，521，526
+k-边，526
+k-顶点，526
+边，526
+连通分量，522
+连续面，579
+连续假设，315
+反证，13，55
+逆，55
+凸函数，940
+卷积，739
+卷积， 739
+卷积计数原理，756
+推论，9
+可数，299，316，320
+可数无限，299
+反模型，68
+优惠券收集器问题，885
+覆盖边缘，466
+关键路径，437，461
+累积分布函数，861
+切边，526
+循环，参见有向图，简单图，
+516，519
+长度为 n，507
+图的循环，521
+DAG，339，参见有向图
+de Bruijn，Nicolaas，450
+d 度线性递归，750
+度约束，513，683，714
+德摩根定律，另见等价（逻辑），59
+德摩根量词定律， 66
+导出变量，185
+偏离平均值，915
+对角线参数，304
+直径，563，566
+虎胆龙威，344
+差异规则，793
+有向图，参见有向图
+迪尔沃思引理，
+
+Here are the translations for the terms you've listed:
+
+- directed graph: 有向图 (yǒu xiàng tú)
+- cycle: 环 (huán)
+- degree: 度 (dù)
+- directed acyclic graph (DAG): 有向无环图 (yǒu xiàng wú huán tú)
+- merge: 合并 (hé bìng)
+- shortest path: 最短路径 (zuì duǎn lù jìng)
+- walk: 路径 (lù jìng)
+- trail: 轨迹 (guǐ jì)
+- walk counting matrix: 路径计数矩阵 (lù jìng jì shǔ jù zhèn)
+- walk relation: 路径关系 (lù jìng guān xì)
+- directed graphs: 有向图 (yǒu xiàng tú)
+- discrete faces: 离散面 (lí sǎn miàn)
+- disjunctive normal form (DNF): 析取范式 (xī qǔ fàn shì)
+- Distributive Law: 分配律 (fēn pèi lǜ)
+- divide-and-conquer: 分而治之 (fēn ér zhì zhī)
+- divisibility: 可整除性 (kě zhěng chú xìng)
+- Division Rule (counting): 除法规则 (chú fǎ guī zé)
+- Division Theorem: 除法定理 (chú fǎ dìng lǐ)
+- domain: 定义域 (dìngyì yù)
+- domain of definition: 定义域 (dìngyì yù)
+- domain of discourse: 讨论域 (tǎo lùn yù)
+- dot product: 点乘 (diǎn chéng)
+- Double or nothing: 双倍或零 (shuāng bèi huò líng)
+- double summations: 双重求和 (shuāng chóng qiú hé)
+- drawing: 绘图 (huì tú)
+- edge: 边 (biān)
+- edge connected: 边连通 (biān lián tōng)
+- edge cover: 边覆盖 (biān fù gài)
+- empty graph: 空图 (kōng tú)
+- empty relation: 空关系 (kōng guān xì)
+- empty string: 空字符串 (kōng zì fú chuán)
+- endpoints: 端点 (duān diǎn)
+- equivalence (logic): 等价 (děngjià)
+- axioms: 公理 (gōnglǐ)
+- equivalence relation: 等价关系 (děngjià guānxi)
+- equivalence class: 等价类 (děngjià lèi)
+- Euclid: 欧几里德 (ōu jǐ lǐ dé)
+- Euclid’s algorithm: 欧几里德算法 (ōu jǐ lǐ dé suàn fǎ)
+- Euler: 欧拉 (ōu lā)
+- formula: 公式 (gōngshì)
+- Euler’s function: 欧拉函数 (ōu lā hán shù)
+- Euler’s constant: 欧拉常数 (ōu lā cháng shù)
+- Euler’s formula: 欧拉公式 (ōu lā gōngshì)
+- Euler’s Theorem: 欧拉定理 (ōu lā dìng lǐ)
+- Euler tour: 欧拉回路 (ōu lā huí lù)
+- event: 事件 (shìjiàn)
+- events: 事件 (shìjiàn)
+- exclusive-or: 异或 (yì huò)
+- existential quantification: 存在量词 (cún zài liàng cí)
+- expectation: 期望 (qī wàng)
+- expected absolute deviation: 预期绝对偏差 (yù qī jué duì piān chā)
+- expected return: 预期回报 (yù qī huí bào)
+- expected value: 期望值 (qī wàng zhí)
+- exponential backoff: 指数退避 (zhǐ shù tuì bì)
+- exponential growth: 指数增长 (zhǐ shù zēng zhǎng)
+- face-down four-card trick: 盲抓四张牌戏法 (máng zhuā sì zhāng pái xì fǎ)
+- factorial: 阶乘 (jiē chéng)
+- factoring: 因式分解 (yīn shì fēn jiě)
+- fair: 公平 (gōng píng)
+- Fast Exponentiation: 快速幂运算 (kuài sù mì yùn suàn)
+- feasible spouse: 可行配偶 (kě xíng pèi ǒu)
+- Fermat: 费马 (fèi mǎ)
+- Fermat’s Last Theorem: 费马最后定理 (fèi mǎ zuì hòu dìng lǐ)
+- Fermat’s Little Theorem: 费马小定理 (fèi mǎ xiǎo dìng lǐ)
+- Fibonacci numbers: 斐波那契数列 (fěi bō nà qí shù liè)
+- floor: 地板函数 (dì bǎn hán shù)
+- Floyd, Robert W.: 弗洛伊德，罗伯特W.
+
+Here are the translations for the terms you've listed:
+
+- Four Color Theorem: 四色定理 (sì sè dìng lǐ)
+- Four Step Method: 四步法 (sì bù fǎ)
+- four-step method: 四步法 (sì bù fǎ)
+- Frege, Gotlob: 弗雷格，戈特洛布 (fú léi gé, gē tè luò bù)
+- frequentist: 频率主义者 (pín lǜ zhǔ yì zhě)
+- full CNF: 完全合取范式 (wán quán hé qǔ fàn shì)
+- full conjunctive normal form: 完全合取范式 (wán quán hé qǔ fàn shì)
+- full disjunctive normal form: 完全析取范式 (wán quán xī qǔ fàn shì)
+- full DNF: 完全析取范式 (wán quán xī qǔ fàn shì)
+- fully balanced: 完全平衡的 (wán quán píng héng de)
+- function: 函数 (hán shù)
+- partial: 部分的 (bù fèn de)
+- support: 支持 (zhī chí)
+- total: 全部的 (quán bù de)
+- functions composition: 函数的合成 (hán shù de hé chéng)
+- Gale, 193: 盖尔 (gài ěr), 193
+- Gauss, 355, 361, 362: 高斯 (gāo sī), 355, 361, 362
+- gcd, see greatest common divisor: 最大公约数 (zuì dà gōng yuē shù)
+- general binomial density function: 一般二项密度函数 (yī bān èr xiàng mì dù hán shù)
+- Generalized Pigeonhole Principle: 广义鸽巢原理 (guǎng yì gē cháo yuán lǐ)
+- Generalized Product Rule: 广义乘法规则 (guǎng yì chéng fā guī zé)
+- generating function: 生成函数 (shēng chéng hán shù)
+- Generating Functions: 生成函数 (shēng chéng hán shù)
+- generating functions: 生成函数 (shēng chéng hán shù)
+- Geometric distribution: 几何分布 (jǐ hé fēn bù)
+- geometric series: 几何级数 (jǐ hé jí shù)
+- geometric sum: 几何求和 (jǐ hé qiú hé)
+- Godel, Kurt: 哥德尔，库尔特 (gē dé ěr, kù ěr tè)
+- going broke: 破产 (pò chǎn)
+- Goldbach: 戈德巴赫 (gē dé bā hè)
+- Goldbach’s Conjecture: 戈德巴赫猜想 (gē dé bā hè cāi xiǎng)
+- golden ratio: 黄金比例 (huáng jīn bǐ lì)
+- good count: 良好计数 (liáng hǎo jì shù)
+- Google: 谷歌 (gǔ gē)
+- googol: 谷歌 (gǔ gē)
+- graph bipartite: 二分图 (èr fēn tú)
+- coloring problem: 染色问题 (rǎn sè wèn tí)
+- covering: 覆盖 (fù gài)
+- diameter: 直径 (zhí jìng)
+- matching: 匹配 (pī pèi)
+- perfect matching: 完美匹配 (wán měi pī pèi)
+- regular: 正则的 (zhèng zé de)
+- valid coloring: 有效染色 (yǒu xiào rǎn sè)
+- width: 宽度 (kuān dù)
+- graph coloring: 图染色 (tú rǎn sè)
+- gray edge: 灰边 (huī biān)
+- Greatest Common Divisor: 最大公约数 (zuì dà gōng yuē shù)
+- greatest common divisor: 最大公约数 (zuì dà gōng yuē shù)
+- guess-and-verify: 猜测和验证 (cāi cè hé zhèng yàn)
+- half-adder: 半加器 (bàn jiā qì)
+- Hall’s Matching Theorem: 霍尔匹配定理 (huò ěr pī pèi dìng lǐ)
+- Hall’s Theorem: 霍尔定理 (huò ěr dìng lǐ)
+- halt: 停止 (tíng zhǐ)
+- Halting Problem: 停机问题 (tíng jī wèn tí)
+- Handshaking Lemma: 握手引理 (wò shǒu yǐn lǐ)
+- Hardy, G. H.: 哈代，G.H.
+
+Here are the translations for the terms you've listed:
+
+- implication: 蕴涵 (yùn hán)
+- false hypothesis: 错误假设 (cuò wù jiǎ shè)
+- Inclusion-Exclusion: 包含排斥原理 (bāo hán pái chì yuán lǐ)
+- inclusion-exclusion for probabilities: 概率包含排斥原理 (gài lǜ bāo hán pái chì yuán lǐ)
+- inclusion-exclusion rule: 包含排斥规则 (bāo hán pái chì guī zé)
+- incomplete: 不完全的 (bù wán quán de)
+- incompleteness theorem: 不完备性定理 (bù wán bèi xìng dìng lǐ)
+- independence: 独立性 (dú lì xìng)
+- independent: 独立的 (dú lì de)
+- independent random variables: 独立随机变量 (dú lì suí jī biàn liàng)
+- indicator random variable: 指示随机变量 (zhǐ shì suí jī biàn liàng)
+- indicator variable: 指示变量 (zhǐ shì biàn liàng)
+- indicator variables: 指示变量 (zhǐ shì biàn liàng)
+- indirect proof: 间接证明 (jiàn jiē zhèng míng)
+- induction: 归纳 (guī nà)
+- induction hypothesis: 归纳假设 (guī nà jiǎ shè)
+- inductive step: 归纳步骤 (guī nà bù zhòu)
+- structural induction: 结构归纳 (jié gòu guī nà)
+- inference rules: 推理规则 (tuī lǐ guī zé)
+- infinity: 无限 (wú xiàn)
+- inhomogeneous linear recurrence: 非齐次线性递推关系 (fēi qí cí xiàn xìng dì tuī guān xì)
+- injection: 单射 (dān shè)
+- Integral Method: 积分法 (jī fēn fǎ)
+- intended profit: 预期利润 (yù qī lì rùn)
+- interest rate: 利率 (lì lǜ)
+- intersection: 交集 (jiāo jí)
+- invariant: 不变量 (bù biàn liàng)
+- Invariant Principle: 不变原理 (bù biàn yuán lǐ)
+- inverse (multiplicative): 乘法逆元 (chéng fā nì yuán)
+- irreducible: 不可约的 (bù kě yuē de)
+- irreflexive relation: 反自反关系 (fǎn zì fǎn guān xì)
+- isolated vertex: 孤立点 (gū lì diǎn)
+- isomorphic: 同构 (tóng gòu)
+- k-combination: k组合 (k zǔ hé)
+- k-to-1 function: k对1函数 (k duì 1 hán shù)
+- latency: 延迟 (yán chí)
+- Latin square: 拉丁方阵 (lā dīng fāng zhèn)
+- lattice basis reduction: 格点基底缩减 (gé diǎn jī dǐ suō jiǎn)
+- Law of Large Numbers: 大数定律 (dà shù dìng lǜ)
+- leaf: 叶子节点 (yè zǐ jié diǎn)
+- lemma: 引理 (yǐn lǐ)
+- length-n cycle: 长度为n的环 (cháng dù wèi n de huán)
+- length-n walk relation: 长度为n的路径关系 (cháng dù wèi n de lù jìng guān xì)
+- length of a walk: 路径长度 (lù jìng cháng dù)
+- Let’s Make a Deal: 让我们做个交易 (ràng wǒ men zuò gè jiāo yì)
+- limit superior: 极限上确界 (jí xiàn shàng què jiè)
+- linear combination (integers): 线性组合 (xiàn xìng zǔ hé)
+- Linearity of Expectation: 期望的线性性质 (qī wàng de xiàn xìng xìng zhì)
+- literal: 字面 (zì miàn)
+- little o: 小o记号 (xiǎo o jì hào)
+- load balancing: 负载平衡 (fù zài píng héng)
+- lower bound: 下界 (xià jiè)
+- Mapping Rules: 映射规则 (yìng shè guī zé)
+- Markov’s bound: 马尔可夫不等式 (mǎ ěr kě fū bù děng shì)
+- Markov’s Theorem: 马尔可夫定理 (mǎ ěr kě fū dìng lǐ)
+- Markov bound: 马尔可夫界限 (mǎ ěr kě fū jiè xiàn)
+- matching: 匹配 (pī pèi)
+- matching birthdays: 匹配生日 (pī pèi shēng rì)
+- matching condition: 匹配条件 (pī pèi tiáo jiàn)
+- matrix multiplication: 矩阵乘法 (jǔ zhèng chéng fǎ)
+- maximum dilation: 最大扩张 (zuì dà kuò zhāng)
+- maximum element: 最大元素 (zuì dà yuán sù)
+- max-value: 最大值 (zuì dà zhí)
+- mean: 平均值 (píng jūn zhí)
+- mean square deviation: 均方差 (jūn fāng chā)
+- Menger: 门格尔 (mén gé ěr)
+- Merge Sort: 归并排序 (guī bìng pái xué)
+- merging vertices: 合并顶点 (hé bìng dǐng diǎn)
+- Meyer, Albert R: 阿尔伯特·R·迈耶 (ā ěr bó tè · R · mài yē)
+- minimal: 最小的 (zuì xiǎo de)
+
+If you need more translations or further assistance with any of these terms, feel free to ask!
+
+### 中英文对照解释
+
+#### Four Color Theorem, 6
+**四色定理，6**  
+四色定理声明，任何一个平面图的顶点都可以用四种颜色来填充，使得相邻的顶点颜色不同。这个定理在图论和拓扑学中具有重要意义。
+
+#### Four Step Method, 799
+**四步法，799**  
+四步法是解决数学问题的一种系统方法。它包括理解问题、制定计划、执行计划和回顾解决过程。通过这种方法，可以更有效地解决复杂问题。
+
+#### Frege, Gotlob, 309
+**哥特洛布·弗雷格，309**  
+哥特洛布·弗雷格是著名的逻辑学家和数学家，被认为是现代逻辑和分析哲学的奠基人之一。他的工作对逻辑学的发展产生了深远影响。
+
+#### Frequentist, 817
+**频率主义者，817**  
+频率主义者是统计学中的一类观点，他们认为概率是某事件在大量重复试验中发生的频率。与贝叶斯方法不同，频率主义不使用先验概率。
+
+#### Full CNF, Conjunctive Normal Form, 58
+**完全合取范式，合取范式，58**  
+完全合取范式是布尔逻辑表达式的一种标准形式，其中表达式表示为多个子句的合取，每个子句是文字的析取。
+
+#### Full Disjunctive Normal Form, see disjunctive normal form
+**完全析取范式，参见析取范式**  
+完全析取范式是布尔逻辑表达式的一种标准形式，其中表达式表示为多个子句的析取，每个子句是文字的合取。
+
+#### Fully balanced, 250
+**完全平衡，250**  
+完全平衡是指在数据结构中，每个节点的子树高度差不超过 1，通常用于描述 AVL 树和其他自平衡二叉树。
+
+#### Function, 109, 113
+**函数，109，113**  
+函数是数学中的基本概念，描述了两个集合之间的一种映射关系，其中每个输入值都对应唯一的输出值。
+
+#### Partial, 110
+**部分函数，110**  
+部分函数是一种定义域不是整个集合的函数，即某些输入值没有对应的输出值。
+
+#### Support, 110
+**支持，110**  
+支持是指函数的定义域中，函数值不为零的那些输入值的集合。
+
+#### Total, 110
+**完全函数，110**  
+完全函数是定义在整个集合上的函数，即每个输入值都有对应的输出值。
+
+#### Functions Composition, 111
+**函数的复合，111**  
+函数的复合是将一个函数的输出作为另一个函数的输入。记作 \( (f \circ g)(x) = f(g(x)) \)。
+
+#### Fundamental Theorem of Arithmetic, see Unique Factorization Theorem
+**算术基本定理，参见唯一分解定理**  
+算术基本定理声明，每个大于1的自然数都可以唯一地分解为素数的乘积。
+
+#### Gale, 193
+**盖尔，193**  
+盖尔是数学家，他在博弈论、组合数学和经济理论等领域作出了重要贡献。
+
+#### Gauss, 355, 361, 362
+**高斯，355，361，362**  
+卡尔·弗里德里希·高斯是著名的数学家、物理学家，对数论、代数、统计学等领域有卓越贡献。
+
+#### General Binomial Density Function, 868
+**广义二项密度函数，868**  
+广义二项密度函数是描述二项分布概率的函数，计算某次实验成功 k 次的概率。
+
+#### Generalized Pigeonhole Principle, 677
+**广义鸽笼原理，677**  
+广义鸽笼原理声明，如果将 n 个物体放入 m 个盒子中，并且 n > m，那么至少有一个盒子包含多于一个物体。
+
+#### Generalized Product Rule, 660
+**广义乘法规则，660**  
+广义乘法规则用于计算多个事件的联合概率或联合结果的总数，通过乘以每个事件的可能结果数。
+
+#### Generating Function, 755, 762
+**生成函数，755，762**  
+生成函数是数学中的一种工具，通过一个函数表示序列的各项。常用于求解递归关系和组合计数问题。
+
+#### Geometric Distribution, 863
+**几何分布，863**  
+几何分布描述了在一次独立试验中第一次成功所需的试验次数的概率分布。它是二项分布的特例。
+
+#### Geometric Series, 735
+**几何级数，735**  
+几何级数是指每项与前一项的比值相同的数列，其和可以通过公式求得。
+
+#### Godel, Kurt, 315
+**库尔特·哥德尔，315**  
+库尔特·哥德尔是20世纪著名的逻辑学家，以其不完备定理而闻名。他的工作深刻影响了数学、逻辑和哲学。
+
+#### Goldbach, 7
+**哥德巴赫，7**  
+哥德巴赫是一位德国数学家，因其提出的哥德巴赫猜想而著名。该猜想至今未被证明。
+
+#### Google, 965
+**谷歌，965**  
+谷歌是一家全球知名的科技公司，以其搜索引擎和各种创新技术闻名。谷歌的创始人之一是谢尔盖·布林。
+
+#### Graph
+**图**  
+图是由顶点和边组成的数学结构，用于表示对象及其关系。图论是研究图的性质及其应用的数学分支。
+
+#### Graph Coloring, 515
+**图着色，515**  
+图着色是指为图的每个顶点分配颜色，使得相邻顶点颜色不同。四色定理是图着色问题中的一个重要结果。
+
+#### Greatest Common Divisor, 353
+**最大公约数，353**  
+最大公约数是两个或多个整数的最大公因子，即能同时整除这些整数的最大整数。常用辗转相除法（欧几里得算法）计算。
+
+#### Hall’s Matching Theorem, 511
+**霍尔配对定理，511**  
+霍尔配对定理是图论中的一个重要结果，描述了二分图中存在完美匹配的条件。具体来说，定理指出，如果在一个二分图的任意一部分中，任意子集的邻居数目至少等于子集的大小，则存在完美匹配。
+
+#### Harmonic Number, 621
+**调和数，621**  
+调和数是调和级数的部分和，定义为 \( H_n = 1 + \frac{1}{2} + \frac{1}{3} + \cdots + \frac{1}{n} \)。调和数在许多数学和计算问题中都有应用。
+
+#### Homogeneous Linear Recurrence, 1003
+**齐次线性递归，1003**  
+齐次线性递归是指形如 \( a_n = c_1 a_{n-1} + c_2 a_{n-2} + \cdots + c_k a_{n-k} \) 的递归关系，其中系数 \( c_1, c_2, \cdots, c_k \) 是常数。
+
+#### Identity Relation, 431, 442, 471, 477
+**恒等关系，431，442，471，477**  
+恒等关系是指每个元素都与自身相联系的关系。在集合 A 上的恒等关系可以表示为 \( \{(a, a) \mid a \in A\} \)。
+
+#### Image, 110
+**像，110**  
+像是指通过函数映射后的输出值集合。例如，对于函数 \( f: A \rightarrow B \)，集合 A 中的每个元素在 B 中的对应值就是 A 的像。
+
+Here are the translations for the terms you've listed:
+
+- minimal vertex: 最小顶点 (zuì xiǎo dǐng diǎn)
+- minimum vertex: 最小顶点 (zuì xiǎo dǐng diǎn)
+- minor: 次要的 (cì yào de)
+- modular arithmetic: 模运算 (mó yùn suàn)
+- congruence: 同余 (tóng yú)
+- modulo n: 模n运算 (mó n yùn suàn)
+- modus ponens: 三段论 (sān duàn lùn)
+- Monty Hall Problem: 蒙提霍尔问题 (mēng tí huò ěr wèn tí)
+- MST (Minimum Spanning Tree): 最小生成树 (zuì xiǎo shēng chéng shù)
+- Multinomial Theorem: 多项式定理 (duō xiàng shì dìng lǐ)
+- multinomial coefficient: 多项式系数 (duō xiàng shì xì shù)
+- multiplicative inverse: 乘法逆元 (chéng fā nì yuán)
+- Murphy’s Law: 默菲定律 (mò fēi dìng lǜ)
+- mutual independence: 相互独立 (xiāng hù dú lì)
+- mutually independent: 互相独立的 (hù xiāng dú lì de)
+- mutually recursive: 相互递归 (xiāng hù dì guī)
+- neighbors: 邻居 (lín jū)
+- nonconstructive proof: 非构造性证明 (fēi gòu zào xìng zhèng míng)
+- nondecreasing: 非递减 (fēi dì jiǎn)
+- nonincreasing: 非递增 (fēi dì zēng)
+- non-unique factorization: 非唯一因式分解 (fēi wéi yī yīn shì fēn jiě)
+- norm: 范数 (fàn shù)
+- number theory: 数论 (shù lùn)
+- odds: 赔率 (péi lǜ)
+- optimal spouse: 最佳配偶 (zuì jiā pèi ǒu)
+- order: 秩序 (zhì xù)
+- ordinals: 序数 (xù shù)
+- outcome: 结果 (jié guǒ)
+- outside face: 外部面 (wài bù miàn)
+- Page, Larry: 佩奇，拉里 (pèi qí, lā lǐ)
+- page rank: 页面排名 (yè miàn pái míng)
+- pair: 对 (duì)
+- pairwise independence: 成对独立性 (chéng duì dú lì xìng)
+- pairwise independent: 成对独立的 (chéng duì dú lì de)
+- Pairwise Independent Additivity: 成对独立加性 (chéng duì dú lì jiā xìng)
+- Pairwise Independent Sampling: 成对独立抽样 (chéng duì dú lì chōu yàng)
+- partial correctness: 部分正确性 (bù fèn zhèng què xìng)
+- partial fractions: 部分分式 (bù fèn fēn shì)
+- partial order: 偏序 (piān xù)
+- strict: 严格的 (yán gé de)
+- weak: 弱的 (ruò de)
+- particular solution: 特解 (tè jiě)
+- partition: 分割 (fēn gē)
+- Pascal’s Triangle Identity: 帕斯卡三角形恒等式 (pà sī kǎ sān jiǎo xíng héng děng shì)
+- perfect matching: 完美匹配 (wán měi pī pèi)
+- perfect number: 完全数 (wán quán shù)
+- permutation: 排列 (pái liè)
+- Perturbation Method: 扰动法 (rǎo dòng fǎ)
+- perturbation method: 扰动法 (rǎo dòng fǎ)
+- pessimal spouse: 最差配偶 (zuì chāi pèi ǒu)
+- Pick-4: 选4 (xuǎn 4)
+- planar drawing: 平面图绘制 (píng miàn tú huì zhì)
+- planar embedding: 平面嵌入 (píng miàn qiàn rù)
+- planar graph: 平面图 (píng miàn tú)
+- planar subgraph: 平面子图 (píng miàn zǐ tú)
+- plug-and-chug: 插入并计算 (chā rù bìng jì suàn)
+- pointwise: 点对点 (diǎn duì diǎn)
+- Polyhedra: 多面体 (duō miàn tǐ)
+- polyhedron: 多面体 (duō miàn tǐ)
+- polynomial time: 多项式时间 (duō xiàng shì shí jiān)
+- population size: 人口规模 (rén kǒu guī mó)
+- power: 功率 (gōng lǜ)
+- predicate: 谓词 (wèi cí)
+- preserved invariant: 保持不变量 (bǎo chí bù biàn liàng)
+- preserved under isomorphism: 在同构下保持不变 (zài tóng gòu xià bǎo chí bù biàn)
+
+If you have more terms or need further explanations, feel free to ask!
+
+Here are the translations for the remaining terms:
+
+- probability density function: 概率密度函数 (gài lǜ mì dù hán shù)
+- probability function: 概率函数 (gài lǜ hán shù)
+- probability of an event: 事件的概率 (shì jiàn de gài lǜ)
+- probability space: 概率空间 (gài lǜ kōng jiān)
+- Product Rule: 乘法规则 (chéng fā guī zé)
+- proof: 证明 (zhèng míng)
+- proof by contradiction: 反证法 (fǎn zhèng fǎ)
+- proper subtrees: 适当子树 (shì dàng zǐ shù)
+- proposition: 命题 (mìng tí)
+- propositional variable: 命题变量 (mìng tí biàn liàng)
+- public key cryptography: 公钥密码学 (gōng yuè mì mǎ xué)
+- Pulverizer: 粉碎机 (fěn suì jī)
+- pure set theory: 纯集合论 (chún jí hé lùn)
+- P vs. NP: P vs. NP (P 对 NP)
+- Pythagoreans: 毕达哥拉斯学派 (bì dá gē lā sī xué pài)
+- quicksort: 快速排序 (kuài sù pái xué)
+- quotient: 商 (shāng)
+- randomized algorithm: 随机算法 (suí jī suàn fǎ)
+- random sample: 随机样本 (suí jī yàng běn)
+- random sampling: 随机抽样 (suí jī chōu yàng)
+- random variable: 随机变量 (suí jī biàn liàng)
+- random variables: 随机变量 (suí jī biàn liàng)
+- random walk: 随机游走 (suí jī yóu zǒu)
+- Random Walks: 随机游走 (suí jī yóu zǒu)
+- range: 值域 (zhí yù)
+- reachable: 可达的 (kě dá de)
+- reciprocal: 倒数 (dào shù)
+- recognizes: 识别 (shí bié)
+- recurrence: 递归 (dì guī)
+- recursive data type: 递归数据类型 (dì guī shù jù lèi xìng)
+- reflexive relation: 自反关系 (zì fǎn guān xì)
+- register allocation: 寄存器分配 (jì cún qì fēn pèi)
+- regular: 正则的 (zhèng zé de)
+- Regularity Axiom: 正则性公理 (zhèng zé xìng gōng lǐ)
+- regular polyhedron: 正多面体 (zhèng duō miàn tǐ)
+- relation: 关系 (guān xì)
+- remainder: 余数 (yú shù)
+- remainder arithmetic: 余数算术 (yú shù suàn shù)
+- Riemann Hypothesis: 黎曼猜想 (lí màn cāi xiǎng)
+- ring: 环 (huán)
+- ripple-carry: 涟漪进位 (lián yī jìn wèi)
+- Rivest, Ronald: 罗纳德·里维斯特 (luó nà dé · lǐ wéi sī tè)
+- root mean square: 均方根 (jūn fāng gēn)
+- routing: 路由 (lù yóu)
+- RSA: RSA (RSA)
+- Rubin, Herman: 赫尔曼·鲁宾 (hè ěr màn · lǔ bīn)
+- ruined: 毁了 (huǐ le)
+- Russell, Bertrand: 伯特兰·罗素 (bó tè lán · luó sù)
+- Russell’s Paradox: 罗素悖论 (luó sù bèi lùn)
+- sample space: 样本空间 (yàng běn kōng jiān)
+- sampling: 抽样 (chōu yàng)
+- satisfiability: 可满足性 (kě mǎn zú xìng)
+- SAT: 可满足性问题 (kě mǎn zú xìng wèn tí)
+- SAT-solver: 可满足性求解器 (kě mǎn zú xìng qiú jiě qì)
+- satisfiable: 可满足的 (kě mǎn zú de)
+- Schroder-Bernstein: 施罗德-伯恩斯坦 (shī luó dé - bó ēn sī tǎn)
+- selector functions: 选择函数 (xuǎn zé hán shù)
+- self-loops: 自环 (zì huán)
+- sequence: 序列 (xù liè)
+- empty sequence: 空序列 (kōng xù liè)
+- set: 集合 (jí hé)
+- combining sets: 合并集合 (hé bìng jí hé)
+- complement: 补集 (bǔ jí)
+- infinite set: 无限集合 (wú xiàn jí hé)
+- multiset: 多重集 (duō chóng jí)
+- power set: 幂集 (mì jí)
+- set builder notation: 集合构造表示法 (jí hé gòu zào biǎo shì fǎ)
+
+If you have any more terms or questions, feel free to ask!
+
+Here are the translations for the remaining terms:
+
+- subset: 子集 (zǐ jí)
+- set difference: 集合差 (jí hé chā)
+- Shamir, Adi: 阿迪·沙米尔 (ā dí · shā mǐ ěr)
+- Shapley: 夏普利 (xià pǔ lì)
+- significance: 显著性 (xiǎn zhù xìng)
+- simple graph: 简单图 (jiǎn dān tú)
+- complete graph: 完全图 (wán quán tú)
+- degree: 度 (dù)
+- empty graph: 空图 (kōng tú)
+- Simpson’s Paradox: 辛普森悖论 (xīn pǔ sēn bèi lùn)
+- sink: 汇 (huì)
+- size: 大小 (dà xiǎo)
+- smallest counterexample: 最小反例 (zuì xiǎo fǎn lì)
+- spanning subgraph: 跨越子图 (kuà yuè zǐ tú)
+- spanning tree: 跨越树 (kuà yuè shù)
+- square modulo N: 模 N 平方 (mó N píng fāng)
+- Square Multiple Rule: 平方多重法则 (píng fāng duō chóng fǎ zé)
+- square root: 平方根 (píng fāng gēn)
+- stable distributions: 稳定分布 (wěn dìng fēn bù)
+- stable matching: 稳定匹配 (wěn dìng pī pèi)
+- standard deviation: 标准差 (biāo zhǔn chā)
+- star graph: 星形图 (xīng xíng tú)
+- state machine: 状态机 (zhuàng tài jī)
+- stationary distribution: 静态分布 (jìng tài fēn bù)
+- Stirling’s Formula: 斯特林公式 (sī tè lín gōng shì)
+- strict: 严格的 (yán gé de)
+- strict subset: 严格子集 (yán gé zǐ jí)
+- strong induction: 强归纳法 (qiáng guī nà fǎ)
+- strongly connected: 强连通 (qiáng lián tōng)
+- structure: 结构 (jié gòu)
+- summation notation: 求和符号 (qiú hé fú hào)
+- Sum Rule: 求和法则 (qiú hé fǎ zé)
+- topological sort: 拓扑排序 (tuò pǔ pái xué)
+- total expectation: 总期望 (zǒng qī wàng)
+- totient function: 欧拉函数 (ōu lā hán shù)
+- tournament digraph: 锦标赛有向图 (jǐn biāo sài yǒu xiàng tú)
+- Towers of Hanoi: 汉诺塔 (hàn nuò tǎ)
+- transitive: 传递的 (chuán dì de)
+- transitive relation: 传递关系 (chuán dì guān xì)
+- trap: 陷阱 (xiàn jǐng)
+- tree depth: 树的深度 (shù de shēn dù)
+- tree diagram: 树形图 (shù xíng tú)
+- tree size: 树的大小 (shù de dà xiǎo)
+- Triangle Identity: 三角恒等式 (sān jiǎo héng děng shì)
+- truth table: 真值表 (zhēn zhí biǎo)
+- Turing: 图灵 (tú líng)
+- Turing’s code: 图灵码 (tú líng mǎ)
+- Twin Prime Conjecture: 双质数猜想 (shuāng zhì shù cāi xiǎng)
+- type-checking: 类型检查 (lèi xíng jiǎn chá)
+- unambiguous: 明确的 (míng què de)
+- unbiased binomial distribution: 无偏二项分布 (wú piān èr xiàng fēn bù)
+- unbiased game: 无偏游戏 (wú piān yóu xì)
+- unbounded Gambler’s ruin: 无界赌徒毁灭 (wú jiè dǔ tú huǐ miè)
+- uncountable: 不可数 (bù kě shù)
+- uniform: 均匀的 (jūn yún de)
+- Uniform distribution: 均匀分布 (jūn yún fēn bù)
+- union: 并集 (bìng jí)
+- Union Bound: 联合界限 (lián hé jiè xiàn)
+- Unique Factorization Theorem: 唯一分解定理 (wéi yī fēn jiě dìng lǐ)
+
+If you have any more terms or need further clarification, feel free to ask!
+
+### 中英文对照解释
+
+#### Probability density function, 861
+**概率密度函数，861**  
+概率密度函数（PDF）用于描述连续随机变量的概率分布。它表示变量在某一特定值附近取值的可能性。积分 PDF 可以得到变量在某区间内的概率。
+
+#### Probability function, 792, 840
+**概率函数，792, 840**  
+概率函数是用于描述离散随机变量的概率分布的函数。它给出了每个可能取值的概率。
+
+#### Probability of an event, 792
+**事件的概率，792**  
+事件的概率表示事件发生的可能性。它的值介于 0 和 1 之间，0 表示事件不可能发生，1 表示事件必然发生。
+
+#### Probability space, 792
+**概率空间，792**  
+概率空间是概率论中的基本结构，由样本空间、事件集合和概率函数组成。样本空间包含所有可能的结果，事件集合是样本空间的子集，概率函数为每个事件赋予一个概率值。
+
+#### Product Rule, 811
+**乘法法则，811**  
+乘法法则用于计算两个独立事件同时发生的概率。如果事件 A 和 B 独立，则 P(A ∩ B) = P(A) * P(B)。
+
+#### Product Rule (counting), 657
+**乘法法则（计数），657**  
+在计数问题中，乘法法则用于计算多步操作的总数。如果一个操作有 m 种方式，另一个操作有 n 种方式，那么两步操作的总方式数为 m * n。
+
+#### Product Rule (generating functions), 738
+**乘法法则（生成函数），738**  
+在生成函数中，乘法法则用于计算联合生成函数。如果两个独立变量的生成函数分别为 G(x) 和 H(x)，则联合生成函数为 G(x) * H(x)。
+
+#### Proof, 9, 17
+**证明，9, 17**  
+证明是数学中的逻辑论证过程，用于验证某个命题或定理的真伪。证明需要基于已知事实、定义和公理，通过逻辑推理得出结论。
+
+#### Proof by contradiction, 16
+**反证法，16**  
+反证法是一种证明技巧，通过假设命题的反面为真，并推导出矛盾，从而证明原命题为真。
+
+#### Proper subtrees, 243
+**适当子树，243**  
+适当子树是指树结构中不包含根节点的子树。每个节点都可以作为子树的根节点，其子树包括该节点及其所有后代节点。
+
+#### Proposition, 4, 5
+**命题，4, 5**  
+命题是一个陈述，可以为真或假。命题在逻辑学和数学中是构建论证和证明的基础。
+
+#### Propositional variable, 48
+**命题变量，48**  
+命题变量是一个可以取真值或假值的变量，用于构建逻辑表达式和命题逻辑。
+
+#### Public key cryptography, 378
+**公钥加密，378**  
+公钥加密是一种加密技术，使用成对的密钥进行加密和解密。公钥公开用于加密，私钥保密用于解密。RSA 是一种常见的公钥加密算法。
+
+#### Pulverizer, 349, 384
+**Pulverizer 算法，349, 384**  
+Pulverizer 算法是一种用于求解不定方程的算法，特别是求解两个整数的最大公约数（GCD）及其线性组合。
+
+#### Pure set theory, 311
+**纯集合论，311**  
+纯集合论是数学的一个分支，研究集合及其基本性质和操作，而不涉及其他数学结构或概念。
+
+#### P vs. NP, 63
+**P vs. NP 问题，63**  
+P vs. NP 问题是计算机科学中的一个未解难题，涉及确定问题的解是否可以在多项式时间内验证。如果 P = NP，则所有可验证问题都可以在多项式时间内解决。
+
+#### Pythagoreans, 591
+**毕达哥拉斯学派，591**  
+毕达哥拉斯学派是古希腊的一个哲学和数学学派，毕达哥拉斯定理是他们最著名的贡献之一，描述了直角三角形三边之间的关系。
+
+#### Quicksort, 867
+**快速排序，867**  
+快速排序是一种高效的排序算法，使用分治策略将数组分为两个子数组，分别排序后合并。其平均时间复杂度为 O(n log n)。
+
+#### Quotient, 344
+**商，344**  
+商是除法运算的结果。例如，10 除以 2 的商是 5。在代数中，商也用于描述多项式除法的结果。
+
+#### Randomized algorithm, 867
+**随机化算法，867**  
+随机化算法是在计算过程中使用随机数的算法，通常用于优化问题和复杂系统的模拟。其性能和结果依赖于随机数的选择。
+
+#### Random sample, 959
+**随机样本，959**  
+随机样本是从总体中随机选取的一部分样本，目的是使每个个体都有相同的被选中的机会，从而确保样本具有代表性。
+
+#### Random variable, 857
+**随机变量，857**  
+随机变量是一个数值变量，其取值由随机现象决定。它用于描述随机事件的结果，并可以是离散的或连续的。
+
+#### Random walk, 978
+**随机游走，978**  
+随机游走是指在数学和物理学中，按照某种随机规则移动的过程。它用于描述粒子的运动、股票价格变化等随机现象。
+
+#### Range, 110, 114
+**值域，110, 114**  
+值域是函数输出值的集合。例如，对于函数 \( f(x) = x^2 \)，其定义域是所有实数，值域是所有非负实数。
+
+#### Reachable, 177
+**可达的，177**  
+在图论中，一个顶点 u 可达另一个顶点 v 是指存在从 u 到 v 的路径。这是连通性的重要概念。
+
+#### Reciprocal, 753
+**倒数，753**  
+一个数的倒数是指与该数相乘得到 1 的数。例如，2 的倒数是 1/2。倒数在分数运算和函数分析中很重要。
+
+#### Recognizes, 330
+**识别，330**  
+识别是指在计算机科学中，算法或机器能够接受特定输入并确定其属性或类别。例如，模式识别是机器学习的一个重要分支。
+
+#### Recurrence, 993
+**递归关系，993**  
+递归关系描述了一个数列中某一项与前几项的关系。它用于求解复杂的数学问题，如斐波那契数列。
+
+#### Recursive data type, 217
+**递归数据类型，217**  
+递归数据类型是指通过自身定义的数据类型。例如，链表和树结构通常是递归定义的，每个节点包含数据和指向相同结构的引用。
+
+#### Reflexive relation, 439
+**自反关系，439**  
+自反关系是指集合中的每个元素都与自身相关的关系。例如，等价关系是自反的。
+
+#### Register allocation, 549
+**寄存器分配，549**  
+寄存器分配是编译器优化中的一个重要步骤，决定程序中的变量存储在 CPU 寄存器中的位置，以提高程序执行效率。
+
+#### Regular, 514, 543
+**正则的，514，543**  
+正则图是指图中的每个顶点具有相同度数的图。在形式语言中，正则语言是由有限状态自动机识别的语言。
+
+#### Regularity Axiom, 313
+**正则性公理，313**  
+正则性公理是集合论中的一个公理，声明每个非空集合 A 至少包含一个元素 B，使得 A 和 B 没有共同元素。
+
+#### Regular polyhedron, 591
+**正多面体，591**  
+正多面体是指每个面都是全等的正多边形，且每个顶点的邻接面数相同的三维形状。例如，正四面体和正十二面体。
+
+#### Relation, see binary relation
+**关系，参见二元关系**  
+关系是数学中的基本概念，用于描述集合之间的关联。在图论中，关系可以描述顶点之间的边。
+
+#### Riemann Hypothesis, 374
+**黎曼猜想，374**  
+黎曼猜想是数论中的一个未解难题，涉及黎曼 zeta 函数的非平凡零点的分布。它的解决将对素数分布的理解产生深远影响。
+
+#### Ring, see commutative ring
+**环，参见交换环**  
+环是代数结构的一种
+
+Here are the translations for the remaining terms:
+
+- universal quantification: 全称量化 (quán chēng liàng huà)
+- unlucky: 不幸的 (bù xìng de)
+- upper bound: 上界 (shàng jiè)
+- valid coloring: 有效着色 (yǒu xiào zhuó sè)
+- validity (logic): 有效性 (yǒu xiào xìng)
+- value of an annuity: 年金的价值 (nián jīn de jià zhí)
+- variance: 方差 (fāng chā)
+- vertex:
+  - directed graph: 顶点 (dǐng diǎn)
+  - simple graph: 顶点 (dǐng diǎn)
+- vertex connected: 顶点连通 (dǐng diǎn lián tōng)
+- walk:
+  - directed graph, simple graph: 路径 (lù jìng)
+- walk in a simple graph: 简单图中的路径 (jiǎn dān tú zhōng de lù jìng)
+- Weak Law of Large Numbers: 大数定律 (dà shù dìng lǜ)
+- weakly connected: 弱连通 (ruò lián tōng)
+- weakly decreasing: 弱递减 (ruò dì jiǎn)
+- weakly increasing: 弱递增 (ruò dì zēng)
+- weight: 权重 (quán zhòng)
+- well founded: 良好基础的 (liáng hǎo jī chǔ de)
+- Well Ordering Principle: 良序原理 (liáng xù yuán lǐ)
+- well ordered set: 良序集合 (liáng xù jí hé)
+- Well Ordering Principle (WOP): 良序原理 (liáng xù yuán lǐ)
+- winnings: 赢利 (yíng lì)
+- wrap: 包装 (bāo zhuāng)
+- Zermelo-Fraenkel Set Theory: 泽尔梅洛-弗雷克尔集合论 (zé ěr mé luò - fú léi kè ěr jí hé lùn)
+- ZFC: 见泽尔梅洛-弗雷克尔集合论 (jiàn zé ěr mé luò - fú léi kè ěr jí hé lùn)
+
+If you have any more terms or need further assistance, feel free to ask!
+
+### 中英文对照解释
+
+#### Universal quantification, 64
+**全称量化，64**  
+全称量化是逻辑中的一个术语，表示对于所有元素某个性质都成立，通常用符号 ∀ 表示。例如，命题 ∀x (P(x)) 表示对于所有 x，命题 P(x) 成立。
+
+#### Unlucky, 903
+**不幸，903**  
+在概率和统计中，不幸指的是发生不利事件的情况。这个术语可以用于描述实验或随机事件中不理想的结果。
+
+#### Upper bound, 33
+**上界，33**  
+上界是数学中的一个概念，表示一个集合中的所有元素都小于或等于某个特定值。例如，函数 f(x) 在区间 [a, b] 上的上界是一个使得 f(x) ≤ M 的值 M。
+
+#### Valid coloring, 515
+**有效着色，515**  
+有效着色是图论中的一个概念，表示一个图的顶点着色方案，其中相邻的顶点具有不同的颜色。有效着色在图着色问题中至关重要。
+
+#### Validity (logic), 56, 62, 67
+**逻辑有效性，56，62，67**  
+逻辑有效性指的是一个逻辑表达式在所有可能的解释下都为真。有效性是逻辑推理和证明中的一个核心概念。
+
+#### Value of an annuity, 608
+**年金价值，608**  
+年金价值是金融学中的一个术语，表示定期支付的现金流的现值。年金价值可以通过现值公式计算，用于评估年金的总价值。
+
+#### Variance, 919, 930, 947
+**方差，919，930，947**  
+方差是统计学中的一个度量，用于表示数据分布的离散程度。它是数据点与均值的平方差的平均值。方差是衡量数据波动性的重要指标。
+
+#### Vertex
+**顶点**  
+顶点是图论中的一个基本元素，表示图中的一个节点。图中的边连接顶点，用于表示顶点之间的关系。
+
+##### Directed graph, 423
+**有向图，423**  
+有向图是指边有方向的图，其中每条边从一个顶点指向另一个顶点。
+
+##### Simple graph, 502
+**简单图，502**  
+简单图是指没有自环和重边的无向图，每对顶点之间最多有一条边。
+
+#### Vertex connected, 526
+**顶点连通，526**  
+顶点连通是指在图中两个顶点之间存在一条路径。顶点连通性用于描述图的连通性。
+
+#### Walk, see directed graph, simple graph, 563
+**路径，参见有向图、简单图，563**  
+路径是在图中从一个顶点到另一个顶点经过的顶点序列。路径可以有不同的类型，如简单路径和回路。
+
+#### Walk in a simple graph, 519
+**简单图中的路径，519**  
+在简单图中的路径是指从一个顶点到另一个顶点经过的顶点序列，其中没有重复的顶点。
+
+#### Weak Law of Large Numbers, 931, 957
+**大数定律的弱形式，931，957**  
+大数定律的弱形式表示，随着样本量的增加，样本平均值会趋近于总体的期望值。这个定律是概率论中的一个重要结果。
+
+#### Weakly connected, 452
+**弱连通，452**  
+弱连通是指在有向图中，忽略边的方向后，任意两个顶点之间是连通的。弱连通性用于描述有向图的整体连通性。
+
+#### Weakly decreasing, 168, 185, 356, 614
+**弱递减，168，185，356，614**  
+弱递减是指序列中的每个元素不小于其后面的元素。即，对于序列 {a_n}，如果 a_i ≥ a_{i+1} 对于所有 i 成立，则该序列为弱递减。
+
+#### Weakly increasing, 185, 614
+**弱递增，185，614**  
+弱递增是指序列中的每个元素不大于其后面的元素。即，对于序列 {a_n}，如果 a_i ≤ a_{i+1} 对于所有 i 成立，则该序列为弱递增。
+
+#### Weight, 531
+**权重，531**  
+权重是图论中用于表示边的数值属性。权重可以表示距离、成本或其他与边相关的量。
+
+#### Well founded, 334, 475
+**良基，334，475**  
+良基性是集合论中的一个性质，表示每个非空集合都有一个最小元素。这个性质在递归定义和证明中非常重要。
+
+#### Well Ordering Principle, 153, 166, 182
+**良序原理，153，166，182**  
+良序原理声明每个非空的集合都有一个最小元素。这个原理在数学归纳法和其他数学证明中有重要应用。
+
+#### Well ordered set, 33
+**良序集，33**  
+良序集是指一个集合，其中每个非空子集都有一个最小元素。良序集在序理论和集合论中有重要应用。
+
+#### Well Ordering Principle (WOP), 29
+**良序原理 (WOP)，29**  
+良序原理的缩写形式，参见上文。
+
+#### Winnings, 875
+**奖金，875**  
+奖金是指在赌博或比赛中获胜所得到的金钱或奖品。在概率论和统计学中，奖金常用于描述随机收益。
+
+#### Wrap, 765
+**换行，765**  
+换行是指在显示或打印文本时，将超出一行长度的文本移到下一行显示。这个术语在计算机科学和排版中常用。
+
+#### Zermelo-Fraenkel Set Theory, 310, 315
+**策梅洛-弗兰克尔集合论，310，315**  
+策梅洛-弗兰克尔集合论是现代集合论的基础，由一组公理构成，包括选择公理、正则性公理等，用于避免集合论中的悖论。
+
+#### ZFC, see Zermelo-Fraenkel Set
+**ZFC，参见策梅洛-弗兰克尔集合论**  
+ZFC 是策梅洛-弗兰克尔集合论的缩写，其中 C 表示选择公理。ZFC 是描述集合论的标准公理系统。

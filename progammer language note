@@ -1,0 +1,2379 @@
+https://www.ime.usp.br/~alvaroma/ucsp/proglang/book.pdf?fbclid=IwZXh0bgNhZW0CMTEAAR3mYdsQUKcqwYOLDd3PoVsuvZZa9HA9RAf52Dnk59OOS-1u08g3NH8EBaE_aem_ZmFrZWR1bW15MTZieXRlcw
+
+Sure, here are the translations with explanations where applicable:
+
+- Absolute addressing
+  - 绝对寻址
+  - 在计算机编程中，绝对寻址是一种直接访问内存地址的方式，不考虑程序的当前状态或其它因素。
+
+- Abstract cells
+  - 抽象单元
+  - 在程序设计中，抽象单元通常指的是一种数据结构或对象，其具体实现可以根据需要进行定义和扩展。
+
+- Abstract classes
+  - 抽象类
+  - 在面向对象编程中，抽象类是不能被实例化的类，通常用于定义接口和部分实现，需要子类来实现其具体行为。
+
+- Abstract data types
+  - 抽象数据类型
+  - 抽象数据类型是一种数学模型，定义了数据对象的特性及对其进行操作的方法，隐藏了具体实现细节，提供了数据抽象和封装。
+
+- Abstract methods
+  - 抽象方法
+  - 在面向对象编程中，抽象方法是只有声明而没有实现的方法，必须在子类中实现其具体逻辑。
+
+- Abstraction
+  - 抽象化
+  - 抽象化是一种编程思想或技术，通过隐藏复杂性和关注重要细节来简化问题的处理和理解。
+
+- Accept clause body
+  - 接受子句主体
+  - 在编程语言中，接受子句主体指的是用于定义处理输入的语法结构或代码段。
+
+- Accept clauses
+  - 接受子句
+  - 接受子句是在并发编程中常见的结构，用于定义和处理不同任务或事件的执行方式和条件。
+
+- Access
+  - 访问
+  - 在计算机科学中，访问通常指的是获取或修改数据、资源或功能的操作。
+
+- ACM (Association for Computing Machinery)
+  - ACM（计算机协会）
+  - ACM 是一个国际性的计算机科学组织，致力于推动计算机科学和信息技术的发展。
+
+- Activation record instances
+  - 激活记录实例
+  - 激活记录实例是指在程序执行过程中，用于存储函数或过程调用相关信息的数据结构。
+
+如果还有其他术语需要翻译或有任何问题，请随时告诉我！
+
+### 中英文对照解释
+
+#### Absolute addressing
+**绝对地址**
+- **manual, 207**
+  **手动，207**
+  在手册中描述了绝对地址的使用。
+- **pointers and, 297**
+  **指针与绝对地址，297**
+  指针与绝对地址的关系和用法。
+- **problems with, 40, 42**
+  **绝对地址的问题，40, 42**
+  使用绝对地址可能会遇到的问题。
+
+#### Abstract cells, 209
+**抽象单元，209**
+抽象单元是一种数据结构的概念，用于描述不具体实现的数据存储单元。
+
+#### Abstract classes
+**抽象类**
+- **in Ada, 561–562**
+  **在 Ada 中，561–562**
+  Ada 语言中的抽象类的定义和使用。
+- **in C++, 547**
+  **在 C++ 中，547**
+  C++ 语言中的抽象类的定义和用法。
+- **introduction to, 529**
+  **介绍，529**
+  抽象类的基本概念和介绍。
+- **in Java, 555**
+  **在 Java 中，555**
+  Java 语言中的抽象类的定义和用法。
+
+#### Abstract data types
+**抽象数据类型**
+- **design issues for, 478–479**
+  **设计问题，478–479**
+  抽象数据类型的设计问题和挑战。
+- **floating-point as, 476**
+  **浮点数作为抽象数据类型，476**
+  浮点数如何作为抽象数据类型使用。
+- **introduction to, 474**
+  **介绍，474**
+  抽象数据类型的基本概念和介绍。
+- **in Ada, 482–485, 503–504**
+  **在 Ada 中，482–485, 503–504**
+  Ada 语言中的抽象数据类型的实现和使用。
+- **in C++, 485–490, 505–506**
+  **在 C++ 中，485–490, 505–506**
+  C++ 语言中的抽象数据类型的实现和使用。
+- **in C#, 497–499**
+  **在 C# 中，497–499**
+  C# 语言中的抽象数据类型的实现和使用。
+- **in C# 2005, 509**
+  **在 C# 2005 中，509**
+  C# 2005 中的抽象数据类型的实现和使用。
+- **in Java, 496–497, 506–509**
+  **在 Java 中，496–497, 506–509**
+  Java 语言中的抽象数据类型的实现和使用。
+- **in Java 5.0, 506–509**
+  **在 Java 5.0 中，506–509**
+  Java 5.0 中的抽象数据类型的实现和使用。
+- **in Objective-C, 490–496**
+  **在 Objective-C 中，490–496**
+  Objective-C 语言中的抽象数据类型的实现和使用。
+- **parameterized, 503–509**
+  **参数化，503–509**
+  参数化抽象数据类型的概念和实现。
+- **problem set on, 520–521**
+  **问题集，520–521**
+  关于抽象数据类型的练习题。
+- **in Ruby, 499–503**
+  **在 Ruby 中，499–503**
+  Ruby 语言中的抽象数据类型的实现和使用。
+- **for stacks, 478**
+  **用于栈，478**
+  栈的数据结构如何使用抽象数据类型。
+- **summary of, 517–518**
+  **总结，517–518**
+  抽象数据类型的总结。
+- **user-defined, 476–478**
+  **用户定义，476–478**
+  用户定义的抽象数据类型。
+
+#### Abstract methods, 529
+**抽象方法，529**
+抽象方法是指在抽象类中声明但没有具体实现的方法，需要在子类中实现。
+
+#### Abstraction
+**抽象**
+- **beginnings of, 72–73**
+  **抽象的开始，72–73**
+  抽象概念的起源和早期发展。
+- **in BNF, 118**
+  **在 BNF 中，118**
+  巴科斯范式（BNF）中的抽象表示。
+- **in imperative programming languages, 204**
+  **在命令式编程语言中，204**
+  命令式编程语言中的抽象支持。
+- **support for, 14, 21**
+  **支持抽象，14, 21**
+  编程语言中对抽象的支持。
+
+#### Accept clause body, 595
+**接受子句主体，595**
+接受子句的具体实现部分，通常在并发编程中使用。
+
+#### Accept clauses, 595–600
+**接受子句，595–600**
+接受子句的定义和用法，特别是在并发编程中的应用。
+
+#### Access
+**访问**
+- **deep vs. shallow, 462–466**
+  **深层与浅层访问，462–466**
+  深层访问与浅层访问的比较和区别。
+- **to heaps, 289**
+  **堆的访问，289**
+  如何访问堆数据结构。
+- **in nested subprograms, 454–460**
+  **在嵌套子程序中，454–460**
+  嵌套子程序中的访问控制。
+- **nonblocking synchronized, 612**
+  **非阻塞同步访问，612**
+  非阻塞同步访问技术。
+- **in subprogram linkage, 442**
+  **子程序链接中的访问，442**
+  子程序链接中的访问控制。
+- **types, 293**
+  **访问类型，293**
+  不同的访问类型及其特点。
+
+#### ACM (Association for Computing Machinery)
+**计算机协会（ACM）**
+- **GAMM and, 53, 117**
+  **GAMM 与 ACM，53, 117**
+  GAMM 和 ACM 之间的关系。
+- **Grace Murray Hopper Award of, 480, 536**
+  **格蕾丝·霍普奖，480, 536**
+  ACM 颁发的格蕾丝·霍普奖，奖励在计算机领域做出突出贡献的年轻研究人员。
+- **Turing Award of, 672**
+  **图灵奖，672**
+  ACM 颁发的图灵奖，被认为是计算机科学的诺贝尔奖。
+
+#### Activation record instances
+**激活记录实例**
+激活记录实例是存储在堆栈上的数据结构，包含了函数调用的环境信息，如局部变量、参数和返回地址。
+Here are the translations for the terms and concepts you've asked for:
+
+- Activation records
+  - 激活记录
+  - 激活记录用于存储函数或过程调用期间的相关信息，包括局部变量、返回地址等。
+
+- Active subprograms
+  - 活动子程序
+  - 活动子程序指的是当前正在执行或处于活跃状态的子程序。
+
+- Actor tasks
+  - 演员任务
+  - 演员任务是并发编程中一种任务模型，每个任务独立运行且能够响应消息。
+
+- Actual parameters
+  - 实际参数
+  - 在函数调用中传递给函数的具体参数值，与形式参数相对应。
+
+- Ad hoc binding
+  - 临时绑定
+  - 临时绑定是指在运行时或动态环境中进行的绑定操作，通常与静态或静态绑定相对。
+
+- Ad hoc polymorphism
+  - 临时多态性
+  - 临时多态性允许不同类型的数据使用相同的接口，通过函数重载或模板实现。
+
+- Ada
+  - Ada语言
+  - Ada是一种结构化、面向对象和并发性语言，主要用于高可靠性和嵌入式系统的开发。
+
+- Abstract data types
+  - 抽象数据类型
+  - 抽象数据类型定义了数据的抽象结构和操作，隐藏了具体实现细节。
+
+- Abstract methods
+  - 抽象方法
+  - 抽象方法在面向对象编程中指的是没有具体实现的方法，需要在子类中实现。
+
+- Abstract classes
+  - 抽象类
+  - 抽象类是不能被实例化的类，通常用于定义接口和部分实现，要求子类实现其具体逻辑。
+
+- Accept clauses
+  - 接受子句
+  - 在并发编程中，接受子句定义了任务或进程如何响应和处理消息或事件。
+
+- Addresses
+  - 地址
+  - 在计算机科学中，地址指的是内存中数据或指令的位置。
+
+- Adoption protocols
+  - 采纳协议
+  - 采纳协议指的是遵循或实现某种通信或数据交换的标准或协议。
+
+- Aggregate values
+  - 聚合值
+  - 聚合值是指多个数据或对象组合在一起形成的单个值或结构。
+
+- Aliases
+  - 别名
+  - 别名指的是不同的名称引用同一内存位置或变量。
+
+- Aliasing
+  - 别名化
+  - 别名化是指多个标识符或变量指向同一内存地址的现象。
+
+- Allocation
+  - 分配
+  - 分配指的是在计算机中为变量或对象分配内存或其他资源的过程。
+
+- Ambiguous grammars
+  - 歧义文法
+  - 歧义文法指的是定义模糊或不清晰，可能导致解析器无法准确识别语法结构的文法。
+
+- AND operators
+  - 与运算符
+  - 与运算符用于逻辑与操作，对两个条件同时成立时返回真。
+
+- Anonymous variables
+  - 匿名变量
+  - 匿名变量是指没有明确命名的变量，通常用于临时或简单的数据操作。
+
+- ANSI (American National Standards Institute)
+  - ANSI（美国国家标准协会）
+  - ANSI是美国的一个标准制定组织，制定和管理各种行业的标准。
+
+- Arithmetic expressions
+  - 算术表达式
+  - 算术表达式由运算符和操作数组成，用于表示数学运算或逻辑运算。
+
+- Array types
+  - 数组类型
+  - 数组类型定义了一种数据结构，其中元素通过索引访问，并且具有固定的大小和类型。
+
+如果需要更多术语的翻译或有其他问题，请告诉我！
+
+Here are the translations for the additional terms:
+
+- Evaluation of
+  - 评估
+  - 在计算机科学中，评估指的是计算或处理表达式、算法或程序的过程。
+
+- Formal parameters
+  - 形式参数
+  - 形式参数是函数或方法定义中声明的变量，用于接收函数调用时传递的实际参数。
+
+- Implementation of
+  - 实现
+  - 实现指的是将设计或算法转化为实际代码或软件系统的过程。
+
+- Indices and
+  - 索引与
+  - 索引与数组操作中用于访问元素的整数值。
+
+- Introduction to
+  - 介绍
+  - 介绍指的是对某个主题或概念进行简要说明和引入的过程。
+
+- Jagged arrays in
+  - 不规则数组在
+  - 不规则数组指的是多维数组中不同维度的子数组长度不一致的情况。
+
+- Rectangular arrays in
+  - 矩形数组在
+  - 矩形数组是指多维数组中所有维度的子数组长度均相等的情况。
+
+- Slices in
+  - 切片在
+  - 切片是指从数组或序列中截取部分元素的操作。
+
+- Subscript bindings in
+  - 下标绑定在
+  - 下标绑定是指将变量与数组索引或下标关联的过程。
+
+- ASCII (American Standard Code for Information Interchange)
+  - ASCII（美国信息交换标准代码）
+  - ASCII是一种字符编码标准，用于在计算机系统中表示文本和控制字符。
+
+- Assemblies, .NET
+  - 程序集，.NET
+  - 在.NET框架中，程序集是一组已经被编译和部署的.NET代码单元。
+
+- Assertions
+  - 断言
+  - 断言是编程中用于确认某个条件为真的语句或指令，通常用于调试和验证程序。
+
+- Association for Computing Machinery (ACM)
+  - 计算机协会（ACM）
+  - ACM是一个国际性的计算机科学专业组织，致力于推动计算机科学的发展和应用。
+
+如果还有其他术语需要翻译或有其他问题，请告诉我！
+Here are the translations for the terms and concepts:
+
+- Associative arrays
+  - 关联数组
+  - 关联数组是一种数据结构，其中的元素通过键来访问而不是通过索引，键可以是任意类型的数据。
+
+- Implementation of
+  - 实现
+  - 实现指的是将设计或算法转化为实际代码或软件系统的过程。
+
+- Introduction to
+  - 介绍
+  - 介绍指的是对某个主题或概念进行简要说明和引入的过程。
+
+- Structure and operations of
+  - 结构和操作
+  - 指关联数组的内部结构以及可以对其执行的操作。
+
+- Associativity
+  - 结合性
+  - 在运算中，结合性指的是操作符运算时多个相同优先级的操作数如何组合的规则。
+
+- Atomic propositions
+  - 原子命题
+  - 在逻辑推理中，原子命题是不能再分解为更小组成部分的基本命题。
+
+- Atoms, Prolog
+  - 原子，Prolog
+  - 在Prolog编程语言中，原子是一种基本数据类型，表示符号或常量。
+
+- Attribute computation functions
+  - 属性计算函数
+  - 在编程语言中，属性计算函数用于计算和处理对象或数据结构的属性。
+
+- Attribute grammars
+  - 属性文法
+  - 属性文法是一种形式化的文法，其中规则不仅定义语言的语法结构，还定义如何计算和传播符号属性。
+
+- Attributes
+  - 属性
+  - 在计算机科学中，属性可以是对象或数据结构的特征或元数据。
+
+- Automatic generalization
+  - 自动泛化
+  - 自动泛化是指程序或算法在不需要显式用户干预的情况下，自动推广或泛化其行为或输出。
+
+- Automatic programming
+  - 自动编程
+  - 自动编程是指使用特定的工具或技术，使计算机能够生成或改进程序的过程。
+
+- Automatically Programmed Tools (APT)
+  - 自动编程工具（APT）
+  - APT是一种用于自动编程和生成数控机床程序的系统。
+
+- Axiomatic semantics
+  - 公理语义
+  - 公理语义是一种形式化的语义描述方法，用于描述程序语句的效果和语义。
+
+- Axioms
+  - 公理
+  - 在逻辑或数学中，公理是不需要证明的基本假设或命题，通常作为推理的起点。
+
+如果您有更多术语需要翻译或有其他问题，请随时告诉我！
+
+Certainly! Here are the translations for the terms:
+
+- Backtracking
+  - 回溯
+  - 回溯是一种搜索算法，用于解决具有多个解的问题，在解决问题的过程中，可能需要回退到之前的状态。
+
+- Backward chaining
+  - 向后推理
+  - 向后推理是一种推理策略，从目标开始，通过匹配规则的结论来推导出前提。
+
+- Base prefix
+  - 基数前缀
+  - 基数前缀是指在数学或计算机科学中用于表示进制的前缀，如二进制、十进制等。
+
+- BCD (binary coded decimal)
+  - 二进制编码十进制
+  - BCD是一种数字编码系统，用四位二进制数码来表示一个十进制数的各位数字。
+
+- Binary operators
+  - 二元运算符
+  - 二元运算符是指需要两个操作数来完成运算的运算符，如加法、乘法等。
+
+- Binary semaphores
+  - 二进制信号量
+  - 二进制信号量是一种信号量（同步原语），只能取两个值（通常是0和1），用于控制对共享资源的访问。
+
+- Binding
+  - 绑定
+  - 绑定是指将某个实体（如变量或函数）与其属性或值关联起来的过程。
+
+- Dynamic binding
+  - 动态绑定
+  - 动态绑定是在程序运行时确定对象或函数调用的具体实现的过程，通常与多态性相关。
+
+- Explicit heap-dynamic variables
+  - 显式堆动态变量
+  - 显式堆动态变量是指在程序运行时通过显式分配和释放堆内存来管理的变量。
+
+- Implicit heap-dynamic variables
+  - 隐式堆动态变量
+  - 隐式堆动态变量是指由编程语言或运行时环境隐式管理的堆内存变量，通常无需程序员手动释放。
+
+如果您有更多术语需要翻译或有其他问题，请随时告诉我！
+
+### 中文翻译及解释
+
+#### Associative arrays
+**关联数组**
+- **implementation of, 276**
+  **实现，276**
+  关联数组的实现方法。
+- **introduction to, 272**
+  **介绍，272**
+  关联数组的基本介绍。
+- **structure and operations of, 272–276**
+  **结构和操作，272–276**
+  关联数组的结构和操作方法。
+
+解释：关联数组是一种数据结构，用键值对来存储数据，每个键唯一地标识一个值。
+
+#### Associativity
+**结合性**
+- **126–128, 321–323**
+  **126–128, 321–323**
+  结合性的定义及应用。
+
+解释：结合性描述了运算符在计算中的结合顺序，例如加法的结合性保证了 \( (a + b) + c \) 与 \( a + (b + c) \) 的结果相同。
+
+#### Atomic propositions
+**原子命题**
+- **729**
+  **729**
+  原子命题的定义及应用。
+
+解释：原子命题是不可分割的基本命题，用于逻辑表达式中，不包含其他命题。
+
+#### Atoms, Prolog
+**Prolog中的原子**
+- **737**
+  **737**
+  Prolog 语言中的原子类型及其使用。
+
+解释：在 Prolog 编程语言中，原子是不可分割的基本单位，通常用于表示常量或标识符。
+
+#### Attribute computation functions
+**属性计算函数**
+- **133**
+  **133**
+  属性计算函数的定义及应用。
+
+解释：属性计算函数用于根据语法树中的节点属性计算其他属性值。
+
+#### Attribute grammars
+**属性文法**
+- **basic concepts of, 133–134**
+  **基本概念，133–134**
+  属性文法的基本概念。
+- **computing attribute values in, 137–138**
+  **计算属性值，137–138**
+  在属性文法中计算属性值的方法。
+- **defined, 134**
+  **定义，134**
+  属性文法的定义。
+- **evaluation of, 138–139**
+  **评估，138–139**
+  属性文法的评估方法。
+- **examples of, 135–136**
+  **示例，135–136**
+  属性文法的示例。
+- **intrinsic attributes in, 134–135**
+  **内在属性，134–135**
+  属性文法中的内在属性。
+- **introduction to, 132–133**
+  **介绍，132–133**
+  属性文法的基本介绍。
+- **static semantics and, 133**
+  **静态语义和属性文法，133**
+  静态语义与属性文法的关系。
+
+解释：属性文法是一种用于描述语言语法和语义的形式系统，通过定义节点属性和计算规则来实现语义分析。
+
+#### Attributes
+**属性**
+- **binding, 209–210**
+  **绑定，209–210**
+  属性绑定的定义及应用。
+- **defined, 133**
+  **定义，133**
+  属性的定义。
+- **instance data as, 501**
+  **实例数据作为属性，501**
+  实例数据作为属性的应用。
+- **intrinsic, 134–135**
+  **内在属性，134–135**
+  内在属性的定义及应用。
+
+解释：属性是描述对象特征的值，可以是静态的（如类型）或动态的（如变量的值）。
+
+#### Automatic generalization
+**自动泛化**
+- **427**
+  **427**
+  自动泛化的定义及应用。
+
+解释：自动泛化是一种技术，用于在程序或模型中自动推导和扩展规则或模式，以适应更广泛的情况。
+
+#### Automatic programming
+**自动编程**
+- **41**
+  **41**
+  自动编程的定义及应用。
+
+解释：自动编程是指利用计算机自动生成程序代码的技术，减少人工编程的工作量。
+
+#### Automatically Programmed Tools (APT)
+**自动编程工具（APT）**
+- **22**
+  **22**
+  自动编程工具的定义及应用。
+
+解释：APT 是一种早期的数控编程语言，用于生成控制机器工具操作的指令。
+
+#### awk scripting language
+**awk脚本语言**
+- **95**
+  **95**
+  awk 脚本语言的介绍及应用。
+
+解释：awk 是一种用于文本处理和数据提取的脚本语言，广泛用于 Unix 系统中。
+
+#### Axiomatic semantics
+**公理语义**
+- **assertions in, 148–149**
+  **断言，148–149**
+  公理语义中的断言定义及应用。
+- **assignment statements in, 150–152**
+  **赋值语句，150–152**
+  公理语义中的赋值语句定义及应用。
+- **evaluation of, 160–161**
+  **评估，160–161**
+  公理语义的评估方法。
+- **introduction to, 148**
+  **介绍，148**
+  公理语义的基本介绍。
+- **logical pretest loops in, 154–158**
+  **逻辑前测循环，154–158**
+  公理语义中的逻辑前测循环定义及应用。
+- **program proofs in, 158–160**
+  **程序证明，158–160**
+  公理语义中的程序证明方法。
+- **selection in, 153–154**
+  **选择，153–154**
+  公理语义中的选择语句定义及应用。
+- **sequences in, 152–153**
+  **序列，152–153**
+  公理语义中的序列定义及应用。
+- **weakest preconditions in, 149–150**
+  **最弱前提条件，149–150**
+  公理语义中的最弱前提条件定义及应用。
+
+解释：公理语义是一种基于逻辑断言的语义描述方法，用于验证程序的正确性。
+
+#### Axioms
+**公理**
+- **149**
+  **149**
+  公理的定义及应用。
+
+解释：公理是数学和逻辑中被认为自明的基本命题，用作推理和证明的基础。
+
+Certainly! Here are the translations for the terms and their explanations:
+
+- Binding (continued)
+  - 绑定（续）
+  - 绑定是指将某个实体（如变量或函数）与其属性或值关联起来的过程。绑定还涉及到变量或函数生命周期、存储位置、类型等方面的管理。
+
+- Binding time
+  - 绑定时间
+  - 绑定时间指的是在程序执行过程中确定变量或函数与其属性或值关联的时机，包括编译时、加载时、运行时等。
+
+- Blocks
+  - 块
+  - 在编程中，块通常用于限定变量的作用域或实现控制流程。在Ruby等语言中，块也用于定义匿名函数或代码块。
+
+- BNF (Backus-Naur Form)
+  - BNF（Backus-Naur形式）
+  - BNF是一种用于描述语法的元语法表示法，常用于定义编程语言的语法规则，包括表达式、语句、条件等。
+
+- Boxing
+  - 装箱
+  - 装箱是指将基本数据类型转换为对应的包装类对象的过程，通常发生在需要使用对象而只有基本类型的情况下。
+
+- Breadth-first searches
+  - 广度优先搜索
+  - 广度优先搜索是一种图搜索算法，从起始顶点开始逐层扩展，直到找到目标顶点或遍历完所有顶点。
+
+- break statements
+  - break语句
+  - break语句通常用于跳出循环或switch语句块，并将控制流程转移到循环或语句块之后的代码。
+
+- byte code
+  - 字节码
+  - 字节码是一种中间代码，通常是由高级语言编译而成，可以在虚拟机中执行，如Java字节码。
+
+- C
+  - C语言
+  - C语言是一种广泛使用的系统编程语言，支持高度抽象和底层操作，被广泛用于系统软件开发和嵌入式系统。
+
+- C#
+  - C#语言
+  - C#是一种面向对象的编程语言，具有强类型检查和高性能，常用于开发Windows应用程序和Web服务。
+
+如果您有更多术语需要翻译或其他问题，请随时告诉我！
+
+Here are the translations for the terms and their explanations:
+
+- systems software in, 6
+  - 系统软件中
+  - 在计算机领域，系统软件是一种管理和控制计算机硬件与应用软件之间交互的软件。它包括操作系统、驱动程序、编译器和系统工具等。
+
+- trade-offs in, 23
+  - 折衷
+  - 折衷是指在设计或实现中需要在不同的因素之间做出平衡和权衡，以达到最优解决方案的过程。
+
+- Call chains
+  - 调用链
+  - 调用链指的是一系列程序或方法之间相互调用的序列，通常用于描述程序执行时的调用顺序和依赖关系。
+
+- Calls
+  - 调用
+  - 在编程中，调用指的是程序执行过程中一个程序单元（如函数或方法）执行另一个程序单元的操作。
+
+- dynamic binding of method
+  - 方法的动态绑定
+  - 方法的动态绑定是指在运行时确定调用的方法实现，允许程序根据对象的实际类型调用适当的方法。
+
+- indirect
+  - 间接调用
+  - 间接调用是指通过指针、引用或函数指针等间接方式调用函数或方法的操作。
+
+- semantics of subprogram
+  - 子程序语义
+  - 子程序语义涉及到子程序（如函数或过程）的语法结构、参数传递、返回值和作用域等方面的语义规定。
+
+- Case sensitivity
+  - 区分大小写
+  - 区分大小写指的是在编程中区分不同大小写字母的能力或特性，影响标识符（如变量名、函数名）的识别和使用。
+
+- case statements
+  - case语句
+  - case语句是一种选择结构，根据表达式的值选择不同的执行路径，类似于switch语句。
+
+- Checked exceptions
+  - 受检异常
+  - 受检异常是指在编程语言中需要显式处理的异常，程序必须捕获或声明抛出以确保异常处理的完整性和可靠性。
+
+如果您有更多术语需要翻译或其他问题，请随时告诉我！
+
+### 中文翻译及解释
+
+#### Assemblies in, 512–513
+**程序集，512–513**
+解释：程序集是 .NET 框架中的基本部署单元，包含一个或多个托管代码文件及其依赖项。
+
+#### Concurrency in, 21
+**并发，21**
+解释：并发是指在程序中同时执行多个任务的能力，通常用于提高性能和响应速度。
+
+#### Design process for, 101–102
+**设计过程，101–102**
+解释：设计过程是指开发软件时从需求分析到实现和测试的一系列步骤和方法。
+
+#### Dynamic binding in, 557–558
+**动态绑定，557–558**
+解释：动态绑定是在运行时决定函数调用或方法调用的具体实现，通常用于多态性。
+
+#### Encapsulation constructs in, 498
+**封装结构，498**
+解释：封装是一种面向对象编程的概念，通过将数据和方法包装在一个类中来隐藏实现细节。
+
+#### Evaluation of, 103–104
+**评估，103–104**
+解释：评估是指对某个语言或技术进行分析和判断，通常包括其性能、可用性和适用性。
+
+#### Event handling in, 661–664
+**事件处理，661–664**
+解释：事件处理是指程序对事件（如用户输入、系统信号等）的响应机制。
+
+#### Information hiding in, 498–499
+**信息隐藏，498–499**
+解释：信息隐藏是指通过封装来限制对类的内部状态和实现细节的访问，以提高模块化和安全性。
+
+#### Inheritance in, 557
+**继承，557**
+解释：继承是面向对象编程中的一个机制，通过它一个类可以继承另一个类的属性和方法。
+
+#### Language overview of, 102–103
+**语言概述，102–103**
+解释：语言概述是对编程语言的基本特性、语法和使用场景的简要介绍。
+
+#### Nested classes in, 558
+**嵌套类，558**
+解释：嵌套类是定义在另一个类内部的类，用于组织代码和封装逻辑。
+
+#### As .NET language, 101
+**作为 .NET 语言，101**
+解释：作为 .NET 语言，指的是某种编程语言可以在 .NET 框架中使用，享受其提供的功能和库支持。
+
+#### Object-oriented programming in, 556–558
+**面向对象编程，556–558**
+解释：面向对象编程是一种编程范式，使用对象和类来组织代码，提高可重用性和可维护性。
+
+#### Overview of, 101–104
+**概述，101–104**
+解释：概述是对某个主题或领域的全面但简要的描述和介绍。
+
+#### Threads in, 613–618
+**线程，613–618**
+解释：线程是操作系统能够进行运算调度的最小单位，用于并发执行代码，提高程序效率。
+
+---
+
+#### C++
+**C++**
+解释：C++ 是一种通用的编程语言，支持面向对象和泛型编程，广泛用于系统软件、应用软件和游戏开发。
+
+#### Abstract data types in, 485–490, 505–506
+**抽象数据类型，485–490, 505–506**
+解释：抽象数据类型是一种数据结构的理论模型，定义了数据和操作，而不涉及具体实现。
+
+#### Abstraction support in, 14
+**抽象支持，14**
+解释：抽象支持是指编程语言提供的机制，用于实现数据和操作的抽象化，如类和接口。
+
+#### Compiler implementation in, 25
+**编译器实现，25**
+解释：编译器实现是指如何在编译器中实现某种编程语言的功能和特性。
+
+#### Constructors in, 487
+**构造函数，487**
+解释：构造函数是在创建对象时自动调用的特殊函数，用于初始化对象的状态。
+
+#### Continuation in, 644–645
+**继续，644–645**
+解释：继续是编程中的一个概念，表示在某个操作完成后继续执行的代码路径。
+
+#### Design process for, 88–89
+**设计过程，88–89**
+解释：设计过程是开发软件时的各个阶段和步骤，包括需求分析、设计、实现和测试。
+
+#### Destructors in, 487
+**析构函数，487**
+解释：析构函数是在对象生命周期结束时自动调用的特殊函数，用于释放资源和进行清理操作。
+
+#### Dynamic binding in, 544–547
+**动态绑定，544–547**
+解释：动态绑定是在运行时决定调用哪个方法的机制，支持多态性。
+
+#### Encapsulation constructs in, 486, 511–512
+**封装结构，486, 511–512**
+解释：封装结构是指将数据和方法封装在类中，隐藏内部实现细节，提高模块化和安全性。
+
+#### Evaluation of, 89
+**评估，89**
+解释：评估是对编程语言的性能、功能和使用场景进行分析和判断。
+
+#### Exception handling in, 16, 643–647
+**异常处理，16, 643–647**
+解释：异常处理是指程序在运行过程中处理异常情况的机制，确保程序的稳定性和可靠性。
+
+#### Imperative features in, generally, 88
+**命令式特性，88**
+解释：命令式特性是指编程语言中的命令式编程风格，强调通过语句和命令改变程序状态。
+
+#### Information hiding in, 486
+**信息隐藏，486**
+解释：信息隐藏是通过封装技术限制对对象内部实现的访问，提高代码的安全性和可维护性。
+
+#### Inheritance in, 539–544
+**继承，539–544**
+解释：继承是面向对象编程中的一种机制，一个类可以继承另一个类的属性和方法，实现代码重用。
+
+#### Language overview of, 89
+**语言概述，89**
+解释：语言概述是对编程语言的基本特性、语法和应用场景的简要介绍。
+
+#### Namespaces in, 514–515
+**命名空间，514–515**
+解释：命名空间是用于组织代码和避免命名冲突的机制，允许将一组相关的标识符分组。
+
+#### Object-oriented programming in, 88, 538–539, 547–549
+**面向对象编程，88, 538–539, 547–549**
+解释：面向对象编程是一种编程范式，使用对象和类来组织代码，提高代码的可重用性和可维护性。
+
+#### Orthogonality in, 11–12
+**正交性，11–12**
+解释：正交性是指编程语言的特性彼此独立且组合时不会产生冲突，提高语言的可理解性和灵活性。
+
+#### Pointer types in, 294–295
+**指针类型，294–295**
+解释：指针类型是指变量存储另一个变量地址的类型，广泛用于动态内存分配和数据结构操作。
+
+#### Popularity of, 3
+**流行度，3**
+解释：流行度指的是编程语言在开发者中的使用广泛程度，C++ 因其高性能和广泛应用而受到欢迎。
+
+Here are the translations for the terms and their explanations:
+
+- Coercions
+  - 强制类型转换
+  - 在编程中，强制类型转换指的是将一种数据类型转换为另一种数据类型的操作。它可以在算术表达式中用于确保操作数具有兼容的类型，也可以在类型检查中用于确保表达式中的类型匹配。
+
+- Common Business Language (CBL)
+  - 通用商业语言（CBL）
+  - 通用商业语言是一种用于商业数据处理和应用程序编程的编程语言，旨在简化企业应用的开发和管理。
+
+- Common Gateway Interface (CGI)
+  - 通用网关接口（CGI）
+  - 通用网关接口是一种标准协议，用于Web服务器与外部应用程序之间的通信，允许动态生成Web页面或处理用户输入。
+
+- Common Intermediate Language (CIL)
+  - 通用中间语言（CIL）
+  - 通用中间语言是.NET框架中的一种中间语言，它使不同语言编写的程序可以在运行时相互交互和执行。
+
+- Common LISP
+  - 通用LISP
+  - 通用LISP是一种LISP编程语言的方言，旨在提供更大的标准化和通用性，适用于各种应用和领域。
+
+- Communicating Sequential Processes (CSP)
+  - 通信顺序进程（CSP）
+  - 通信顺序进程是一种并发编程模型，通过进程之间的消息传递来实现协作和同步，以解决并发执行中的问题和挑战。
+
+- Compatible types
+  - 兼容类型
+  - 兼容类型指的是可以互相转换或直接比较的数据类型，具有相似的数据表示和操作语义。
+
+- Competition synchronization
+  - 竞争同步
+  - 竞争同步是指在多线程或并发环境中，通过机制如信号量或监视器来管理和同步不同线程对共享资源的访问和操作，以避免竞争条件和数据不一致性问题。
+
+如果您有更多术语需要翻译或其他问题，请随时告诉我！
+
+Here are the translations for the additional terms:
+
+- Cooperation synchronization in Ada
+  - Ada 中的协作同步
+  - Ada 中的协作同步指通过协作性机制，如任务间通信和同步，来管理并发执行中的资源访问和操作，以确保程序正确性和效率。
+
+- Cooperation synchronization in Java
+  - Java 中的协作同步
+  - Java 中的协作同步是通过线程间的协作和同步机制，如锁和条件变量，来实现多线程程序中的资源管理和操作。
+
+- Explicit locks in Java 5.0
+  - Java 5.0 中的显式锁
+  - Java 5.0 引入了显式锁机制，允许开发者明确地控制多线程环境中的共享资源访问，以避免竞争条件和数据不一致性。
+
+- In F#
+  - 在 F# 中
+  - F# 是一种函数式编程语言，它通过函数和不可变数据结构来支持并发编程，提供了特定的并发编程模型和语法。
+
+- In High-Performance Fortran
+  - 在高性能Fortran中
+  - 高性能Fortran 是一种专注于并行计算和高性能计算的编程语言，支持多处理器架构和并行执行的语言特性。
+
+- Message passing in Multilisp
+  - Multilisp 中的消息传递
+  - Multilisp 是一种Lisp的方言，支持通过消息传递实现并发执行和协作，适用于分布式计算和多处理器系统。
+
+- Nonblocking synchronization
+  - 非阻塞同步
+  - 非阻塞同步是一种并发编程技术，通过避免线程在等待共享资源时的阻塞，来提高程序的并发性能和响应性。
+
+- Synchronous message passing
+  - 同步消息传递
+  - 同步消息传递是一种并发编程模型，要求发送者和接收者在消息传递过程中进行同步，确保数据的有效传递和一致性。
+
+If you have more terms or questions, feel free to ask!
+
+受约束的变体变量，285–287 Constraint_Error 异常，639–642 构造函数，487 上下文无关语法，117–118 延续，634–635 控制表达式，350 控制流，685–686 控制语句，348 控制结构，349 Cooper，Alan，66 Cooper，Jack，82 合作 同步 在 Ada 中，599 在并发中，586–589 简介，581–585 在 Java 中，608–611 使用监视器，591–592 使用信号量，586–589 协同程序，73，432–435 语言成本，16–18 计数器控制循环，363，
+367–368
+在 Ada 中，364
+在基于 C 的语言，
+364–366
+函数式语言，
+367–368
+Python，366–367
+Cox，Brad，90
+CPU（中央处理单元），
+18–19
+CSP（通信顺序进程），597
+Currie，Malcolm，81
+Currying，706
+Cut Prolog，752–753
+D
+Dahl，Ole-Johan，72–73
+悬空指针，292–293
+悬空引用，294
+数据抽象。参见抽象
+数据成员，486、539
+数据结构，371–375
+数据类型
+数组。参见数组类型
+关联数组，272–276
+布尔值，249
+字符，249–250
+字符串，250–255
+复数，248
+十进制，248–249
+等价，304–308
+浮点数，247–248
+整数，246–247
+简介，12，244–246
+在 LISP 中，677–678
+列表，281–284
+数字，246–249
+序数，255–258
+指针，289–295，297–302
+原始，246–250
+问题集，314–315
+编程练习，
+315–316
+记录， 276–280
+参考文献，290，295–302
+复习问题，312–313
+字符串长度选项，
+252–253
+字符串操作，
+250–252
+强类型，303–304
+总结，310–311
+理论和，308–310
+元组，280–281
+联合，284–289
+死任务，584
+死锁，585
+释放，214，532–533
+十进制数据类型，248–249
+声明顺序，223–224
+声明性语言，728，
+734–735
+声明块，Ada，263
+装饰解析树，137
+减量字段，687
+深访问，462–464
+
+Deep binding, 418–419
+Deferred reference counting,
+299–300
+Definitions
+in COBOL, 60
+of functions, 682–684
+in subprograms, 389–391
+Delegates, 420–421
+delete
+in associative arrays, 273
+in C++, 291–293, 486
+data types, 263
+explicit deallocation using, 538
+Delphi, 90
+Denotational semantics
+assignment statements in, 146
+evaluation of, 147
+examples of, 143–145
+expressions in, 145–146
+introduction to, 142–143
+logical pretest loops in, 147
+state of programs and, 145
+Department of Defense (DoD),
+59–61, 81
+Dependents, 601
+Depth-first searches, 742
+Dereferencing pointers, 291
+Derivations, 119–121
+Derived classes, 526, 540–544
+Derived types, 306
+Descriptors, 245
+Design issues
+for abstract data types,
+478–479
+for array types, 260
+for character string types, 250
+for concurrency, 585–586
+for exception handling, 633–636
+for functions, 428–429
+for iterative statements, 363
+for multiple-selection
+statements, 354–355
+for names, 205
+for object-oriented
+programming, 529–534
+for pointer types, 290
+for subprograms, 396–397,
+413–414
+trade-offs, 23
+for two-way selection
+statements, 350
+for union types, 285
+Destructors, 487
+Diamond inheritance, 531
+Dictionaries, 99, 273
+Dijkstra, Edsger
+guarded commands by,
+376–379, 593
+on PL/I, 70
+semaphores by, 586
+on synchronization operations,
+591
+Direct left recursion, 187
+Discriminated unions, 285–287
+Disjoint tasks, 581
+dispose, 298
+DLLs (dynamic link libraries), 67,
+512
+DO CONCURRENT constructs, 45
+do-while statements,
+369–370
+DoD (Department of Defense),
+59–61, 81
+Dot notation, 278–279
+Double floating-point data types,
+247
+Dynabook, 86
+Dynamic binding
+in Ada 95, 561–562
+in C#, 557–558
+in C++, 544–547
+introduction to, 210
+in Java, 555
+of method calls to methods,
+566–568
+in Objective-C, 551–552
+in object-oriented programming,
+527–529, 533
+in Ruby, 565
+in Smalltalk, 535
+Dynamic chains, 450
+Dynamic dispatch. see Dynamic
+binding
+Dynamic languages, 68–71
+Dynamic length strings,
+253–255
+dynamic link libraries (DLLs), 67,
+512
+Dynamic links, 446
+Dynamic scoping, 227–229,
+462–466
+Dynamic semantics
+axiomatic semantics as. see
+Axiomatic semantics
+denotational semantics as,
+142–147
+introduction to, 139
+operational semantics as,
+139–142
+Dynamic type binding, 212–214,
+303, 569
+Dynamic type checking, 303
+E
+Eager approach, 299
+EBNF (Extended BNF), 129–132,
+181–182
+ECMA (European Computer
+Manufacturers Association),
+97
+Edinburgh syntax, 737
+Edwards, Daniel J., 680
+Eich, Brendan, 97
+Elaboration, 215
+Elemental operators, Fortran 95+,
+266
+Elliptical references, 279
+else-if clause, 360–361
+Encapsulation constructs
+in Ada, 482, 512, 516
+in C, 510–511
+in C#, 498, 512–513
+in C++, 486, 511–512,
+514–515
+
+深度绑定，418–419
+延迟引用计数，
+299–300
+定义
+在 COBOL 中，60
+函数，682–684
+在子程序中，389–391
+委托，420–421
+删除
+在关联数组中，273
+在 C++ 中，291–293，486
+数据类型，263
+使用显式释放，538
+Delphi，90
+指称语义
+赋值语句，146
+评估，147
+示例，143–145
+表达式，145–146
+简介，142–143
+逻辑预测试循环，147
+程序状态和，145
+国防部 (DoD)，
+59–61， 81
+依赖项，601
+深度优先搜索，742
+取消引用指针，291
+派生，119–121
+派生类，526，540–544
+派生类型，306
+描述符，245
+设计问题
+对于抽象数据类型，
+478–479
+对于数组类型，260
+对于字符串类型，250
+对于并发，585–586
+对于异常处理，633–636
+对于函数，428–429
+对于迭代语句，363
+对于多选语句，354–355
+对于名称，205
+对于面向对象编程，529–534
+对于指针类型，290
+对于子程序， 396–397,
+413–414
+权衡，23
+双向选择
+语句，350
+联合类型，285
+析构函数，487
+菱形继承，531
+字典，99，273
+Dijkstra，Edsger
+保护命令，
+376–379，593
+PL/I，70
+信号量，586
+同步操作，
+591
+直接左递归，187
+可区分联合，285–287
+不相交任务，581
+处置，298
+DLL（动态链接库），67，
+512
+DO CONCURRENT 构造，45
+do-while 语句，
+369–370
+DoD（国防部），
+59–61，81
+点符号， 278–279
+双精度浮点数据类型，
+247
+Dynabook，86
+动态绑定
+在 Ada 95 中，561–562
+在 C# 中，557–558
+在 C++ 中，544–547
+简介，210
+在 Java 中，555
+方法调用的方法，
+566–568
+在 Objective-C 中，551–552
+在面向对象编程中，
+527–529，533
+在 Ruby 中，565
+在 Smalltalk 中，535
+动态链，450
+动态调度。参见动态
+绑定
+动态语言，68–71
+动态长度字符串，
+253–255
+动态链接库 (DLL)，67，
+512
+动态链接，446
+动态作用域，227–229，
+462–466
+动态语义
+公理语义。参见
+公理语义
+指称语义为，
+142–147
+介绍，139
+操作语义为，
+139–142
+动态类型绑定，212–214，
+303，569
+动态类型检查，303
+E
+急切方法，299
+EBNF（扩展 BNF），129–132，
+181–182
+ECMA（欧洲计算机制造商协会），
+97
+爱丁堡语法，737
+Edwards，Daniel J.，680
+Eich，Brendan，97
+细化，215
+元素运算符，Fortran 95+，
+266
+省略引用，279
+else-if 子句，360–361
+Ada 中的封装构造，482， 512, 516
+C 语言，510–511
+C# 语言，498, 512–513
+C++ 语言，486, 511–512,
+514–515
+
+### 中文翻译及解释
+
+#### Child library packages, 562
+**子库包，562**
+解释：子库包是指在 Ada 编程语言中，用于组织和管理库代码的包，这些包可以继承和扩展父库包的功能。
+
+#### Child packages, 562
+**子包，562**
+解释：子包是编程语言中的一个概念，指的是可以从父包继承功能并添加新功能的包，常用于代码模块化和管理。
+
+#### Chomsky, Noam, 117
+**诺姆·乔姆斯基，117**
+解释：诺姆·乔姆斯基是著名的语言学家，他提出了生成语法理论，对计算机科学和语言学研究产生了深远影响。
+
+#### Church, Alonzo, 675
+**阿隆佐·丘奇，675**
+解释：阿隆佐·丘奇是著名的逻辑学家和数学家，以其 lambda 演算和丘奇-图灵论题而闻名，对计算机科学的发展有重要贡献。
+
+#### Cii Honeywell/Bull language, 82
+**Cii Honeywell/Bull 语言，82**
+解释：Cii Honeywell/Bull 语言是一种用于大型机系统的编程语言，广泛应用于企业级应用开发。
+
+#### Clark, K. L., 737
+**K. L. 克拉克，737**
+解释：K. L. 克拉克是计算机科学家，以其在逻辑编程和人工智能领域的研究而闻名。
+
+#### Clarke, L. A., 227
+**L. A. 克拉克，227**
+解释：L. A. 克拉克是软件工程领域的专家，对软件测试和验证技术有重要贡献。
+
+#### Class instance records (CIRs), 566–568
+**类实例记录（CIRs），566–568**
+解释：类实例记录是用于存储类实例的相关信息的数据结构，包括实例变量和方法。
+
+#### Class methods, 527
+**类方法，527**
+解释：类方法是与类相关联的方法，可以在没有类实例的情况下调用，通常用于实现类级别的功能。
+
+#### Class variables, 527
+**类变量，527**
+解释：类变量是属于类的变量，而不是某个实例的变量，在所有实例之间共享。
+
+#### Classes
+**类**
+- **abstract, 529, 547**
+  **抽象类，529，547**
+  解释：抽象类是不能直接实例化的类，只能被继承，通常用于定义接口或基础功能。
+- **derived, 526, 540–544**
+  **派生类，526，540–544**
+  解释：派生类是从基类继承并扩展其功能的类。
+- **of exceptions, 647**
+  **异常类，647**
+  解释：异常类用于定义和处理程序中的异常情况。
+- **inner, 555–556**
+  **内部类，555–556**
+  解释：内部类是定义在另一个类内部的类，通常用于封装逻辑。
+- **interface abstract, 553–555**
+  **接口抽象类，553–555**
+  解释：接口抽象类定义接口并可以包含默认实现，用于接口设计。
+- **interlocked, 616**
+  **互锁类，616**
+  解释：互锁类用于多线程编程中，确保线程安全操作。
+- **local nested, 556**
+  **局部嵌套类，556**
+  解释：局部嵌套类是在方法或作用域内定义的类，仅在定义它的作用域内可见。
+- **nested, 533, 555–556, 558**
+  **嵌套类，533，555–556，558**
+  解释：嵌套类是定义在另一个类内部的类，用于逻辑分组和封装。
+- **parent, 526–527**
+  **父类，526–527**
+  解释：父类是被继承的类，派生类从它继承属性和方法。
+- **sub, 526**
+  **子类，526**
+  解释：子类是从父类继承并扩展其功能的类。
+- **super, 526**
+  **超类，526**
+  解释：超类是子类的直接父类，子类从超类继承属性和方法。
+- **wrapper, 530**
+  **包装类，530**
+  解释：包装类用于包装其他类或数据类型，以提供额外的功能或简化接口。
+
+#### Clausal form, 350–351, 731–732
+**子句形式，350–351，731–732**
+解释：子句形式是逻辑表达式的一种标准形式，通常用于逻辑编程和自动推理系统。
+
+#### Clients, 477
+**客户端，477**
+解释：客户端是向服务器请求服务的程序或设备，通常用于描述网络通信中的请求方。
+
+#### Clocksin, W. F., 753
+**W. F. 克洛克辛，753**
+解释：W. F. 克洛克辛是计算机科学家，特别是在逻辑编程和 Prolog 语言方面有重要贡献。
+
+#### CLOS (Common LISP Object System), 21, 701
+**通用 Lisp 对象系统（CLOS），21，701**
+解释：CLOS 是 Common Lisp 语言的面向对象扩展，提供了丰富的对象操作和类定义功能。
+
+#### Closed accept clauses, 599
+**封闭接受子句，599**
+解释：封闭接受子句是在并发编程中使用的一种结构，用于同步任务的完成。
+
+#### Closed-world assumption, 754
+**封闭世界假设，754**
+解释：封闭世界假设是假设在逻辑数据库中，任何未被明确声明为真的命题都被认为是假的。
+
+#### Closures, 430–432
+**闭包，430–432**
+解释：闭包是指函数和其引用的环境变量一起构成的实体，可以在其定义的作用域外调用。
+
+#### CML (Concurrent ML), 619
+**并发 ML（CML），619**
+解释：CML 是一种基于 ML 语言的并发编程扩展，提供了高级的并发控制结构。
+
+#### COBOL
+**COBOL**
+解释：COBOL 是一种面向商业应用的编程语言，广泛用于企业数据处理系统。
+- **compiler implementation in, 25**
+  **编译器实现，25**
+  解释：COBOL 编译器的实现技术和方法。
+- **computerizing business records in, 58**
+  **计算机化商业记录，58**
+  解释：COBOL 在商业记录电子化中的应用。
+- **design process for, 59–60**
+  **设计过程，59–60**
+  解释：COBOL 程序设计的过程和步骤。
+- **evaluation of, 60–63**
+  **评估，60–63**
+  解释：对 COBOL 语言的性能和适用性的评估。
+- **FLO-MATIC and, 59**
+  **FLO-MATIC 与 COBOL，59**
+  解释：FLO-MATIC 语言是 COBOL 的前身之一，影响了 COBOL 的设计。
+- **historical background of, 59**
+  **历史背景，59**
+  解释：COBOL 语言的历史发展和背景。
+- **introduction to, 5–6**
+  **介绍，5–6**
+  解释：COBOL 语言的基本介绍及其特点。
+
+#### Code-building functions, SCHEME, 698–699
+**代码生成函数，Scheme，698–699**
+解释：在 Scheme 语言中，代码生成函数用于动态构建和执行代码，支持元编程和高级函数操作。
+
+Here are the translations for the additional terms:
+
+- Entry clauses
+  - 入口子句
+  - 入口子句用于在Ada语言中定义任务（tasks）或者protected对象（protected objects）的入口点，以及它们的行为和条件。
+
+- Enumeration constants
+  - 枚举常量
+  - 枚举常量是一种固定名称与整数值对应的数据类型成员，常用于定义一组有限的命名值。
+
+- Enumeration types
+  - 枚举类型
+  - 枚举类型是一种数据类型，定义了一组命名的常量值。在编程语言中，枚举类型允许开发者使用易读的符号来表示特定的状态或选项。
+
+- Environment pointers (EPs)
+  - 环境指针（EPs）
+  - 环境指针在编程语言的语法分析和执行过程中用于跟踪当前执行环境的状态和信息，特别是在子程序（subprogram）调用和执行过程中。
+
+- Epilogue of subprogram linkage
+  - 子程序链接的收场部分
+  - 子程序链接的收场部分指在子程序调用结束时，处理返回值和清理执行环境的操作。
+
+- EQ? functions
+  - EQ? 函数
+  - EQ? 函数是用于比较两个对象是否相等的函数，通常在函数式编程语言中使用。
+
+- Equivalence
+  - 等价性
+  - 等价性是指在程序设计中用于比较两个实体是否具有相同的语义含义或功能行为。
+
+- Erasure rule
+  - 擦除规则
+  - 擦除规则是指在一些编程语言和编译器中，泛型类型的具体化在编译后会被擦除为其原始类型，以提高性能和减少内存占用。
+
+- Errors
+  - 错误
+  - 错误在程序中指运行时或编译时发现的问题或异常情况，需要进行处理或纠正以确保程序正常执行。
+
+- European Computer Manufacturers Association (ECMA)
+  - 欧洲计算机制造商协会（ECMA）
+  - ECMA是一个国际标准化组织，制定和发布了许多技术标准，涵盖计算机硬件和软件领域。
+
+- EVAL
+  - EVAL
+  - EVAL 是一种在LISP和相关语言中用于动态执行代码片段的函数或机制。
+
+- Evaluation environments
+  - 评估环境
+  - 评估环境指在程序执行过程中用于存储和管理表达式计算状态和结果的环境和数据结构。
+
+- Event handling
+  - 事件处理
+  - 事件处理是程序中用于响应和处理用户输入或系统发生的事件的机制和技术。
+
+- Event listeners
+  - 事件监听器
+  - 事件监听器是用于监视和响应特定事件的对象或函数，常见于图形用户界面（GUI）和事件驱动的编程模型中。
+
+- Events
+  - 事件
+  - 事件是在程序执行过程中发生的特定动作或状态变化，可以触发响应的处理逻辑。
+
+- Exception handling
+  - 异常处理
+  - 异常处理是一种程序设计技术，用于捕获和处理运行时出现的异常或错误情况，以保证程序的稳定性和可靠性。
+
+- Exceptions
+  - 异常
+  - 异常是指在程序执行过程中由于错误或特殊条件而导致的中断或非正常状态。
+
+- Exclusivity of objects
+  - 对象的排他性
+  - 对象的排他性指的是在并发程序中，确保多个线程或进程不会同时访问或修改同一个对象，以避免竞态条件和数据不一致性。
+
+- Executable images
+  - 可执行映像
+  - 可执行映像是编译和链接后生成的程序文件或二进制文件，可以直接在计算机上执行。
+
+- Expected_type
+  - expected_type
+  - expected_type 是在语义分析过程中用于确定表达式或变量预期类型的标记或数据结构。
+
+- Expert systems
+  - 专家系统
+  - 专家系统是一种人工智能技术，基于专家知识和推理规则来模拟和解决特定领域的问题。
+
+- Explicit declarations
+  - 显式声明
+  - 显式声明是在程序中明确指定变量、类型或子程序的定义和属性。
+
+- Explicit heap-dynamic variables
+  - 显式堆动态变量
+  - 显式堆动态变量是在程序执行时动态分配和释放的内存，通常通过显式的程序代码来控制。
+
+- Explicit locks, Java 5.0
+  - Java 5.0 中的显式锁
+  - Java 5.0 引入了显式锁机制，允许开发者明确地控制多线程环境中的共享资源访问，以避免竞争条件和数据不一致性。
+
+- Explicit type conversions
+  - 显式类型转换
+  - 显式类型转换是程序中明确指定数据类型转换的操作，用于确保数据类型的兼容性和正确性。
+
+- Expressions
+  - 表达式
+  - 表达式是程序中的计算单元，由操作数和操作符组成，用于表示和计算值或结果。
+
+- Extended accept clauses
+  - 扩展接受子句
+  - 扩展接受子句是在并发编程中用于处理任务间通信和同步的特定语法结构和语义规则。
+
+- Extended ALGOL
+  - 扩展ALGOL
+  - 扩展ALGOL是ALGOL语言的一种变体，增加了新的语法和功能特性，用于支持更复杂的计算和编程任务。
+
+- Extended BNF (EBNF)
+  - 扩展BNF
+  - 扩展BNF是对传统BNF的扩展，增加了更多的语法元素和表达能力，用于描述复杂的语法结构和语言规范。
+
+If you have more terms or questions, feel free to ask!
+
+Here are the translations for the additional terms:
+
+- For statements
+  - For 循环语句
+  - For 循环语句在不同编程语言中具有多种形式，用于重复执行一段代码，通常用于遍历集合或控制循环次数。
+
+- Foreach statements
+  - Foreach 循环语句
+  - Foreach 循环语句是一种特定于语言的语法结构，用于遍历集合或数组中的元素，并对每个元素执行指定的操作。
+
+- Form
+  - 表单
+  - 在计算机程序设计中，表单指用户界面中用于输入和提交数据的交互式元素。
+
+- Formal parameters
+  - 形式参数
+  - 形式参数是指在子程序定义中声明的变量或参数，用于接收调用该子程序时传递的实际参数值。
+
+- Fortran List Processing Language (FLPL)
+  - Fortran 列表处理语言（FLPL）
+  - FLPL 是一种基于Fortran的扩展语言，旨在支持更复杂的列表处理和数据操作。
+
+- Functional programming (FP)
+  - 函数式编程（FP）
+  - 函数式编程是一种编程范式，强调将计算视为数学函数求值的过程，避免状态变化和可变数据。
+
+- Functional programming languages
+  - 函数式编程语言
+  - 函数式编程语言是支持和促进函数式编程范式的编程语言，通常包括LISP、Haskell、ML等。
+
+- Functions
+  - 函数
+  - 函数是一种子程序或子例程，接收输入参数并返回计算结果，用于执行特定的计算或操作。
+
+- Functors
+  - 函数子
+  - 函数子是在函数式编程中用于组合和转换函数的高阶函数或数据结构。
+
+- Future constructs
+  - Future 构造
+  - Future 构造是一种并发编程中用于表示未来计算结果或操作完成状态的机制，通常与异步执行和延迟计算有关。
+
+- Garbage collection
+  - 垃圾回收
+  - 垃圾回收是自动管理内存的过程，用于检测和释放不再被程序使用的内存资源，以避免内存泄漏和碎片化。
+
+- Generate and test
+  - 生成和测试
+  - 生成和测试是一种问题求解方法，通过生成可能的解决方案并测试其有效性来找到问题的解决方案。
+
+- Generators
+  - 生成器
+  - 生成器是一种特殊的函数或语法结构，用于按需生成序列或集合中的元素，而不是一次性计算所有元素。
+
+If you have more terms or questions, feel free to ask!
+
+Sure, here are the translations with explanations:
+
+- **Hammond, P., 758**
+  - **Hammond, P., 758**
+  - This likely refers to a specific reference or citation in a text related to computing or programming languages. The number "758" may denote a page number or a specific section.
+
+- **Handles, 191–192**
+  - **Handles, 191–192**
+  - Handles are references or identifiers used in programming to manage resources or objects. They often point to resources in memory or facilitate communication between different parts of a program.
+
+- **Harbison, Samuel P., 356**
+  - **Harbison, Samuel P., 356**
+  - Samuel P. Harbison is likely an author or researcher known for contributions to programming languages or related fields. The number "356" could indicate a page number or section related to his work.
+
+- **Hashes, 272–273, 276**
+  - **Hashes, 272–273, 276**
+  - Hashes, or hash tables, are data structures used for efficient data retrieval. They involve mapping keys to values using a hash function. The numbers "272–273, 276" may refer to pages discussing implementations or operations related to hashes.
+
+- **Haskell, 707–712**
+  - **Haskell, 707–712**
+  - Haskell is a functional programming language known for its strong typing and expressive syntax. The numbers "707–712" likely refer to pages or sections discussing Haskell's features, implementations, or applications.
+
+- **Headed horn clauses, 734**
+  - **Headed horn clauses, 734**
+  - In logic programming, headed horn clauses are rules used for defining relations between facts and conclusions. The number "734" may denote a page number or section discussing this topic.
+
+- **Header files, 510–511**
+  - **Header files, 510–511**
+  - Header files in programming contain declarations and definitions that are shared between multiple source files. They typically include function prototypes, constants, and macros. The numbers "510–511" may refer to pages discussing their use and importance in programming.
+
+- **Headless horn clauses, 734**
+  - **Headless horn clauses, 734**
+  - Headless horn clauses are a type of logical clause used in logic programming where the clause has no head (no conclusion). The number "734" likely denotes a reference or section discussing this concept.
+
+- **Heap-dynamic arrays, 263**
+  - **Heap-dynamic arrays, 263**
+  - Heap-dynamic arrays are arrays whose size or memory allocation is managed dynamically at runtime, typically allocated on the heap. The number "263" may indicate a specific section or explanation of this concept.
+
+- **Heap-dynamic variables, 290**
+  - **Heap-dynamic variables, 290**
+  - Heap-dynamic variables are variables whose memory allocation is managed dynamically at runtime, typically allocated on the heap. The number "290" may refer to pages discussing this topic.
+
+- **Heaps, 289**
+  - **Heaps, 289**
+  - Heaps in computer science refer to a specialized tree-based data structure used for priority queues and dynamic memory allocation. The number "289" may denote pages or sections discussing their implementation or operations.
+
+- **Heavyweight tasks, 581**
+  - **Heavyweight tasks, 581**
+  - Heavyweight tasks refer to tasks or processes in computing that require substantial resources or time to execute. The number "581" may refer to a specific section discussing tasks with such characteristics.
+
+These translations and explanations cover the terms you requested. Let me know if there's anything else you'd like to explore or if you have more terms to translate!
+
+### 中文翻译及解释
+
+#### Xtensible Stylesheet Language Transformations (XSLT), 22
+**可扩展样式表语言转换（XSLT），22**
+解释：XSLT 是一种用于将 XML 文档转换为其他格式（如 HTML、纯文本等）的语言，广泛应用于网页开发和数据处理。
+
+#### Extern qualifiers, 224
+**外部修饰符，224**
+解释：外部修饰符用于声明变量或函数在其他文件中定义，在 C 语言中常见，支持跨文件的变量和函数共享。
+
+#### F
+**F** 
+解释：F 可能指代一种编程语言或特定的术语，需要结合具体上下文确定。
+
+#### F#, 620–621, 712–715
+**F#，620–621，712–715**
+解释：F# 是一种函数式编程语言，兼具面向对象和命令式编程特性，主要运行在 .NET 框架上。
+
+#### Fact statements, 737–738
+**事实声明，737–738**
+解释：事实声明是逻辑编程语言（如 Prolog）中的基本构造，用于断言某些事实为真。
+
+#### Farber, J. D., 72
+**J. D. 法伯，72**
+解释：J. D. 法伯是计算机科学家，在某些计算领域有贡献或著名的研究工作。
+
+#### Fatbars, 377
+**粗竖线，377**
+解释：粗竖线可能指代某种特殊的编程符号或语法结构，用于表示特定操作或功能。
+
+#### Feature multiplicity, 9
+**特性多样性，9**
+解释：特性多样性是指编程语言中提供多种特性和功能以满足不同编程需求和应用场景。
+
+#### Fetch-execute cycles, 19
+**取指-执行周期，19**
+解释：取指-执行周期是 CPU 执行指令的基本过程，涉及从内存取指令并执行指令的步骤。
+
+#### FGCS (Fifth Generation Computing Systems), 736
+**第五代计算机系统（FGCS），736**
+解释：FGCS 是一个由日本政府主导的计算机项目，旨在开发具有高级人工智能和并行处理能力的计算机系统。
+
+#### Fields, 277
+**字段，277**
+解释：字段是数据结构中的基本单元，用于存储特定类型的数据，常见于数据库和编程语言中的记录或类。
+
+#### Fifth Generation Computing Systems (FGCS), 736
+**第五代计算机系统（FGCS），736**
+解释：FGCS 是日本在1980年代提出的一个大型研究项目，目标是开发高智能计算系统。
+
+#### de Figueiredo, Luis Henrique, 100
+**路易斯·恩里克·德·菲格雷多，100**
+解释：路易斯·恩里克·德·菲格雷多是计算机科学家，在编程语言和计算机图形学领域有贡献。
+
+#### Filter, 705
+**过滤器，705**
+解释：过滤器是一种处理数据流的机制，通过特定条件筛选和处理数据项，广泛应用于数据处理和编程语言中。
+
+#### Final, Java, 233, 553–556
+**final，Java，233，553–556**
+解释：`final` 是 Java 语言中的关键字，用于声明不可变的变量、方法或类。
+
+#### Finalization, 635
+**终结，635**
+解释：终结是指对象生命周期结束时执行的清理操作，通常在垃圾回收机制中实现。
+
+#### Finalize methods, 553
+**终结方法，553**
+解释：终结方法是 Java 中的 `finalize` 方法，用于在对象被垃圾回收前执行清理操作。
+
+#### Finally clauses, 612, 652–653
+**finally 子句，612，652–653**
+解释：`finally` 子句是异常处理结构的一部分，无论是否发生异常，都会执行 `finally` 中的代码。
+
+#### Finite automata, 171
+**有限自动机，171**
+解释：有限自动机是一种数学模型，用于描述具有有限状态的计算系统，广泛应用于计算理论和编译器设计。
+
+#### Finite mappings, 260
+**有限映射，260**
+解释：有限映射是指将有限集合中的每个元素映射到另一个有限集合中的元素的函数。
+
+#### Firm coercion, 74
+**强制转换，74**
+解释：强制转换是指在编程中强制将一个数据类型转换为另一种数据类型的操作。
+
+#### First-order predicate calculus, 729
+**一阶谓词演算，729**
+解释：一阶谓词演算是一种逻辑系统，用于表达和推理关于对象及其关系的陈述，是逻辑和计算机科学的基础。
+
+#### Fixed heap-dynamic arrays, 262
+**固定堆动态数组，262**
+解释：固定堆动态数组是指在堆内存中分配但大小固定的数组，允许动态分配但不允许大小变化。
+
+#### Fixed stack-dynamic arrays, 262
+**固定栈动态数组，262**
+解释：固定栈动态数组是指在栈内存中分配但大小固定的数组，生命周期随栈帧变化。
+
+#### Flex arrays, 74
+**灵活数组，74**
+解释：灵活数组是指大小可动态调整的数组，提供更高的灵活性和内存利用率。
+
+#### Float
+**浮点数**
+解释：浮点数是计算机科学中的一种数据类型，用于表示具有小数部分的实数。
+
+- **in C, 510**
+  **在 C 语言中，510**
+  解释：C 语言中的 `float` 类型用于表示单精度浮点数。
+- **in C#, 498**
+  **在 C# 中，498**
+  解释：C# 语言中的 `float` 类型用于表示单精度浮点数。
+- **introduction to, 15**
+  **介绍，15**
+  解释：浮点数的基本概念和应用。
+- **in type checking, 302–303**
+  **在类型检查中，302–303**
+  解释：浮点数在类型检查中的处理方法。
+- **in type conversions, 329–332**
+  **在类型转换中，329–332**
+  解释：浮点数在不同数据类型之间转换的方法和规则。
+
+#### Floating-point data types, 247–248, 476
+**浮点数据类型，247–248，476**
+解释：浮点数据类型用于表示具有小数部分的数值，包含单精度和双精度两种形式。
+
+#### Floating-point operations, 42, 68
+**浮点运算，42，68**
+解释：浮点运算是指计算机对浮点数进行的各种数学运算，包括加减乘除等。
+
+#### FLOW-MATIC, 59
+**FLOW-MATIC，59**
+解释：FLOW-MATIC 是一种早期的编程语言，是 COBOL 的前身之一，专为商业数据处理设计。
+
+#### FLPL (Fortran List Processing Language), 48
+**Fortran 列表处理语言（FLPL），48**
+解释：FLPL 是 Fortran 语言的扩展，用于处理列表数据结构。
+
+#### Flynn, Michael J., 578
+**迈克尔·J·弗林，578**
+解释：迈克尔·J·弗林是计算机科学家，以其提出的弗林分类法（Flynn's taxonomy）而闻名，该分类法用于描述计算机系统的并行处理能力。
+
+Here are the translations with explanations:
+
+- **in selection statements, 153–154**
+  - **选择语句中，153–154**
+  - 在编程中，指在条件语句（如if语句）中执行的操作。数字“153–154”可能指涉及这些语句的具体段落或页面。
+
+- **in sequences, 152–153**
+  - **在序列中，152–153**
+  - 在编程中，指一系列按顺序执行的操作或语句。数字“152–153”可能指涉及序列处理或操作的具体段落或页面。
+
+- **weakest preconditions and, 149–150**
+  - **最弱前置条件和，149–150**
+  - 最弱前置条件（weakest preconditions）是指在程序语义中，一个语句执行前必须满足的最弱的条件。数字“149–150”可能指相关概念或算法的具体段落或页面。
+
+- **Inferencing process, 740–743**
+  - **推理过程，740–743**
+  - 推理过程是指通过逻辑推理或推导从已知事实得出结论的过程。数字“740–743”可能指相关推理过程的具体段落或页面。
+
+- **Infix operators, 319**
+  - **中缀运算符，319**
+  - 中缀运算符是指位于操作数之间的运算符，如加法和乘法运算符。数字“319”可能指这些运算符的具体段落或页面。
+
+- **Information hiding**
+  - **信息隐藏**
+  - 信息隐藏是指在软件设计中通过封装实现的将实现细节隐藏起来，仅向外界暴露必要的接口。在不同编程语言中（如Ada、C#、C++、Objective-C和Ruby）都有相关实现。
+
+如果您需要进一步探讨或有其他术语需要翻译和解释，请告诉我！
+
+### 中文翻译及解释
+
+#### Generic subprograms
+**泛型子程序**
+解释：泛型子程序是一种编程技术，允许在子程序中使用类型参数，使其能够处理多种数据类型。
+
+- **in C# 2005, 427**
+  **在 C# 2005 中，427**
+  解释：C# 2005 引入了泛型子程序，增强了类型安全性和代码重用性。
+  
+- **in C++, 423–425**
+  **在 C++ 中，423–425**
+  解释：C++ 中的模板机制实现了泛型子程序，支持类型参数化。
+  
+- **in F#, 427–428**
+  **在 F# 中，427–428**
+  解释：F# 中的泛型子程序通过类型参数实现，支持函数式编程风格。
+  
+- **introduction to, 397, 422–423**
+  **介绍，397，422–423**
+  解释：泛型子程序的基本概念和应用介绍。
+  
+- **in Java 5.0, 425–426**
+  **在 Java 5.0 中，425–426**
+  解释：Java 5.0 引入了泛型，支持在类和方法中使用类型参数。
+
+#### German Society for Applied Mathematics and Mechanics (GAMM), 53
+**德国应用数学和力学协会 (GAMM)，53**
+解释：GAMM 是一个致力于应用数学和力学研究的学术组织，推动相关领域的发展。
+
+#### getPriority methods, 606
+**getPriority 方法，606**
+解释：`getPriority` 方法用于获取线程或任务的优先级。
+
+#### Getter methods, 564
+**获取器方法，564**
+解释：获取器方法是用于访问对象属性值的公共方法，通常用于封装和保护数据。
+
+#### Glennie, Alick E., 42–43
+**Alick E. Glennie，42–43**
+解释：Alick E. Glennie 是计算机科学家，开发了第一种编译器编程语言。
+
+#### Global scope, 224–227
+**全局作用域，224–227**
+解释：全局作用域是指变量或函数在整个程序中可见的范围，不受局部作用域限制。
+
+#### GNOME, 31
+**GNOME，31**
+解释：GNOME 是一个开源的桌面环境，用于提供图形用户界面（GUI）和用户体验。
+
+#### Go, 91
+**Go 语言，91**
+解释：Go 是一种由 Google 开发的编程语言，注重简洁性、高效性和并发编程。
+
+#### Goals, 739–740
+**目标，739–740**
+解释：目标是指逻辑编程中的查询或命题，需要被证明或满足。
+
+#### Google, 91
+**谷歌，91**
+解释：谷歌是一家全球领先的科技公司，以其搜索引擎和多种互联网服务而闻名。
+
+#### Gosling, James, 92
+**詹姆斯·高斯林，92**
+解释：詹姆斯·高斯林是 Java 编程语言的创始人，对现代编程语言的发展有重要影响。
+
+#### goto, 195–197
+**goto 语句，195–197**
+解释：`goto` 语句是编程语言中的一种控制流语句，用于无条件跳转到代码中的指定位置，但因易导致混乱的程序结构而不推荐使用。
+
+#### GPSS (General Purpose Simulation System), 22
+**通用模拟系统 (GPSS)，22**
+解释：GPSS 是一种用于模拟离散事件系统的编程语言，广泛应用于工业工程和运筹学。
+
+#### Grammars
+**语法**
+解释：语法是定义编程语言结构和规则的形式系统。
+
+- **ambiguous, 122–123**
+  **二义性语法，122–123**
+  解释：二义性语法是指存在多种解析树的语法，同一字符串可以有多个解析结果。
+  
+- **attribute. see Attribute grammars**
+  **属性。参见属性文法**
+  解释：属性文法是扩展的语法形式，包含语法规则和属性计算规则。
+  
+- **context-free, 117–118**
+  **上下文无关语法，117–118**
+  解释：上下文无关语法是一种语法形式，规则的应用不依赖于上下文。
+  
+- **derivations and, 119–121**
+  **推导，119–121**
+  解释：推导是根据语法规则生成字符串的过程。
+  
+- **LL grammar class, 187–190**
+  **LL 语法类，187–190**
+  解释：LL 语法是一种适合自顶向下解析的语法形式。
+  
+- **recognizers and, 132**
+  **识别器，132**
+  解释：识别器是用于判断字符串是否符合某种语法的算法或程序。
+  
+- **unambiguous, 125–129**
+  **无二义性语法，125–129**
+  解释：无二义性语法是指每个字符串只有唯一的解析树。
+  
+- **van Wijngaarden, 74**
+  **范·维金加登语法，74**
+  解释：范·维金加登语法是一种复杂的形式语法，用于定义高级编程语言。
+
+#### Graphical user interfaces (GUIs). see GUIs (graphical user interfaces)
+**图形用户界面（GUI）。参见 GUI（图形用户界面）**
+解释：GUI 是一种用户界面，通过图形元素和视觉反馈与用户进行交互。
+
+#### Griesemer, Robert, 91
+**罗伯特·格里斯默，91**
+解释：罗伯特·格里斯默是 Go 语言的共同开发者之一，对语言设计和实现有重要贡献。
+
+#### Griswold, R.E., 72
+**R.E. 格里斯沃尔德，72**
+解释：R.E. 格里斯沃尔德是 Icon 编程语言的创始人之一，在编程语言设计领域有重要贡献。
+
+#### Guarded commands, 376–379, 593
+**守护命令，376–379，593**
+解释：守护命令是一种编程结构，包含条件和命令，只有在条件为真时才执行命令。
+
+#### Guards, 586
+**守护条件，586**
+解释：守护条件是守护命令中的条件部分，用于控制命令的执行。
+
+#### GUIs (graphical user interfaces)
+**图形用户界面（GUI）**
+解释：GUI 是通过图形元素（如窗口、按钮等）与用户进行交互的界面，提供更直观和友好的用户体验。
+
+- **defined, 655**
+  **定义，655**
+  解释：图形用户界面的定义和基本概念。
+  
+- **in Delphi, 90**
+  **在 Delphi 中，90**
+  解释：Delphi 编程语言中提供了丰富的 GUI 开发工具和库。
+  
+- **UNIX and, 31**
+  **UNIX 与 GUI，31**
+  解释：UNIX 系统中的 GUI 发展历史和相关工具，如 X Window 系统。
+
+Here's the translation with explanations:
+
+- **PHP vs., 99**
+  - **PHP与，99**
+  - 这可能指向对PHP编程语言与其他内容进行比较的部分，数字“99”可能指特定页码或段落。
+
+- **pure interpretation in, 28**
+  - **纯解释在，28**
+  - 在编程语言实现中，纯解释指程序直接通过解释器执行而非编译成机器码。数字“28”可能指相关解释器实现的具体段落或页面。
+
+- **relational operators in, 333**
+  - **关系运算符在，333**
+  - 在编程语言中，关系运算符用于比较两个值的大小或关系。数字“333”可能指关于这些运算符的具体段落或页面。
+
+- **JIT (Just-in-Time). see Just-in-Time ( JIT) compilers**
+  - **JIT（即时编译）。见 Just-in-Time（ JIT）编译器**
+  - JIT是即时编译的缩写，指在运行时将程序代码编译成机器码。这是一种优化执行速度的技术。
+
+- **Jobs, Steve, 90**
+  - **乔布斯，史蒂夫，90**
+  - 这可能指涉及史蒂夫·乔布斯的相关内容，数字“90”可能指特定页码或段落。
+
+- **join methods, 604–606**
+  - **连接方法，604–606**
+  - 在并发编程中，连接方法指协调和同步线程或任务的方式。数字“604–606”可能指相关方法或技术的具体段落或页面。
+
+- **JOVIAL, 55**
+  - **JOVIAL，55**
+  - JOVIAL是一种编程语言，主要用于航空和军事系统。数字“55”可能指JOVIAL相关内容的特定页码或段落。
+
+- **JSP, 105–106**
+  - **JSP，105–106**
+  - JSP是Java服务器页面的缩写，用于创建动态网页。数字“105–106”可能指JSP相关内容的具体段落或页面。
+
+- **JSTL (Java Server Pages Standard Tag Library), 22, 105–106**
+  - **JSTL（Java服务器页面标准标签库），22，105–106**
+  - JSTL是Java服务器页面的标准标签库，用于简化和增强JSP页面的开发。数字“22，105–106”可能指相关JSTL库的具体段落或页面。
+
+如果您需要进一步的帮助或其他术语的翻译和解释，请告诉我！
+
+多重赋值语句，
+340
+多重继承，527，531–532
+多指令多数据 (MIMD) 计算机，
+578
+多重选择语句
+设计问题，354–355
+示例，355–358
+实现，358–359
+使用 if，360–362
+多处理器，577–579
+多线程程序，579–580
+N
+名称类型等价，305
+命名常量，232–234
+名称
+设计问题，205
+封装构造，
+513–517
+形式，205–206
+介绍，204–205
+关键字，206
+保留字和，206–207
+特殊字， 206–207
+摘要，234–235
+变量，208
+变量与，207–209
+缩小类型转换，329
+国家物理实验室，69
+自然操作语义，140
+Naur，Peter，55–56，117
+NCC（挪威计算中心），72
+否定问题，Prolog，
+754–756
+C# 中的嵌套类，558
+Java 中的嵌套类，555–556
+面向对象编程中的嵌套类，533
+嵌套列表结构，49
+嵌套子程序，397–399，
+454–460
+嵌套类，533
+嵌套选择器，351–354
+嵌套深度，455
+.NET 语言中的程序集， 512–513
+计算平台，89
+演化，101
+F# as，712
+简介，22
+JIT 系统，30
+JScript.NET as，97
+Microsoft Visual Studio .NET
+as，31
+编程环境，31
+NetBeans，31
+Netscape，97
+von Neumann，John，18
+von Neumann 架构
+命令式编程语言，204
+简介，18–19
+LR 解析，195
+von Neumann 瓶颈，27
+新
+对象分配，532
+C#，498，557
+C++，486
+数据类型，263
+堆管理，298
+Java，552
+Ruby，564
+新编程语言（NPL）， 69
+Newell，Allen，47
+NeXT，90
+next 迭代器，373
+Nil 值，49，289
+非阻塞同步，612
+非转换强制类型转换，
+304
+非本地，227
+非严格编程语言，
+710
+非终结符，118，122
+挪威计算中心 (NCC)，72
+NOT 运算符，333–334
+not 运算符，755–756
+NPL（新编程语言），69
+NULL，691–692
+数字数据类型，246–249
+数字谓词函数，685
+Nygaard，Kristen，72–73
+O
+对象切片，532–533
+Objective-C
+抽象数据类型在，
+490–496
+C++ 和，90
+动态绑定在，551–552
+封装构造在，
+490–492
+信息隐藏在，492–493
+面向对象编程
+在，549–552
+面向对象构造，566–568
+面向对象语言
+对象分配在，
+532–533
+对象释放在，
+532–533
+设计问题，529–534
+动态绑定在，533
+对象的独占性在，
+529–530
+对象的初始化在，
+533–534
+多重继承在，
+531–532
+嵌套类在，533
+单继承在，531–532
+子类与子类型在，
+530–531
+面向对象编程
+在 Ada， 558–563
+将方法调用绑定到
+方法，566–568
+索引 787
+在 C# 中，556–558
+在 C++ 中，一般来说，538–539​​，
+547–549
+在 C++ 中动态绑定，
+544–547
+在 C++ 中继承，539–544
+子包，562
+动态绑定，527–529
+继承，525–527
+实例数据存储，566
+简介，21
+在 Java 中，552–556
+在 Objective-C 中，549–552
+在 Ruby 中，563–565
+在 Smalltalk 中，85–87，534–538
+Stroustrup 上，536
+摘要，569–570
+支持，一般来说，
+524–525
+对象
+抽象数据类型，475
+定义，245–246
+排他性，529–530
+初始化，533–534
+面向对象编程，一般来说，525–526
+OCaml，52
+操作数评估顺序，
+325–328
+操作语义
+评估，142
+介绍，139–140
+过程，140
+运算符评估顺序，
+319–325
+运算符重载，9，328–329
+运算符优先级，123–126
+运算符优先级规则，320
+优化，17
+否则语句，336
+或运算符，333–336
+序数数据类型
+枚举类型，255–258
+实现， 259
+整数，255
+简介，125–129，255
+子范围，258–259
+正交性，9–12，73
+其他，265，637
+否则，708，711
+Out 模式参数传递，400
+输出函数，684
+溢出，332
+重载文字，256–257
+重载运算符，328–329
+重载子程序，397，
+421–422
+重写方法，526–527
+重写命令，557–558
+P
+包范围，515
+包规范，482–484
+包，482–485，562
+成对不相交测试， 188
+Papert，Seymour，86
+编程范式，
+536–537
+参数配置文件，390
+参数化抽象数据类型
+在 Ada 中，503–504
+在 C# 2005 中，509
+在 C++ 中，505–506
+简介，503–509
+在 Java 中，506–509
+常用语言的参数传递方法，
+406–408
+示例，414–417
+实现模型，
+400–405
+实现，405–406
+简介，399–400
+语义模型，400
+多维数组中的参数，
+410–413
+用于子程序，391–395
+子程序为，417–419
+参数多态性，423
+参数，393
+父类，526–527
+括号，323–324
+解析树，25，121–122
+解析
+自下而上，180，190–192
+复杂性，180–181
+简介，177–178
+LL语法类，
+187–190
+LR解析器，193–197
+问题集，200–201
+编程练习，201
+递归下降，181–187
+复习问题，
+199–200
+移位归约算法，
+192–193
+摘要，197–199
+自上而下，179
+部分共同
+元组，280–281
+图灵机，678
+Turner，David，52
+二进制补码，247
+双向选择语句
+子句形式，350–351
+控制表达式，350
+设计问题，350
+嵌套选择器，351–354
+选择器表达式，354
+类型
+Ada 枚举类型，258
+Ada 等价，306–307
+Ada 联合类型，286，289
+F#，287
+ML，281
+类型，定义，209
+类型绑定
+动态，212–214
+简介，210
+静态，211–212
+类型检查
+简介，15
+概述，302–303
+参数， 408–410
+类型转换，329–332
+类型枚举类型，257，261
+类型等价，304–308
+类型错误，303
+类型推断，211
+typedef，308
+U
+无歧义语法，123–126
+一元赋值数据类型，
+338–339
+一元运算符，319
+未检查异常，650
+无条件分支语句，
+375–376
+undef，145–147
+未定义，264
+下溢，332
+Ungar，David，548
+Unicode，249
+统一，733，759
+未实例化的变量，737
+union，285，308
+Ada 中的联合类型，285–287
+设计问题for，285
+discriminated vs. free unions
+in，285
+evaluation of，288
+in F#，287–288
+implementation of，289
+introduction to，284
+unit-level concurrency。参见
+subprogram-level
+UNIVAC，40–41
+UNIVAC Scientific Exchange（USE），53
+University of Aix-Marseille，79，
+736
+University of Edinburgh，79，736
+University of Utah，85
+UNIX
+programming environment of，31
+readability of，13
+systems software for，6–7
+Unlimited extensity，431
+unsafe，C#，296
+USE（UNIVAC Scientific Exchange），53
+use clause，484，516
+user-defined
+abstract data types，476–478
+ordering data types。参见序数
+数据类型
+重载数据类型，430
+用户定位循环控制机制，370–371
+使用指令，515
+V
+val 语句，341，704–706
+值，209
+值类型，290
+var 声明，211–212
+变量
+地址，208
+定义，245
+名称，208
+名称与，207–209
+类型，209
+值，209
+可变大小单元，301
+VAX 小型计算机，10
+VB（Visual BASIC），13
+VDL（维也纳定义语言），142
+矢量处理器，578
+维也纳定义语言（VDL），142
+虚拟方法表（vtable），
+566–568
+虚拟保留字，
+545，557
+可见变量，218
+Visual BASIC (VB)，13，65–67
+可视化语言，22
+Visual Studio，22，31
+void，11，389–393
+void * 指针，295
+vtables（虚拟方法表），
+566–568
+W
+等待信号量，586–590
+Wall，Larry，95
+最弱的先决条件
+在赋值语句中，
+150–152
+在公理语义中，
+149–150
+在逻辑预测试循环中，
+154–158
+在序列中，152–153
+Web 软件，7
+Weinberger，Peter，95
+定义良好，18
+Wheeler，David J.，42
+when 子句，598–599
+索引795
+while
+用于表达式赋值，
+339
+在 C# 中，616
+在 Java 中，92，609
+在逻辑控制循环中，
+368–370
+循环，154–158
+在短路求值中，
+335
+作为特殊词，12
+语法，114–115
+在用户定位循环控制机制中，371
+Whitaker，Lt. Col. William，81
+扩展类型转换，329
+小部件，655–656
+van Wijngaarden
+语法，74
+通配符类型，426
+Wileden，J. C.，227
+Wilkes，Maurice V.，42
+Windows，66–67
+Wirth，Niklaus，75，379
+with 子句
+在Ada，484
+在 Ada 包中，516，562
+Wolf，A. L.，227
+Woodenman 需求
+文档，82
+包装器类，530
+可写性，13，16
+X
+施乐帕洛阿尔托研究中心（Xerox PARC），86
+XML（可扩展标记语言），104–106
+XSLT（可扩展样式表语言转换），22，104–105
+Y

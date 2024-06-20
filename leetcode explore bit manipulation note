@@ -1,0 +1,847 @@
+https://leetcode.com/explore/learn/card/bit-manipulation/671/bit-manipulation-state-compression/4271/
+
+To convert an integer to its base 7 representation, we need to repeatedly divide the number by 7 and record the remainders. Here's how you can do this in Python:
+
+### Steps:
+1. **Handle the sign**: If the number is negative, remember to add the minus sign later.
+2. **Repeated Division**: Divide the number by 7 and record the remainder.
+3. **Construct the Result**: Build the base 7 representation from the remainders.
+
+### Code:
+
+```python
+def convertToBase7(num):
+    if num == 0:
+        return "0"
+    
+    negative = num < 0
+    num = abs(num)
+    base7 = []
+    
+    while num > 0:
+        base7.append(str(num % 7))
+        num //= 7
+    
+    if negative:
+        base7.append('-')
+    
+    return ''.join(base7[::-1])
+
+# Example usage:
+num1 = 100
+num2 = -7
+
+print(convertToBase7(num1))  # Output: "202"
+print(convertToBase7(num2))  # Output: "-10"
+```
+
+### Explanation:
+1. **Base Case**: If `num` is `0`, return `"0"`.
+2. **Sign Handling**: Check if `num` is negative, and work with its absolute value.
+3. **While Loop**: Use a loop to divide the number by `7`, appending the remainder to a list (`base7`).
+4. **Result Construction**: If the number was negative, append `'-'` to the list. Reverse the list and join to form the base 7 string.
+
+### Example Walkthrough:
+- **Input: 100**
+  - \( 100 \div 7 = 14 \) remainder \( 2 \)
+  - \( 14 \div 7 = 2 \) remainder \( 0 \)
+  - \( 2 \div 7 = 0 \) remainder \( 2 \)
+  - Collect remainders: [2, 0, 2]
+  - Result: "202"
+
+- **Input: -7**
+  - \( 7 \div 7 = 1 \) remainder \( 0 \)
+  - \( 1 \div 7 = 0 \) remainder \( 1 \)
+  - Collect remainders: [0, 1]
+  - Add negative sign: "-10"
+
+This algorithm efficiently converts an integer to its base 7 representation.
+
+To convert an integer to its hexadecimal representation without using built-in library methods, you can use the following steps. This method will handle both positive and negative integers, using two's complement representation for negatives.
+
+### Steps:
+
+1. **Handle the special case**: If the number is `0`, return `"0"`.
+2. **Prepare for conversion**: For negative numbers, use two's complement representation.
+3. **Convert to hexadecimal**: Use repeated division and remainder method.
+4. **Construct the result**: Build the hexadecimal string from the remainders.
+
+### Two's Complement for Negative Numbers:
+- For a 32-bit integer, the two's complement of a negative number `num` can be computed as `num + 2^32`.
+
+### Hexadecimal Conversion:
+- Use the characters `0-9` and `a-f` for digits.
+
+### Implementation:
+
+```python
+def toHex(num):
+    if num == 0:
+        return "0"
+    
+    hex_chars = "0123456789abcdef"
+    result = []
+    
+    # Handle negative numbers using two's complement
+    if num < 0:
+        num += 2**32
+    
+    while num > 0:
+        remainder = num % 16
+        result.append(hex_chars[remainder])
+        num //= 16
+    
+    return ''.join(result[::-1])
+
+# Example usage:
+print(toHex(26))    # Output: "1a"
+print(toHex(-1))    # Output: "ffffffff"
+```
+
+### Explanation:
+
+1. **Base Case**:
+   - If `num` is `0`, return `"0"`.
+
+2. **Two's Complement**:
+   - For negative numbers, convert `num` using the formula `num + 2^32`. This simulates the two's complement representation for a 32-bit signed integer.
+
+3. **Conversion Loop**:
+   - Create a string `hex_chars` containing the hexadecimal characters.
+   - Initialize an empty list `result` to store the hexadecimal digits.
+   - Use a loop to divide the number by `16` and store the remainders in the list.
+   - Convert each remainder to its corresponding hexadecimal character using `hex_chars`.
+
+4. **Result Construction**:
+   - Reverse the `result` list to get the correct order and join the characters to form the final hexadecimal string.
+
+### Example Walkthrough:
+
+- **Input: 26**
+  - \( 26 \div 16 = 1 \) remainder \( 10 \) (which is 'a')
+  - \( 1 \div 16 = 0 \) remainder \( 1 \)
+  - Collect remainders: [10, 1]
+  - Result: "1a"
+
+- **Input: -1**
+  - \( -1 + 2^{32} = 4294967295 \)
+  - \( 4294967295 \div 16 = 268435455 \) remainder \( 15 \) (which is 'f')
+  - Repeat until the number is reduced to \( 0 \), collecting remainders as 'f'.
+  - Result: "ffffffff"
+
+### Conclusion:
+
+This method provides a manual way to convert an integer to its hexadecimal representation, handling both positive and negative numbers using two's complement for negatives. This approach ensures that no built-in library functions for direct conversion are used.
+
+To count the number of set bits (1s) in the binary representation of a positive integer, you can use several methods. Here is a common approach using bitwise operations in Python:
+
+### Approach
+
+1. **Using Bitwise Operations**:
+   - **Bit Manipulation**: Continuously check the least significant bit and shift the number to the right.
+   - **Hamming Weight Algorithm**: This method counts the number of 1s in the binary representation by iteratively shifting the bits and counting the set bits.
+
+### Implementation
+
+```python
+def hammingWeight(n):
+    count = 0
+    while n:
+        count += n & 1  # Increment count if the last bit is 1
+        n >>= 1         # Shift right by 1 to process the next bit
+    return count
+
+# Example usage:
+print(hammingWeight(11))  # Output: 3 (binary 1011 has three 1s)
+print(hammingWeight(128))  # Output: 1 (binary 10000000 has one 1)
+print(hammingWeight(255))  # Output: 8 (binary 11111111 has eight 1s)
+```
+
+### Explanation
+
+1. **Initialization**:
+   - Start with `count` set to 0, which will keep track of the number of 1 bits.
+
+2. **Loop Until All Bits are Processed**:
+   - Use `n & 1` to check if the least significant bit (LSB) is 1.
+   - If it is, increment the `count`.
+   - Use `n >>= 1` to right shift the bits of `n`, effectively dividing `n` by 2, and move to the next bit.
+
+3. **Return the Count**:
+   - The loop continues until all bits of `n` have been processed (i.e., `n` becomes 0).
+   - Return the total count of 1 bits.
+
+### Alternative Approaches
+
+1. **Brian Kernighan’s Algorithm**:
+   - This algorithm reduces the number of operations needed to count the 1 bits.
+   - It works by turning off the rightmost set bit one at a time.
+
+```python
+def hammingWeight(n):
+    count = 0
+    while n:
+        n &= (n - 1)  # Turn off the rightmost 1 bit
+        count += 1
+    return count
+
+# Example usage:
+print(hammingWeight(11))  # Output: 3
+print(hammingWeight(128))  # Output: 1
+print(hammingWeight(255))  # Output: 8
+```
+
+### Explanation of Brian Kernighan’s Algorithm
+
+1. **Initialization**:
+   - Start with `count` set to 0.
+
+2. **Loop While n is Not Zero**:
+   - Each iteration uses `n &= (n - 1)` to turn off the rightmost 1 bit.
+   - Increment the `count` by 1 each time a bit is turned off.
+
+3. **Return the Count**:
+   - Continue the loop until `n` becomes 0.
+   - Return the total count of 1 bits.
+
+### Conclusion
+
+Both methods are efficient for counting the number of set bits in an integer. The bitwise method is straightforward and intuitive, while Brian Kernighan’s algorithm is more efficient in terms of the number of operations, especially when the number of set bits is small relative to the number of total bits.
+
+### References
+- [GeeksforGeeks - Count set bits in an integer](https://www.geeksforgeeks.org/count-set-bits-in-an-integer/)
+- [Wikipedia - Hamming weight](https://en.wikipedia.org/wiki/Hamming_weight)
+
+To reverse the bits of a given 32-bit unsigned integer, you can use bit manipulation. The idea is to swap the bits from the two ends towards the center. Here’s a step-by-step approach to accomplish this:
+
+### Approach
+
+1. **Initialize the Result**: Start with a result of `0`.
+2. **Iterate Over All Bits**: For each bit in the 32-bit integer, do the following:
+   - Shift the result to the left to make room for the next bit.
+   - Extract the least significant bit (LSB) of the input number and add it to the result.
+   - Shift the input number to the right to process the next bit.
+3. **Return the Result**: After processing all 32 bits, the result will be the reversed bit pattern.
+
+### Implementation in Python
+
+```python
+def reverseBits(n):
+    result = 0
+    for i in range(32):
+        result <<= 1        # Shift result left to make room for the next bit
+        result |= n & 1     # Extract the LSB of n and add it to the result
+        n >>= 1             # Shift n right to process the next bit
+    return result
+
+# Example usage:
+print(reverseBits(43261596))  # Output: 964176192
+# Explanation: 43261596 in binary is 00000010100101000001111010011100
+# After reversing the bits, we get 00111001011110000010100101000000 which is 964176192 in decimal.
+```
+
+### Explanation
+
+1. **Initialize `result` to 0**:
+   - This will hold the reversed bits.
+
+2. **Loop Through Each Bit**:
+   - **Shift `result` Left**: `result <<= 1` shifts the bits of `result` to the left by one position.
+   - **Extract LSB of `n`**: `n & 1` extracts the least significant bit of `n`.
+   - **Add to `result`**: `result |= n & 1` sets the least significant bit of `result` to the extracted bit.
+   - **Shift `n` Right**: `n >>= 1` shifts the bits of `n` to the right by one position, discarding the bit that was just processed.
+
+3. **Return the Result**:
+   - After the loop, `result` contains the reversed bits of the original number.
+
+### Detailed Example
+
+For the input number `43261596` (binary `00000010100101000001111010011100`):
+
+- **Initial**: `n = 43261596`, `result = 0`
+- **Step 1**: `n = 21630798`, `result = 0`
+- **Step 2**: `n = 10815399`, `result = 1`
+- ...
+- **Final**: `n = 0`, `result = 964176192` (binary `00111001011110000010100101000000`)
+
+### References
+- [GeeksforGeeks - Reverse bits of a given 32 bits unsigned integer](https://www.geeksforgeeks.org/reverse-bits-of-a-given-32-bits-unsigned-integer/)
+- [LeetCode - Reverse Bits](https://leetcode.com/problems/reverse-bits/)
+- [Wikipedia - Bit Manipulation](https://en.wikipedia.org/wiki/Bit_manipulation)
+
+### Shift Operations in Computing
+
+Shift operations are fundamental bitwise operations in computing that move bits to the left or right within a binary representation of a number. These operations are used in various algorithms for efficiency and simplicity.
+
+### Types of Shift Operations
+
+1. **Logical Shift**:
+   - **Left Logical Shift (<<)**:
+     - Shifts all bits in a binary number to the left by a specified number of positions.
+     - Zeroes are shifted into the rightmost positions.
+     - **Example**: `0010 << 1` becomes `0100`.
+     - **Sources**: [GeeksforGeeks - Bitwise Operators](https://www.geeksforgeeks.org/bitwise-operators-in-c-cpp/), [Programiz - Bitwise Operators](https://www.programiz.com/c-programming/bitwise-operators).
+
+   - **Right Logical Shift (>>)**:
+     - Shifts all bits in a binary number to the right by a specified number of positions.
+     - Zeroes are shifted into the leftmost positions.
+     - **Example**: `0100 >> 1` becomes `0010`.
+     - **Sources**: [GeeksforGeeks - Bitwise Operators](https://www.geeksforgeeks.org/bitwise-operators-in-c-cpp/), [Programiz - Bitwise Operators](https://www.programiz.com/c-programming/bitwise-operators).
+
+2. **Arithmetic Shift**:
+   - **Left Arithmetic Shift (<<)**:
+     - Identical to the left logical shift; shifts bits to the left and fills the rightmost bits with zeroes.
+     - **Example**: `0010 << 1` becomes `0100`.
+     - **Sources**: [Wikipedia - Bitwise Operations](https://en.wikipedia.org/wiki/Bitwise_operation), [GeeksforGeeks - Bitwise Operators](https://www.geeksforgeeks.org/bitwise-operators-in-c-cpp/).
+
+   - **Right Arithmetic Shift (>>)**:
+     - Shifts all bits to the right but preserves the sign bit (the leftmost bit).
+     - For positive numbers, it behaves like a logical shift.
+     - For negative numbers, it replicates the sign bit in the leftmost positions.
+     - **Example**: `1100 >> 1` becomes `1110` (assuming a sign bit extension for negative numbers).
+     - **Sources**: [Wikipedia - Bitwise Operations](https://en.wikipedia.org/wiki/Bitwise_operation), [GeeksforGeeks - Bitwise Operators](https://www.geeksforgeeks.org/bitwise-operators-in-c-cpp/).
+
+3. **Circular Shift** (also known as rotate):
+   - **Left Circular Shift (Rotate Left)**:
+     - Rotates bits to the left. Bits shifted out from the leftmost positions are reintroduced on the right.
+     - **Example**: `1011` rotated left becomes `0111`.
+     - **Sources**: [GeeksforGeeks - Circular Shift](https://www.geeksforgeeks.org/circular-left-right-shift/).
+
+   - **Right Circular Shift (Rotate Right)**:
+     - Rotates bits to the right. Bits shifted out from the rightmost positions are reintroduced on the left.
+     - **Example**: `1011` rotated right becomes `1101`.
+     - **Sources**: [GeeksforGeeks - Circular Shift](https://www.geeksforgeeks.org/circular-left-right-shift/).
+
+### Applications of Shift Operations
+
+1. **Multiplication and Division**:
+   - **Left Shift**: Multiplying by powers of two. `x << n` is equivalent to `x * 2^n`.
+   - **Right Shift**: Dividing by powers of two. `x >> n` is equivalent to `x / 2^n`.
+
+2. **Bit Masking**:
+   - Creating masks to extract or manipulate specific bits within a number.
+   - **Example**: `n & 1` checks if the least significant bit of `n` is set.
+
+3. **Cryptography**:
+   - Used in various encryption algorithms to provide bit-level manipulation.
+   - **Example**: Rotations used in hash functions and encryption standards like DES (Data Encryption Standard).
+
+4. **Efficiency in Algorithms**:
+   - **Example**: Fast algorithms for finding powers of two, determining even/odd, etc.
+
+### References
+- [GeeksforGeeks - Bitwise Operators](https://www.geeksforgeeks.org/bitwise-operators-in-c-cpp/)
+- [Programiz - Bitwise Operators](https://www.programiz.com/c-programming/bitwise-operators)
+- [Wikipedia - Bitwise Operations](https://en.wikipedia.org/wiki/Bitwise_operation)
+- [GeeksforGeeks - Circular Shift](https://www.geeksforgeeks.org/circular-left-right-shift/)
+
+Shift operations are powerful tools in programming that allow for efficient manipulation of data at the bit level. Understanding and using these operations can significantly optimize performance and simplify complex algorithms.
+
+To compute the sum of two integers without using the `+` and `-` operators, you can utilize bitwise operations. This method leverages the properties of XOR and AND operations, along with bit shifting, to achieve the desired result. Here is a step-by-step explanation of the approach:
+
+### Explanation
+
+1. **XOR Operation (`a ^ b`)**:
+   - The XOR operation will give you the sum of `a` and `b` without considering the carry. This works because `1 ^ 1 = 0` (no carry), `0 ^ 0 = 0` (no carry), `1 ^ 0 = 1`, and `0 ^ 1 = 1`.
+
+2. **AND Operation and Left Shift (`(a & b) << 1`)**:
+   - The AND operation followed by a left shift will give you the carry. This is because `1 & 1 = 1` (carry), `0 & 0 = 0`, `1 & 0 = 0`, and `0 & 1 = 0`. Shifting left by one position moves the carry to the correct position for the next addition.
+
+3. **Iterate Until No Carry**:
+   - Repeat the above steps until there is no carry left. Each iteration will resolve one level of carry until the sum is completely calculated.
+
+### Implementation in Python
+
+```python
+def getSum(a, b):
+    # 32 bits integer max
+    MAX = 0x7FFFFFFF
+    # Mask to get 32 bits results
+    mask = 0xFFFFFFFF
+    
+    while b != 0:
+        # Calculate sum without considering carry
+        sum_ = (a ^ b) & mask
+        # Calculate the carry
+        carry = ((a & b) << 1) & mask
+        # Update a and b
+        a, b = sum_, carry
+    
+    # If a is negative, convert it back from 2's complement form
+    return a if a <= MAX else ~(a ^ mask)
+
+# Example usage:
+print(getSum(1, 2))  # Output: 3
+print(getSum(-2, 3))  # Output: 1
+print(getSum(-1, 1))  # Output: 0
+```
+
+### Detailed Steps
+
+1. **Initialization**:
+   - Define constants `MAX` for the maximum 32-bit integer value and `mask` for 32-bit masking.
+
+2. **Loop Until No Carry**:
+   - Use a while loop to repeatedly compute the sum and carry until `b` becomes `0`.
+   - **Sum Calculation**: `a ^ b` gives the sum without carry.
+   - **Carry Calculation**: `(a & b) << 1` calculates the carry.
+   - Update `a` to the sum and `b` to the carry for the next iteration.
+
+3. **Handle Negative Results**:
+   - If `a` exceeds the maximum 32-bit positive integer value, convert it back from two's complement form to a negative integer.
+
+### References
+
+- [GeeksforGeeks - Add two numbers without using arithmetic operators](https://www.geeksforgeeks.org/add-two-numbers-without-using-arithmetic-operators/)
+- [LeetCode - Sum of Two Integers](https://leetcode.com/problems/sum-of-two-integers/)
+- [Wikipedia - Two's Complement](https://en.wikipedia.org/wiki/Two%27s_complement)
+
+This method is efficient and demonstrates the power of bitwise operations to perform arithmetic calculations without using conventional arithmetic operators.
+
+To generate an n-bit Gray code sequence, you can use the properties of Gray code where each subsequent number in the sequence differs from the previous one by exactly one bit. One common way to generate Gray code is through a recursive approach, leveraging the fact that the Gray code sequence for n bits can be constructed from the sequence for n-1 bits.
+
+### Steps to Generate n-bit Gray Code
+
+1. **Base Case**: For n = 1, the Gray code sequence is [0, 1].
+2. **Recursive Construction**: 
+   - Generate the Gray code sequence for n-1 bits.
+   - Reflect the sequence (i.e., reverse the order).
+   - Prefix the original sequence with `0` and the reflected sequence with `1`.
+   - Concatenate these two sequences.
+
+### Implementation in Python
+
+Here's a Python function to generate the n-bit Gray code sequence:
+
+```python
+def grayCode(n):
+    if n == 0:
+        return [0]
+    result = []
+    num_elements = 1 << n  # 2^n elements
+    for i in range(num_elements):
+        result.append(i ^ (i >> 1))
+    return result
+
+# Example usage:
+print(grayCode(2))  # Output: [0, 1, 3, 2]
+print(grayCode(3))  # Output: [0, 1, 3, 2, 6, 7, 5, 4]
+```
+
+### Explanation
+
+1. **Base Case**:
+   - For n = 0, the sequence is `[0]`.
+
+2. **Iterative Construction**:
+   - Calculate the number of elements in the sequence, which is `2^n` or `1 << n`.
+   - For each number `i` from `0` to `2^n - 1`:
+     - Compute the Gray code using the formula `i ^ (i >> 1)`.
+     - Append the result to the sequence.
+
+### Properties of Gray Code
+
+- **Uniqueness**: Each number appears exactly once.
+- **Single-bit Difference**: Each number differs from the previous one by exactly one bit.
+- **Wrap Around**: The first and last numbers in the sequence differ by exactly one bit.
+
+### Additional Information
+
+The above method utilizes the mathematical property of Gray codes. The expression `i ^ (i >> 1)` generates the i-th Gray code for n bits. This method is efficient and directly generates the desired sequence without the need for recursion or complex manipulations.
+
+### References
+- [GeeksforGeeks - Generating n-bit Gray Code](https://www.geeksforgeeks.org/generate-n-bit-gray-codes/)
+- [Wikipedia - Gray Code](https://en.wikipedia.org/wiki/Gray_code)
+- [LeetCode - Gray Code Problem](https://leetcode.com/problems/gray-code/)
+
+This approach ensures that the Gray code sequence is generated correctly and efficiently for any given `n`.
+
+To solve the problem of finding the bitwise AND of all numbers in a given range \([left, right]\), we can use an efficient approach that leverages the properties of bitwise operations and common patterns in binary numbers. The key insight is to observe how the bits change across the numbers in the range.
+
+### Key Insights
+
+1. **Common Prefix**:
+   - The result of the bitwise AND operation over a range of numbers depends primarily on the common prefix of their binary representations.
+   - As you move from `left` to `right`, certain bits will flip from `0` to `1` and vice versa. The bits that remain unchanged throughout the range determine the result.
+
+2. **Shifting Technique**:
+   - Shift both `left` and `right` rightwards until they are the same. Keep track of the number of shifts.
+   - The common bits (those that are the same in both `left` and `right` after shifting) form the prefix of the result.
+   - Shift the common prefix back to the left by the number of shifts to get the final result.
+
+### Steps
+
+1. Initialize `shift` to 0.
+2. While `left` is not equal to `right`:
+   - Right shift both `left` and `right` by 1.
+   - Increment the `shift` count.
+3. Left shift the common prefix (`left` or `right` after they become equal) by the number of shifts to get the result.
+
+### Implementation in Python
+
+```python
+def rangeBitwiseAnd(left, right):
+    shift = 0
+    while left < right:
+        left >>= 1
+        right >>= 1
+        shift += 1
+    return left << shift
+
+# Example usage:
+print(rangeBitwiseAnd(5, 7))  # Output: 4
+print(rangeBitwiseAnd(0, 1))  # Output: 0
+```
+
+### Explanation
+
+1. **Initialize**:
+   - Start with `shift` equal to 0. This counter will keep track of how many times we need to shift the common prefix back.
+
+2. **Finding Common Prefix**:
+   - In the loop, right shift `left` and `right` until they are equal. This process removes the differing least significant bits (LSBs) and brings the common prefix into alignment.
+   - Increment `shift` for each right shift operation.
+
+3. **Reconstruct Result**:
+   - After exiting the loop, `left` (or `right`, since they are now equal) contains the common prefix.
+   - Left shift this prefix back to its original position by the number of shifts recorded in `shift`.
+
+### Complexity
+
+- **Time Complexity**: \(O(\log \text{max})\), where `max` is the maximum value between `left` and `right`. This is because the number of shifts required is proportional to the number of bits in the numbers.
+- **Space Complexity**: \(O(1)\), as the solution uses a constant amount of extra space.
+
+### References
+- [GeeksforGeeks - Bitwise AND of numbers range](https://www.geeksforgeeks.org/bitwise-and-or-of-a-range/)
+- [LeetCode Discuss - Bitwise AND of Numbers Range](https://leetcode.com/problems/bitwise-and-of-numbers-range/discuss/56721/bit-operation-solution)
+- [Wikipedia - Bitwise operation](https://en.wikipedia.org/wiki/Bitwise_operation)
+
+This approach ensures efficiency by focusing on the bits that remain consistent across the range and effectively ignoring those that vary.
+
+To solve the problem of counting the number of 1's in the binary representation of numbers from 0 to n, we can use a dynamic programming approach. This method is efficient and leverages previously computed results to build up the solution.
+
+### Approach
+
+1. **Initialization**:
+   - Create an array `ans` of length `n + 1` initialized to zero. This array will store the number of 1's for each index.
+   
+2. **Dynamic Programming Relation**:
+   - Use the relation `ans[i] = ans[i >> 1] + (i & 1)`, where `i >> 1` is `i` divided by 2 (right shift) and `(i & 1)` checks if `i` is odd (adds 1 if true, else 0).
+   - This relation works because the number of 1's in `i` is the same as the number of 1's in `i // 2` plus 1 if `i` is odd.
+
+3. **Iterate and Fill**:
+   - Iterate through all numbers from 1 to n, applying the dynamic programming relation to fill the `ans` array.
+
+### Implementation in Python
+
+```python
+def countBits(n):
+    ans = [0] * (n + 1)
+    for i in range(1, n + 1):
+        ans[i] = ans[i >> 1] + (i & 1)
+    return ans
+
+# Example usage:
+print(countBits(2))  # Output: [0, 1, 1]
+print(countBits(5))  # Output: [0, 1, 1, 2, 1, 2]
+```
+
+### Explanation
+
+1. **Initialization**:
+   - `ans` is initialized to `[0] * (n + 1)`, which creates an array of length `n + 1` filled with zeros.
+
+2. **Dynamic Programming Relation**:
+   - For each `i` from 1 to `n`, calculate `ans[i]` using the formula `ans[i] = ans[i >> 1] + (i & 1)`.
+   - The expression `i >> 1` effectively removes the least significant bit (divides by 2), and `i & 1` checks whether the least significant bit is 1 (if `i` is odd).
+
+3. **Fill the Array**:
+   - Iterate from 1 to `n` and compute the number of 1's for each `i` using the dynamic programming relation, storing the result in `ans[i]`.
+
+### Complexity Analysis
+
+- **Time Complexity**: \(O(n)\). We iterate through each number from 0 to n once, performing a constant amount of work for each number.
+- **Space Complexity**: \(O(n)\). We use an additional array `ans` of size \(n + 1\).
+
+### References
+
+- [GeeksforGeeks - Count total set bits in all numbers from 1 to n](https://www.geeksforgeeks.org/count-total-set-bits-in-all-numbers-from-1-to-n/)
+- [LeetCode - Counting Bits](https://leetcode.com/problems/counting-bits/)
+- [Wikipedia - Bitwise operation](https://en.wikipedia.org/wiki/Bitwise_operation)
+
+This approach efficiently computes the number of set bits for each number in the range \([0, n]\) by leveraging dynamic programming and bitwise operations.
+
+To solve the problem of finding the single number in an array where every element appears twice except for one, we can use a bitwise XOR operation. XOR has several properties that make it ideal for this task:
+
+1. **XOR of a number with itself is 0**: \( a \oplus a = 0 \)
+2. **XOR of a number with 0 is the number itself**: \( a \oplus 0 = a \)
+3. **XOR is commutative and associative**: \( a \oplus b \oplus a = b \oplus (a \oplus a) = b \oplus 0 = b \)
+
+Using these properties, we can XOR all the numbers in the array together. Pairs of numbers will cancel each other out, leaving only the single number.
+
+### Implementation in Python
+
+Here's the code to find the single number using the XOR operation:
+
+```python
+def singleNumber(nums):
+    single = 0
+    for num in nums:
+        single ^= num
+    return single
+
+# Example usage:
+nums = [4, 1, 2, 1, 2]
+print(singleNumber(nums))  # Output: 4
+
+nums = [2, 2, 1]
+print(singleNumber(nums))  # Output: 1
+```
+
+### Explanation
+
+1. **Initialize**: Start with `single` set to 0.
+2. **Iterate through the array**: XOR each number with `single`.
+3. **Result**: After all numbers are XORed, `single` will hold the value of the single number that does not have a duplicate.
+
+### Complexity Analysis
+
+- **Time Complexity**: \(O(n)\), where \(n\) is the number of elements in the array. Each element is XORed exactly once.
+- **Space Complexity**: \(O(1)\). We use a constant amount of extra space (the `single` variable).
+
+### Properties of XOR
+
+- **Commutative and Associative**: This ensures that the order of operations does not matter.
+- **Self-cancellation**: Pairs of identical numbers cancel out to 0.
+
+### References
+
+- [GeeksforGeeks - Find the element that appears once in an array where every other element appears twice](https://www.geeksforgeeks.org/find-the-element-that-appears-once/)
+- [LeetCode - Single Number](https://leetcode.com/problems/single-number/)
+
+This method leverages the XOR operation's unique properties to find the single number in linear time and constant space, meeting the problem's constraints efficiently.
+
+To solve the problem of finding a single number in an array where every element appears three times except for one, we need a more advanced technique than the simple XOR method used for the previous problem. The approach involves bitwise manipulation to count the number of 1s in each bit position across all numbers.
+
+### Approach
+
+1. **Count Bits**:
+   - For each bit position (0 to 31 for a 32-bit integer), count how many numbers have that bit set.
+2. **Modulo Operation**:
+   - If a bit position has a count that is not a multiple of 3, it must contribute to the unique number.
+3. **Reconstruct the Single Number**:
+   - Use the bits that have counts not divisible by 3 to form the unique number.
+
+### Implementation in Python
+
+Here's the code to find the single number using bitwise manipulation:
+
+```python
+def singleNumber(nums):
+    # Initialize an array to store the count of bits
+    bit_counts = [0] * 32
+    
+    # Count the number of 1s in each bit position
+    for num in nums:
+        for i in range(32):
+            bit_counts[i] += (num >> i) & 1
+
+    # Initialize the result
+    result = 0
+    for i in range(32):
+        # If the count is not a multiple of 3, this bit is part of the single number
+        if bit_counts[i] % 3 != 0:
+            # Handle negative numbers
+            if i == 31:
+                result -= (1 << i)
+            else:
+                result |= (1 << i)
+
+    return result
+
+# Example usage:
+nums = [2, 2, 3, 2]
+print(singleNumber(nums))  # Output: 3
+
+nums = [0, 1, 0, 1, 0, 1, 99]
+print(singleNumber(nums))  # Output: 99
+```
+
+### Explanation
+
+1. **Bit Counting**:
+   - We use an array `bit_counts` of size 32 to store the count of 1s for each bit position.
+   - For each number in the array, we iterate over each bit position and update the `bit_counts` array accordingly.
+
+2. **Modulo Operation**:
+   - After counting the bits for all numbers, each position in `bit_counts` represents the total number of 1s for that bit position across all numbers.
+   - We then check each position in `bit_counts`. If the count is not a multiple of 3, it means that the bit in the unique number is set.
+
+3. **Reconstructing the Single Number**:
+   - We reconstruct the unique number by setting the appropriate bits based on the counts in `bit_counts`.
+   - Special handling is required for the 31st bit (sign bit) to manage negative numbers correctly.
+
+### Complexity Analysis
+
+- **Time Complexity**: \(O(n)\), where \(n\) is the number of elements in the array. We iterate through the array and then process each bit position.
+- **Space Complexity**: \(O(1)\). We use a constant amount of extra space (an array of size 32).
+
+### References
+
+- [GeeksforGeeks - Find the element that appears once](https://www.geeksforgeeks.org/find-the-element-that-appears-once/)
+- [LeetCode - Single Number II](https://leetcode.com/problems/single-number-ii/)
+- [Wikipedia - Bitwise operation](https://en.wikipedia.org/wiki/Bitwise_operation)
+
+This approach leverages bitwise manipulation to efficiently find the single number in linear time and constant space, meeting the problem's constraints.
+
+To solve the problem of finding the two unique numbers in an array where every other number appears exactly twice, we can use a clever bitwise manipulation approach. This solution ensures linear time complexity and constant space usage.
+
+### Approach
+
+1. **XOR All Numbers**:
+   - XORing all numbers in the array will give us the XOR of the two unique numbers because the numbers appearing twice will cancel each other out.
+
+2. **Find a Set Bit**:
+   - Find any set bit (1-bit) in the XOR result. This bit must be set in one of the unique numbers and not in the other, thus it can be used to partition the numbers into two groups.
+
+3. **Partition and XOR**:
+   - Partition the numbers into two groups based on the set bit found in the previous step and XOR the numbers in each group. This will give the two unique numbers.
+
+### Implementation in Python
+
+Here's a Python function to find the two unique numbers using the above approach:
+
+```python
+def singleNumber(nums):
+    # Step 1: XOR all the numbers
+    xor_all = 0
+    for num in nums:
+        xor_all ^= num
+    
+    # Step 2: Find any set bit (we'll use the rightmost set bit)
+    rightmost_set_bit = xor_all & -xor_all
+
+    # Step 3: Partition the numbers into two groups and XOR each group
+    num1, num2 = 0, 0
+    for num in nums:
+        if num & rightmost_set_bit:
+            num1 ^= num
+        else:
+            num2 ^= num
+    
+    return [num1, num2]
+
+# Example usage:
+nums = [1, 2, 1, 3, 2, 5]
+print(singleNumber(nums))  # Output: [3, 5] (or [5, 3])
+```
+
+### Explanation
+
+1. **XOR All Numbers**:
+   - `xor_all` will hold the XOR of the two unique numbers after all XOR operations.
+
+2. **Find a Set Bit**:
+   - The expression `xor_all & -xor_all` isolates the rightmost set bit of `xor_all`. This set bit is used to differentiate the two unique numbers because it is guaranteed that this bit is different between the two unique numbers.
+
+3. **Partition and XOR**:
+   - Using the rightmost set bit, partition the numbers into two groups:
+     - Group 1: Numbers with the set bit.
+     - Group 2: Numbers without the set bit.
+   - XORing all numbers within each group will cancel out the numbers appearing twice, leaving only the unique numbers.
+
+### Complexity Analysis
+
+- **Time Complexity**: \(O(n)\), where \(n\) is the number of elements in the array. Each element is processed a constant number of times.
+- **Space Complexity**: \(O(1)\). We use a constant amount of extra space for variables.
+
+### References
+
+- [GeeksforGeeks - Find the two non-repeating elements in an array of repeating elements](https://www.geeksforgeeks.org/find-the-two-numbers-with-odd-occurences-in-an-unsorted-array/)
+- [LeetCode - Single Number III](https://leetcode.com/problems/single-number-iii/)
+- [Wikipedia - Bitwise operation](https://en.wikipedia.org/wiki/Bitwise_operation)
+
+This solution ensures efficiency and leverages bitwise operations to find the two unique numbers in a linear time frame using constant extra space.
+
+To solve the problem of maximizing the number of students that can take an exam without cheating, we can use dynamic programming and bitmasking to efficiently manage and evaluate the valid seating arrangements. Here is a step-by-step approach to solve the problem:
+
+### Step-by-Step Approach
+
+1. **Representation of States**:
+   - Each row of the seats can be represented by a bitmask, where each bit indicates whether a seat is occupied (1) or not (0).
+   - For each row, generate all possible valid states using bitmasking.
+
+2. **Dynamic Programming State Transition**:
+   - Use a dynamic programming table `dp` where `dp[i][mask]` represents the maximum number of students that can sit up to row `i` with a state `mask`.
+   - Transition from row `i-1` to row `i` considering the constraints that no two students can see each other's answers.
+
+3. **Constraints Handling**:
+   - Ensure no students are sitting in broken seats.
+   - Ensure no two students can see each other according to the problem's constraints (adjacent left, right, upper-left, upper-right).
+
+### Implementation
+
+Here's the Python implementation of the approach:
+
+```python
+def maxStudents(seats):
+    m, n = len(seats), len(seats[0])
+    dp = [{} for _ in range(m + 1)]
+
+    def count_bits(x):
+        return bin(x).count('1')
+
+    def valid(mask, row):
+        for i in range(n):
+            if (mask & (1 << i)):
+                if seats[row][i] == '#':
+                    return False
+                if i > 0 and (mask & (1 << (i - 1))):
+                    return False
+                if i < n - 1 and (mask & (1 << (i + 1))):
+                    return False
+        return True
+
+    for i in range(m + 1):
+        dp[i][0] = 0
+
+    for i in range(1, m + 1):
+        for prev_mask in dp[i - 1]:
+            for mask in range(1 << n):
+                if valid(mask, i - 1) and (prev_mask & (mask >> 1)) == 0 and (prev_mask & (mask << 1)) == 0:
+                    dp[i][mask] = max(dp[i].get(mask, 0), dp[i - 1][prev_mask] + count_bits(mask))
+
+    return max(dp[m].values())
+
+# Example usage:
+seats = [
+    [".", "#", "#", ".", "."],
+    [".", ".", ".", "#", "."],
+    ["#", "#", ".", ".", "#"],
+    [".", ".", ".", ".", "."]
+]
+print(maxStudents(seats))  # Output will depend on the configuration
+```
+
+### Explanation
+
+1. **Initialization**:
+   - Initialize `dp` as a list of dictionaries, where each dictionary will store the maximum number of students for a given row and state (bitmask).
+
+2. **Helper Functions**:
+   - `count_bits(x)`: Returns the number of 1s in the binary representation of `x`.
+   - `valid(mask, row)`: Checks if a bitmask is valid for a given row (i.e., no students in broken seats and no two students next to each other).
+
+3. **DP Transition**:
+   - Iterate over each row and each possible state (bitmask).
+   - For each valid state in the current row, transition from the previous row's states, ensuring no two students in the current and previous rows can see each other.
+
+4. **Final Result**:
+   - The answer is the maximum value in the last row of the `dp` table.
+
+### Complexity Analysis
+
+- **Time Complexity**: \(O(m \cdot 2^n \cdot n)\), where \(m\) is the number of rows and \(n\) is the number of columns. This is because we iterate over all possible states for each row and validate each state.
+- **Space Complexity**: \(O(m \cdot 2^n)\), for storing the `dp` table.
+
+This approach ensures an efficient way to solve the problem using dynamic programming and bitmasking, adhering to the constraints and providing the maximum number of students that can sit without cheating.

@@ -1,0 +1,47 @@
+https://courses.csail.mit.edu/6.042/spring18/mcs.pdf?fbclid=IwZXh0bgNhZW0CMTEAAR3zQrT1WUFLWwyEfdgSeGSEJKrx8AuiEhgQ9a-Oo7twVr-zCRsFpX3WEZM_aem_ZmFrZWR1bW15MTZieXRlcw
+
+https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/resources/lecture-1-introduction-and-proofs/
+
+点对”。）像这样被简单地接受为真的命题称为公
+理。
+从这些公理出发，欧几里得通过提供“证明”确立了许多
+附加命题的真实性。证明是从公理和先前证明的陈述
+中进行的一系列逻辑推论，以所讨论的命题作为结论。
+您可能在高中几何课上写过许多证明，并且您会在本
+文中看到更多内容。
+对于已被证明的命题，有几个常见的术语。不
+同的术语暗示了该命题在更大的工作中的作用。
+重要的真命题称为定理。
+• 引理是一个初步命题，可用于证明后面的命题。
+• 推论是从定理仅通过几个逻辑步骤得出的命
+题。
+这些定义并不精确。事实上，有时一个好的引理
+会比它最初用来证明的定理重要得多。
+欧几里得的公理与证明方法，现在称为公理化方法，仍然
+是当今数学的基础。事实上，只需几个公理，称为泽梅洛-
+弗兰克尔选择公理（ZFC），再加上一些逻辑演绎规则，似
+乎就足以推导出基本上所有的数学。我们将在第 8 章中研
+究这些内容。
+Corollary 2.4.3: Any set of integers with a lower bound is well-ordered.
+
+**Proof:**
+
+1. **Definition of Well-Ordered Set:**
+   A set \( S \) is well-ordered if every non-empty subset of \( S \) has a least element.
+
+2. **Given:**
+   Let \( S \) be a set of integers with a lower bound \( L \).
+
+3. **To Prove:**
+   Every non-empty subset \( T \subseteq S \) has a least element.
+
+4. **Proof:**
+   - Consider any non-empty subset \( T \) of \( S \).
+   - Since \( S \) has a lower bound \( L \), \( L \leq t \) for all \( t \in T \).
+   - \( T \) is non-empty, so it contains at least one integer.
+   - The set of integers is well-ordered under the usual ordering. Hence, \( T \) as a subset of the integers, must also have a least element.
+
+Therefore, \( S \) is well-ordered.
+
+Thus, any set of integers with a lower bound is well-ordered.
+

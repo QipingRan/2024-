@@ -1,0 +1,1043 @@
+https://leetcode.com/explore/learn/card/binary-search/146/more-practices-ii/1041/
+
+Terminology used in Binary Search:
+Target - the value that you are searching for
+Index - the current location that you are searching
+Left, Right - the indices from which we use to maintain our search Space
+Mid - the index that we use to apply a condition to determine if we should search left or right
+
+To solve this problem with \( O(\log n) \) runtime complexity, we can use the binary search algorithm. Here is the Python implementation of the binary search algorithm to find the target in a sorted array:
+
+```python
+def binary_search(nums, target):
+    left, right = 0, len(nums) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return -1
+
+# Example usage:
+nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+target = 5
+print(binary_search(nums, target))  # Output: 4
+
+target = 10
+print(binary_search(nums, target))  # Output: -1
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - `left` is initialized to 0 (the start of the array).
+   - `right` is initialized to `len(nums) - 1` (the end of the array).
+
+2. **Loop:**
+   - While `left` is less than or equal to `right`, continue the search.
+   - Calculate the middle index `mid` using `left + (right - left) // 2` to avoid potential overflow.
+
+3. **Comparison:**
+   - If `nums[mid]` is equal to `target`, return `mid`.
+   - If `nums[mid]` is less than `target`, move the `left` boundary to `mid + 1`.
+   - If `nums[mid]` is greater than `target`, move the `right` boundary to `mid - 1`.
+
+4. **Termination:**
+   - If the loop exits without finding the `target`, return `-1`.
+
+This algorithm ensures that the search space is halved in each step, resulting in a time complexity of \( O(\log n) \).
+
+To solve this problem, we can use a binary search approach to find the square root of a given non-negative integer \( x \). The binary search algorithm allows us to efficiently find the square root with \( O(\log n) \) time complexity.
+
+Here is the Python implementation:
+
+```python
+def mySqrt(x):
+    if x < 2:
+        return x
+
+    left, right = 1, x // 2
+
+    while left <= right:
+        mid = (left + right) // 2
+        if mid * mid == x:
+            return mid
+        elif mid * mid < x:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return right
+
+# Example usage:
+print(mySqrt(4))    # Output: 2
+print(mySqrt(8))    # Output: 2
+print(mySqrt(16))   # Output: 4
+print(mySqrt(1))    # Output: 1
+print(mySqrt(0))    # Output: 0
+```
+
+### Explanation:
+
+1. **Initial Check:**
+   - If \( x \) is less than 2, return \( x \) immediately because the square root of 0 is 0, and the square root of 1 is 1.
+
+2. **Binary Search Setup:**
+   - Initialize `left` to 1 and `right` to \( x // 2 \). We use \( x // 2 \) as the upper bound because the square root of \( x \) will be less than or equal to \( x // 2 \) for \( x \geq 4 \).
+
+3. **Binary Search Loop:**
+   - While `left` is less than or equal to `right`:
+     - Calculate the middle point `mid` as \((left + right) // 2\).
+     - If `mid * mid` is equal to \( x \), return `mid` because we've found the exact square root.
+     - If `mid * mid` is less than \( x \), move the `left` boundary to `mid + 1` because we need a larger number.
+     - If `mid * mid` is greater than \( x \), move the `right` boundary to `mid - 1` because we need a smaller number.
+
+4. **Return the Result:**
+   - When the loop exits, `right` will be the integer part of the square root of \( x \).
+
+This approach efficiently finds the integer square root without using any built-in exponentiation functions.
+
+To solve the "Guess Number Higher or Lower" problem using the binary search approach, we'll define a function `guessNumber` that uses the `guess` API to find the picked number. The binary search approach ensures an efficient search with \(O(\log n)\) time complexity.
+
+Here's the implementation:
+
+```python
+# Assume guess API is already defined
+# def guess(num: int) -> int:
+#     # This function is defined by the problem and should be provided by the platform
+#     pass
+
+def guessNumber(n: int) -> int:
+    left, right = 1, n
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        result = guess(mid)
+        
+        if result == 0:
+            return mid
+        elif result == -1:
+            right = mid - 1
+        else: # result == 1
+            left = mid + 1
+            
+    return -1
+
+# Example usage:
+# The guess function should be defined and set up with the target number in the environment where this is run.
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - Set `left` to 1 and `right` to `n`, representing the range of possible numbers.
+
+2. **Binary Search Loop:**
+   - While `left` is less than or equal to `right`:
+     - Calculate the midpoint `mid` using `left + (right - left) // 2` to avoid potential overflow.
+     - Call the `guess(mid)` function to check the guess:
+       - If `guess(mid)` returns 0, `mid` is the correct number, so return `mid`.
+       - If `guess(mid)` returns -1, the picked number is smaller than `mid`, so adjust the search range by setting `right` to `mid - 1`.
+       - If `guess(mid)` returns 1, the picked number is larger than `mid`, so adjust the search range by setting `left` to `mid + 1`.
+
+3. **Return the Result:**
+   - If the loop exits without finding the number, return -1 (though this scenario should not happen with a correctly implemented `guess` function and a valid range).
+
+This approach leverages the binary search method to efficiently find the picked number by repeatedly halving the search range based on the feedback from the `guess` function.
+
+To solve the problem of searching in a rotated sorted array with \(O(\log n)\) runtime complexity, we can use a modified binary search algorithm. Here is the Python implementation of this approach:
+
+```python
+def search(nums, target):
+    left, right = 0, nums.length - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if nums[mid] == target:
+            return mid
+        
+        # Determine which side is properly sorted
+        if nums[left] <= nums[mid]:  # Left side is sorted
+            if nums[left] <= target < nums[mid]:
+                right = mid - 1
+            else:
+                left = mid + 1
+        else:  # Right side is sorted
+            if nums[mid] < target <= nums[right]:
+                left = mid + 1
+            else:
+                right = mid - 1
+    
+    return -1
+
+# Example usage:
+nums = [4, 5, 6, 7, 0, 1, 2]
+target = 0
+print(search(nums, target))  # Output: 4
+
+target = 3
+print(search(nums, target))  # Output: -1
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - `left` is set to 0, and `right` is set to the last index of the array.
+
+2. **Binary Search Loop:**
+   - While `left` is less than or equal to `right`:
+     - Calculate the midpoint `mid` using `left + (right - left) // 2` to avoid potential overflow.
+     - If `nums[mid]` is equal to `target`, return `mid`.
+     - Determine which part of the array is properly sorted:
+       - If `nums[left] <= nums[mid]`, the left part is sorted.
+         - Check if the `target` lies within the sorted left part (`nums[left] <= target < nums[mid]`):
+           - If true, adjust the search range to the left part by setting `right` to `mid - 1`.
+           - Otherwise, adjust the search range to the right part by setting `left` to `mid + 1`.
+       - If the left part is not sorted, the right part must be sorted.
+         - Check if the `target` lies within the sorted right part (`nums[mid] < target <= nums[right]`):
+           - If true, adjust the search range to the right part by setting `left` to `mid + 1`.
+           - Otherwise, adjust the search range to the left part by setting `right` to `mid - 1`.
+
+3. **Return the Result:**
+   - If the loop exits without finding the `target`, return -1.
+
+This approach ensures that we maintain the \(O(\log n)\) time complexity by leveraging the properties of the rotated sorted array and performing a binary search accordingly.
+
+To find the first bad version efficiently, we can use a binary search approach. The goal is to minimize the number of calls to the `isBadVersion` API, and binary search allows us to do this in \(O(\log n)\) time complexity.
+
+Here is the implementation in Python:
+
+```python
+# Assume isBadVersion API is already defined
+# def isBadVersion(version: int) -> bool:
+#     # This function is defined by the problem and should be provided by the platform
+#     pass
+
+def firstBadVersion(n: int) -> int:
+    left, right = 1, n
+    
+    while left < right:
+        mid = left + (right - left) // 2
+        if isBadVersion(mid):
+            right = mid  # Move the right boundary to mid
+        else:
+            left = mid + 1  # Move the left boundary to mid + 1
+    
+    return left
+
+# Example usage:
+# Assuming we have a predefined isBadVersion function
+# print(firstBadVersion(5))  # The function should return the first bad version
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - `left` is set to 1 (the first version), and `right` is set to `n` (the last version).
+
+2. **Binary Search Loop:**
+   - While `left` is less than `right`:
+     - Calculate the midpoint `mid` using `left + (right - left) // 2` to avoid potential overflow.
+     - Call `isBadVersion(mid)` to check if the version at `mid` is bad.
+     - If `isBadVersion(mid)` returns `True` (indicating `mid` is a bad version), adjust the `right` boundary to `mid`.
+       - This is because the first bad version is either at `mid` or before `mid`.
+     - If `isBadVersion(mid)` returns `False` (indicating `mid` is not a bad version), adjust the `left` boundary to `mid + 1`.
+       - This is because the first bad version must be after `mid`.
+
+3. **Return the Result:**
+   - When the loop exits, `left` will be pointing to the first bad version, as `left` will converge to the smallest index for which `isBadVersion` is `True`.
+
+This approach ensures we find the first bad version with the minimum number of calls to the `isBadVersion` API by leveraging the efficiency of binary search.
+
+To find a peak element in an array with \( O(\log n) \) time complexity, we can use a binary search approach. The goal is to find an element that is strictly greater than its neighbors.
+
+Here's the Python implementation of this approach:
+
+```python
+def findPeakElement(nums):
+    left, right = 0, len(nums) - 1
+    
+    while left < right:
+        mid = left + (right - left) // 2
+        
+        if nums[mid] > nums[mid + 1]:
+            # Peak is in the left part including mid
+            right = mid
+        else:
+            # Peak is in the right part excluding mid
+            left = mid + 1
+    
+    return left
+
+# Example usage:
+nums = [1, 2, 3, 1]
+print(findPeakElement(nums))  # Output: 2
+
+nums = [1, 2, 1, 3, 5, 6, 4]
+print(findPeakElement(nums))  # Output: 5 or 1 (depending on the peak found)
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - Set `left` to 0 (the start of the array) and `right` to `len(nums) - 1` (the end of the array).
+
+2. **Binary Search Loop:**
+   - While `left` is less than `right`:
+     - Calculate the midpoint `mid` using `left + (right - left) // 2` to avoid potential overflow.
+     - Compare `nums[mid]` with `nums[mid + 1]`:
+       - If `nums[mid]` is greater than `nums[mid + 1]`, it means the peak is on the left side (including `mid`). Therefore, set `right` to `mid`.
+       - If `nums[mid]` is less than or equal to `nums[mid + 1]`, it means the peak is on the right side (excluding `mid`). Therefore, set `left` to `mid + 1`.
+
+3. **Return the Result:**
+   - When the loop exits, `left` will be pointing to a peak element. This works because at each step of the binary search, the range is halved, ensuring that the peak element will be found efficiently.
+
+This approach ensures we find a peak element with \( O(\log n) \) time complexity by leveraging the properties of binary search. The algorithm efficiently narrows down the search space to locate a peak element.
+
+To find the minimum element in a rotated sorted array in \( O(\log n) \) time complexity, we can use a modified binary search approach. The key is to take advantage of the properties of the rotated sorted array.
+
+Here is the Python implementation of this approach:
+
+```python
+def findMin(nums):
+    left, right = 0, len(nums) - 1
+    
+    while left < right:
+        mid = left + (right - left) // 2
+        
+        if nums[mid] > nums[right]:
+            # The minimum element is in the right half
+            left = mid + 1
+        else:
+            # The minimum element is in the left half including mid
+            right = mid
+    
+    return nums[left]
+
+# Example usage:
+nums1 = [4, 5, 6, 7, 0, 1, 2]
+print(findMin(nums1))  # Output: 0
+
+nums2 = [3, 4, 5, 1, 2]
+print(findMin(nums2))  # Output: 1
+
+nums3 = [11, 13, 15, 17]
+print(findMin(nums3))  # Output: 11
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - Set `left` to 0 (the start of the array) and `right` to `len(nums) - 1` (the end of the array).
+
+2. **Binary Search Loop:**
+   - While `left` is less than `right`:
+     - Calculate the midpoint `mid` using `left + (right - left) // 2` to avoid potential overflow.
+     - Compare `nums[mid]` with `nums[right]`:
+       - If `nums[mid]` is greater than `nums[right]`, it means the minimum element is in the right half, so set `left` to `mid + 1`.
+       - If `nums[mid]` is less than or equal to `nums[right]`, it means the minimum element is in the left half (including `mid`), so set `right` to `mid`.
+
+3. **Return the Result:**
+   - When the loop exits, `left` will be pointing to the minimum element in the array.
+
+This approach ensures that we efficiently find the minimum element with \( O(\log n) \) time complexity by leveraging the properties of the rotated sorted array and the binary search method.
+
+To find the starting and ending positions of a given target value in a sorted array with \( O(\log n) \) runtime complexity, we can use a modified binary search approach. We'll perform two separate binary searches: one to find the first occurrence of the target and another to find the last occurrence.
+
+Here is the Python implementation of this approach:
+
+```python
+def searchRange(nums, target):
+    def findFirst(nums, target):
+        left, right = 0, len(nums) - 1
+        first = -1
+        while left <= right:
+            mid = left + (right - left) // 2
+            if nums[mid] == target:
+                first = mid
+                right = mid - 1  # Continue searching in the left half
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return first
+
+    def findLast(nums, target):
+        left, right = 0, len(nums) - 1
+        last = -1
+        while left <= right:
+            mid = left + (right - left) // 2
+            if nums[mid] == target:
+                last = mid
+                left = mid + 1  # Continue searching in the right half
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return last
+
+    start = findFirst(nums, target)
+    end = findLast(nums, target)
+    return [start, end]
+
+# Example usage:
+nums = [5, 7, 7, 8, 8, 10]
+target = 8
+print(searchRange(nums, target))  # Output: [3, 4]
+
+target = 6
+print(searchRange(nums, target))  # Output: [-1, -1]
+```
+
+### Explanation:
+
+1. **Finding the First Occurrence:**
+   - The `findFirst` function performs a binary search to find the first occurrence of the target.
+   - If `nums[mid] == target`, update `first` to `mid` and continue searching in the left half (`right = mid - 1`) to find the first occurrence.
+   - If `nums[mid] < target`, move the `left` boundary to `mid + 1`.
+   - If `nums[mid] > target`, move the `right` boundary to `mid - 1`.
+
+2. **Finding the Last Occurrence:**
+   - The `findLast` function performs a binary search to find the last occurrence of the target.
+   - If `nums[mid] == target`, update `last` to `mid` and continue searching in the right half (`left = mid + 1`) to find the last occurrence.
+   - If `nums[mid] < target`, move the `left` boundary to `mid + 1`.
+   - If `nums[mid] > target`, move the `right` boundary to `mid - 1`.
+
+3. **Combining Results:**
+   - The `searchRange` function calls both `findFirst` and `findLast` to get the starting and ending positions of the target.
+   - If the target is not found, both functions return `-1`, resulting in `[-1, -1]`.
+
+This approach ensures we find the range of the target value with \( O(\log n) \) time complexity by leveraging the efficiency of binary search.
+
+To solve this problem efficiently, we can use a binary search to find the starting point of the k closest elements and then use a two-pointer technique to get the k closest elements.
+
+Here's the Python implementation:
+
+```python
+def findClosestElements(arr, k, x):
+    # Find the index of the element closest to x using binary search
+    left, right = 0, len(arr) - k
+    
+    while left < right:
+        mid = left + (right - left) // 2
+        if x - arr[mid] > arr[mid + k] - x:
+            left = mid + 1
+        else:
+            right = mid
+    
+    # The starting point is 'left'
+    return arr[left:left + k]
+
+# Example usage:
+arr = [1, 2, 3, 4, 5]
+k = 4
+x = 3
+print(findClosestElements(arr, k, x))  # Output: [1, 2, 3, 4]
+
+arr = [1, 2, 3, 4, 5]
+k = 4
+x = -1
+print(findClosestElements(arr, k, x))  # Output: [1, 2, 3, 4]
+```
+
+### Explanation:
+
+1. **Binary Search:**
+   - The goal is to find the left boundary of the subarray containing the k closest elements to x.
+   - The search range is from 0 to `len(arr) - k` because the subarray of length k cannot start beyond `len(arr) - k`.
+   - In each step, calculate the midpoint `mid`.
+   - Compare the distances from `x` to `arr[mid]` and `arr[mid + k]`:
+     - If `x - arr[mid] > arr[mid + k] - x`, it means the subarray starting at `mid + 1` is closer to `x` than the subarray starting at `mid`. Hence, move the left boundary to `mid + 1`.
+     - Otherwise, move the right boundary to `mid`.
+   - After the binary search loop, `left` will be the starting index of the k closest elements.
+
+2. **Return the Result:**
+   - Slice the array from `left` to `left + k` to get the k closest elements.
+
+This approach ensures that the algorithm runs in \( O(\log(n - k) + k) \) time complexity, where \( O(\log(n - k)) \) is the time for binary search and \( O(k) \) is the time for slicing the subarray. This is efficient and meets the problem's requirements.
+
+To solve the problem of finding the value in a Binary Search Tree (BST) that is closest to a given target value, we can take advantage of the properties of the BST. Since the BST is sorted by its nature, we can perform a modified binary search to efficiently find the closest value.
+
+Here's the Python implementation for this approach:
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def closestValue(root, target):
+    closest = root.val
+    
+    while root:
+        # Update the closest value if the current node is closer to the target
+        if abs(root.val - target) < abs(closest - target):
+            closest = root.val
+        elif abs(root.val - target) == abs(closest - target):
+            closest = min(closest, root.val)
+
+        # Move left or right depending on the value of the current node
+        if target < root.val:
+            root = root.left
+        else:
+            root = root.right
+    
+    return closest
+
+# Example usage:
+# Constructing the BST
+#        4
+#       / \
+#      2   5
+#     / \
+#    1   3
+root = TreeNode(4)
+root.left = TreeNode(2, TreeNode(1), TreeNode(3))
+root.right = TreeNode(5)
+
+target = 3.714
+print(closestValue(root, target))  # Output: 4
+
+target = 2.5
+print(closestValue(root, target))  # Output: 2
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - Initialize `closest` to the root's value since it is our starting point.
+
+2. **Traverse the BST:**
+   - Use a while loop to traverse the tree. At each node, check the following:
+     - If the current node's value is closer to the target than the current `closest` value, update `closest`.
+     - If the current node's value is equally close but smaller than the current `closest`, update `closest` to the smaller value (as required by the problem statement for handling ties).
+   
+3. **Move Left or Right:**
+   - If the target is less than the current node's value, move to the left child.
+   - If the target is greater than or equal to the current node's value, move to the right child.
+
+4. **Return the Result:**
+   - When the loop ends, `closest` will hold the value in the BST that is closest to the target.
+
+This approach leverages the properties of BST and efficiently finds the closest value with a time complexity of \( O(h) \), where \( h \) is the height of the tree. In the worst case, the time complexity is \( O(\log n) \) for a balanced tree and \( O(n) \) for a skewed tree.
+
+To implement the `pow(x, n)` function, which calculates \(x\) raised to the power \(n\) (i.e., \(x^n\)), we can use an efficient algorithm called "Exponentiation by Squaring." This algorithm allows us to compute the power in \(O(\log n)\) time complexity.
+
+Here is the Python implementation of this approach:
+
+```python
+def myPow(x, n):
+    def powHelper(x, n):
+        if n == 0:
+            return 1
+        half = powHelper(x, n // 2)
+        if n % 2 == 0:
+            return half * half
+        else:
+            return half * half * x
+    
+    if n < 0:
+        x = 1 / x
+        n = -n
+        
+    return powHelper(x, n)
+
+# Example usage:
+print(myPow(2.0, 10))  # Output: 1024.0
+print(myPow(2.1, 3))   # Output: 9.261
+print(myPow(2.0, -2))  # Output: 0.25
+```
+
+### Explanation:
+
+1. **Base Case:**
+   - If \(n\) is 0, return 1, because any number raised to the power of 0 is 1.
+
+2. **Recursive Case:**
+   - Calculate `half = powHelper(x, n // 2)` recursively.
+   - If \(n\) is even, \(x^n = (x^{n/2}) \cdot (x^{n/2})\). Hence, return `half * half`.
+   - If \(n\) is odd, \(x^n = (x^{(n//2)}) \cdot (x^{(n//2)}) \cdot x\). Hence, return `half * half * x`.
+
+3. **Handling Negative Exponents:**
+   - If \(n\) is negative, compute the positive power of the reciprocal of \(x\). This is because \(x^{-n} = \frac{1}{x^n}\).
+
+4. **Helper Function:**
+   - The `powHelper` function is a recursive helper function that performs the exponentiation by squaring.
+
+This approach ensures an efficient calculation of powers, reducing the time complexity to \(O(\log n)\). The use of recursion helps in breaking down the problem into smaller subproblems, which are easier to solve.
+
+To determine whether a given positive integer `num` is a perfect square without using any built-in library functions, we can use a binary search approach. This method leverages the properties of squares and ensures that we can find the solution in \(O(\log n)\) time complexity.
+
+Here's the implementation:
+
+```python
+def isPerfectSquare(num):
+    if num < 2:
+        return True
+    
+    left, right = 2, num // 2
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        guessed_square = mid * mid
+        
+        if guessed_square == num:
+            return True
+        elif guessed_square < num:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return False
+
+# Example usage:
+print(isPerfectSquare(16))  # Output: True
+print(isPerfectSquare(14))  # Output: False
+print(isPerfectSquare(1))   # Output: True
+print(isPerfectSquare(4))   # Output: True
+```
+
+### Explanation:
+
+1. **Initial Check:**
+   - If `num` is less than 2, return `True` immediately. This covers the cases for `num = 1`, which is a perfect square.
+
+2. **Binary Search Initialization:**
+   - Set `left` to 2 and `right` to `num // 2`. This is because any number greater than 1 will have a square root between 1 and `num // 2`.
+
+3. **Binary Search Loop:**
+   - While `left` is less than or equal to `right`:
+     - Calculate the midpoint `mid` using `left + (right - left) // 2`.
+     - Calculate `guessed_square` as `mid * mid`.
+     - If `guessed_square` is equal to `num`, return `True` because we've found that `num` is a perfect square.
+     - If `guessed_square` is less than `num`, move the `left` boundary to `mid + 1` because the square root must be larger.
+     - If `guessed_square` is greater than `num`, move the `right` boundary to `mid - 1` because the square root must be smaller.
+
+4. **Return the Result:**
+   - If the loop exits without finding that `guessed_square` equals `num`, return `False`, indicating that `num` is not a perfect square.
+
+This binary search method efficiently narrows down the possible values for the square root and checks if the guessed square equals the target number, ensuring the solution is found in logarithmic time.
+
+To solve the problem of finding the smallest character in a sorted array that is lexicographically greater than the given target, we can use a binary search approach to efficiently locate the desired character.
+
+Here's the implementation:
+
+```python
+def nextGreatestLetter(letters, target):
+    left, right = 0, len(letters) - 1
+    
+    # If target is greater or equal to the last character in letters, wrap around to the first character
+    if target >= letters[right]:
+        return letters[0]
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        if letters[mid] > target:
+            right = mid - 1
+        else:
+            left = mid + 1
+    
+    return letters[left]
+
+# Example usage:
+letters = ['c', 'f', 'j']
+target = 'a'
+print(nextGreatestLetter(letters, target))  # Output: 'c'
+
+target = 'c'
+print(nextGreatestLetter(letters, target))  # Output: 'f'
+
+target = 'd'
+print(nextGreatestLetter(letters, target))  # Output: 'f'
+
+target = 'j'
+print(nextGreatestLetter(letters, target))  # Output: 'c'
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - Set `left` to 0 and `right` to `len(letters) - 1`, representing the bounds of the search space.
+
+2. **Wrap-around Check:**
+   - If `target` is greater than or equal to the last character in the array (`letters[right]`), return the first character in the array (`letters[0]`), as the array is circular.
+
+3. **Binary Search Loop:**
+   - While `left` is less than or equal to `right`:
+     - Calculate the midpoint `mid` using `left + (right - left) // 2`.
+     - If `letters[mid]` is greater than `target`, it means a potential candidate for the smallest letter greater than `target` has been found. Move the `right` boundary to `mid - 1` to continue searching in the left half.
+     - If `letters[mid]` is less than or equal to `target`, move the `left` boundary to `mid + 1` to search in the right half.
+
+4. **Return the Result:**
+   - After exiting the loop, `left` will be at the position of the smallest letter greater than `target` in the array. Return `letters[left]`.
+
+This approach ensures the solution is found in \(O(\log n)\) time complexity by efficiently narrowing down the search space using binary search.
+
+To find the intersection of two arrays and ensure that each element in the result is unique, we can use a set-based approach to efficiently handle the uniqueness and lookup operations. Here is a Python implementation of this approach:
+
+```python
+def intersection(nums1, nums2):
+    # Convert both arrays to sets to remove duplicates and allow for O(1) average time complexity for lookups
+    set1 = set(nums1)
+    set2 = set(nums2)
+    
+    # Find the intersection of the two sets
+    result = set1.intersection(set2)
+    
+    # Convert the result back to a list
+    return list(result)
+
+# Example usage:
+nums1 = [1, 2, 2, 1]
+nums2 = [2, 2]
+print(intersection(nums1, nums2))  # Output: [2]
+
+nums1 = [4, 9, 5]
+nums2 = [9, 4, 9, 8, 4]
+print(intersection(nums1, nums2))  # Output: [9, 4]
+```
+
+### Explanation:
+
+1. **Convert Arrays to Sets:**
+   - Convert both `nums1` and `nums2` to sets (`set1` and `set2`). This removes any duplicates within each array and allows for efficient lookup operations.
+
+2. **Find Intersection:**
+   - Use the `intersection` method of sets to find the common elements between `set1` and `set2`. This method returns a new set containing only the elements that are present in both sets.
+
+3. **Convert to List:**
+   - Convert the resulting set back to a list, as the problem requires the result to be in list form.
+
+### Alternative Method Using Set Comprehension:
+
+Here's an alternative method using set comprehension:
+
+```python
+def intersection(nums1, nums2):
+    # Convert nums1 to a set to remove duplicates and allow for O(1) average time complexity for lookups
+    set1 = set(nums1)
+    
+    # Use set comprehension to find the intersection
+    result = {num for num in nums2 if num in set1}
+    
+    # Convert the result to a list
+    return list(result)
+
+# Example usage:
+nums1 = [1, 2, 2, 1]
+nums2 = [2, 2]
+print(intersection(nums1, nums2))  # Output: [2]
+
+nums1 = [4, 9, 5]
+nums2 = [9, 4, 9, 8, 4]
+print(intersection(nums1, nums2))  # Output: [9, 4]
+```
+
+### Explanation:
+
+1. **Convert `nums1` to a Set:**
+   - Convert `nums1` to a set (`set1`) to remove duplicates and allow for efficient lookups.
+
+2. **Set Comprehension for Intersection:**
+   - Use set comprehension to iterate over `nums2` and include only those elements that are present in `set1`.
+
+3. **Convert to List:**
+   - Convert the resulting set back to a list.
+
+Both methods achieve the same result with similar time complexities, providing an efficient solution to the problem.
+
+To find the intersection of two arrays where each element in the result must appear as many times as it shows in both arrays, we can use a hash map (or dictionary) to count the occurrences of each element in both arrays. Then, we can construct the result based on the minimum occurrences of each element in both arrays.
+
+Here is the Python implementation of this approach:
+
+```python
+from collections import Counter
+
+def intersect(nums1, nums2):
+    # Create a Counter for each array to count the occurrences of each element
+    counts1 = Counter(nums1)
+    counts2 = Counter(nums2)
+    
+    # Find the intersection by taking the minimum count for each element present in both arrays
+    result = []
+    for num in counts1:
+        if num in counts2:
+            # Add the element the minimum number of times it appears in both arrays
+            result.extend([num] * min(counts1[num], counts2[num]))
+    
+    return result
+
+# Example usage:
+nums1 = [1, 2, 2, 1]
+nums2 = [2, 2]
+print(intersect(nums1, nums2))  # Output: [2, 2]
+
+nums1 = [4, 9, 5]
+nums2 = [9, 4, 9, 8, 4]
+print(intersect(nums1, nums2))  # Output: [4, 9]
+```
+
+### Explanation:
+
+1. **Count Occurrences:**
+   - Use the `Counter` class from the `collections` module to count the occurrences of each element in both `nums1` and `nums2`.
+
+2. **Find Intersection:**
+   - Iterate through the elements in `counts1` and check if each element is also present in `counts2`.
+   - For each common element, determine the minimum count between the two arrays.
+   - Extend the result list with the element repeated `min(counts1[num], counts2[num])` times.
+
+3. **Return Result:**
+   - The result list will contain the intersection elements, each appearing as many times as it shows in both arrays.
+
+This approach efficiently handles the counting and intersection process with a time complexity of \(O(n + m)\), where \(n\) and \(m\) are the lengths of `nums1` and `nums2`, respectively.
+
+To solve the "Two Sum II - Input array is sorted" problem efficiently with only constant extra space, we can use the two-pointer technique. Since the array is already sorted, this method is very effective and ensures a time complexity of \(O(n)\).
+
+Here's the Python implementation of this approach:
+
+```python
+def twoSum(numbers, target):
+    left, right = 0, len(numbers) - 1
+    
+    while left < right:
+        current_sum = numbers[left] + numbers[right]
+        
+        if current_sum == target:
+            return [left + 1, right + 1]  # return 1-indexed positions
+        elif current_sum < target:
+            left += 1
+        else:
+            right -= 1
+    
+    return []
+
+# Example usage:
+numbers = [2, 7, 11, 15]
+target = 9
+print(twoSum(numbers, target))  # Output: [1, 2]
+
+numbers = [2, 3, 4]
+target = 6
+print(twoSum(numbers, target))  # Output: [1, 3]
+
+numbers = [-1, 0]
+target = -1
+print(twoSum(numbers, target))  # Output: [1, 2]
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - Initialize two pointers: `left` starting at the beginning of the array (index 0) and `right` starting at the end of the array (index `len(numbers) - 1`).
+
+2. **Two-Pointer Technique:**
+   - Use a while loop to iterate as long as `left` is less than `right`.
+   - Calculate the sum of the elements at the `left` and `right` pointers (`current_sum = numbers[left] + numbers[right]`).
+   - If `current_sum` equals the `target`, return the 1-indexed positions `[left + 1, right + 1]`.
+   - If `current_sum` is less than the `target`, increment the `left` pointer to increase the sum.
+   - If `current_sum` is greater than the `target`, decrement the `right` pointer to decrease the sum.
+
+3. **Return Result:**
+   - Since the problem guarantees exactly one solution, the loop will find the solution and return it. If the solution is not found (in theoretical cases), return an empty list (though this condition is not expected per the problem constraints).
+
+This approach ensures we find the two indices that sum up to the target efficiently while using only constant extra space.
+
+To solve the problem of finding the duplicate number in an array without modifying the array and using only constant extra space, we can use Floyd's Tortoise and Hare (Cycle Detection) algorithm. This algorithm is effective for this problem due to the nature of the number ranges and the fact that there is exactly one duplicate number.
+
+Here's the Python implementation of this approach:
+
+```python
+def findDuplicate(nums):
+    # Initialize the tortoise and hare
+    tortoise = nums[0]
+    hare = nums[0]
+    
+    # Phase 1: Finding the intersection point of the two runners
+    while True:
+        tortoise = nums[tortoise]
+        hare = nums[nums[hare]]
+        if tortoise == hare:
+            break
+    
+    # Phase 2: Find the entrance to the cycle
+    tortoise = nums[0]
+    while tortoise != hare:
+        tortoise = nums[tortoise]
+        hare = nums[hare]
+    
+    return hare
+
+# Example usage:
+nums = [1, 3, 4, 2, 2]
+print(findDuplicate(nums))  # Output: 2
+
+nums = [3, 1, 3, 4, 2]
+print(findDuplicate(nums))  # Output: 3
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - Initialize two pointers, `tortoise` and `hare`, both starting at the first element of the array.
+
+2. **Phase 1: Finding the Intersection Point:**
+   - Move the `tortoise` pointer one step at a time (`tortoise = nums[tortoise]`).
+   - Move the `hare` pointer two steps at a time (`hare = nums[nums[hare]]`).
+   - Continue this until the `tortoise` and `hare` meet. This meeting point is guaranteed due to the cycle created by the duplicate number.
+
+3. **Phase 2: Finding the Entrance to the Cycle:**
+   - Reinitialize the `tortoise` pointer to the start of the array.
+   - Move both `tortoise` and `hare` one step at a time (`tortoise = nums[tortoise]`, `hare = nums[hare]`) until they meet again.
+   - The meeting point now is the start of the cycle, which is the duplicate number.
+
+### Why This Works:
+
+The key insight is that the array can be interpreted as a linked list where each index points to the value at that index, creating a cycle due to the duplicate number. Floyd's Tortoise and Hare algorithm is effective for detecting cycles in linked lists, making it suitable for this problem.
+
+This approach ensures we solve the problem with \(O(n)\) time complexity and \(O(1)\) space complexity, meeting the problem's constraints.
+
+To solve the problem of splitting an array into `k` subarrays such that the largest sum among them is minimized, we can use a binary search approach combined with a greedy algorithm to determine the feasibility of a given maximum subarray sum.
+
+Here’s the step-by-step approach:
+
+1. **Determine the Search Range:**
+   - The lower bound (`low`) for the binary search is the maximum element in the array because any subarray must at least accommodate the largest element.
+   - The upper bound (`high`) for the binary search is the sum of all elements in the array because the worst-case scenario is having a single subarray containing all elements.
+
+2. **Binary Search for the Minimum Possible Largest Sum:**
+   - Use binary search to find the minimum possible largest sum that can split the array into `k` subarrays.
+   - For each midpoint value in the binary search, check if it is possible to split the array into `k` or fewer subarrays without any subarray sum exceeding this midpoint value.
+
+3. **Feasibility Check (Greedy Approach):**
+   - Iterate through the array and keep adding elements to the current subarray sum.
+   - If adding an element causes the current subarray sum to exceed the midpoint value, start a new subarray and continue.
+   - Count the number of subarrays formed in this process.
+   - If the number of subarrays formed is less than or equal to `k`, the midpoint value is a valid candidate. Otherwise, it is not.
+
+Here's the Python implementation of this approach:
+
+```python
+def splitArray(nums, k):
+    def canSplit(nums, k, maxSum):
+        count = 1
+        currentSum = 0
+        for num in nums:
+            if currentSum + num > maxSum:
+                count += 1
+                currentSum = num
+                if count > k:
+                    return False
+            else:
+                currentSum += num
+        return True
+    
+    low, high = max(nums), sum(nums)
+    
+    while low < high:
+        mid = (low + high) // 2
+        if canSplit(nums, k, mid):
+            high = mid
+        else:
+            low = mid + 1
+    
+    return low
+
+# Example usage:
+nums = [7, 2, 5, 10, 8]
+k = 2
+print(splitArray(nums, k))  # Output: 18
+
+nums = [1, 2, 3, 4, 5]
+k = 2
+print(splitArray(nums, k))  # Output: 9
+
+nums = [1, 4, 4]
+k = 3
+print(splitArray(nums, k))  # Output: 4
+```
+
+### Explanation:
+
+1. **canSplit Function:**
+   - This helper function checks if the array can be split into `k` or fewer subarrays with each subarray sum not exceeding `maxSum`.
+   - It iterates through the array, accumulating the current subarray sum.
+   - If the current sum exceeds `maxSum`, it starts a new subarray and increments the count.
+
+2. **Binary Search:**
+   - Initialize `low` as the maximum element and `high` as the sum of all elements.
+   - Perform binary search:
+     - Calculate `mid` as the midpoint of `low` and `high`.
+     - Use the `canSplit` function to check if the array can be split with the largest subarray sum not exceeding `mid`.
+     - Adjust `low` and `high` based on the result of the feasibility check.
+
+3. **Return Result:**
+   - When `low` equals `high`, it represents the minimized largest sum possible for splitting the array into `k` subarrays.
+
+This approach ensures that we efficiently find the minimized largest sum with a time complexity of \(O(n \log(\text{sum(nums)} - \max(nums)))\).
+
+To solve the problem of finding the k-th smallest pair distance in an array, we can use a combination of binary search and the two-pointer technique. Here is a step-by-step approach:
+
+1. **Sort the Array**: Sorting the array will help us easily compute pair distances and use the two-pointer technique.
+2. **Binary Search on the Distance**: Perform a binary search on the possible pair distances. The minimum possible distance is 0, and the maximum possible distance is the difference between the maximum and minimum elements in the sorted array.
+3. **Counting Pairs with Two Pointers**: For each midpoint distance in the binary search, use the two-pointer technique to count how many pairs have a distance less than or equal to this midpoint. This helps us determine if the k-th smallest distance is smaller or larger than the midpoint.
+
+Here's the implementation in Python:
+
+```python
+def count_pairs(nums, mid):
+    count = 0
+    left = 0
+    for right in range(len(nums)):
+        while nums[right] - nums[left] > mid:
+            left += 1
+        count += right - left
+    return count
+
+def smallestDistancePair(nums, k):
+    nums.sort()
+    left = 0
+    right = nums[-1] - nums[0]
+
+    while left < right:
+        mid = (left + right) // 2
+        if count_pairs(nums, mid) < k:
+            left = mid + 1
+        else:
+            right = mid
+
+    return left
+
+# Example usage:
+nums = [1, 3, 1]
+k = 1
+print(smallestDistancePair(nums, k))  # Output: 0
+
+nums = [1, 1, 1]
+k = 2
+print(smallestDistancePair(nums, k))  # Output: 0
+
+nums = [1, 6, 1]
+k = 3
+print(smallestDistancePair(nums, k))  # Output: 5
+```
+
+### Explanation:
+
+1. **Count Pairs Function (`count_pairs`)**:
+   - This function takes the sorted array `nums` and a distance `mid`.
+   - It uses two pointers, `left` and `right`, to count the number of pairs whose distance is less than or equal to `mid`.
+   - For each `right` index, the `left` index is incremented until `nums[right] - nums[left]` is less than or equal to `mid`. The number of valid pairs with the `right` element is `right - left`.
+
+2. **Binary Search**:
+   - Initialize `left` to 0 and `right` to the maximum possible distance, which is `nums[-1] - nums[0]`.
+   - Perform binary search:
+     - Calculate `mid` as the average of `left

@@ -1,0 +1,71 @@
+https://acs.pub.ro/~cpop/SMPA/Computer%20Architecture%20A%20Quantitative%20Approach%20(5th%20edition).pdf?fbclid=IwZXh0bgNhZW0CMTEAAR0FI4IlFhHkrB77gEz364dVMkou3sfp07H-DuqVUKcqYoJk8TbcR6o82-Q_aem_ZmFrZWR1bW15MTZieXRlcw
+
+### Basics of Memory Hierarchies: A Quick Review
+
+#### Memory Hierarchy
+Memory hierarchy in computing is designed to provide a balance between performance, cost, and capacity by organizing storage into a hierarchy. The primary goal is to minimize the time to access data while managing cost and physical space efficiently.
+
+#### Key Levels of Memory Hierarchy
+
+1. **Registers**:
+   - Fastest and most expensive memory.
+   - Located in the CPU.
+   - Used for immediate data processing.
+
+2. **Cache Memory**:
+   - Faster than main memory but slower than registers.
+   - Stores frequently accessed data to speed up processing.
+   - Divided into levels (L1, L2, L3).
+
+3. **Main Memory (RAM)**:
+   - Volatile memory used to store data and programs currently in use.
+   - Slower than cache but faster than secondary storage.
+
+4. **Secondary Storage**:
+   - Non-volatile memory like SSDs, HDDs.
+   - Used for long-term data storage.
+   - Slower than main memory but has larger capacity.
+
+5. **Tertiary and Off-line Storage**:
+   - Used for backup and archival purposes.
+   - Includes tapes, external drives, cloud storage.
+   - Typically the slowest and least expensive.
+
+#### Data Access and Performance
+- **Temporal Locality**: Recently accessed data is likely to be accessed again soon.
+- **Spatial Locality**: Data near recently accessed memory is likely to be accessed soon.
+- **Cache Management**: Techniques like LRU (Least Recently Used) help manage data in cache efficiently.
+
+#### Balancing Act
+- Balancing speed, cost, and capacity involves using faster, more expensive memory for immediate processing needs and slower, larger capacity storage for long-term needs.
+- Hierarchical design allows for efficient data access and management, optimizing overall system performance.
+
+Understanding memory hierarchy is crucial for optimizing system performance, as it impacts data access times and computational efficiency.
+### Memory Hierarchy: Blocking
+
+#### Blocking in Memory Hierarchies
+
+**Blocking** is a technique used to improve cache performance by organizing data accesses into blocks. This helps exploit spatial locality and reduce cache misses. Here’s a quick overview:
+
+1. **Definition**:
+   - Blocking divides data and computations into smaller blocks that fit into the cache, minimizing the need to fetch data from slower memory levels frequently.
+
+2. **Purpose**:
+   - Enhances cache utilization.
+   - Reduces cache miss rates.
+   - Optimizes memory bandwidth usage.
+
+3. **Implementation**:
+   - Common in matrix multiplication and other array-based computations.
+   - Data is accessed in contiguous chunks, improving the likelihood that needed data is already in the cache.
+
+4. **Examples**:
+   - **Matrix Multiplication**: Data is divided into submatrices (blocks) to be processed, improving cache efficiency.
+   - **Loop Nest Optimization**: Reorders loop executions to ensure data within a loop iteration is cache-friendly.
+
+#### Benefits of Blocking
+
+- **Increased Cache Hits**: By accessing data in blocks, the probability of cache hits is increased, improving overall computational speed.
+- **Reduced Memory Latency**: Minimizes the time spent waiting for data to be loaded from slower memory levels.
+
+Blocking is an essential technique in optimizing memory performance, crucial in high-performance computing and applications requiring extensive data processing.

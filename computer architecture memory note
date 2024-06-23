@@ -1,0 +1,102 @@
+https://acs.pub.ro/~cpop/SMPA/Computer%20Architecture%20A%20Quantitative%20Approach%20(5th%20edition).pdf?fbclid=IwZXh0bgNhZW0CMTAAAR38qtSwh2Bjf678tUhnx-O-4DmxYpkGNXZkCy4NHz68zQ5EreIrNTsRKSY_aem_ZmFrZWR1bW15MTZieXRlcw
+
+ecessity and benefits of memory hierarchy
+Memory hierarchy is about arranging different kinds of storage devices in a computer based on their size, cost and access speed, and the roles they play in application processing. The main purpose is to achieve efficient operations by organizing the memory to reduce access time while speeding up operations.
+
+Since CPU registers are the fastest to read and write, they are placed at the top of the hierarchy. On the other hand, mass storage devices like optical drives and magnetic tapes are the slowest and largest and therefore occupy the last level in the pyramid.
+
+Creating a memory hierarchy simplifies memory distribution. It also allows data to be spread among different memory types to maintain its security, reduce access times and ensure its availability. In addition, a hierarchical structure permits demand paging and pre-paging and decreases the per-bit cost of the computing system.
+
+Hardware designers try to improve the performance of processor memory by increasing the size of the cache memory which allows processors to access the required programs or data much faster. Designers also try to reduce the dependency on the main memory, which is slower and affects the performance of the processor and the overall computer system.
+
+  Characteristics of memory hierarchy
+The key characteristics of a memory hierarchy include the following:
+
+Capacity. Capacity is the volume of information that a memory device can store. As we move down the memory pyramid, the capacity or memory size increases.
+
+Access time. Access time is the time interval from when a read/write request is made and when the data actually becomes available. It increases as we move from the top to the bottom of the memory hierarchy. Registers, which are present inside the CPU, have the shortest access time, meaning they are the fastest. At the bottom of the pyramid, magnetic tapes and similar storage devices have the greatest access time.
+
+Performance. Without a memory hierarchy, there is a speed gap between CPU registers and the main memory. This increases access time and directly impacts the system's performance. Performance can be improved by reducing the number of levels required to access and manipulate data.
+
+Cost per bit. The cost per bit is calculated by dividing the total cost of the memory by the total number of accessed bits. As we move from the top of the memory hierarchy to the bottom, the cost per bit decreases. This is because internal memory is costlier than external memory.
+
+  The memory hierarchy is made up of different levels, each with a subset of the memory below it:
+Lower levels
+These levels have faster access times but are more expensive and have limited capacity. Examples include registers and caches, which hold frequently accessed data.
+Higher levels
+These levels have larger capacities but are slower and less expensive. Examples include main memory and secondary storage, which hold less frequently accessed data. 
+The Principle of Locality, which states that programs access a small portion of the address space at any given time, is the main reason the hierarchical organization of memory works. For example, the 90/10 Locality Rule states that a program executes about 90% of its instructions in 10% of its code. 
+
+What is Memory Hierarchy?
+The memory in a computer can be divided into five hierarchies based on the speed as well as use. The processor can move from one level to another based on its requirements. The five hierarchies in the memory are registers, cache, main memory, magnetic discs, and magnetic tapes. The first three hierarchies are volatile memories which mean when there is no power, and then automatically they lose their stored data. Whereas the last two hierarchies are not volatile which means they store the data permanently.
+
+A memory element is the set of storage devices which stores the binary data in the type of bits. In general, the storage of memory can be classified into two categories such as volatile as well as non- volatile.
+
+
+Memory Hierarchy in Computer Architecture
+The memory hierarchy design in a computer system mainly includes different storage devices. Most of the computers were inbuilt with extra storage to run more powerfully beyond the main memory capacity. The following memory hierarchy diagram is a hierarchical pyramid for computer memory. The designing of the memory hierarchy is divided into two types such as primary (Internal) memory and secondary (External) memory.
+
+Memory Hierarchy
+Memory Hierarchy
+Primary Memory
+
+The primary memory is also known as internal memory, and this is accessible by the processor straightly. This memory includes main, cache, as well as CPU registers.
+
+PCBWay
+Secondary Memory
+
+The secondary memory is also known as external memory, and this is accessible by the processor through an input/output module. This memory includes an optical disk, magnetic disk, and magnetic tape.
+
+Characteristics of Memory Hierarchy
+The memory hierarchy characteristics mainly include the following.
+
+
+Performance
+
+Previously, the designing of a computer system was done without memory hierarchy, and the speed gap among the main memory as well as the CPU registers enhances because of the huge disparity in access time, which will cause the lower performance of the system. So, the enhancement was mandatory. The enhancement of this was designed in the memory hierarchy model due to the system’s performance increase.
+
+Ability
+
+
+The ability of the memory hierarchy is the total amount of data the memory can store. Because whenever we shift from top to bottom inside the memory hierarchy, then the capacity will increase.
+
+Access Time
+
+The access time in the memory hierarchy is the interval of the time among the data availability as well as request to read or write. Because whenever we shift from top to bottom inside the memory hierarchy, then the access time will increase
+
+Cost per bit
+
+When we shift from bottom to top inside the memory hierarchy, then the cost for each bit will increase which means an internal Memory is expensive compared with external memory.
+
+Memory Hierarchy Design
+The memory hierarchy in computers mainly includes the following.
+
+Registers
+
+Usually, the register is a static RAM or SRAM in the processor of the computer which is used for holding the data word which is typically 64 or 128 bits. The program counter register is the most important as well as found in all the processors. Most of the processors use a status word register as well as an accumulator. A status word register is used for decision making, and the accumulator is used to store the data like mathematical operation. Usually, computers like complex instruction set computers have so many registers for accepting main memory, and RISC- reduced instruction set computers have more registers.
+
+Cache Memory
+
+Cache memory can also be found in the processor, however rarely it may be another IC (integrated circuit) which is separated into levels. The cache holds the chunk of data which are frequently used from main memory. When the processor has a single core then it will have two (or) more cache levels rarely. Present multi-core processors will be having three, 2-levels for each one core, and one level is shared.
+
+Main Memory
+
+The main memory in the computer is nothing but, the memory unit in the CPU that communicates directly. It is the main storage unit of the computer. This memory is fast as well as large memory used for storing the data throughout the operations of the computer. This memory is made up of RAM as well as ROM.
+
+Magnetic Disks
+
+The magnetic disks in the computer are circular plates fabricated of plastic otherwise metal by magnetized material. Frequently, two faces of the disk are utilized as well as many disks may be stacked on one spindle by read or write heads obtainable on every plane. All the disks in computer turn jointly at high speed. The tracks in the computer are nothing but bits which are stored within the magnetized plane in spots next to concentric circles. These are usually separated into sections which are named as sectors.
+
+Magnetic Tape
+
+This tape is a normal magnetic recording which is designed with a slender magnetizable covering on an extended, plastic film of the thin strip. This is mainly used to back up huge data. Whenever the computer requires to access a strip, first it will mount to access the data. Once the data is allowed, then it will be unmounted. The access time of memory will be slower within magnetic strip as well as it will take a few minutes for accessing a strip.
+
+Advantages of Memory Hierarchy
+The need for a memory hierarchy includes the following.
+
+Memory distributing is simple and economical
+Removes external destruction
+Data can be spread all over
+Permits demand paging & pre-paging
+Swapping will be more proficient
+Thus, this is all about memory hierarchy. From the above information, finally, we can conclude that it is mainly used to decrease the bit cost, access frequency, and to increase the capacity, access time. So it is up to the designer how much they need these characteristics for satisfying the necessities of their consumers. Here is a question for you, memory hierarchy in OS?

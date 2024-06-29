@@ -1,0 +1,262 @@
+https://cse.unl.edu/~cbourke/ComputerScienceOne.pdf
+
+### Static and Dynamic Memory
+
+#### Static Memory
+
+1. **Definition**:
+   - Memory allocation fixed at compile time.
+   - Data structures like arrays and static variables.
+
+2. **Characteristics**:
+   - Size cannot be changed during program execution.
+   - Faster access due to fixed addresses.
+
+3. **Advantages**:
+   - Simple to use and implement.
+   - No fragmentation issues.
+
+4. **Disadvantages**:
+   - Inflexible; potential waste of memory.
+   - Limited size known at compile time.
+
+#### Dynamic Memory
+
+1. **Definition**:
+   - Memory allocated during runtime.
+   - Uses functions like `malloc`, `calloc`, and `free` in C/C++.
+
+2. **Characteristics**:
+   - Flexible size; can grow or shrink as needed.
+   - Managed by the program, often through pointers.
+
+3. **Advantages**:
+   - Efficient memory usage; only allocate what's needed.
+   - Suitable for data structures like linked lists and trees.
+
+4. **Disadvantages**:
+   - Slower access due to pointer dereferencing.
+   - Risk of memory leaks and fragmentation.
+
+By understanding the differences between static and dynamic memory, developers can choose the appropriate type based on the needs of their applications, optimizing for performance and resource utilization.
+
+### Sorting Stability
+
+#### Definition
+
+- **Stable Sorting**: A sorting algorithm is stable if it preserves the relative order of records with equal keys.
+
+#### Importance
+
+1. **Data Integrity**:
+   - Essential when sorting complex data structures where multiple fields are considered.
+   - Preserves initial ordering for secondary keys.
+
+2. **Use Cases**:
+   - Useful in scenarios requiring multiple sorting passes.
+   - Critical in applications like databases and spreadsheets.
+
+#### Examples of Stable Sorting Algorithms
+
+1. **Bubble Sort**
+2. **Merge Sort**
+3. **Insertion Sort**
+4. **Timsort**
+
+#### Examples of Unstable Sorting Algorithms
+
+1. **Quick Sort** (typically)
+2. **Heap Sort**
+3. **Selection Sort**
+
+Understanding sorting stability helps in selecting the appropriate algorithm based on the requirements of data handling and processing tasks.
+
+### Graphical User Interfaces (GUIs) & Event-Driven Programming
+
+#### Graphical User Interfaces (GUIs)
+
+1. **Definition**:
+   - Visual interfaces allowing users to interact with software through graphical elements like buttons, menus, and windows.
+
+2. **Components**:
+   - **Widgets**: Elements like buttons, text fields, and sliders.
+   - **Layout Managers**: Arrange widgets within windows.
+   - **Event Handlers**: Respond to user actions.
+
+3. **Advantages**:
+   - Intuitive and user-friendly.
+   - Enhances user experience with visual feedback.
+
+4. **Development Tools**:
+   - GUI frameworks like Tkinter, Qt, and JavaFX.
+   - Visual design tools for building interfaces.
+
+#### Event-Driven Programming
+
+1. **Definition**:
+   - Programming paradigm where the flow of the program is determined by events like user actions or sensor outputs.
+
+2. **Key Concepts**:
+   - **Events**: Actions or occurrences recognized by software (e.g., clicks, keystrokes).
+   - **Event Handlers**: Functions or methods that respond to specific events.
+   - **Event Loop**: Continuously checks for and dispatches events to appropriate handlers.
+
+3. **Advantages**:
+   - Responsive applications that react to user input in real-time.
+   - Separation of concerns; event logic is distinct from application logic.
+
+4. **Applications**:
+   - Used in GUI applications, gaming, and real-time systems.
+
+Combining GUIs with event-driven programming results in interactive and user-friendly applications that respond dynamically to user input.
+
+### Error Handling & Exceptions
+
+#### Error Handling
+
+1. **Definition**:
+   - The process of anticipating, detecting, and resolving errors in a program.
+
+2. **Purpose**:
+   - Prevents program crashes and ensures smooth operation.
+   - Improves user experience by providing informative feedback.
+
+3. **Techniques**:
+   - **Validation**: Check inputs to prevent invalid data.
+   - **Logging**: Record errors for debugging and analysis.
+   - **Graceful Degradation**: Allow the program to continue operating despite errors.
+
+#### Exceptions
+
+1. **Definition**:
+   - Anomalies or unexpected conditions that disrupt the normal flow of a program.
+
+2. **Handling Exceptions**:
+   - Use try-catch (or try-except) blocks to manage exceptions.
+   - **Try Block**: Contains code that may throw an exception.
+   - **Catch Block**: Contains code to handle the exception.
+
+3. **Benefits**:
+   - Separates error handling from main code logic.
+   - Provides mechanisms to manage errors and recover gracefully.
+
+4. **Best Practices**:
+   - Catch specific exceptions to handle known error types.
+   - Avoid using generic exception handlers that obscure error details.
+   - Clean up resources (e.g., file handles, network connections) in finally blocks.
+
+Effective error handling and exception management are crucial for building robust and user-friendly applications.
+
+### Tokenizing
+
+#### Definition
+
+- **Tokenizing**: The process of breaking down text into smaller units called tokens, which can be words, phrases, or symbols.
+
+#### Purpose
+
+1. **Text Processing**:
+   - Essential for natural language processing (NLP) tasks.
+   - Converts text into a format suitable for analysis and manipulation.
+
+2. **Applications**:
+   - Used in search engines, text analysis, and machine learning models.
+
+#### Techniques
+
+1. **Whitespace Tokenization**:
+   - Splits text based on spaces.
+   - Simple but may not handle punctuation or special characters effectively.
+
+2. **Punctuation-Based Tokenization**:
+   - Uses punctuation marks to identify boundaries.
+   - Helps in separating words and symbols accurately.
+
+3. **Regex Tokenization**:
+   - Utilizes regular expressions to define complex patterns for splitting text.
+   - Flexible and powerful for handling various text formats.
+
+4. **Subword Tokenization**:
+   - Breaks words into subword units (e.g., Byte Pair Encoding).
+   - Useful for languages with rich morphology or when dealing with out-of-vocabulary words.
+
+#### Challenges
+
+- Handling contractions, hyphenated words, and special characters.
+- Maintaining semantic meaning while splitting text.
+
+Tokenizing is a fundamental step in text analysis, enabling more sophisticated language processing and understanding.
+
+Sure! Here's a summary of the concepts:
+
+### Abstraction
+- **Definition**: A technique for managing complexity by establishing levels so higher levels aren't concerned with lower-level details.
+
+### Acceptance Testing
+- **Definition**: A phase where software is tested by humans to ensure it meets business requirements and is acceptable for use.
+
+### Ad-Hoc Testing
+- **Definition**: Informal testing done without much planning, serving as a quick check for code functionality and providing immediate feedback.
+
+### Algorithm
+- **Definition**: A process consisting of a step-by-step set of operations to solve a problem or perform a task.
+
+### Anonymous Class
+- **Definition**: A class defined inline without a name, used when an instance is needed for single-use purposes.
+
+### Anonymous Function
+- **Definition**: A function without a name, created to be passed as a callback to another function.
+
+### Anti-Pattern
+- **Definition**: A common, but ineffective, solution to recurring problems, often introducing risks or other issues in software.
+
+### Array
+- **Definition**: An ordered collection of data elements, typically of the same type.
+
+### Assignment Operator
+- **Definition**: An operator that assigns a value to a variable.
+
+### Backward Compatible
+- **Definition**: Describes software or systems that remain compatible with previous versions, allowing coexistence without issues.
+
+### Placeholder Names
+- **Bar, Baz, Foo**: Common placeholder names used in programming examples or explanations.
+
+Sure! Here's a summary of the additional concepts:
+
+### Bike Shedding
+- **Definition**: A phenomenon where excessive time is spent on trivial matters, neglecting more important issues in a project. Originates from Parkinson’s law of triviality.
+
+### Bit
+- **Definition**: The basic unit of information in computing, representing 1 or 0 (true/false, on/off).
+
+### Boolean
+- **Definition**: A data type representing the truth value of a logical statement, typically with values true or false.
+
+### Bug
+- **Definition**: A flaw in a program causing incorrect behavior or errors. Popularized by Grace Hopper in 1946 when a moth caused a system failure.
+
+### Byte
+- **Definition**: A unit of information consisting of 8 bits.
+
+### Cache
+- **Definition**: A component or data structure that stores data for quick retrieval to speed up future requests.
+
+### Call by Reference
+- **Definition**: Passing a variable's memory address to a function, allowing the function to modify the original variable.
+
+### Call by Value
+- **Definition**: Passing a copy of a variable’s value to a function, where changes do not affect the original variable.
+
+### Callback
+- **Definition**: A function passed as an argument to another function, which calls back the passed function at some point.
+
+### Cargo Cult Programming
+- **Definition**: Including code or patterns without understanding their purpose or necessity, often copying without proper adaptation.
+
+### Case Sensitive
+- **Definition**: A language feature where differences between lower and upper case characters in identifiers are recognized.
+
+### Chomp
+- **Definition**: The operation of removing endline characters or trimming leading and trailing whitespace from a string.
+

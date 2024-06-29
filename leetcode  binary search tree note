@@ -1,0 +1,717 @@
+https://leetcode.com/explore/learn/card/introduction-to-data-structure-binary-search-tree/143/appendix-height-balanced-bst/1015/
+
+### Binary Search Tree (BST)
+
+#### Definition
+
+- A **Binary Search Tree** is a node-based data structure with the following properties:
+  - Each node has a maximum of two children: left and right.
+  - The left subtree of a node contains only nodes with keys less than the node’s key.
+  - The right subtree of a node contains only nodes with keys greater than the node’s key.
+  - Both the left and right subtrees must also be binary search trees.
+
+#### Characteristics
+
+1. **Ordered Structure**:
+   - Enables efficient searching, insertion, and deletion operations.
+
+2. **Operations**:
+   - **Search**: Average time complexity \(O(\log n)\).
+   - **Insertion**: Average time complexity \(O(\log n)\).
+   - **Deletion**: Average time complexity \(O(\log n)\).
+
+3. **Balanced vs. Unbalanced**:
+   - In a balanced BST, operations are more efficient.
+   - In an unbalanced BST, operations can degrade to \(O(n)\) in the worst case.
+
+Binary Search Trees are commonly used in applications that require dynamic data storage with efficient retrieval.
+
+To validate if a binary tree is a valid Binary Search Tree (BST), you can use a recursive approach. Here's a solution outline:
+
+1. **Recursive Function**: Create a helper function that checks if a node's value is within a valid range.
+2. **Parameters**: The function takes a node, and the minimum and maximum values that the node's value must be between.
+3. **Base Case**: If the node is null, return true (an empty tree is a valid BST).
+4. **Validity Check**:
+   - If the node's value is not within the valid range, return false.
+   - Recursively check the left and right subtrees with updated ranges.
+     - The left child's maximum value becomes the current node's value.
+     - The right child's minimum value becomes the current node's value.
+
+Here is a Python implementation:
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def is_valid_bst(root, min_val=float('-inf'), max_val=float('inf')):
+    if not root:
+        return True
+    if not (min_val < root.val < max_val):
+        return False
+    return (is_valid_bst(root.left, min_val, root.val) and
+            is_valid_bst(root.right, root.val, max_val))
+
+# Example usage
+# root = TreeNode(2, TreeNode(1), TreeNode(3))
+# print(is_valid_bst(root))  # Output: True
+```
+
+This function checks if the tree satisfies the BST properties by ensuring each node adheres to the constraints imposed by its ancestors.
+
+To find the in-order successor of a node \( p \) in a Binary Search Tree (BST), follow these steps:
+
+1. **Right Subtree Case**:
+   - If node \( p \) has a right subtree, the successor is the leftmost node in the right subtree.
+
+2. **Ancestor Case**:
+   - If node \( p \) has no right subtree, traverse up the tree using parent pointers until you find a node which is the left child of its parent. The parent is the successor.
+
+Here is a Python implementation:
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def inorder_successor(root, p):
+    successor = None
+    
+    while root:
+        if p.val < root.val:
+            successor = root
+            root = root.left
+        else:
+            root = root.right
+    
+    return successor
+
+# Example usage:
+# root = TreeNode(5, TreeNode(3, TreeNode(2), TreeNode(4)), TreeNode(6))
+# p = root.left  # Node with value 3
+# print(inorder_successor(root, p).val)  # Output: 4
+```
+
+This function iteratively searches for the in-order successor, leveraging the BST properties to find the smallest node greater than \( p.val \). If no successor exists, it returns `None`.
+
+To find the in-order successor of a node \( p \) in a Binary Search Tree (BST), follow these steps:
+
+1. **Right Subtree Case**:
+   - If node \( p \) has a right subtree, the successor is the leftmost node in the right subtree.
+
+2. **Ancestor Case**:
+   - If node \( p \) has no right subtree, traverse up the tree using parent pointers until you find a node which is the left child of its parent. The parent is the successor.
+
+Here is a Python implementation:
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def inorder_successor(root, p):
+    successor = None
+    
+    while root:
+        if p.val < root.val:
+            successor = root
+            root = root.left
+        else:
+            root = root.right
+    
+    return successor
+
+# Example usage:
+# root = TreeNode(5, TreeNode(3, TreeNode(2), TreeNode(4)), TreeNode(6))
+# p = root.left  # Node with value 3
+# print(inorder_successor(root, p).val)  # Output: 4
+```
+
+This function iteratively searches for the in-order successor, leveraging the BST properties to find the smallest node greater than \( p.val \). If no successor exists, it returns `None`.
+
+Here's a Python implementation of the `BSTIterator` class for in-order traversal of a BST:
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class BSTIterator:
+    def __init__(self, root: TreeNode):
+        self.stack = []
+        self._leftmost_inorder(root)
+    
+    def _leftmost_inorder(self, node):
+        while node:
+            self.stack.append(node)
+            node = node.left
+
+    def next(self) -> int:
+        # Node at the top of the stack is the next smallest element
+        topmost_node = self.stack.pop()
+        
+        # If the node has a right child, process its left subtree
+        if topmost_node.right:
+            self._leftmost_inorder(topmost_node.right)
+        
+        return topmost_node.val
+
+    def hasNext(self) -> bool:
+        return len(self.stack) > 0
+
+# Example usage:
+# root = TreeNode(7, TreeNode(3), TreeNode(15, TreeNode(9), TreeNode(20)))
+# iterator = BSTIterator(root)
+# print(iterator.next())    # Output: 3
+# print(iterator.hasNext()) # Output: True
+# print(iterator.next())    # Output: 7
+```
+
+### Explanation:
+
+- **Initialization**: The constructor initializes a stack to simulate the in-order traversal iteratively.
+- **_leftmost_inorder**: This helper method pushes all left children of a node onto the stack, allowing `next()` to return the smallest element.
+- **next()**: Pops the stack to get the next smallest element, then processes the right subtree if it exists.
+- **hasNext()**: Checks if there are any more nodes to process.
+
+### Search in a Binary Search Tree (BST)
+
+#### Introduction
+
+Searching in a Binary Search Tree involves leveraging its properties:
+
+1. **Properties**:
+   - Left subtree contains nodes with values less than the parent node.
+   - Right subtree contains nodes with values greater than the parent node.
+
+2. **Searching Process**:
+   - Start at the root node.
+   - Compare the target value with the current node's value.
+   - If the target value is equal, the search is complete.
+   - If the target value is less, traverse to the left child.
+   - If the target value is greater, traverse to the right child.
+   - Repeat until the target is found or a null node is reached.
+
+3. **Efficiency**:
+   - Average time complexity: \(O(\log n)\).
+   - Worst-case time complexity: \(O(n)\), in case of an unbalanced tree.
+
+By using these properties, the search process is efficient, following the structure of the BST to narrow down the possible location of the target node.
+
+Here's a solution to search for a node in a Binary Search Tree (BST) based on a given value:
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def search_bst(root: TreeNode, val: int) -> TreeNode:
+    if not root or root.val == val:
+        return root
+    elif val < root.val:
+        return search_bst(root.left, val)
+    else:
+        return search_bst(root.right, val)
+
+# Example usage:
+# root = TreeNode(4, TreeNode(2, TreeNode(1), TreeNode(3)), TreeNode(7))
+# result = search_bst(root, 2)
+# if result:
+#     print(result.val)  # Output: 2
+# else:
+#     print("Value not found")
+```
+
+### Explanation:
+
+1. **Recursive Approach**:
+   - If the root is null or the root's value equals the target value, return the root.
+   - If the target value is less than the root's value, search the left subtree.
+   - If the target value is greater than the root's value, search the right subtree.
+
+2. **Base Cases**:
+   - If the node is null, the value does not exist in the tree.
+   - If the node's value matches the target, return the node (subtree rooted at that node).
+
+This approach efficiently narrows down the search using the BST properties.
+
+Here's how to insert a value into a Binary Search Tree (BST):
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def insert_into_bst(root: TreeNode, val: int) -> TreeNode:
+    if not root:
+        return TreeNode(val)
+    
+    if val < root.val:
+        root.left = insert_into_bst(root.left, val)
+    else:
+        root.right = insert_into_bst(root.right, val)
+    
+    return root
+
+# Example usage:
+# root = TreeNode(4, TreeNode(2, TreeNode(1), TreeNode(3)), TreeNode(7))
+# new_root = insert_into_bst(root, 5)
+```
+
+### Explanation:
+
+1. **Recursive Insertion**:
+   - If the root is `null`, create a new node with the given value.
+   - Compare the value to the root's value.
+     - If the value is less, recursively insert into the left subtree.
+     - If the value is greater or equal, recursively insert into the right subtree.
+2. **Return the Root**:
+   - Return the modified tree with the new value inserted.
+
+This method maintains the properties of the BST during the insertion process.
+
+To delete a node from a Binary Search Tree (BST), follow these steps:
+
+1. **Find the Node**: Locate the node to be deleted.
+2. **Node Deletion Cases**:
+   - **Leaf Node**: Remove the node directly.
+   - **One Child**: Replace the node with its child.
+   - **Two Children**: Find the in-order successor (smallest node in the right subtree), replace the node's value with the successor's value, and delete the successor.
+
+Here's a Python implementation:
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def delete_node(root: TreeNode, key: int) -> TreeNode:
+    if not root:
+        return root
+    
+    if key < root.val:
+        root.left = delete_node(root.left, key)
+    elif key > root.val:
+        root.right = delete_node(root.right, key)
+    else:
+        if not root.left:
+            return root.right
+        elif not root.right:
+            return root.left
+        
+        min_larger_node = find_min(root.right)
+        root.val = min_larger_node.val
+        root.right = delete_node(root.right, min_larger_node.val)
+    
+    return root
+
+def find_min(node: TreeNode) -> TreeNode:
+    while node.left:
+        node = node.left
+    return node
+
+# Example usage:
+# root = TreeNode(5, TreeNode(3, TreeNode(2), TreeNode(4)), TreeNode(6, None, TreeNode(7)))
+# new_root = delete_node(root, 3)
+```
+
+### Explanation:
+
+1. **Recursive Search**: Traverse the tree to find the node to delete.
+2. **Deletion Cases**:
+   - **Leaf Node**: Directly remove the node.
+   - **One Child**: Replace the node with its single child.
+   - **Two Children**: Find the in-order successor, replace the node’s value, and delete the successor.
+3.**Return the Root**: Return the modified tree after deletion.
+Here's a solution for deleting a node in a Binary Search Tree (BST):
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def delete_node(root: TreeNode, key: int) -> TreeNode:
+    if not root:
+        return root
+    
+    if key < root.val:
+        root.left = delete_node(root.left, key)
+    elif key > root.val:
+        root.right = delete_node(root.right, key)
+    else:
+        if not root.left:
+            return root.right
+        elif not root.right:
+            return root.left
+        
+        min_larger_node = find_min(root.right)
+        root.val = min_larger_node.val
+        root.right = delete_node(root.right, min_larger_node.val)
+    
+    return root
+
+def find_min(node: TreeNode) -> TreeNode:
+    while node.left:
+        node = node.left
+    return node
+
+# Example usage:
+# root = TreeNode(5, TreeNode(3, TreeNode(2), TreeNode(4)), TreeNode(6, None, TreeNode(7)))
+# new_root = delete_node(root, 3)
+```
+
+### Explanation:
+
+1. **Search for the Node**:
+   - Traverse the tree to find the node with the specified key.
+
+2. **Deletion Cases**:
+   - **No Children (Leaf Node)**: Remove the node.
+   - **One Child**: Replace the node with its single child.
+   - **Two Children**: Find the in-order successor (smallest node in the right subtree), replace the node’s value with the successor’s value, and delete the successor.
+
+3. **Return the Root**:
+   - Return the updated tree root after deletion.
+
+Here's a solution for the `KthLargest` class using a min-heap to find the kth largest element in a stream:
+
+```python
+import heapq
+
+class KthLargest:
+    def __init__(self, k: int, nums: list[int]):
+        self.k = k
+        self.min_heap = []
+        for num in nums:
+            self.add(num)
+    
+    def add(self, val: int) -> int:
+        if len(self.min_heap) < self.k:
+            heapq.heappush(self.min_heap, val)
+        elif val > self.min_heap[0]:
+            heapq.heappushpop(self.min_heap, val)
+        
+        return self.min_heap[0]
+
+# Example usage:
+# k = 3
+# nums = [4, 5, 8, 2]
+# kthLargest = KthLargest(k, nums)
+# print(kthLargest.add(3))  # Output: 4
+# print(kthLargest.add(5))  # Output: 5
+# print(kthLargest.add(10)) # Output: 5
+# print(kthLargest.add(9))  # Output: 8
+# print(kthLargest.add(4))  # Output: 8
+```
+
+### Explanation:
+
+1. **Min-Heap**:
+   - Maintains the k largest elements in a min-heap.
+   - The smallest element in the heap is the kth largest overall.
+
+2. **Initialization**:
+   - Populate the heap with up to k elements from the initial list.
+   - If the list has more than k elements, maintain only the k largest.
+
+3. **Adding Elements**:
+   - If the heap has fewer than k elements, push the new element.
+   - If the new element is larger than the smallest in the heap, replace the smallest.
+   - Return the smallest element in the heap (kth largest).
+
+Here's a solution for the `KthLargest` class using a min-heap to find the kth largest element in a stream:
+
+```python
+import heapq
+
+class KthLargest:
+    def __init__(self, k: int, nums: list[int]):
+        self.k = k
+        self.min_heap = []
+        for num in nums:
+            self.add(num)
+    
+    def add(self, val: int) -> int:
+        if len(self.min_heap) < self.k:
+            heapq.heappush(self.min_heap, val)
+        elif val > self.min_heap[0]:
+            heapq.heappushpop(self.min_heap, val)
+        
+        return self.min_heap[0]
+
+# Example usage:
+# k = 3
+# nums = [4, 5, 8, 2]
+# kthLargest = KthLargest(k, nums)
+# print(kthLargest.add(3))  # Output: 4
+# print(kthLargest.add(5))  # Output: 5
+# print(kthLargest.add(10)) # Output: 5
+# print(kthLargest.add(9))  # Output: 8
+# print(kthLargest.add(4))  # Output: 8
+```
+
+### Explanation:
+
+1. **Min-Heap**:
+   - Maintains the k largest elements in a min-heap.
+   - The smallest element in the heap is the kth largest overall.
+
+2. **Initialization**:
+   - Populate the heap with up to k elements from the initial list.
+   - If the list has more than k elements, maintain only the k largest.
+
+3. **Adding Elements**:
+   - If the heap has fewer than k elements, push the new element.
+   - If the new element is larger than the smallest in the heap, replace the smallest.
+   - Return the smallest element in the heap (kth largest).
+
+Here's a solution for finding the Lowest Common Ancestor (LCA) in a Binary Search Tree (BST):
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def lowest_common_ancestor(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+    while root:
+        if p.val < root.val and q.val < root.val:
+            root = root.left
+        elif p.val > root.val and q.val > root.val:
+            root = root.right
+        else:
+            return root
+    return None
+
+# Example usage:
+# root = TreeNode(6, TreeNode(2, TreeNode(0), TreeNode(4, TreeNode(3), TreeNode(5))),
+#                 TreeNode(8, TreeNode(7), TreeNode(9)))
+# p = TreeNode(2)
+# q = TreeNode(8)
+# lca = lowest_common_ancestor(root, p, q)
+# print(lca.val)  # Output: 6
+```
+
+### Explanation:
+
+1. **Binary Search Tree Properties**:
+   - Traverse the tree using the BST properties.
+   - If both nodes are smaller than the current node, move to the left child.
+   - If both nodes are larger, move to the right child.
+   - If one node is on each side, the current node is the LCA.
+
+2. **Time Complexity**:
+   - The solution works in \(O(h)\) time, where \(h\) is the height of the tree.
+
+To solve the problem of finding if there are indices \( i \) and \( j \) such that:
+
+- \( i \neq j \)
+- \( \text{abs}(i - j) \leq \text{indexDiff} \)
+- \( \text{abs}(\text{nums}[i] - \text{nums}[j]) \leq \text{valueDiff} \)
+
+We can use a sliding window approach combined with a balanced data structure to maintain a window of potential candidates. Here's the solution:
+
+```python
+from sortedcontainers import SortedList
+
+def contains_nearby_almost_duplicate(nums, indexDiff, valueDiff):
+    sorted_list = SortedList()
+    
+    for i, num in enumerate(nums):
+        if i > indexDiff:
+            sorted_list.remove(nums[i - indexDiff - 1])
+        
+        pos1 = sorted_list.bisect_left(num - valueDiff)
+        pos2 = sorted_list.bisect_right(num + valueDiff)
+        
+        if pos1 != pos2:
+            return True
+        
+        sorted_list.add(num)
+    
+    return False
+
+# Example usage:
+# nums = [1, 2, 3, 1]
+# indexDiff = 3
+# valueDiff = 0
+# print(contains_nearby_almost_duplicate(nums, indexDiff, valueDiff))  # Output: True
+```
+
+### Explanation:
+
+1. **Sliding Window**:
+   - Maintain a sliding window of size \( \text{indexDiff} \) using a `SortedList` to keep elements in sorted order.
+   
+2. **Checking Conditions**:
+   - For each element, check if there exists any number within the range \([ \text{num} - \text{valueDiff}, \text{num} + \text{valueDiff} ]\) in the `SortedList`.
+   - Use binary search (`bisect_left` and `bisect_right`) to efficiently find if there are elements in the required range.
+
+3. **Maintaining the Window**:
+   - If the size of the `SortedList` exceeds \( \text{indexDiff} \), remove the oldest element to maintain the window size.
+
+This approach efficiently finds the required pair of indices if they exist.
+
+To create a height-balanced Binary Search Tree (BST) from a sorted array, you can use the following approach:
+
+1. **Recursive Division**:
+   - Select the middle element of the array as the root.
+   - Recursively do the same for the left half and right half to construct the left and right subtrees.
+
+2. **Balanced Structure**:
+   - This approach ensures the tree remains balanced because the middle element splits the array evenly.
+
+Here's a Python implementation:
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def sorted_array_to_bst(nums):
+    if not nums:
+        return None
+    
+    mid = len(nums) // 2
+    root = TreeNode(nums[mid])
+    root.left = sorted_array_to_bst(nums[:mid])
+    root.right = sorted_array_to_bst(nums[mid + 1:])
+    
+    return root
+
+# Example usage:
+# nums = [-10, -3, 0, 5, 9]
+# root = sorted_array_to_bst(nums)
+```
+
+### Explanation:
+
+1. **Middle Element**:
+   - The middle element of the array becomes the root of the subtree.
+
+2. **Recursion**:
+   - The left half of the array becomes the left subtree.
+   - The right half of the array becomes the right subtree.
+
+3. **Base Case**:
+   - When the array is empty, return `None`, indicating no further nodes. 
+
+This approach results in a balanced BST with minimal height, ensuring efficient search operations.
+
+To determine if a binary tree is height-balanced, you can use a recursive approach that checks the height of each subtree. A tree is height-balanced if the heights of the two subtrees of any node never differ by more than one.
+
+Here's a solution in Python:
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def is_balanced(root: TreeNode) -> bool:
+    def check_height(node):
+        if not node:
+            return 0
+        
+        left_height = check_height(node.left)
+        if left_height == -1:
+            return -1
+        
+        right_height = check_height(node.right)
+        if right_height == -1:
+            return -1
+        
+        if abs(left_height - right_height) > 1:
+            return -1
+        
+        return max(left_height, right_height) + 1
+    
+    return check_height(root) != -1
+
+# Example usage:
+# root = TreeNode(1, TreeNode(2, TreeNode(3)), TreeNode(2))
+# print(is_balanced(root))  # Output: True or False
+```
+
+### Explanation:
+
+1. **Recursive Function**:
+   - `check_height` returns the height of the tree if balanced, or -1 if not balanced.
+
+2. **Base Case**:
+   - If the node is `None`, return a height of 0.
+
+3. **Height Calculation**:
+   - Recursively calculate the height of the left and right subtrees.
+   - If either subtree is not balanced, propagate -1 upward.
+
+4. **Balance Check**:
+   - If the difference in heights of the left and right subtrees is more than 1, return -1.
+
+5. **Final Check**:
+   - The tree is balanced if the final result from `check_height` is not -1.
+
+To convert a sorted array to a height-balanced Binary Search Tree (BST), follow these steps:
+
+1. **Middle Element as Root**:
+   - Choose the middle element of the array as the root to ensure balance.
+
+2. **Recursive Division**:
+   - Recursively do the same for the left half and right half of the array to construct the left and right subtrees.
+
+Here’s the Python implementation:
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def sorted_array_to_bst(nums):
+    if not nums:
+        return None
+    
+    mid = len(nums) // 2
+    root = TreeNode(nums[mid])
+    root.left = sorted_array_to_bst(nums[:mid])
+    root.right = sorted_array_to_bst(nums[mid + 1:])
+    
+    return root
+
+# Example usage:
+# nums = [-10, -3, 0, 5, 9]
+# root = sorted_array_to_bst(nums)
+```
+
+### Explanation:
+
+1. **Base Case**:
+   - When the array is empty, return `None`.
+
+2. **Recursive Construction**:
+   - The middle element of the array becomes the root.
+   - The left half of the array becomes the left subtree.
+   - The right half becomes the right subtree.
+
+This approach ensures that the resulting BST is height-balanced.

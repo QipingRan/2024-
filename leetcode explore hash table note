@@ -1,0 +1,1263 @@
+https://leetcode.com/explore/learn/card/hash-table/187/conclusion-hash-table/1141/
+
+As we mentioned in the introduction,  Hash Table is a data structure which organizes data using hash functions in order to support quick insertion and search. In this article, we will take a look at the principle of the hash table.
+ 
+The Principle of Hash Table
+
+The key idea of Hash Table is to use a hash function to map keys to buckets. To be more specific,
+1.When we insert a new key, the hash function will decide which bucket the key should be assigned and the key will be stored in the corresponding bucket;
+2.When we want to search for a key, the hash table will use the same hash function to find the corresponding bucket and search only in the specific bucket.
+1. Hash Function
+
+The hash function is the most important component of a hash table which is used to map the key to a specific bucket. In the example in the previous article, we use y = x % 5 as a hash function, where x is the key value and y is the index of the assigned bucket.
+The hash function will depend on the range of key values and the number of buckets.
+Here are some examples of hash functions:
+
+It is an open problem to design a hash function. The idea is to try to assign the key to the bucket as uniformly as you can. Ideally, a perfect hash function will be a one-one mapping between the key and the bucket. However, in most cases, a hash function is not perfect and it is a tradeoff between the amount of buckets and the capacity of a bucket.
+ 
+2. Collision Resolution
+
+Ideally, if our hash function is a perfect one-one mapping, we will not need to handle collisions. Unfortunately, in most cases, collisions are almost inevitable. For instance, in our previous hash function (y = x % 5), both 1987 and 2 are assigned to bucket 2. That is a collision.
+A collision resolution algorithm should solve the following questions:
+1.How to organize the values in the same bucket?
+2.What if too many values are assigned to the same bucket?
+3.How to search for a target value in a specific bucket?
+These questions are related to the capacity of the bucket and the number of keys which might be mapped into the same bucket according to our hash function.
+Let's assume that the bucket, which holds the maximum number of keys, has N keys.
+Typically, if N is constant and small, we can simply use an array to store keys in the same bucket. If N is variable or large, we might need to use height-balanced binary search tree instead.
+To design a `HashSet` without using any built-in hash table libraries, we can implement it using an array of linked lists. This is a common approach to handle collisions in hash tables. Here's a step-by-step implementation of the `MyHashSet` class:
+
+1. **Define the Node Class:** This class will be used to create linked lists to handle collisions.
+2. **Define the MyHashSet Class:** This will contain methods to add, remove, and check the presence of keys.
+
+Here's the complete implementation:
+
+```python
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.next = None
+
+class MyHashSet:
+
+    def __init__(self):
+        self.size = 1000
+        self.buckets = [None] * self.size
+
+    def hash(self, key):
+        return key % self.size
+
+    def add(self, key: int) -> None:
+        hash_key = self.hash(key)
+        if self.buckets[hash_key] is None:
+            self.buckets[hash_key] = Node(key)
+        else:
+            current = self.buckets[hash_key]
+            while True:
+                if current.key == key:
+                    return  # Key already exists, no need to add
+                if current.next is None:
+                    break
+                current = current.next
+            current.next = Node(key)
+
+    def remove(self, key: int) -> None:
+        hash_key = self.hash(key)
+        current = self.buckets[hash_key]
+        if current is None:
+            return
+        if current.key == key:
+            self.buckets[hash_key] = current.next
+        else:
+            prev = current
+            current = current.next
+            while current is not None:
+                if current.key == key:
+                    prev.next = current.next
+                    return
+                prev = current
+                current = current.next
+
+    def contains(self, key: int) -> bool:
+        hash_key = self.hash(key)
+        current = self.buckets[hash_key]
+        while current is not None:
+            if current.key == key:
+                return True
+            current = current.next
+        return False
+
+# Example usage:
+# hashset = MyHashSet()
+# hashset.add(1)
+# hashset.add(2)
+# print(hashset.contains(1))  # Returns True
+# print(hashset.contains(3))  # Returns False
+# hashset.add(2)
+# print(hashset.contains(2))  # Returns True
+# hashset.remove(2)
+# print(hashset.contains(2))  # Returns False
+```
+
+### Explanation:
+
+1. **Node Class:** Defines the nodes used in the linked list to store keys. Each node has a `key` and a `next` pointer.
+
+2. **MyHashSet Class:**
+   - **Initialization (`__init__` method):** Creates a list of a fixed size (1000 in this case) initialized to `None`. This list represents the buckets in the hash table.
+   - **Hash Function (`hash` method):** Computes the hash value for a given key using the modulo operation.
+   - **Add Method (`add`):** Inserts a key into the hash set. It computes the hash value of the key to find the appropriate bucket. If the bucket is empty, it creates a new node. If the bucket is not empty, it traverses the linked list to check if the key already exists or to find the end of the list to insert the new key.
+   - **Remove Method (`remove`):** Removes a key from the hash set. It computes the hash value and traverses the linked list to find and remove the key.
+   - **Contains Method (`contains`):** Checks if a key exists in the hash set by computing the hash value and traversing the linked list in the appropriate bucket.
+
+This implementation ensures that the basic operations (`add`, `remove`, and `contains`) are efficient and handle collisions using separate chaining (linked lists).
+
+To design a `HashMap` without using any built-in hash table libraries, we can implement it using an array of linked lists, similar to the `HashSet` implementation. Each node in the linked list will store a key-value pair. Here's a step-by-step implementation of the `MyHashMap` class:
+
+1. **Define the Node Class:** This class will be used to create linked lists to handle collisions, storing both key and value.
+2. **Define the MyHashMap Class:** This will contain methods to put, get, and remove key-value pairs.
+
+Here's the complete implementation:
+
+```python
+class Node:
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+        self.next = None
+
+class MyHashMap:
+
+    def __init__(self):
+        self.size = 1000
+        self.buckets = [None] * self.size
+
+    def hash(self, key):
+        return key % self.size
+
+    def put(self, key: int, value: int) -> None:
+        hash_key = self.hash(key)
+        if self.buckets[hash_key] is None:
+            self.buckets[hash_key] = Node(key, value)
+        else:
+            current = self.buckets[hash_key]
+            while True:
+                if current.key == key:
+                    current.value = value  # Update the value if key already exists
+                    return
+                if current.next is None:
+                    break
+                current = current.next
+            current.next = Node(key, value)
+
+    def get(self, key: int) -> int:
+        hash_key = self.hash(key)
+        current = self.buckets[hash_key]
+        while current is not None:
+            if current.key == key:
+                return current.value
+            current = current.next
+        return -1  # Return -1 if the key does not exist
+
+    def remove(self, key: int) -> None:
+        hash_key = self.hash(key)
+        current = self.buckets[hash_key]
+        if current is None:
+            return
+        if current.key == key:
+            self.buckets[hash_key] = current.next
+        else:
+            prev = current
+            current = current.next
+            while current is not None:
+                if current.key == key:
+                    prev.next = current.next
+                    return
+                prev = current
+                current = current.next
+
+# Example usage:
+# hashmap = MyHashMap()
+# hashmap.put(1, 1)
+# hashmap.put(2, 2)
+# print(hashmap.get(1))  # Returns 1
+# print(hashmap.get(3))  # Returns -1
+# hashmap.put(2, 1)  # Update the existing value
+# print(hashmap.get(2))  # Returns 1
+# hashmap.remove(2)
+# print(hashmap.get(2))  # Returns -1
+```
+
+### Explanation:
+
+1. **Node Class:** Defines the nodes used in the linked list to store key-value pairs. Each node has a `key`, `value`, and a `next` pointer.
+
+2. **MyHashMap Class:**
+   - **Initialization (`__init__` method):** Creates a list of a fixed size (1000 in this case) initialized to `None`. This list represents the buckets in the hash table.
+   - **Hash Function (`hash` method):** Computes the hash value for a given key using the modulo operation.
+   - **Put Method (`put`):** Inserts a key-value pair into the hash map. It computes the hash value of the key to find the appropriate bucket. If the bucket is empty, it creates a new node. If the bucket is not empty, it traverses the linked list to check if the key already exists or to find the end of the list to insert the new key-value pair.
+   - **Get Method (`get`):** Returns the value associated with a key. It computes the hash value and traverses the linked list in the appropriate bucket to find the key and return its value. If the key does not exist, it returns -1.
+   - **Remove Method (`remove`):** Removes a key-value pair from the hash map. It computes the hash value and traverses the linked list to find and remove the key.
+
+This implementation ensures that the basic operations (`put`, `get`, and `remove`) are efficient and handle collisions using separate chaining (linked lists).
+
+Find Duplicates By Hash Set
+Report Issue
+
+As we know, it is easy and effective to insert a new value and check if a value is in a hash set or not.
+Therefore, typically, a hash set is used to check if a value has ever appeared or not.
+ 
+An Example
+
+Let's look at an example:
+Given an array of integers, find if the array contains any duplicates. 
+This is a typical problem which can be solved by a hash set.
+You can simply iterate each value and insert the value into the set. If a value has already been in the hash set, there is a duplicate.
+To determine if an array contains any duplicate values, you can use a hash set to keep track of the values you have seen so far. As you iterate through the array, you check if the current value is already in the set. If it is, you return `true` because you've found a duplicate. If you finish iterating through the array without finding any duplicates, you return `false`.
+
+Here's the implementation in Python:
+
+```python
+def containsDuplicate(nums):
+    seen = set()
+    for num in nums:
+        if num in seen:
+            return True
+        seen.add(num)
+    return False
+
+# Example usage:
+nums = [1, 2, 3, 1]
+print(containsDuplicate(nums))  # Returns True
+
+nums = [1, 2, 3, 4]
+print(containsDuplicate(nums))  # Returns False
+
+nums = [1, 1, 1, 3, 3, 4, 3, 2, 4, 2]
+print(containsDuplicate(nums))  # Returns True
+```
+
+### Explanation:
+
+1. **Initialization:** Create an empty set called `seen` to store the values you have encountered so far.
+2. **Iteration:** Loop through each number in the `nums` array.
+3. **Check for Duplicates:** For each number, check if it is already in the `seen` set.
+   - If it is, return `true` immediately since a duplicate has been found.
+   - If it is not, add the number to the `seen` set.
+4. **Return Result:** If the loop completes without finding any duplicates, return `false`.
+
+This approach ensures that the solution is efficient, with a time complexity of O(n) and a space complexity of O(n), where n is the number of elements in the array.
+
+To find the intersection of two arrays, where each element in the result must be unique, you can use sets to take advantage of their properties for efficient membership checking and to ensure uniqueness. Here's how you can do it:
+
+1. Convert both arrays to sets to remove duplicates.
+2. Use the intersection operation to find common elements between the two sets.
+3. Convert the resulting set back to a list and return it.
+
+Here's the implementation in Python:
+
+```python
+def intersection(nums1, nums2):
+    set1 = set(nums1)
+    set2 = set(nums2)
+    result = list(set1 & set2)
+    return result
+
+# Example usage:
+nums1 = [1, 2, 2, 1]
+nums2 = [2, 2]
+print(intersection(nums1, nums2))  # Returns [2]
+
+nums1 = [4, 9, 5]
+nums2 = [9, 4, 9, 8, 4]
+print(intersection(nums1, nums2))  # Returns [9, 4]
+```
+
+### Explanation:
+
+1. **Convert to Sets:** Convert both `nums1` and `nums2` to sets (`set1` and `set2`) to remove any duplicate elements.
+2. **Intersection:** Use the intersection operator `&` to find common elements between `set1` and `set2`.
+3. **Convert to List:** Convert the resulting set of the intersection to a list and return it.
+
+This approach ensures that each element in the result is unique and the solution is efficient with a time complexity of O(n + m), where n and m are the lengths of `nums1` and `nums2` respectively. The space complexity is also O(n + m) due to the storage of the sets.
+
+To determine if a number is a happy number, we need to repeatedly replace the number with the sum of the squares of its digits until the number becomes 1 (indicating it's a happy number) or falls into a cycle (indicating it's not a happy number). We can detect a cycle by using a set to keep track of numbers we have already seen. If we encounter a number that is already in the set, we know we've entered a cycle.
+
+Here is the Python implementation:
+
+```python
+def isHappy(n: int) -> bool:
+    def get_next(number):
+        total_sum = 0
+        while number > 0:
+            digit = number % 10
+            total_sum += digit * digit
+            number //= 10
+        return total_sum
+
+    seen = set()
+    while n != 1 and n not in seen:
+        seen.add(n)
+        n = get_next(n)
+
+    return n == 1
+
+# Example usage:
+print(isHappy(19))  # Returns True
+print(isHappy(2))   # Returns False
+```
+
+### Explanation:
+
+1. **Helper Function (`get_next`):** This function computes the sum of the squares of the digits of the given number.
+2. **Set to Track Seen Numbers (`seen`):** We use a set to keep track of all numbers encountered during the process to detect cycles.
+3. **Loop Until Happy or Cycle:** We continue the process of replacing the number with the sum of the squares of its digits until the number equals 1 (indicating it is a happy number) or it repeats a number in the set (indicating it is not a happy number).
+
+- If the number becomes 1, we return `True`.
+- If we detect a cycle (the number is already in the set), we return `False`.
+
+This algorithm ensures that we can efficiently determine if a number is happy while avoiding infinite loops by detecting cycles.
+
+To solve the "Two Sum" problem, you can use a hash map to store the indices of the elements as you iterate through the array. This allows you to efficiently check if the complement of the current element (i.e., `target - current element`) exists in the hash map. If it does, you have found the two indices that sum up to the target.
+
+Here is the Python implementation:
+
+```python
+def twoSum(nums, target):
+    num_to_index = {}
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in num_to_index:
+            return [num_to_index[complement], i]
+        num_to_index[num] = i
+
+# Example usage:
+nums = [2, 7, 11, 15]
+target = 9
+print(twoSum(nums, target))  # Returns [0, 1]
+
+nums = [3, 2, 4]
+target = 6
+print(twoSum(nums, target))  # Returns [1, 2]
+
+nums = [3, 3]
+target = 6
+print(twoSum(nums, target))  # Returns [0, 1]
+```
+
+### Explanation:
+
+1. **Hash Map (`num_to_index`):** We use a hash map to store the value and its corresponding index from the array.
+2. **Iteration and Check:**
+   - For each element in the array, compute its complement by subtracting the element from the target.
+   - Check if the complement is already in the hash map.
+   - If it is, return the indices of the current element and the complement.
+   - If it is not, add the current element and its index to the hash map.
+3. **Return Result:** The function returns the indices of the two numbers that add up to the target.
+
+This approach ensures that the solution is efficient with a time complexity of O(n) and a space complexity of O(n), where n is the number of elements in the array.
+
+To determine if two strings `s` and `t` are isomorphic, we need to check if there is a one-to-one mapping between characters of `s` and characters of `t`. This means each character in `s` can be replaced to get `t` while preserving the order of characters.
+
+Here's the step-by-step approach to solve this problem:
+
+1. Use two dictionaries to track the mappings from `s` to `t` and from `t` to `s`.
+2. Iterate through the characters of `s` and `t` simultaneously.
+3. For each character pair `(c1, c2)`:
+   - Check if `c1` has been previously mapped to a different character than `c2`.
+   - Check if `c2` has been previously mapped to a different character than `c1`.
+4. If either mapping check fails, the strings are not isomorphic.
+5. If the iteration completes without any conflicts, the strings are isomorphic.
+
+Here's the implementation in Python:
+
+```python
+def isIsomorphic(s: str, t: str) -> bool:
+    if len(s) != len(t):
+        return False
+    
+    s_to_t = {}
+    t_to_s = {}
+    
+    for c1, c2 in zip(s, t):
+        if (c1 in s_to_t and s_to_t[c1] != c2) or (c2 in t_to_s and t_to_s[c2] != c1):
+            return False
+        s_to_t[c1] = c2
+        t_to_s[c2] = c1
+    
+    return True
+
+# Example usage:
+s = "egg"
+t = "add"
+print(isIsomorphic(s, t))  # Returns True
+
+s = "foo"
+t = "bar"
+print(isIsomorphic(s, t))  # Returns False
+
+s = "paper"
+t = "title"
+print(isIsomorphic(s, t))  # Returns True
+```
+
+### Explanation:
+
+1. **Initial Length Check:** If the lengths of `s` and `t` are not equal, they cannot be isomorphic.
+2. **Dictionaries for Mapping:** `s_to_t` maps characters from `s` to `t`, and `t_to_s` maps characters from `t` to `s`.
+3. **Character Pair Iteration:** Iterate through each character pair `(c1, c2)` from `s` and `t`.
+   - **Check Existing Mappings:** 
+     - If `c1` is already in `s_to_t` and `s_to_t[c1]` is not `c2`, return `False`.
+     - If `c2` is already in `t_to_s` and `t_to_s[c2]` is not `c1`, return `False`.
+   - **Update Mappings:** Add or update the mappings in both dictionaries.
+4. **Return True if All Checks Pass:** If all character pairs are checked without conflicts, return `True`.
+
+This approach ensures that the solution is efficient with a time complexity of O(n), where n is the length of the strings, and a space complexity of O(n) due to the additional storage used by the dictionaries.
+
+Given a string, find the first non-repeating character in it and return it's index. If it doesn't exist, return -1.
+A simple way to solve this problem is to count the occurrence of each character first. And then go through the results to find out the first unique character.
+Therefore, we can maintain a hashmap whose key is the character while the value is a counter for the corresponding character. Each time when we iterate a character, we just add the corresponding value by 1.
+ 
+To find the first non-repeating character in a string and return its index, you can follow these steps:
+
+1. Use a hash map to count the occurrences of each character in the string.
+2. Iterate through the string a second time to find the first character with a count of 1.
+
+Here's the Python implementation of this approach:
+
+```python
+def firstUniqChar(s: str) -> int:
+    # Step 1: Count the occurrences of each character
+    char_count = {}
+    for char in s:
+        if char in char_count:
+            char_count[char] += 1
+        else:
+            char_count[char] = 1
+    
+    # Step 2: Find the first character with a count of 1
+    for index, char in enumerate(s):
+        if char_count[char] == 1:
+            return index
+    
+    # If no unique character is found, return -1
+    return -1
+
+# Example usage:
+s = "leetcode"
+print(firstUniqChar(s))  # Returns 0
+
+s = "loveleetcode"
+print(firstUniqChar(s))  # Returns 2
+
+s = "aabb"
+print(firstUniqChar(s))  # Returns -1
+```
+
+### Explanation:
+
+1. **Counting Character Occurrences:** 
+   - Create an empty dictionary `char_count` to store the count of each character.
+   - Iterate through the string `s` and update the count of each character in the dictionary.
+2. **Finding the First Unique Character:**
+   - Iterate through the string `s` again and check the count of each character in the dictionary.
+   - Return the index of the first character that has a count of 1.
+3. **Return -1 if No Unique Character:** If no character in the string has a count of 1, return -1.
+
+This approach ensures that the solution is efficient with a time complexity of O(n) and a space complexity of O(1) (since the size of the character count dictionary is limited by the number of possible characters, which is constant).
+
+To solve the problem of finding the intersection of two arrays where each element in the result must appear as many times as it shows in both arrays, you can use a hash map to count the occurrences of each element in one of the arrays. Then, iterate through the other array and for each element, if it exists in the hash map with a non-zero count, add it to the result and decrease the count in the hash map.
+
+Here's the Python implementation:
+
+```python
+from collections import Counter
+
+def intersect(nums1, nums2):
+    # Step 1: Count the occurrences of each element in nums1
+    count1 = Counter(nums1)
+    
+    # Step 2: Iterate through nums2 and build the intersection result
+    result = []
+    for num in nums2:
+        if count1[num] > 0:
+            result.append(num)
+            count1[num] -= 1
+            
+    return result
+
+# Example usage:
+nums1 = [1, 2, 2, 1]
+nums2 = [2, 2]
+print(intersect(nums1, nums2))  # Returns [2, 2]
+
+nums1 = [4, 9, 5]
+nums2 = [9, 4, 9, 8, 4]
+print(intersect(nums1, nums2))  # Returns [4, 9] or [9, 4]
+```
+
+### Explanation:
+
+1. **Counting Occurrences:**
+   - Use `Counter` from the `collections` module to count the occurrences of each element in `nums1`. This creates a hash map (`count1`) where keys are elements and values are their counts.
+
+2. **Building the Result:**
+   - Initialize an empty list `result` to store the intersection.
+   - Iterate through each element in `nums2`.
+     - If the element exists in `count1` with a count greater than 0, append the element to `result` and decrement the count in `count1`.
+
+3. **Return the Result:** The result list contains the intersection of `nums1` and `nums2` where each element appears as many times as it does in both arrays.
+
+This approach ensures that the solution is efficient with a time complexity of O(n + m) and a space complexity of O(min(n, m)), where `n` and `m` are the lengths of `nums1` and `nums2` respectively.
+
+To solve the problem of determining if there are two distinct indices `i` and `j` in the array `nums` such that `nums[i] == nums[j]` and `abs(i - j) <= k`, you can use a hash map to keep track of the most recent index of each element. As you iterate through the array, you check if the current element has been seen before and if the difference between the current index and the stored index is less than or equal to `k`.
+
+Here's the Python implementation:
+
+```python
+def containsNearbyDuplicate(nums, k):
+    index_map = {}
+    
+    for i, num in enumerate(nums):
+        if num in index_map and i - index_map[num] <= k:
+            return True
+        index_map[num] = i
+    
+    return False
+
+# Example usage:
+nums = [1, 2, 3, 1]
+k = 3
+print(containsNearbyDuplicate(nums, k))  # Returns True
+
+nums = [1, 0, 1, 1]
+k = 1
+print(containsNearbyDuplicate(nums, k))  # Returns True
+
+nums = [1, 2, 3, 1, 2, 3]
+k = 2
+print(containsNearbyDuplicate(nums, k))  # Returns False
+```
+
+### Explanation:
+
+1. **Hash Map (`index_map`):** Use a dictionary to store the most recent index of each element.
+2. **Iteration and Check:**
+   - Iterate through the array with index `i` and element `num`.
+   - Check if `num` is already in `index_map` and if the difference between the current index `i` and the stored index `index_map[num]` is less than or equal to `k`.
+   - If both conditions are met, return `True` since the required conditions are satisfied.
+   - Otherwise, update `index_map` to store the current index `i` for the element `num`.
+3. **Return Result:** If the loop completes without finding such indices, return `False`.
+
+This approach ensures that the solution is efficient with a time complexity of O(n) and a space complexity of O(n), where `n` is the length of the array.
+
+To design a logger rate limiter, we can use a hash map (dictionary in Python) to keep track of the last printed timestamp for each unique message. When a new message arrives, we check if the current timestamp is at least 10 seconds greater than the last printed timestamp for that message. If it is, we update the last printed timestamp and allow the message to be printed. Otherwise, we do not print the message.
+
+Here's the implementation of the `Logger` class:
+
+```python
+class Logger:
+
+    def __init__(self):
+        """
+        Initialize the logger object.
+        """
+        self.message_timestamps = {}
+
+    def shouldPrintMessage(self, timestamp: int, message: str) -> bool:
+        """
+        Returns true if the message should be printed in the given timestamp,
+        otherwise returns false.
+        """
+        if message not in self.message_timestamps:
+            # Message not seen before, print it and store the timestamp
+            self.message_timestamps[message] = timestamp
+            return True
+        else:
+            # Message seen before, check the timestamp difference
+            last_printed_timestamp = self.message_timestamps[message]
+            if timestamp - last_printed_timestamp >= 10:
+                # Enough time has passed, update the timestamp and print the message
+                self.message_timestamps[message] = timestamp
+                return True
+            else:
+                # Not enough time has passed, do not print the message
+                return False
+
+# Example usage:
+logger = Logger()
+
+# Logging string messages with their respective timestamps
+print(logger.shouldPrintMessage(1, "foo"))  # Returns True, message "foo" is printed
+print(logger.shouldPrintMessage(2, "bar"))  # Returns True, message "bar" is printed
+print(logger.shouldPrintMessage(3, "foo"))  # Returns False, message "foo" is not printed
+print(logger.shouldPrintMessage(8, "bar"))  # Returns False, message "bar" is not printed
+print(logger.shouldPrintMessage(10, "foo")) # Returns False, message "foo" is not printed
+print(logger.shouldPrintMessage(11, "foo")) # Returns True, message "foo" is printed
+```
+
+### Explanation:
+
+1. **Initialization (`__init__` method):** Initialize a dictionary `message_timestamps` to store the last printed timestamp for each message.
+
+2. **Should Print Message (`shouldPrintMessage` method):**
+   - If the message is not in `message_timestamps`, it means the message has not been printed before. In this case, add the message to the dictionary with the current timestamp and return `True` to indicate the message should be printed.
+   - If the message is already in `message_timestamps`, check the difference between the current timestamp and the last printed timestamp.
+     - If the difference is 10 seconds or more, update the timestamp in the dictionary and return `True` to indicate the message should be printed.
+     - If the difference is less than 10 seconds, return `False` to indicate the message should not be printed.
+
+This approach ensures that each unique message is printed at most once every 10 seconds, and the operations are efficient with a time complexity of O(1) for both `shouldPrintMessage` and O(1) space complexity for each unique message stored in the dictionary.
+
+Given an array of strings, group anagrams together.
+As we know, a hash map can perform really well in grouping information by key. But we cannot use the original string as key directly. We have to design a proper key to present the type of anagrams. For instance, there are two strings "eat" and "ate" which should be in the same group. While "eat" and "act" should not be grouped together.
+ 
+Solution
+
+Actually, designing a key is to build a mapping relationship by yourself between the original information and the actual key used by hash map. When you design a key, you need to guarantee that:
+1. All values belong to the same group will be mapped in the same group.
+2. Values which needed to be separated into different groups will not be mapped into the same group.
+This process is similar to design a hash function, but here is an essential difference. A hash function satisfies the first rule but might not satisfy the second one. But your mapping function should satisfy both of them.
+In the example above, our mapping strategy can be: sort the string and use the sorted string as the key. That is to say, both "eat" and "ate" will be mapped to "aet".
+The mapping strategy can be really tricky sometimes. We provide some exercise for you in this chapter and will give a summary after that.
+
+
+To solve the problem of grouping anagrams, we can use a hash map (dictionary in Python) where the keys are sorted tuples of the characters in each word, and the values are lists of words that correspond to those sorted characters. By sorting the characters of each word, anagrams will have the same key, allowing us to group them together.
+
+Here's the implementation:
+
+```python
+from collections import defaultdict
+
+def groupAnagrams(strs):
+    anagrams = defaultdict(list)
+    
+    for s in strs:
+        sorted_str = tuple(sorted(s))
+        anagrams[sorted_str].append(s)
+    
+    return list(anagrams.values())
+
+# Example usage:
+strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+print(groupAnagrams(strs))  # Returns [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
+
+strs = [""]
+print(groupAnagrams(strs))  # Returns [[""]]
+
+strs = ["a"]
+print(groupAnagrams(strs))  # Returns [["a"]]
+```
+
+### Explanation:
+
+1. **Using a Hash Map (`anagrams`):** Use a `defaultdict` with lists as the default value type to store groups of anagrams.
+2. **Iterating Through Strings:**
+   - For each string `s` in `strs`, sort its characters and convert it to a tuple (since lists cannot be dictionary keys, but tuples can).
+   - Use the sorted tuple as the key in the hash map and append the original string `s` to the list of values for that key.
+3. **Returning the Groups:** Convert the values of the hash map to a list and return it. Each list in the result contains words that are anagrams of each other.
+
+This approach ensures that anagrams are grouped together efficiently. The time complexity is O(n * k log k), where n is the number of strings and k is the maximum length of a string (due to the sorting step), and the space complexity is O(n * k) for storing the grouped anagrams.
+
+To group strings that belong to the same shifting sequence, we can use a hash map where the keys represent the unique shifted sequence and the values are lists of strings that belong to that sequence. To identify a unique shifted sequence, we can calculate the difference between each character in the string and the first character, wrapping around using modulo 26 to handle the cyclic nature of the shifts.
+
+Here's the implementation:
+
+```python
+from collections import defaultdict
+
+def groupShiftedStrings(strings):
+    def get_key(s):
+        if not s:
+            return ""
+        # Calculate the key based on the differences between characters
+        key = []
+        first_char = ord(s[0])
+        for char in s:
+            diff = (ord(char) - first_char) % 26
+            key.append(diff)
+        return tuple(key)
+
+    shifted_groups = defaultdict(list)
+
+    for string in strings:
+        key = get_key(string)
+        shifted_groups[key].append(string)
+
+    return list(shifted_groups.values())
+
+# Example usage:
+strings = ["abc", "bcd", "acef", "xyz", "az", "ba", "a", "z"]
+print(groupShiftedStrings(strings))  
+# Expected output: [['abc', 'bcd', 'xyz'], ['acef'], ['az', 'ba'], ['a', 'z']]
+
+strings = ["abc", "def", "ghi"]
+print(groupShiftedStrings(strings))  
+# Expected output: [['abc', 'def', 'ghi']]
+
+strings = ["a"]
+print(groupShiftedStrings(strings))  
+# Expected output: [['a']]
+```
+
+### Explanation:
+
+1. **Define the Key Calculation Function (`get_key`):**
+   - This function calculates a tuple representing the differences between the ASCII values of the characters in the string and the first character, modulo 26 to handle the cyclic nature.
+   - The key for a string like "abc" would be (0, 1, 2), and for "bcd", it would also be (0, 1, 2), indicating they belong to the same shifted sequence.
+
+2. **Using a Hash Map (`shifted_groups`):**
+   - Use a `defaultdict` with lists as the default value type to store groups of shifted strings.
+   - For each string, calculate its key using the `get_key` function and append the string to the corresponding list in the hash map.
+
+3. **Return the Groups:** Convert the values of the hash map to a list and return it. Each list in the result contains strings that belong to the same shifting sequence.
+
+This approach ensures that strings belonging to the same shifting sequence are grouped together efficiently. The time complexity is O(n * k) where n is the number of strings and k is the maximum length of a string, and the space complexity is O(n * k) for storing the grouped strings and their keys.
+
+To determine if a 9x9 Sudoku board is valid, we need to check the following conditions for all filled cells:
+
+1. Each row must contain the digits 1-9 without repetition.
+2. Each column must contain the digits 1-9 without repetition.
+3. Each of the nine 3x3 sub-boxes must contain the digits 1-9 without repetition.
+
+We'll use sets to keep track of the digits we've seen so far in each row, column, and 3x3 sub-box. If we encounter a duplicate in any row, column, or sub-box, the board is invalid.
+
+Here's the implementation in Python:
+
+```python
+def isValidSudoku(board):
+    rows = [set() for _ in range(9)]
+    cols = [set() for _ in range(9)]
+    boxes = [set() for _ in range(9)]
+
+    for r in range(9):
+        for c in range(9):
+            if board[r][c] == '.':
+                continue
+            num = board[r][c]
+            box_index = (r // 3) * 3 + (c // 3)
+
+            if num in rows[r]:
+                return False
+            rows[r].add(num)
+
+            if num in cols[c]:
+                return False
+            cols[c].add(num)
+
+            if num in boxes[box_index]:
+                return False
+            boxes[box_index].add(num)
+
+    return True
+
+# Example usage:
+board = [
+  ["5","3",".",".","7",".",".",".","."],
+  ["6",".",".","1","9","5",".",".","."],
+  [".","9","8",".",".",".",".","6","."],
+  ["8",".",".",".","6",".",".",".","3"],
+  ["4",".",".","8",".","3",".",".","1"],
+  ["7",".",".",".","2",".",".",".","6"],
+  [".","6",".",".",".",".","2","8","."],
+  [".",".",".","4","1","9",".",".","5"],
+  [".",".",".",".","8",".",".","7","9"]
+]
+print(isValidSudoku(board))  # Returns True
+```
+
+### Explanation:
+
+1. **Initialize Sets:** Create three lists of sets: `rows`, `cols`, and `boxes` to keep track of the digits seen in each row, column, and 3x3 sub-box, respectively.
+
+2. **Iterate Through the Board:**
+   - For each cell `(r, c)` in the board, if the cell is empty (i.e., `board[r][c] == '.'`), continue to the next cell.
+   - Calculate `box_index` to determine which 3x3 sub-box the cell belongs to.
+   - Check for duplicates:
+     - If the digit `num` is already in the corresponding row set `rows[r]`, column set `cols[c]`, or box set `boxes[box_index]`, return `False` because the board is invalid.
+     - Otherwise, add `num` to the corresponding row, column, and box sets.
+
+3. **Return True:** If no duplicates are found in any row, column, or sub-box, the board is valid, so return `True`.
+
+This approach ensures that the board is validated efficiently with a time complexity of O(1) since the board size is fixed (9x9), and space complexity is also O(1) for the same reason.
+
+To solve the problem of finding duplicate subtrees in a binary tree, we can use a hash map to serialize each subtree and count their occurrences. By serializing each subtree into a string format and storing these strings in the hash map, we can identify duplicate subtrees based on their serialized forms.
+
+Here is the Python implementation:
+
+```python
+from collections import defaultdict
+from typing import List, Optional
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def findDuplicateSubtrees(root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
+    def serialize(node):
+        if not node:
+            return "#"
+        serial = f"{node.val},{serialize(node.left)},{serialize(node.right)}"
+        count[serial] += 1
+        if count[serial] == 2:  # Add to result only the first time we encounter a duplicate
+            duplicates.append(node)
+        return serial
+    
+    count = defaultdict(int)
+    duplicates = []
+    serialize(root)
+    return duplicates
+
+# Example usage:
+# Construct the tree:
+#        1
+#       / \
+#      2   3
+#     /   / \
+#    4   2   4
+#       /
+#      4
+
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.right.left = TreeNode(2)
+root.right.right = TreeNode(4)
+root.right.left.left = TreeNode(4)
+
+duplicates = findDuplicateSubtrees(root)
+# Should output the root nodes of duplicate subtrees
+for node in duplicates:
+    print(node.val)  # Expected to print 4 and 2
+```
+
+### Explanation:
+
+1. **TreeNode Class:** This is a basic definition for a tree node.
+2. **Serialization Function (`serialize`):**
+   - This function serializes each subtree into a string format.
+   - It uses pre-order traversal (node, left, right) and represents null nodes with a special character (e.g., "#").
+   - The serialized string uniquely represents the structure and values of the subtree.
+3. **Hash Map (`count`):** A `defaultdict` is used to store the counts of each serialized subtree.
+4. **Duplicate Subtrees (`duplicates`):** A list to store the root nodes of duplicate subtrees.
+5. **Main Function (`findDuplicateSubtrees`):**
+   - Calls the `serialize` function on the root node.
+   - If a subtree serialization appears twice, it is added to the `duplicates` list.
+6. **Example Usage:**
+   - Constructs a binary tree with duplicate subtrees.
+   - Calls `findDuplicateSubtrees` and prints the values of the root nodes of the duplicate subtrees.
+
+This approach ensures that we efficiently identify and collect all duplicate subtrees in the binary tree. The time complexity is O(n) where n is the number of nodes in the tree, and the space complexity is O(n) due to the storage used for the hash map and the recursion stack.
+
+To solve the "Jewels and Stones" problem, we can use a set to store the jewel types for quick lookup and then iterate through the `stones` string to count how many stones are also jewels.
+
+Here is the implementation in Python:
+
+```python
+def numJewelsInStones(jewels: str, stones: str) -> int:
+    jewel_set = set(jewels)
+    count = 0
+    
+    for stone in stones:
+        if stone in jewel_set:
+            count += 1
+    
+    return count
+
+# Example usage:
+jewels = "aA"
+stones = "aAAbbbb"
+print(numJewelsInStones(jewels, stones))  # Returns 3
+
+jewels = "z"
+stones = "ZZ"
+print(numJewelsInStones(jewels, stones))  # Returns 0
+```
+
+### Explanation:
+
+1. **Create a Set of Jewels:** 
+   - Convert the `jewels` string into a set called `jewel_set` for O(1) average-time complexity lookups.
+2. **Count Jewels in Stones:**
+   - Initialize a counter `count` to zero.
+   - Iterate through each character in the `stones` string.
+   - For each stone, check if it is in `jewel_set`.
+   - If it is, increment the `count` by one.
+3. **Return the Count:** 
+   - After iterating through all the stones, return the final count.
+
+This approach ensures that the solution is efficient with a time complexity of O(n + m), where n is the length of the `jewels` string and m is the length of the `stones` string. The space complexity is O(n) due to the storage used by the set for the jewel types.
+
+To find the length of the longest substring without repeating characters, we can use the sliding window technique along with a hash map to keep track of the characters and their most recent indices. This approach ensures that we efficiently check for the longest substring without duplicates.
+
+Here's the implementation:
+
+```python
+def lengthOfLongestSubstring(s: str) -> int:
+    char_index_map = {}
+    max_length = 0
+    start = 0
+    
+    for i, char in enumerate(s):
+        if char in char_index_map and char_index_map[char] >= start:
+            start = char_index_map[char] + 1
+        char_index_map[char] = i
+        max_length = max(max_length, i - start + 1)
+    
+    return max_length
+
+# Example usage:
+s = "abcabcbb"
+print(lengthOfLongestSubstring(s))  # Returns 3 ("abc")
+
+s = "bbbbb"
+print(lengthOfLongestSubstring(s))  # Returns 1 ("b")
+
+s = "pwwkew"
+print(lengthOfLongestSubstring(s))  # Returns 3 ("wke")
+
+s = ""
+print(lengthOfLongestSubstring(s))  # Returns 0
+```
+
+### Explanation:
+
+1. **Hash Map (`char_index_map`):** This dictionary stores the most recent index of each character.
+2. **Sliding Window (`start`):** This variable indicates the starting index of the current substring without repeating characters.
+3. **Iterate Through the String:**
+   - For each character in the string, if the character is already in the hash map and its recorded index is greater than or equal to the current `start`, update `start` to `char_index_map[char] + 1`. This effectively moves the start of the window to the right of the previous occurrence of the current character.
+   - Update the hash map with the current character and its index.
+   - Update `max_length` to be the maximum of the current `max_length` and the length of the current substring (`i - start + 1`).
+4. **Return the Maximum Length:** After iterating through the string, return `max_length`.
+
+This approach ensures that we efficiently find the longest substring without repeating characters with a time complexity of O(n), where n is the length of the string, and a space complexity of O(min(n, m)), where m is the size of the character set.
+
+To design a data structure that accepts a stream of integers and checks if it has a pair of integers that sum up to a particular value, we can use a combination of a hash map to store the frequency of each number and a set to keep track of all numbers added. This way, we can efficiently add numbers and check for pairs that sum up to a given value.
+
+Here is the implementation of the `TwoSum` class:
+
+```python
+class TwoSum:
+
+    def __init__(self):
+        """
+        Initialize the TwoSum object with an empty array.
+        """
+        self.num_count = {}
+    
+    def add(self, number: int) -> None:
+        """
+        Add number to the data structure.
+        """
+        if number in self.num_count:
+            self.num_count[number] += 1
+        else:
+            self.num_count[number] = 1
+    
+    def find(self, value: int) -> bool:
+        """
+        Return true if there exists any pair of numbers whose sum is equal to value,
+        otherwise return false.
+        """
+        for num in self.num_count:
+            complement = value - num
+            if complement in self.num_count:
+                if complement != num or self.num_count[num] > 1:
+                    return True
+        return False
+
+# Example usage:
+two_sum = TwoSum()
+two_sum.add(1)
+two_sum.add(3)
+two_sum.add(5)
+print(two_sum.find(4))  # Returns True, because 1 + 3 = 4
+print(two_sum.find(7))  # Returns False
+```
+
+### Explanation:
+
+1. **Initialization (`__init__` method):**
+   - Initialize an empty dictionary `num_count` to store the count of each number.
+
+2. **Add Method (`add`):**
+   - If the number is already in `num_count`, increment its count.
+   - Otherwise, add the number to `num_count` with a count of 1.
+
+3. **Find Method (`find`):**
+   - Iterate through the keys in `num_count`.
+   - For each number, calculate its complement (`value - num`).
+   - Check if the complement exists in `num_count`.
+     - If the complement is different from the current number, return `True` since we found a pair.
+     - If the complement is the same as the current number, ensure the count of that number is greater than 1 to confirm that there are two instances of that number to form the pair.
+   - If no such pair is found after iterating through all numbers, return `False`.
+
+This implementation ensures efficient addition and lookup operations with a time complexity of O(n) for the `find` method and O(1) for the `add` method. The space complexity is O(n), where n is the number of unique numbers added to the data structure.
+
+To solve the problem of finding the number of tuples `(i, j, k, l)` such that `nums1[i] + nums2[j] + nums3[k] + nums4[l] == 0`, we can use a hash map to store the sums of pairs from two arrays and then check for the complementary sums in the other two arrays. This approach significantly reduces the time complexity compared to a brute force solution.
+
+Here is the step-by-step implementation:
+
+1. Use a hash map to store the sums of all pairs from `nums1` and `nums2` along with their frequencies.
+2. Iterate through all pairs of `nums3` and `nums4`, and for each pair, check if the negative of their sum exists in the hash map.
+3. If it exists, add the frequency of the complement sum from the hash map to the result count.
+
+Here is the Python implementation:
+
+```python
+from collections import defaultdict
+
+def fourSumCount(nums1, nums2, nums3, nums4):
+    # Step 1: Store sums of all pairs from nums1 and nums2
+    sum_map = defaultdict(int)
+    for num1 in nums1:
+        for num2 in nums2:
+            sum_map[num1 + num2] += 1
+
+    # Step 2: Count tuples from nums3 and nums4 that complement the sums in sum_map
+    count = 0
+    for num3 in nums3:
+        for num4 in nums4:
+            complement = -(num3 + num4)
+            if complement in sum_map:
+                count += sum_map[complement]
+
+    return count
+
+# Example usage:
+nums1 = [1, 2]
+nums2 = [-2, -1]
+nums3 = [-1, 2]
+nums4 = [0, 2]
+print(fourSumCount(nums1, nums2, nums3, nums4))  # Returns 2
+
+nums1 = [0]
+nums2 = [0]
+nums3 = [0]
+nums4 = [0]
+print(fourSumCount(nums1, nums2, nums3, nums4))  # Returns 1
+```
+
+### Explanation:
+
+1. **Hash Map (`sum_map`):**
+   - Use `defaultdict(int)` to store the sum of pairs from `nums1` and `nums2` and their frequencies.
+   - For each element `num1` in `nums1` and `num2` in `nums2`, compute the sum `num1 + num2` and increment its count in `sum_map`.
+
+2. **Count Complements:**
+   - Initialize a counter `count` to zero.
+   - For each element `num3` in `nums3` and `num4` in `nums4`, compute the complement `-(num3 + num4)`.
+   - Check if the complement exists in `sum_map`. If it does, add the frequency of the complement from `sum_map` to `count`.
+
+3. **Return the Result:**
+   - After processing all pairs from `nums3` and `nums4`, return the total count of valid tuples.
+
+This approach ensures an efficient solution with a time complexity of O(n^2) due to the nested loops iterating through pairs of arrays and a space complexity of O(n^2) for storing the pair sums in the hash map.
+
+To find the top `k` most frequent elements in an array, we can use a combination of a hash map to count the frequencies of each element and a heap to keep track of the top `k` elements efficiently. Here is the step-by-step implementation:
+
+1. Use a hash map to count the frequencies of each element in the array.
+2. Use a heap to keep track of the `k` most frequent elements. We can use a min-heap of size `k` to efficiently keep the top `k` elements by frequency.
+
+Here is the Python implementation:
+
+```python
+import heapq
+from collections import Counter
+
+def topKFrequent(nums, k):
+    # Step 1: Count the frequency of each element
+    freq_map = Counter(nums)
+    
+    # Step 2: Use a heap to keep track of the top k elements by frequency
+    # We use a min-heap of size k to keep the top k frequent elements
+    heap = []
+    for num, freq in freq_map.items():
+        heapq.heappush(heap, (freq, num))
+        if len(heap) > k:
+            heapq.heappop(heap)
+    
+    # Step 3: Extract the elements from the heap
+    result = [num for freq, num in heap]
+    return result
+
+# Example usage:
+nums = [1, 1, 1, 2, 2, 3]
+k = 2
+print(topKFrequent(nums, k))  # Returns [1, 2]
+
+nums = [1]
+k = 1
+print(topKFrequent(nums, k))  # Returns [1]
+```
+
+### Explanation:
+
+1. **Count Frequencies:**
+   - Use `Counter` from the `collections` module to count the frequency of each element in the `nums` array. The result is stored in `freq_map`.
+
+2. **Maintain a Min-Heap:**
+   - Initialize an empty heap using the `heapq` module.
+   - Iterate over the items in `freq_map` and push the tuple `(freq, num)` into the heap.
+   - If the size of the heap exceeds `k`, pop the smallest element (i.e., the root of the min-heap). This ensures that the heap only contains the `k` most frequent elements.
+
+3. **Extract Results:**
+   - Extract the elements from the heap to form the result list. Each element in the heap is a tuple `(freq, num)`, and we take the `num` part of each tuple to form the result list.
+
+This approach ensures that the solution is efficient with a time complexity of O(n log k) due to the operations on the heap and the space complexity of O(n) for storing the frequency map and the heap.
+
+To implement the `ValidWordAbbr` class that checks if a word's abbreviation is unique, we can use a hash map to store the abbreviations of the words from the dictionary. Each abbreviation will map to a set of words that have that abbreviation. This allows us to efficiently check if a word's abbreviation is unique or if all words with the same abbreviation are the same as the given word.
+
+Here is the implementation:
+
+```python
+class ValidWordAbbr:
+
+    def __init__(self, dictionary: list):
+        """
+        Initialize the ValidWordAbbr object with a dictionary of words.
+        """
+        self.abbr_dict = {}
+        for word in dictionary:
+            abbr = self.get_abbr(word)
+            if abbr not in self.abbr_dict:
+                self.abbr_dict[abbr] = set()
+            self.abbr_dict[abbr].add(word)
+
+    def get_abbr(self, word: str) -> str:
+        """
+        Generate the abbreviation for a given word.
+        """
+        if len(word) <= 2:
+            return word
+        return word[0] + str(len(word) - 2) + word[-1]
+
+    def isUnique(self, word: str) -> bool:
+        """
+        Check if the word's abbreviation is unique.
+        """
+        abbr = self.get_abbr(word)
+        if abbr not in self.abbr_dict:
+            return True
+        abbr_words = self.abbr_dict[abbr]
+        return len(abbr_words) == 1 and word in abbr_words
+
+# Example usage:
+dictionary = ["deer", "door", "cake", "card"]
+vwa = ValidWordAbbr(dictionary)
+
+print(vwa.isUnique("dear"))  # Returns False
+print(vwa.isUnique("cart"))  # Returns True
+print(vwa.isUnique("cane"))  # Returns False
+print(vwa.isUnique("make"))  # Returns True
+```
+
+### Explanation:
+
+1. **Initialization (`__init__` method):**
+   - Initialize a dictionary `abbr_dict` to store the abbreviations.
+   - For each word in the input `dictionary`, compute its abbreviation using the `get_abbr` method.
+   - Store each word in a set corresponding to its abbreviation in `abbr_dict`.
+
+2. **Generate Abbreviation (`get_abbr` method):**
+   - If the word length is 2 or less, the abbreviation is the word itself.
+   - For longer words, the abbreviation is formed by concatenating the first letter, the number of characters between the first and last letter, and the last letter.
+
+3. **Check Uniqueness (`isUnique` method):**
+   - Compute the abbreviation for the given `word`.
+   - If the abbreviation is not in `abbr_dict`, return `True` since no other word shares this abbreviation.
+   - If the abbreviation is present, check if the set of words corresponding to this abbreviation contains only the given `word`.
+
+This approach ensures that the solution is efficient in both time and space:
+- Time complexity of `isUnique` method: O(1) average case due to hash map lookups.
+- Space complexity: O(n) where n is the number of unique abbreviations in the dictionary.
+
+To implement the `RandomizedSet` class with `insert`, `remove`, and `getRandom` operations, all in average O(1) time complexity, we can use a combination of a hash map and a list:
+
+1. **Hash Map (`val_to_index`)**: This map will store the value and its index in the list.
+2. **List (`values`)**: This list will store the values of the set.
+
+By using both a list and a hash map, we can ensure that both the insert and remove operations are O(1) on average. The `getRandom` operation is O(1) since accessing a random index in a list is constant time.
+
+Here's the implementation:
+
+```python
+import random
+
+class RandomizedSet:
+
+    def __init__(self):
+        """
+        Initialize the RandomizedSet object.
+        """
+        self.val_to_index = {}
+        self.values = []
+
+    def insert(self, val: int) -> bool:
+        """
+        Inserts an item val into the set if not present. Returns true if the item was not present, false otherwise.
+        """
+        if val in self.val_to_index:
+            return False
+        self.val_to_index[val] = len(self.values)
+        self.values.append(val)
+        return True
+
+    def remove(self, val: int) -> bool:
+        """
+        Removes an item val from the set if present. Returns true if the item was present, false otherwise.
+        """
+        if val not in self.val_to_index:
+            return False
+        # Move the last element to the place of the element to delete
+        last_val = self.values[-1]
+        idx = self.val_to_index[val]
+        self.values[idx] = last_val
+        self.val_to_index[last_val] = idx
+        # Remove the last element
+        self.values.pop()
+        del self.val_to_index[val]
+        return True
+
+    def getRandom(self) -> int:
+        """
+        Returns a random element from the current set of elements.
+        """
+        return random.choice(self.values)
+
+# Example usage:
+random_set = RandomizedSet()
+print(random_set.insert(1))  # Returns True
+print(random_set.remove(2))  # Returns False
+print(random_set.insert(2))  # Returns True
+print(random_set.getRandom())  # Returns 1 or 2
+print(random_set.remove(1))  # Returns True
+print(random_set.insert(2))  # Returns False
+print(random_set.getRandom())  # Returns 2
+```
+
+### Explanation:
+
+1. **Initialization (`__init__` method):**
+   - `val_to_index` is a dictionary to map each value to its index in the `values` list.
+   - `values` is a list to store the values of the set.
+
+2. **Insert (`insert` method):**
+   - If the value is already in the set (`val_to_index`), return `False`.
+   - Otherwise, add the value to the end of the `values` list and update `val_to_index` with the value and its index.
+   - Return `True` to indicate the insertion was successful.
+
+3. **Remove (`remove` method):**
+   - If the value is not in the set (`val_to_index`), return `False`.
+   - Otherwise, get the index of the value to be removed.
+   - Move the last value in the `values` list to the index of the value to be removed.
+   - Update the `val_to_index` to reflect the new index of the last value.
+   - Remove the last element from the `values` list and delete the value from `val_to_index`.
+   - Return `True` to indicate the removal was successful.
+
+4. **GetRandom (`getRandom` method):**
+   - Use `random.choice` to return a random element from the `values` list. This ensures that each element has an equal probability of being chosen.
+
+By combining a list and a hash map, we achieve the required O(1) average time complexity for `insert`, `remove`, and `getRandom` operations.

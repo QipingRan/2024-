@@ -1,0 +1,1145 @@
+https://leetcode.com/explore/learn/card/array-and-string/204/conclusion/1174/
+
+An array is a basic data structure to store a collection of elements sequentially. But elements can be accessed randomly since each element in the array can be identified by an array index.
+An array can have one or more dimensions. Here we start with the one-dimensional array, which is also called the linear array. Here is an example:
+
+As we mentioned in the previous article, an array has a fixed capacity and we need to specify the size of the array when we initialize it. Sometimes this will be somewhat inconvenient and wasteful.
+Therefore, most programming languages offer built-in dynamic array which is still a random access list data structure but with variable size. For example, we have vector in C++ and ArrayList in Java.
+
+
+def pivotIndex(nums):
+    total_sum = sum(nums)
+    left_sum = 0
+    
+    for i, num in enumerate(nums):
+        # right_sum would be total_sum - left_sum - num
+        if left_sum == total_sum - left_sum - num:
+            return i
+        left_sum += num
+    
+    return -1
+
+# Example usage:
+nums = [1, 7, 3, 6, 5, 6]
+print(pivotIndex(nums))  # Returns 3
+
+nums = [1, 2, 3]
+print(pivotIndex(nums))  # Returns -1
+
+nums = [2, 1, -1]
+print(pivotIndex(nums))  # Returns 0
+
+
+To determine whether the largest element in an array is at least twice as much as every other number in the array, we can follow these steps:
+
+1. Identify the largest element and its index.
+2. Check if this largest element is at least twice as much as every other element in the array.
+
+Here is the step-by-step solution:
+
+1. Iterate through the array to find the largest element and its index.
+2. Iterate through the array again to ensure that the largest element is at least twice as much as all other elements.
+3. If it is, return the index of the largest element. Otherwise, return -1.
+
+Here's the Python implementation:
+
+```python
+def dominantIndex(nums):
+    if len(nums) == 0:
+        return -1
+
+    max_num = max(nums)
+    max_index = nums.index(max_num)
+
+    for num in nums:
+        if num != max_num and max_num < 2 * num:
+            return -1
+
+    return max_index
+
+# Example usage:
+nums = [3, 6, 1, 0]
+print(dominantIndex(nums))  # Returns 1
+
+nums = [1, 2, 3, 4]
+print(dominantIndex(nums))  # Returns -1
+
+nums = [1]
+print(dominantIndex(nums))  # Returns 0
+```
+
+### Explanation:
+
+1. **Find the Largest Element and Its Index:**
+   - Use `max(nums)` to find the largest element.
+   - Use `nums.index(max_num)` to find the index of the largest element.
+
+2. **Check the Twice Condition:**
+   - Iterate through the array and check if any element, except the largest one, is more than half of the largest element.
+   - If such an element is found, return -1 as the condition is not met.
+
+3. **Return the Index:**
+   - If the loop completes without finding any such element, return the index of the largest element.
+
+This approach ensures an efficient solution with a time complexity of O(n) and a space complexity of O(1).
+
+To solve the problem of incrementing a large integer represented as an array of digits, you can follow these steps:
+
+1. Start from the last digit and move towards the first digit.
+2. Add one to the last digit.
+3. Handle any carry that results from this addition.
+4. If there is a carry left after processing all digits, add a new digit at the beginning of the array.
+
+Here is the Python implementation:
+
+```python
+def plusOne(digits):
+    n = len(digits)
+    
+    # Start from the last digit and move towards the first
+    for i in range(n - 1, -1, -1):
+        # Add one to the current digit
+        digits[i] += 1
+        
+        # If the current digit is less than 10, we're done
+        if digits[i] < 10:
+            return digits
+        
+        # Otherwise, set the current digit to 0 and carry over to the next digit
+        digits[i] = 0
+    
+    # If we have gone through all the digits and still have a carry, add a new digit at the beginning
+    return [1] + digits
+
+# Example usage:
+digits = [1, 2, 3]
+print(plusOne(digits))  # Returns [1, 2, 4]
+
+digits = [4, 3, 2, 1]
+print(plusOne(digits))  # Returns [4, 3, 2, 2]
+
+digits = [9, 9, 9]
+print(plusOne(digits))  # Returns [1, 0, 0, 0]
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - Get the length of the digits array.
+
+2. **Iterate from Last to First:**
+   - Start from the last digit and add one to it.
+   - If the result is less than 10, simply return the modified array since no carry is needed.
+   - If the result is 10, set the current digit to 0 and continue to the next digit.
+
+3. **Handle Carry for All Digits:**
+   - If all digits are processed and turned to 0 (e.g., [9, 9, 9]), add a new digit 1 at the beginning of the array.
+
+This approach ensures that the addition handles any carry appropriately and returns the correct result. The time complexity is O(n), where n is the number of digits in the array.
+
+1. C++ stores the two-dimensional array as a one-dimensional array.
+The picture below shows the actual structure of a M * N array A:
+So actually A[i][j] equals to A[i * N + j] if we defined A as a one-dimensional array which also contains M * N elements.
+ 
+2. In Java, the two-dimensional array is actually a one-dimensional array which contains M elements, each of which is an array of N integers.
+The picture below shows the actual structure of a two-dimensional array A in Java:
+
+ 
+Dynamic 2D Array
+
+Similar to the one-dimensional dynamic array, we can also define a dynamic two-dimensional array. Actually, it can be just a nested dynamic array. You can try it out by yourself.
+To solve the problem of traversing a matrix in diagonal order, we need to understand the traversal pattern:
+
+1. We start from the top-left corner of the matrix.
+2. We move along the diagonals. Each diagonal can be identified by the sum of its indices `(i + j)`.
+3. We alternate the direction of traversal: for even diagonals, we go from bottom-left to top-right, and for odd diagonals, we go from top-right to bottom-left.
+
+Here is the Python implementation to achieve this traversal:
+
+```python
+def findDiagonalOrder(mat):
+    if not mat or not mat[0]:
+        return []
+    
+    m, n = len(mat), len(mat[0])
+    result = []
+    diagonals = {}
+
+    # Group all elements along the same diagonal in a dictionary
+    for i in range(m):
+        for j in range(n):
+            if i + j not in diagonals:
+                diagonals[i + j] = []
+            diagonals[i + j].append(mat[i][j])
+    
+    # Traverse the diagonals in order
+    for k in range(m + n - 1):
+        if k % 2 == 0:
+            # Reverse the current diagonal for even sums
+            result.extend(diagonals[k][::-1])
+        else:
+            result.extend(diagonals[k])
+    
+    return result
+
+# Example usage:
+mat = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+print(findDiagonalOrder(mat))  # Returns [1, 2, 4, 7, 5, 3, 6, 8, 9]
+
+mat = [
+    [1, 2],
+    [3, 4]
+]
+print(findDiagonalOrder(mat))  # Returns [1, 2, 3, 4]
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - Check if the matrix `mat` is empty. If it is, return an empty list.
+   - Determine the number of rows `m` and columns `n`.
+   - Initialize an empty list `result` to store the traversal result.
+   - Use a dictionary `diagonals` to group elements by the sum of their indices.
+
+2. **Group Elements by Diagonals:**
+   - Iterate over each element in the matrix.
+   - For each element `mat[i][j]`, calculate the sum `i + j` and add the element to the corresponding list in the dictionary `diagonals`.
+
+3. **Traverse the Diagonals:**
+   - Iterate over each diagonal (from `0` to `m + n - 2`).
+   - For even diagonals (`k % 2 == 0`), add the elements in reverse order to `result`.
+   - For odd diagonals (`k % 2 != 0`), add the elements in the original order to `result`.
+
+4. **Return the Result:**
+   - After traversing all diagonals, return the `result` list containing the elements in diagonal order.
+
+This approach ensures that the matrix is traversed in the required diagonal order efficiently with a time complexity of O(m * n), where `m` is the number of rows and `n` is the number of columns.
+
+To return all elements of an `m x n` matrix in spiral order, we need to traverse the matrix in a specific pattern: starting from the top-left corner, move right across the top row, then down the right column, left across the bottom row, and up the left column, repeating this process for the inner layers of the matrix.
+
+Here's a step-by-step approach to solving the problem:
+
+1. Initialize boundaries for the rows and columns to keep track of the current layer of the matrix that needs to be traversed.
+2. Use a loop to traverse the matrix layer by layer:
+   - Traverse from left to right across the top boundary.
+   - Traverse from top to bottom along the right boundary.
+   - Traverse from right to left across the bottom boundary.
+   - Traverse from bottom to top along the left boundary.
+3. After traversing each boundary, adjust the boundaries inward.
+4. Continue this process until all elements are traversed.
+
+Here is the Python implementation:
+
+```python
+def spiralOrder(matrix):
+    if not matrix or not matrix[0]:
+        return []
+
+    m, n = len(matrix), len(matrix[0])
+    result = []
+
+    top, bottom = 0, m - 1
+    left, right = 0, n - 1
+
+    while top <= bottom and left <= right:
+        # Traverse from left to right along the top boundary
+        for j in range(left, right + 1):
+            result.append(matrix[top][j])
+        top += 1
+
+        # Traverse from top to bottom along the right boundary
+        for i in range(top, bottom + 1):
+            result.append(matrix[i][right])
+        right -= 1
+
+        if top <= bottom:
+            # Traverse from right to left along the bottom boundary
+            for j in range(right, left - 1, -1):
+                result.append(matrix[bottom][j])
+            bottom -= 1
+
+        if left <= right:
+            # Traverse from bottom to top along the left boundary
+            for i in range(bottom, top - 1, -1):
+                result.append(matrix[i][left])
+            left += 1
+
+    return result
+
+# Example usage:
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+print(spiralOrder(matrix))  # Returns [1, 2, 3, 6, 9, 8, 7, 4, 5]
+
+matrix = [
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12]
+]
+print(spiralOrder(matrix))  # Returns [1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7]
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - Check if the matrix is empty. If it is, return an empty list.
+   - Initialize the boundaries: `top`, `bottom`, `left`, and `right`.
+
+2. **Traversal Loop:**
+   - Traverse from left to right along the `top` boundary and then move the `top` boundary inward.
+   - Traverse from top to bottom along the `right` boundary and then move the `right` boundary inward.
+   - Check if `top` boundary is still within the `bottom` boundary. If so, traverse from right to left along the `bottom` boundary and then move the `bottom` boundary inward.
+   - Check if `left` boundary is still within the `right` boundary. If so, traverse from bottom to top along the `left` boundary and then move the `left` boundary inward.
+
+3. **Continue Traversal:**
+   - Continue adjusting the boundaries inward and traversing in a spiral order until all elements are visited.
+
+This approach ensures that the matrix is traversed in spiral order efficiently with a time complexity of O(m * n), where `m` is the number of rows and `n` is the number of columns.
+
+To generate the first `numRows` of Pascal's Triangle, we need to follow these steps:
+
+1. Initialize the first row with `[1]`.
+2. For each subsequent row, start and end the row with `1`.
+3. Each element in between is the sum of the two elements directly above it from the previous row.
+4. Continue this process until `numRows` rows have been generated.
+
+Here is the Python implementation:
+
+```python
+def generate(numRows):
+    if numRows == 0:
+        return []
+    
+    triangle = [[1]]  # First row of Pascal's Triangle
+    
+    for i in range(1, numRows):
+        row = [1]  # Start the row with 1
+        for j in range(1, i):
+            # Each element is the sum of the two elements above it
+            row.append(triangle[i-1][j-1] + triangle[i-1][j])
+        row.append(1)  # End the row with 1
+        triangle.append(row)
+    
+    return triangle
+
+# Example usage:
+numRows = 5
+print(generate(numRows))
+# Output:
+# [
+#  [1],
+#  [1, 1],
+#  [1, 2, 1],
+#  [1, 3, 3, 1],
+#  [1, 4, 6, 4, 1]
+# ]
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - If `numRows` is 0, return an empty list since no rows are needed.
+   - Start with the first row of Pascal's Triangle, which is `[1]`.
+
+2. **Generate Subsequent Rows:**
+   - For each row `i` from `1` to `numRows - 1`:
+     - Initialize the row with `[1]` to start.
+     - For each element `j` from `1` to `i - 1`:
+       - Calculate the value as the sum of the two elements directly above it from the previous row, `triangle[i-1][j-1] + triangle[i-1][j]`.
+       - Append this value to the current row.
+     - End the row with `[1]`.
+     - Append the completed row to the `triangle` list.
+
+3. **Return the Triangle:**
+   - After generating all rows, return the `triangle` list containing the first `numRows` of Pascal's Triangle.
+
+This approach ensures that Pascal's Triangle is generated efficiently with a time complexity of O(numRows^2) due to the nested loops iterating through each element of each row. The space complexity is also O(numRows^2) to store all the elements of the triangle.
+
+Immutable means that you can't change the content of the string once it's initialized.
+1.In some languages (like C++), the string is mutable. That is to say, you can modify the string just like what you did in an array. 
+2.In some other languages (like Java), the string is immutable. This feature will bring several problems. We will illustrate the problems and solutions in the next article.
+You can determine whether the string in your favorite language is immutable or mutable by testing the modification operation. Here is an example:
+
+
+To add two binary strings, you can simulate the process of binary addition similar to how you would add numbers manually. Here's a step-by-step approach:
+
+1. Initialize two pointers at the end of each string (representing the least significant bits).
+2. Initialize a carry variable to keep track of any carry from the previous addition.
+3. Loop through the strings from the end to the beginning, adding corresponding bits along with the carry.
+4. If the sum of the corresponding bits plus the carry is 2 or more, set the current bit to the remainder of the sum when divided by 2 and update the carry to the quotient of the sum when divided by 2.
+5. After finishing the loop, if there is any carry left, append it to the result.
+6. Reverse the result string since we constructed it from the least significant bit to the most significant bit.
+
+Here is the Python implementation of the above approach:
+
+```python
+def addBinary(a: str, b: str) -> str:
+    result = []
+    carry = 0
+    i, j = len(a) - 1, len(b) - 1
+    
+    while i >= 0 or j >= 0 or carry:
+        total = carry
+        if i >= 0:
+            total += int(a[i])
+            i -= 1
+        if j >= 0:
+            total += int(b[j])
+            j -= 1
+        
+        result.append(str(total % 2))
+        carry = total // 2
+    
+    return ''.join(result[::-1])
+
+# Example usage:
+a = "1010"
+b = "1011"
+print(addBinary(a, b))  # Returns "10101"
+
+a = "11"
+b = "1"
+print(addBinary(a, b))  # Returns "100"
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - `result` is an empty list that will store the binary result.
+   - `carry` is initialized to 0.
+   - `i` and `j` are pointers set to the last indices of `a` and `b` respectively.
+
+2. **Loop through the Strings:**
+   - Continue the loop while either `i` or `j` are valid indices or there is a carry to process.
+   - For each iteration, initialize `total` to `carry`.
+   - If `i` is a valid index, add the integer value of `a[i]` to `total` and decrement `i`.
+   - If `j` is a valid index, add the integer value of `b[j]` to `total` and decrement `j`.
+
+3. **Calculate Result and Update Carry:**
+   - Append the remainder of `total` divided by 2 (`total % 2`) to `result` as the current bit.
+   - Update `carry` to the integer division of `total` by 2 (`total // 2`).
+
+4. **Return the Result:**
+   - After the loop, join the `result` list in reverse order and return it as the final binary string.
+
+This solution ensures that binary addition is performed correctly and efficiently, with a time complexity of O(max(len(a), len(b))) and a space complexity of O(max(len(a), len(b))).
+
+To implement `strStr()`, which finds the first occurrence of the substring `needle` in the string `haystack`, we can use a straightforward approach by iterating through the `haystack` and checking for the `needle` at each position. If the `needle` is found, return the index; otherwise, return -1 if the `needle` is not found in the entire `haystack`.
+
+Here's a simple and efficient implementation:
+
+```python
+def strStr(haystack: str, needle: str) -> int:
+    # Edge case: If needle is an empty string, return 0
+    if not needle:
+        return 0
+    
+    len_haystack = len(haystack)
+    len_needle = len(needle)
+    
+    # Iterate through the haystack
+    for i in range(len_haystack - len_needle + 1):
+        # Check if the substring from i to i + len_needle is equal to needle
+        if haystack[i:i + len_needle] == needle:
+            return i
+    
+    # If needle is not found, return -1
+    return -1
+
+# Example usage:
+haystack = "hello"
+needle = "ll"
+print(strStr(haystack, needle))  # Returns 2
+
+haystack = "aaaaa"
+needle = "bba"
+print(strStr(haystack, needle))  # Returns -1
+
+haystack = ""
+needle = ""
+print(strStr(haystack, needle))  # Returns 0
+```
+
+### Explanation:
+
+1. **Edge Case Handling:**
+   - If `needle` is an empty string, by definition of the problem, return 0 immediately.
+
+2. **Initialize Length Variables:**
+   - `len_haystack` is the length of `haystack`.
+   - `len_needle` is the length of `needle`.
+
+3. **Iterate Through `haystack`:**
+   - Use a loop to iterate through each possible starting index `i` in `haystack` where `needle` could fit. The loop runs from `0` to `len_haystack - len_needle + 1`.
+   - For each index `i`, check if the substring of `haystack` starting at `i` and of length `len_needle` matches `needle`.
+
+4. **Return the Index:**
+   - If a match is found, return the current index `i`.
+
+5. **Return -1 if No Match is Found:**
+   - If the loop completes without finding a match, return -1.
+
+This approach ensures that the solution is efficient with a time complexity of O(n * m), where `n` is the length of `haystack` and `m` is the length of `needle`. This is because, in the worst case, we might need to check each substring of length `m` in `haystack`. The space complexity is O(1) as we are using only a few extra variables.
+To find the longest common prefix among an array of strings, you can use the following approach:
+
+1. If the input array is empty, return an empty string.
+2. Initialize the prefix as the first string in the array.
+3. Iterate through the remaining strings and progressively shorten the prefix until it matches the beginning of each string.
+4. If the prefix becomes an empty string at any point, return an empty string since there's no common prefix.
+
+Here is the Python implementation:
+
+```python
+def longestCommonPrefix(strs):
+    if not strs:
+        return ""
+
+    # Initialize the prefix with the first string
+    prefix = strs[0]
+
+    # Iterate through the remaining strings
+    for s in strs[1:]:
+        while s.find(prefix) != 0:
+            # Shorten the prefix
+            prefix = prefix[:-1]
+            # If prefix is empty, return an empty string
+            if not prefix:
+                return ""
+    
+    return prefix
+
+# Example usage:
+strs = ["flower", "flow", "flight"]
+print(longestCommonPrefix(strs))  # Returns "fl"
+
+strs = ["dog", "racecar", "car"]
+print(longestCommonPrefix(strs))  # Returns ""
+
+strs = ["interspecies", "interstellar", "interstate"]
+print(longestCommonPrefix(strs))  # Returns "inters"
+```
+
+### Explanation:
+
+1. **Edge Case Handling:**
+   - If the input array `strs` is empty, return an empty string.
+
+2. **Initialize the Prefix:**
+   - Set the prefix to the first string in the array.
+
+3. **Iterate Through Remaining Strings:**
+   - For each string `s` in the array starting from the second string, check if the current prefix is a prefix of `s`.
+   - If the current prefix is not a prefix of `s` (i.e., `s.find(prefix) != 0`), shorten the prefix by removing the last character.
+   - Continue shortening the prefix until it matches the beginning of `s` or becomes empty.
+
+4. **Return the Prefix:**
+   - After iterating through all strings, return the remaining prefix.
+   - If at any point the prefix becomes an empty string, return an empty string immediately since there is no common prefix.
+
+This approach ensures that the solution is efficient with a time complexity of O(S), where S is the sum of all characters in all strings. The space complexity is O(1) because we are using only a few extra variables.
+
+To reverse a string represented as an array of characters in-place with O(1) extra memory, you can use the two-pointer technique. Here's how it works:
+
+1. Initialize two pointers, one at the beginning of the array and the other at the end.
+2. Swap the characters at these two pointers.
+3. Move the pointers towards each other until they meet in the middle.
+
+This approach ensures that the string is reversed in-place without using any extra memory.
+
+Here is the Python implementation:
+
+```python
+def reverseString(s):
+    left, right = 0, len(s) - 1
+    
+    while left < right:
+        # Swap the characters
+        s[left], s[right] = s[right], s[left]
+        # Move the pointers
+        left += 1
+        right -= 1
+
+# Example usage:
+s = ['h', 'e', 'l', 'l', 'o']
+reverseString(s)
+print(s)  # Output: ['o', 'l', 'l', 'e', 'h']
+
+s = ['H', 'a', 'n', 'n', 'a', 'h']
+reverseString(s)
+print(s)  # Output: ['h', 'a', 'n', 'n', 'a', 'H']
+```
+
+### Explanation:
+
+1. **Initialize Pointers:**
+   - `left` pointer starts at the beginning of the array (`0`).
+   - `right` pointer starts at the end of the array (`len(s) - 1`).
+
+2. **Swap Characters and Move Pointers:**
+   - In each iteration of the loop, swap the characters at the `left` and `right` pointers.
+   - Move the `left` pointer one step to the right (`left += 1`).
+   - Move the `right` pointer one step to the left (`right -= 1`).
+   - Continue this process until the `left` pointer is no longer less than the `right` pointer.
+
+3. **In-Place Modification:**
+   - This method modifies the input array directly without using additional memory, satisfying the O(1) extra memory requirement.
+
+By following this approach, you ensure that the string is reversed efficiently in O(n) time complexity, where n is the length of the string. The space complexity is O(1) as no additional memory is used beyond the two pointers.
+
+To solve the problem of maximizing the sum of the minimum values in each pair, you can follow these steps:
+
+1. Sort the array in non-decreasing order.
+2. Pair up the sorted numbers consecutively.
+3. Sum up the first element of each pair (i.e., the elements at the even indices of the sorted array).
+
+This works because, by sorting the array and pairing consecutive elements, you ensure that each pair contains the smallest possible difference between its elements. This approach maximizes the sum of the smaller elements in each pair.
+
+Here's the Python implementation:
+
+```python
+def arrayPairSum(nums):
+    # Step 1: Sort the array
+    nums.sort()
+    
+    # Step 2: Sum up the elements at even indices
+    max_sum = sum(nums[i] for i in range(0, len(nums), 2))
+    
+    return max_sum
+
+# Example usage:
+nums = [1, 4, 3, 2]
+print(arrayPairSum(nums))  # Output: 4
+
+nums = [6, 2, 6, 5, 1, 2]
+print(arrayPairSum(nums))  # Output: 9
+```
+
+### Explanation:
+
+1. **Sorting the Array:**
+   - By sorting the array, we ensure that the pairs formed by consecutive elements will have the smallest possible differences.
+   - Example: `[1, 2, 3, 4]` sorted gives `[1, 2, 3, 4]`.
+
+2. **Summing Elements at Even Indices:**
+   - Since the array is sorted, the elements at even indices (0, 2, 4, ...) will be the smaller elements of the pairs.
+   - Summing these elements gives the desired maximized sum.
+   - Example: For the sorted array `[1, 2, 3, 4]`, the pairs are `(1, 2)` and `(3, 4)`, and the sum of the smaller elements is `1 + 3 = 4`.
+
+This approach ensures that the solution is efficient with a time complexity of O(n log n) due to the sorting step, and the space complexity is O(1) (excluding the input space) since no additional space is used other than variables for computation.
+
+To solve the "Two Sum II - Input array is sorted" problem using constant extra space, you can use the two-pointer technique. Since the array is already sorted, you can initialize two pointers: one at the beginning and one at the end of the array. By moving these pointers inward based on the sum of the elements at these pointers, you can find the two numbers that add up to the target.
+
+Here's the Python implementation:
+
+```python
+def twoSum(numbers, target):
+    left, right = 0, len(numbers) - 1
+    
+    while left < right:
+        current_sum = numbers[left] + numbers[right]
+        
+        if current_sum == target:
+            return [left + 1, right + 1]  # Return 1-indexed positions
+        elif current_sum < target:
+            left += 1
+        else:
+            right -= 1
+    
+    return []  # Should not reach here since there is exactly one solution
+
+# Example usage:
+numbers = [2, 7, 11, 15]
+target = 9
+print(twoSum(numbers, target))  # Output: [1, 2]
+
+numbers = [2, 3, 4]
+target = 6
+print(twoSum(numbers, target))  # Output: [1, 3]
+
+numbers = [-1, 0]
+target = -1
+print(twoSum(numbers, target))  # Output: [1, 2]
+```
+
+### Explanation:
+
+1. **Initialize Pointers:**
+   - `left` pointer starts at the beginning of the array (`0`).
+   - `right` pointer starts at the end of the array (`len(numbers) - 1`).
+
+2. **Iterate with Two Pointers:**
+   - Calculate the sum of the elements at the `left` and `right` pointers.
+   - If the sum equals the target, return the 1-indexed positions `[left + 1, right + 1]`.
+   - If the sum is less than the target, increment the `left` pointer to increase the sum.
+   - If the sum is greater than the target, decrement the `right` pointer to decrease the sum.
+
+3. **Return the Indices:**
+   - The loop continues until the two pointers meet, ensuring that we find the two numbers that sum up to the target.
+
+This approach ensures that the solution is efficient with a time complexity of O(n) since each element is considered at most once by the two pointers. The space complexity is O(1) as it uses only constant extra space for the pointers and variables.
+To solve the problem of removing all occurrences of a specific value `val` from an array `nums` in-place, you can use the two-pointer technique. One pointer iterates through the array, while the other keeps track of the position where the next non-`val` element should be placed.
+
+Here’s a step-by-step explanation of the approach:
+
+1. Initialize a pointer `k` to keep track of the index where the next non-`val` element should be placed.
+2. Iterate through the array with another pointer.
+3. If the current element is not equal to `val`, place it at the index `k` and increment `k`.
+4. After the loop completes, `k` will be the number of elements that are not equal to `val`.
+
+Here is the Python implementation:
+
+```python
+def removeElement(nums, val):
+    k = 0  # Pointer for the next position of non-val element
+    
+    for i in range(len(nums)):
+        if nums[i] != val:
+            nums[k] = nums[i]
+            k += 1
+    
+    return k
+
+# Example usage:
+nums = [3, 2, 2, 3]
+val = 3
+print(removeElement(nums, val))  # Output: 2, nums becomes [2, 2, _, _]
+
+nums = [0, 1, 2, 2, 3, 0, 4, 2]
+val = 2
+print(removeElement(nums, val))  # Output: 5, nums becomes [0, 1, 3, 0, 4, _, _, _]
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - `k` is initialized to 0, which will serve as the index to place the next non-`val` element.
+
+2. **Iterate Through the Array:**
+   - For each element in `nums`, check if it is not equal to `val`.
+   - If the element is not equal to `val`, place it at the current `k` index in the array and increment `k`.
+
+3. **Return the Result:**
+   - After the loop completes, `k` will be the count of elements that are not equal to `val`.
+   - The array `nums` is modified in-place such that the first `k` elements are those that are not equal to `val`. The remaining elements beyond the first `k` elements are not important.
+
+This approach ensures an efficient in-place removal of elements with a time complexity of O(n) and a space complexity of O(1).
+To find the maximum number of consecutive 1's in a binary array `nums`, you can iterate through the array while keeping track of the current streak of 1's and the maximum streak found so far. 
+
+Here's a step-by-step approach:
+
+1. Initialize two variables: one for the current count of consecutive 1's and another for the maximum count found.
+2. Iterate through the array.
+3. If the current element is 1, increment the current count.
+4. If the current element is not 1, update the maximum count if the current count is greater and reset the current count to 0.
+5. After the loop, ensure to update the maximum count one last time in case the array ends with a streak of 1's.
+
+Here is the Python implementation:
+
+```python
+def findMaxConsecutiveOnes(nums):
+    max_count = 0
+    current_count = 0
+    
+    for num in nums:
+        if num == 1:
+            current_count += 1
+            max_count = max(max_count, current_count)
+        else:
+            current_count = 0
+    
+    return max_count
+
+# Example usage:
+nums = [1, 1, 0, 1, 1, 1]
+print(findMaxConsecutiveOnes(nums))  # Output: 3
+
+nums = [1, 0, 1, 1, 0, 1]
+print(findMaxConsecutiveOnes(nums))  # Output: 2
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - `max_count` is initialized to 0 to keep track of the maximum number of consecutive 1's found.
+   - `current_count` is initialized to 0 to count the current streak of consecutive 1's.
+
+2. **Iterate Through the Array:**
+   - For each element in `nums`, check if it is 1.
+   - If it is 1, increment `current_count` and update `max_count` if `current_count` exceeds `max_count`.
+   - If it is not 1, reset `current_count` to 0.
+
+3. **Return the Result:**
+   - After the loop completes, `max_count` holds the maximum number of consecutive 1's found in the array.
+
+This approach ensures that the solution is efficient with a time complexity of O(n) and a space complexity of O(1), where `n` is the length of the array.
+To solve the problem of finding the minimal length of a subarray whose sum is greater than or equal to a given target, we can use the sliding window technique. This approach allows us to efficiently find the subarray with the minimum length that meets the condition.
+
+Here's the step-by-step solution:
+
+1. Initialize two pointers (`left` and `right`) for the sliding window.
+2. Use a variable to keep track of the current sum of the elements within the window.
+3. Expand the window by moving the `right` pointer to the right, adding the value at the `right` pointer to the current sum.
+4. If the current sum is greater than or equal to the target, attempt to shrink the window from the left by moving the `left` pointer to the right, updating the minimum length if the window's sum still meets the target condition.
+5. Continue this process until the `right` pointer reaches the end of the array.
+
+Here is the Python implementation:
+
+```python
+def minSubArrayLen(target, nums):
+    n = len(nums)
+    min_length = float('inf')
+    current_sum = 0
+    left = 0
+
+    for right in range(n):
+        current_sum += nums[right]
+
+        while current_sum >= target:
+            min_length = min(min_length, right - left + 1)
+            current_sum -= nums[left]
+            left += 1
+
+    return 0 if min_length == float('inf') else min_length
+
+# Example usage:
+nums = [2, 3, 1, 2, 4, 3]
+target = 7
+print(minSubArrayLen(target, nums))  # Output: 2
+
+nums = [1, 4, 4]
+target = 4
+print(minSubArrayLen(target, nums))  # Output: 1
+
+nums = [1, 1, 1, 1, 1, 1, 1, 1]
+target = 11
+print(minSubArrayLen(target, nums))  # Output: 0
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - `min_length` is set to infinity (`float('inf')`) to keep track of the minimum length of the subarray found.
+   - `current_sum` is initialized to 0 to store the sum of the current window.
+   - `left` pointer is initialized to 0 to mark the beginning of the window.
+
+2. **Expand the Window:**
+   - Iterate over the array with the `right` pointer. For each element, add its value to `current_sum`.
+
+3. **Shrink the Window:**
+   - While `current_sum` is greater than or equal to the target, update `min_length` to the smaller value between `min_length` and the current window length (`right - left + 1`).
+   - Subtract the element at the `left` pointer from `current_sum` and move the `left` pointer to the right to try to find a smaller subarray that meets the target.
+
+4. **Return the Result:**
+   - If `min_length` remains infinity, it means no subarray meeting the target condition was found, so return 0.
+   - Otherwise, return `min_length`.
+
+This approach ensures that the solution is efficient with a time complexity of O(n) and a space complexity of O(1), where `n` is the length of the array.
+
+To rotate an array to the right by `k` steps, you can use several methods, but one efficient way is to reverse parts of the array. Here’s the step-by-step approach:
+
+1. Reverse the entire array.
+2. Reverse the first `k` elements.
+3. Reverse the remaining `n-k` elements.
+
+This approach ensures that the rotation is performed in-place with O(1) extra space and O(n) time complexity.
+
+Here’s the implementation in Python:
+
+```python
+def rotate(nums, k):
+    n = len(nums)
+    k = k % n  # In case k is greater than the length of the array
+
+    def reverse(start, end):
+        while start < end:
+            nums[start], nums[end] = nums[end], nums[start]
+            start += 1
+            end -= 1
+
+    # Step 1: Reverse the entire array
+    reverse(0, n - 1)
+    # Step 2: Reverse the first k elements
+    reverse(0, k - 1)
+    # Step 3: Reverse the remaining n - k elements
+    reverse(k, n - 1)
+
+# Example usage:
+nums = [1, 2, 3, 4, 5, 6, 7]
+k = 3
+rotate(nums, k)
+print(nums)  # Output: [5, 6, 7, 1, 2, 3, 4]
+
+nums = [-1, -100, 3, 99]
+k = 2
+rotate(nums, k)
+print(nums)  # Output: [3, 99, -1, -100]
+```
+
+### Explanation:
+
+1. **Modulo Operation:**
+   - `k = k % n` ensures that `k` is within the bounds of the array length. For example, rotating an array of length 7 by 8 steps is the same as rotating it by 1 step.
+
+2. **Reverse Helper Function:**
+   - The `reverse` function takes two indices, `start` and `end`, and reverses the elements between them in place.
+
+3. **Reverse the Entire Array:**
+   - Reverse all the elements of the array. This makes the last `k` elements move to the beginning, but in reverse order.
+
+4. **Reverse the First k Elements:**
+   - Reverse the first `k` elements to restore them to their original order.
+
+5. **Reverse the Remaining Elements:**
+   - Reverse the elements from index `k` to the end of the array to restore them to their original order.
+
+By following these steps, the array is rotated to the right by `k` steps in an efficient manner.
+
+To return the `rowIndex`-th row of Pascal's Triangle, we can utilize the properties of Pascal's Triangle. Each element in the triangle is the sum of the two elements directly above it.
+
+Here's the approach to generate the specific row directly:
+
+1. Start with the first row `[1]`.
+2. For each subsequent row, generate the next row by summing adjacent elements from the previous row.
+3. Continue this process until you reach the desired row.
+
+Here's the Python implementation:
+
+```python
+def getRow(rowIndex):
+    row = [1]
+    for _ in range(rowIndex):
+        row = [x + y for x, y in zip([0]+row, row+[0])]
+    return row
+
+# Example usage:
+rowIndex = 3
+print(getRow(rowIndex))  # Returns [1, 3, 3, 1]
+
+rowIndex = 0
+print(getRow(rowIndex))  # Returns [1]
+
+rowIndex = 1
+print(getRow(rowIndex))  # Returns [1, 1]
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - Start with the first row of Pascal's Triangle, which is `[1]`.
+
+2. **Generate Rows:**
+   - For each row until `rowIndex`, generate the next row.
+   - Use list comprehension with `zip` to sum adjacent elements from the previous row.
+     - `[0] + row` pads the previous row with a zero at the beginning.
+     - `row + [0]` pads the previous row with a zero at the end.
+     - `zip([0]+row, row+[0])` pairs elements such that each element is summed with its neighbor to generate the next row.
+
+3. **Return the Desired Row:**
+   - After generating rows up to `rowIndex`, return the final row.
+
+This approach generates the `rowIndex`-th row efficiently with a time complexity of O(rowIndex^2) due to the nested iterations for generating each element in the row. The space complexity is O(rowIndex) for storing the current row.
+
+To reverse the words in a string and ensure that the returned string has only a single space separating the words (with no leading or trailing spaces), you can follow these steps:
+
+1. Split the input string `s` into words based on spaces.
+2. Reverse the list of words.
+3. Join the reversed list of words with a single space.
+
+Here's the Python implementation:
+
+```python
+def reverseWords(s: str) -> str:
+    # Step 1: Split the string into words, stripping out extra spaces
+    words = s.split()
+    
+    # Step 2: Reverse the list of words
+    words.reverse()
+    
+    # Step 3: Join the reversed words with a single space
+    reversed_s = ' '.join(words)
+    
+    return reversed_s
+
+# Example usage:
+s = "the sky is blue"
+print(reverseWords(s))  # Returns "blue is sky the"
+
+s = "  hello world  "
+print(reverseWords(s))  # Returns "world hello"
+
+s = "a good   example"
+print(reverseWords(s))  # Returns "example good a"
+```
+
+### Explanation:
+
+1. **Split the String into Words:**
+   - Use `split()` method on the string `s`. This method splits the string by any whitespace and removes extra spaces, including leading, trailing, and multiple spaces between words.
+   - `words = s.split()` will give you a list of words.
+
+2. **Reverse the List of Words:**
+   - Use the `reverse()` method to reverse the list of words in place.
+   - `words.reverse()` will reverse the order of the words.
+
+3. **Join the Reversed Words with a Single Space:**
+   - Use the `join()` method to concatenate the reversed list of words with a single space.
+   - `' '.join(words)` will create the final reversed string with single spaces between words.
+
+This approach ensures that the string is processed efficiently with a time complexity of O(n), where `n` is the length of the input string. The space complexity is also O(n) due to the storage used for the list of words.
+
+To reverse the characters in each word within a sentence while preserving the whitespace and the initial word order, you can follow these steps:
+
+1. Split the input string `s` into words based on spaces.
+2. Reverse each word individually.
+3. Join the reversed words with a space to form the final string.
+
+Here's the Python implementation:
+
+```python
+def reverseWords(s: str) -> str:
+    # Step 1: Split the string into words based on spaces
+    words = s.split()
+    
+    # Step 2: Reverse each word individually
+    reversed_words = [word[::-1] for word in words]
+    
+    # Step 3: Join the reversed words with a space
+    reversed_s = ' '.join(reversed_words)
+    
+    return reversed_s
+
+# Example usage:
+s = "Let's take LeetCode contest"
+print(reverseWords(s))  # Returns "s'teL ekat edoCteeL tsetnoc"
+
+s = "God Ding"
+print(reverseWords(s))  # Returns "doG gniD"
+```
+
+### Explanation:
+
+1. **Split the String into Words:**
+   - Use the `split()` method on the string `s`. This method splits the string by whitespace and removes extra spaces, producing a list of words.
+   - `words = s.split()` results in a list of words.
+
+2. **Reverse Each Word Individually:**
+   - Use list comprehension to reverse each word in the list. The slicing method `[::-1]` reverses a string.
+   - `reversed_words = [word[::-1] for word in words]` creates a new list where each word is reversed.
+
+3. **Join the Reversed Words with a Space:**
+   - Use the `join()` method to concatenate the reversed words with a single space.
+   - `' '.join(reversed_words)` creates the final string where each word's characters are reversed, but the word order is preserved.
+
+This approach efficiently reverses the characters in each word while maintaining the word order and whitespace, with a time complexity of O(n) where `n` is the length of the input string, and a space complexity of O(n) for storing the intermediate words and the final result.
+
+To remove duplicates from a sorted array in-place and ensure that each unique element appears only once, you can use the two-pointer technique. One pointer will traverse the array, while the other pointer will keep track of the position to place the next unique element.
+
+Here is a step-by-step approach:
+
+1. Initialize a pointer (`write_index`) to keep track of the position where the next unique element should be written.
+2. Iterate through the array with another pointer (`i`).
+3. For each element, check if it is different from the last unique element found.
+4. If it is, place it at the `write_index` position and increment the `write_index`.
+5. After the loop, `write_index` will be the count of unique elements.
+
+Here is the Python implementation:
+
+```python
+def removeDuplicates(nums):
+    if not nums:
+        return 0
+
+    write_index = 1
+
+    for i in range(1, len(nums)):
+        if nums[i] != nums[i - 1]:
+            nums[write_index] = nums[i]
+            write_index += 1
+
+    return write_index
+
+# Example usage:
+nums = [1, 1, 2]
+k = removeDuplicates(nums)
+print(k)  # Output: 2
+print(nums[:k])  # Output: [1, 2]
+
+nums = [0,0,1,1,1,2,2,3,3,4]
+k = removeDuplicates(nums)
+print(k)  # Output: 5
+print(nums[:k])  # Output: [0, 1, 2, 3, 4]
+```
+
+### Explanation:
+
+1. **Edge Case Handling:**
+   - If the input array `nums` is empty, return 0 since there are no elements to process.
+
+2. **Initialize the Write Index:**
+   - Set `write_index` to 1, assuming the first element is always unique and will be part of the result.
+
+3. **Iterate Through the Array:**
+   - Start the loop from the second element (index 1) to the end of the array.
+   - For each element, compare it with the previous element (`nums[i] != nums[i - 1]`).
+   - If the current element is different from the previous element, it is unique. Place it at the `write_index` position and increment `write_index`.
+
+4. **Return the Count of Unique Elements:**
+   - After processing all elements, `write_index` will hold the count of unique elements in the array.
+
+5. **Resulting Array:**
+   - The first `k` elements of `nums` will contain the unique elements in their original order.
+
+This approach ensures that the solution is efficient with a time complexity of O(n) and a space complexity of O(1), as it modifies the array in-place without using any additional space.
+
+To solve the problem of moving all zeros to the end of the array while maintaining the relative order of the non-zero elements, you can use the two-pointer technique. Here’s how you can achieve this:
+
+1. Initialize a pointer `last_non_zero_found_at` to keep track of the position of the last non-zero element found.
+2. Iterate through the array with another pointer `current`.
+3. For each element, if it is not zero, swap it with the element at `last_non_zero_found_at` and increment `last_non_zero_found_at`.
+4. This will ensure that all non-zero elements are moved to the beginning of the array while zeros are moved to the end.
+
+Here's the implementation in Python:
+
+```python
+def moveZeroes(nums):
+    last_non_zero_found_at = 0
+
+    # Move all non-zero elements to the beginning of the array
+    for current in range(len(nums)):
+        if nums[current] != 0:
+            nums[last_non_zero_found_at], nums[current] = nums[current], nums[last_non_zero_found_at]
+            last_non_zero_found_at += 1
+
+# Example usage:
+nums = [0, 1, 0, 3, 12]
+moveZeroes(nums)
+print(nums)  # Output: [1, 3, 12, 0, 0]
+
+nums = [0, 0, 1]
+moveZeroes(nums)
+print(nums)  # Output: [1, 0, 0]
+```
+
+### Explanation:
+
+1. **Initialize Pointer:**
+   - `last_non_zero_found_at` is initialized to 0 to track the position of the last non-zero element found.
+
+2. **Iterate Through the Array:**
+   - Use a for loop to iterate through each element in the array.
+   - If the current element (`nums[current]`) is not zero, swap it with the element at `last_non_zero_found_at`.
+   - Increment `last_non_zero_found_at` after each swap to ensure it points to the next position for a non-zero element.
+
+3. **Swapping Elements:**
+   - The swap operation ensures that all non-zero elements are moved to the beginning of the array while maintaining their relative order.
+   - Zeros are effectively pushed to the end of the array as a result of the swaps.
+
+This approach ensures that the array is modified in-place with a time complexity of O(n) and a space complexity of O(1).
+

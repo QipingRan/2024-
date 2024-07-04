@@ -1,0 +1,901 @@
+https://leetcode.com/explore/learn/card/trie/149/practical-application-ii/1138/
+
+A Trie is a special form of a Nary tree. Typically, a trie is used to store strings. Each Trie node represents a string (a prefix). Each node might have several children nodes while the paths to different children nodes represent different characters. And the strings the child nodes represent will be the origin string represented by the node itself plus the character on the path.
+
+In the example, the value we mark in each node is the string the node represents. For instance, we start from the root node and choose the second path 'b', then choose the first child 'a', and choose child 'd', finally we arrived at the node "bad". The value of the node is exactly formed by the letters in the path from the root to the node sequentially.
+It is worth noting that the root node is associated with the empty string.
+One important property of Trie is that all the descendants of a node have a common prefix of the string associated with that node. That's why Trie is also called prefix tree.
+Let's look at the example again. For example, the strings represented by nodes in the subtree rooted at node "b" have a common prefix "b". And vice versa. The strings which have the common prefix "b" are all in the subtree rooted at node "b" while the strings with different prefixes will come to different branches.
+Trie is widely used in various applications, such as autocomplete, spell checker, etc. We will introduce the practical applications in later chapters.
+
+
+First Solution - Array
+
+The first solution is to use an array to store children nodes.
+For instance, if we store strings which only contains letter a to z, we can declare an array whose size is 26 in each node to store its children nodes. And for a specific character c, we can use c - 'a' as the index to find the corresponding child node in the array.
+It is really fast to visit a child node. It is comparatively easy to visit a specific child since we can easily transfer a character to an index in most cases. But not all children nodes are needed. So there might be some waste of space.
+ 
+Second Solution - Map
+
+The second solution is to use a hashmap to store children nodes.
+We can declare a hashmap in each node. The key of the hashmap are characters and the value is the corresponding child node.
+It is even easier to visit a specific child directly by the corresponding character. But it might be a little slower than using an array. However, it saves some space since we only store the children nodes we need. It is also more flexible because we are not limited by a fixed length and fixed range.
+Let's summarize the strategy using pseudo-code:
+1. Initialize: cur = root
+2. for each char c in target string S:
+3.      if cur does not have a child c:
+4.          cur.children[c] = new Trie node
+5.      cur = cur.children[c]
+6. cur is the node which represents the string S
+Usually, you will need to build the trie by yourself. Building a trie is actually to call the insertion function several times. But remember to initialize a root node before you insert the strings.
+
+
+ Search in TrieReport Issue
+Search Prefix
+Search Word
+
+Search Prefix
+
+As we mentioned in the introduction to Trie, all the descendants of a node have a common prefix of the string associated with that node. Therefore, it should be easy to search if there are any words in the trie that starts with the given prefix.
+Similarly, we can go down the tree depending on the given prefix. Once we can not find the child node we want, search fails. Otherwise, search succeeds. To be more specific, we provide several examples:
+
+10 / 10
+Let's summarize the strategy using pseudo-code:
+1. Initialize: cur = root
+2. for each char c in target string S:
+3.   if cur does not have a child c:
+4.     search fails
+5.   cur = cur.children[c]
+6. search successes
+
+Search Word
+
+You might also want to know how to search for a specific word rather than a prefix. We can treat this word as a prefix and search in the same way we mentioned above.
+1.
+If search fails which means that no words start with the target word, the target word is definitely not in the Trie.
+2.
+3.
+If search succeeds, we need to check if the target word is only a prefix of words in Trie or it is exactly a word. To solve this problem, you might want to modify the node structure a little bit.
+4.
+
+
+To implement a Trie (Prefix Tree), you can use a nested class structure where each node in the Trie represents a character and has links to its child nodes. The Trie itself will support three main operations: insert, search, and startsWith.
+
+Here is the implementation:
+
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end_of_word = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word: str) -> None:
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end_of_word = True
+    
+    def search(self, word: str) -> bool:
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return node.is_end_of_word
+    
+    def startsWith(self, prefix: str) -> bool:
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return True
+
+# Example usage:
+trie = Trie()
+trie.insert("apple")
+print(trie.search("apple"))   # Returns True
+print(trie.search("app"))     # Returns False
+print(trie.startsWith("app")) # Returns True
+trie.insert("app")
+print(trie.search("app"))     # Returns True
+```
+
+### Explanation:
+
+1. **TrieNode Class**:
+   - Each `TrieNode` object has two attributes:
+     - `children`: A dictionary where keys are characters and values are `TrieNode` objects representing the next nodes in the Trie.
+     - `is_end_of_word`: A boolean indicating whether this node represents the end of a valid word.
+
+2. **Trie Class**:
+   - The `Trie` object has a single attribute `root`, which is an instance of `TrieNode`.
+
+3. **Insert Method**:
+   - Start from the root node.
+   - For each character in the word, if the character is not already a child of the current node, add it.
+   - Move to the child node corresponding to the character.
+   - After inserting all characters, mark the last node as the end of a word.
+
+4. **Search Method**:
+   - Start from the root node.
+   - For each character in the word, move to the child node corresponding to the character.
+   - If a character is not found in the children of the current node, return `False`.
+   - After traversing all characters, return `True` if the last node is marked as the end of a word.
+
+5. **startsWith Method**:
+   - Start from the root node.
+   - For each character in the prefix, move to the child node corresponding to the character.
+   - If a character is not found in the children of the current node, return `False`.
+   - If all characters in the prefix are found, return `True`.
+
+This implementation ensures efficient storage and retrieval of words and prefixes, which are the primary operations for which Tries are used.
+
+class Trie {
+    class TrieNode {
+        public boolean isWord; 
+        public Map<Character, TrieNode> childrenMap = new HashMap<>();
+    }
+    
+    private TrieNode root; 
+
+    /** Initialize your data structure here. */
+    public Trie() {
+        root = new TrieNode();
+    }
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        TrieNode cur = root;
+        for(int i = 0; i < word.length(); i++){
+            char c = word.charAt(i);
+            if(cur.childrenMap.get(c) == null){
+                // insert a new node if the path does not exist
+                cur.childrenMap.put(c, new TrieNode());
+            }
+            cur = cur.childrenMap.get(c); 
+        }
+        cur.isWord = true;
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+        TrieNode cur = root;
+        for(int i = 0; i < word.length(); i++) {
+            char c = word.charAt(i);
+            if(cur.childrenMap.get(c) == null) {
+                return false;
+            }
+            cur = cur.childrenMap.get(c);
+        }
+        return cur.isWord;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        TrieNode cur = root;
+        for(int i = 0;i < prefix.length(); i++){
+            char c = prefix.charAt(i);
+            if(cur.childrenMap.get(c) == null) {
+                return false;
+            }
+            cur = cur.childrenMap.get(c);
+        }
+        return true;
+    }
+}
+
+To implement the `MapSum` class with the functionalities described, we can use a combination of a Trie (Prefix Tree) and a dictionary to store the key-value pairs and efficiently calculate the prefix sums.
+
+Here's a detailed implementation:
+
+1. **TrieNode Class**:
+   - Each node in the Trie contains a dictionary of children nodes and a value to store the cumulative sum of values at that node.
+
+2. **MapSum Class**:
+   - We maintain a dictionary to store the exact value associated with each key.
+   - The Trie structure is used to keep track of the cumulative sums for prefixes.
+
+### Implementation:
+
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.value = 0
+
+class MapSum:
+    def __init__(self):
+        self.root = TrieNode()
+        self.map = {}
+
+    def insert(self, key: str, val: int) -> None:
+        if key in self.map:
+            diff = val - self.map[key]
+        else:
+            diff = val
+        self.map[key] = val
+        
+        node = self.root
+        for char in key:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+            node.value += diff
+
+    def sum(self, prefix: str) -> int:
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return 0
+            node = node.children[char]
+        return node.value
+
+# Example usage:
+mapSum = MapSum()
+mapSum.insert("apple", 3)
+print(mapSum.sum("ap"))    # Output: 3
+mapSum.insert("app", 2)
+print(mapSum.sum("ap"))    # Output: 5
+mapSum.insert("apple", 2)  # Update the value of "apple" to 2
+print(mapSum.sum("ap"))    # Output: 4
+```
+
+### Explanation:
+
+1. **TrieNode Class**:
+   - Each `TrieNode` object has a dictionary `children` to store child nodes and an integer `value` to store the sum of all values in the subtree rooted at this node.
+
+2. **MapSum Class**:
+   - `root`: An instance of `TrieNode` representing the root of the Trie.
+   - `map`: A dictionary to store the exact value associated with each key.
+
+3. **insert Method**:
+   - Check if the key already exists in the map. If it does, calculate the difference (`diff`) between the new value and the old value.
+   - Update the value in the map with the new value.
+   - Traverse the Trie, updating the `value` of each node along the path by adding the `diff`. This ensures that all prefixes have the correct cumulative sum.
+
+4. **sum Method**:
+   - Traverse the Trie according to the prefix.
+   - If at any point the prefix is not found in the Trie, return 0.
+   - If the prefix is found, return the `value` stored at the last node in the traversal.
+
+This implementation ensures efficient insertion and prefix sum calculation with a time complexity of O(k) for both operations, where k is the length of the key or prefix. The space complexity is also efficient due to the compact representation of the Trie.
+
+To solve the problem of replacing words in a sentence with their shortest possible roots from a given dictionary, we can use a Trie (Prefix Tree). A Trie allows us to efficiently store and search for the roots, ensuring that we can find the shortest root for each word in the sentence.
+
+### Steps to Solve the Problem:
+
+1. **Build the Trie**: Insert all the roots from the dictionary into a Trie.
+2. **Replace Words in Sentence**: For each word in the sentence, use the Trie to find the shortest root that can replace the word. If no root is found, keep the word as it is.
+
+### Implementation:
+
+Here is the Python code to implement this solution:
+
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end_of_word = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word: str) -> None:
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end_of_word = True
+    
+    def search_shortest_prefix(self, word: str) -> str:
+        node = self.root
+        prefix = ""
+        for char in word:
+            if char not in node.children:
+                break
+            node = node.children[char]
+            prefix += char
+            if node.is_end_of_word:
+                return prefix
+        return word
+
+class Solution:
+    def replaceWords(self, dictionary: list[str], sentence: str) -> str:
+        trie = Trie()
+        for root in dictionary:
+            trie.insert(root)
+        
+        words = sentence.split()
+        replaced_words = [trie.search_shortest_prefix(word) for word in words]
+        
+        return ' '.join(replaced_words)
+
+# Example usage:
+solution = Solution()
+dictionary = ["cat", "bat", "rat"]
+sentence = "the cattle was rattled by the battery"
+print(solution.replaceWords(dictionary, sentence))  # Output: "the cat was rat by the bat"
+
+dictionary = ["a", "aa", "aaa", "aaaa"]
+sentence = "a aa a aaaa aaa aaa aaa aaaaaa bbb baba ababa"
+print(solution.replaceWords(dictionary, sentence))  # Output: "a a a a a a a a bbb baba a"
+```
+
+### Explanation:
+
+1. **TrieNode Class**:
+   - Represents a node in the Trie with a dictionary `children` for child nodes and a boolean `is_end_of_word` to mark the end of a root.
+
+2. **Trie Class**:
+   - Contains a `root` node and methods to insert words and search for the shortest prefix.
+   - `insert` method: Adds a word to the Trie.
+   - `search_shortest_prefix` method: Finds the shortest prefix for a given word. If a prefix is found, it returns the prefix; otherwise, it returns the word itself.
+
+3. **Solution Class**:
+   - `replaceWords` method:
+     - Initializes a Trie and inserts all roots from the dictionary.
+     - Splits the sentence into words.
+     - Replaces each word with its shortest prefix found in the Trie.
+     - Joins the replaced words back into a single string and returns it.
+
+### Efficiency:
+- The Trie structure allows for efficient prefix searches, making the solution suitable for large dictionaries and sentences.
+- Time Complexity: O(n + m * k) where n is the total length of all roots, m is the number of words in the sentence, and k is the average length of the words.
+- Space Complexity: O(n) for storing the Trie nodes.
+
+To design a search autocomplete system that efficiently returns the top 3 historical hot sentences based on the current input prefix, we can use a combination of a Trie and a priority queue (min-heap) for efficiently storing and retrieving sentences with their frequencies.
+
+Here's how you can implement the `AutocompleteSystem` class:
+
+1. **TrieNode Class**: A node in the Trie which stores children nodes and a map of sentences with their frequencies.
+2. **Trie Class**: The Trie which provides methods for inserting sentences and searching for sentences with a given prefix.
+3. **AutocompleteSystem Class**: The main class which interacts with the Trie and handles user inputs.
+
+### Implementation:
+
+```python
+from collections import defaultdict, deque
+import heapq
+
+class TrieNode:
+    def __init__(self):
+        self.children = defaultdict(TrieNode)
+        self.sentences = defaultdict(int)
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, sentence: str, times: int) -> None:
+        node = self.root
+        for char in sentence:
+            node = node.children[char]
+            node.sentences[sentence] += times
+
+    def search(self, prefix: str) -> dict:
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return {}
+            node = node.children[char]
+        return node.sentences
+
+class AutocompleteSystem:
+    def __init__(self, sentences: list[str], times: list[int]):
+        self.trie = Trie()
+        self.current_input = []
+        self.current_node = self.trie.root
+        
+        for sentence, time in zip(sentences, times):
+            self.trie.insert(sentence, time)
+
+    def input(self, c: str) -> list[str]:
+        if c == '#':
+            sentence = ''.join(self.current_input)
+            self.trie.insert(sentence, 1)
+            self.current_input = []
+            self.current_node = self.trie.root
+            return []
+        else:
+            self.current_input.append(c)
+            prefix = ''.join(self.current_input)
+            sentences = self.trie.search(prefix)
+            
+            heap = []
+            for sentence, freq in sentences.items():
+                heapq.heappush(heap, (-freq, sentence))
+                if len(heap) > 3:
+                    heapq.heappop(heap)
+                    
+            result = []
+            while heap:
+                result.append(heapq.heappop(heap)[1])
+            result.reverse()
+            return result
+
+# Example usage:
+sentences = ["i love you", "island", "iroman", "i love leetcode"]
+times = [5, 3, 2, 2]
+autocompleteSystem = AutocompleteSystem(sentences, times)
+
+print(autocompleteSystem.input('i'))    # Output: ["i love you", "island","i love leetcode"]
+print(autocompleteSystem.input(' '))    # Output: ["i love you", "i love leetcode"]
+print(autocompleteSystem.input('a'))    # Output: []
+print(autocompleteSystem.input('#'))    # Output: []
+print(autocompleteSystem.input('i'))    # Output: ["i love you", "island","i love leetcode"]
+```
+
+### Explanation:
+
+1. **TrieNode Class**:
+   - Each node in the Trie has `children` (a map to the next TrieNode) and `sentences` (a map of sentences and their frequencies).
+
+2. **Trie Class**:
+   - The `insert` method inserts a sentence into the Trie and updates the frequency.
+   - The `search` method returns all sentences with the given prefix.
+
+3. **AutocompleteSystem Class**:
+   - Initializes the Trie with given sentences and their frequencies.
+   - The `input` method handles the character input. If the character is '#', it inserts the accumulated input as a new sentence and resets the state. Otherwise, it updates the current input and searches for sentences with the given prefix, returning the top 3 results based on frequency and lexicographical order.
+
+### Efficient Searching:
+- By using a Trie, searching for sentences with a given prefix is efficient.
+- A min-heap (priority queue) is used to keep track of the top 3 sentences. The heap ensures that the sentences with the highest frequencies are quickly accessible.
+
+This solution ensures that both insertion and prefix searching are efficient, leveraging the Trie structure's properties for fast lookups and updates.
+
+To design a data structure that supports adding new words and searching for words with possible wildcard characters ('.'), we can use a Trie (Prefix Tree). The Trie allows for efficient insertion and searching of words, and we can handle the wildcard character by using a depth-first search (DFS) approach.
+
+Here's how to implement the `WordDictionary` class:
+
+### Implementation:
+
+1. **TrieNode Class**: Represents a node in the Trie.
+2. **WordDictionary Class**: Manages the Trie and provides methods to add words and search with support for wildcard characters.
+
+### TrieNode Class:
+Each node in the Trie contains a dictionary of children nodes and a boolean to indicate the end of a word.
+
+### WordDictionary Class:
+- **addWord**: Inserts a word into the Trie.
+- **search**: Searches for a word in the Trie, supporting the '.' wildcard character using DFS.
+
+### Code:
+
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end_of_word = False
+
+class WordDictionary:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def addWord(self, word: str) -> None:
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end_of_word = True
+
+    def search(self, word: str) -> bool:
+        def dfs(j, node):
+            for i in range(j, len(word)):
+                char = word[i]
+                if char == '.':
+                    for child in node.children.values():
+                        if dfs(i + 1, child):
+                            return True
+                    return False
+                else:
+                    if char not in node.children:
+                        return False
+                    node = node.children[char]
+            return node.is_end_of_word
+        
+        return dfs(0, self.root)
+
+# Example usage:
+wordDictionary = WordDictionary()
+wordDictionary.addWord("bad")
+wordDictionary.addWord("dad")
+wordDictionary.addWord("mad")
+
+print(wordDictionary.search("pad"))  # Output: False
+print(wordDictionary.search("bad"))  # Output: True
+print(wordDictionary.search(".ad"))  # Output: True
+print(wordDictionary.search("b.."))  # Output: True
+```
+
+### Explanation:
+
+1. **TrieNode Class**:
+   - **children**: A dictionary mapping each character to its corresponding child node.
+   - **is_end_of_word**: A boolean indicating if the node marks the end of a word.
+
+2. **WordDictionary Class**:
+   - **__init__**: Initializes the root of the Trie.
+   - **addWord**: Adds a word to the Trie by iterating through its characters and creating new nodes as needed. Marks the end node of the word.
+   - **search**: Uses a helper function `dfs` to perform a depth-first search. The function handles the '.' wildcard by recursively searching all possible child nodes.
+
+### Depth-First Search (DFS) in `search`:
+- The `dfs` function is called recursively to handle the '.' wildcard.
+- For each character in the word:
+  - If the character is '.', the function iterates through all children and continues the search.
+  - If the character is not in the current node's children, the function returns `False`.
+  - If the character matches, the function continues to the next node.
+- The function returns `True` if it reaches the end of the word and the current node marks the end of a word.
+
+This implementation provides efficient word insertion and flexible word searching with wildcard support, leveraging the Trie data structure's properties for fast and scalable operations.
+
+To solve the problem of finding the maximum XOR of two numbers in an array, we can use a Trie data structure. This approach takes advantage of the properties of XOR and allows us to efficiently find the maximum XOR for each element in the array.
+
+### Steps to Solve the Problem:
+
+1. **Trie Construction**: Construct a Trie where each bit of the number is stored.
+2. **Maximum XOR Calculation**: For each number in the array, calculate the maximum XOR value by traversing the Trie and choosing the opposite bit whenever possible.
+
+### Implementation:
+
+1. **TrieNode Class**: Represents a node in the Trie.
+2. **Trie Class**: Manages the Trie and provides methods to insert numbers and find the maximum XOR for a given number.
+3. **Main Function**: Uses the Trie to find the maximum XOR for all pairs in the array.
+
+### Code:
+
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, num):
+        node = self.root
+        for i in range(31, -1, -1):
+            bit = (num >> i) & 1
+            if bit not in node.children:
+                node.children[bit] = TrieNode()
+            node = node.children[bit]
+    
+    def find_max_xor(self, num):
+        node = self.root
+        max_xor = 0
+        for i in range(31, -1, -1):
+            bit = (num >> i) & 1
+            toggled_bit = 1 - bit
+            if toggled_bit in node.children:
+                max_xor = (max_xor << 1) | 1
+                node = node.children[toggled_bit]
+            else:
+                max_xor = (max_xor << 1)
+                node = node.children[bit]
+        return max_xor
+
+def findMaximumXOR(nums):
+    trie = Trie()
+    max_xor = 0
+    
+    for num in nums:
+        trie.insert(num)
+    
+    for num in nums:
+        max_xor = max(max_xor, trie.find_max_xor(num))
+    
+    return max_xor
+
+# Example usage:
+nums = [3, 10, 5, 25, 2, 8]
+print(findMaximumXOR(nums))  # Output: 28 (25 ^ 5)
+```
+
+### Explanation:
+
+1. **TrieNode Class**:
+   - Represents a node in the Trie with a dictionary `children` to store the children nodes.
+
+2. **Trie Class**:
+   - **insert**: Inserts a number into the Trie by processing each bit from the most significant bit (31st bit) to the least significant bit (0th bit).
+   - **find_max_xor**: Finds the maximum XOR for a given number by traversing the Trie and choosing the opposite bit (if it exists) to maximize the XOR value.
+
+3. **Main Function (`findMaximumXOR`)**:
+   - Initializes a Trie and inserts all numbers from the array into the Trie.
+   - For each number in the array, calculates the maximum XOR value using the Trie and keeps track of the maximum XOR found.
+
+### Complexity:
+- **Time Complexity**: O(n), where n is the number of bits in the integers (in this case, 32 bits) and n is the number of elements in the array. This is because each insertion and query operation in the Trie takes O(32) time, and we perform these operations for each of the n numbers in the array.
+- **Space Complexity**: O(n * 32) = O(n), because we store each bit of each number in the Trie.
+
+This approach ensures an efficient and scalable solution to finding the maximum XOR of two numbers in an array.
+
+To solve the problem of finding all words in a `m x n` board of characters from a list of strings, we can use a combination of Trie (Prefix Tree) and Depth-First Search (DFS). This approach allows us to efficiently search for words on the board and ensures that we don't revisit cells.
+
+### Steps to Solve the Problem:
+
+1. **Build a Trie**: Insert all words from the list into a Trie.
+2. **Depth-First Search (DFS)**: Traverse the board using DFS to find words that match the prefixes in the Trie.
+3. **Track Visited Cells**: Ensure that the same cell is not used more than once for a single word.
+4. **Collect Words**: Store the words found during the traversal.
+
+### Implementation:
+
+1. **TrieNode Class**: Represents a node in the Trie.
+2. **Trie Class**: Manages the Trie and provides methods to insert words.
+3. **DFS Function**: Traverses the board to find words.
+4. **Main Function**: Initializes the Trie, starts the DFS traversal, and collects the results.
+
+### Code:
+
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end_of_word = False
+        self.word = None
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word: str) -> None:
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end_of_word = True
+        node.word = word
+
+def findWords(board, words):
+    def dfs(node, i, j):
+        char = board[i][j]
+        if char not in node.children:
+            return
+        
+        board[i][j] = '#'  # Mark the cell as visited
+        node = node.children[char]
+        
+        if node.is_end_of_word:
+            result.add(node.word)
+        
+        for x, y in [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]:
+            if 0 <= x < len(board) and 0 <= y < len(board[0]):
+                dfs(node, x, y)
+        
+        board[i][j] = char  # Restore the cell after visiting
+    
+    trie = Trie()
+    for word in words:
+        trie.insert(word)
+    
+    result = set()
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            dfs(trie.root, i, j)
+    
+    return list(result)
+
+# Example usage:
+board = [
+    ['o', 'a', 'a', 'n'],
+    ['e', 't', 'a', 'e'],
+    ['i', 'h', 'k', 'r'],
+    ['i', 'f', 'l', 'v']
+]
+words = ["oath", "pea", "eat", "rain"]
+print(findWords(board, words))  # Output: ["oath", "eat"]
+```
+
+### Explanation:
+
+1. **TrieNode Class**:
+   - Each node contains `children` (a dictionary of child nodes), `is_end_of_word` (a boolean indicating if a word ends at this node), and `word` (stores the word ending at this node).
+
+2. **Trie Class**:
+   - **insert**: Adds words to the Trie. Each character is a node in the Trie.
+
+3. **DFS Function**:
+   - **dfs**: Performs DFS on the board. Marks cells as visited using `#` and restores them after visiting.
+   - If a node in the Trie is marked as `is_end_of_word`, the word is added to the result set.
+   - Explores adjacent cells (up, down, left, right).
+
+4. **Main Function**:
+   - Initializes the Trie and inserts all words.
+   - Iterates through each cell on the board and starts DFS if the cell is a starting character in the Trie.
+   - Returns the list of words found.
+
+### Complexity:
+- **Time Complexity**: O(N * M * 4^L), where N is the number of rows, M is the number of columns, and L is the maximum length of words.
+- **Space Complexity**: O(W * L + N * M), where W is the number of words and L is the average length of words.
+
+This approach ensures an efficient and scalable solution for finding words on the board using Trie and DFS.
+
+To solve the problem of finding all possible word squares from a given list of unique words, we can use a backtracking approach along with a Trie data structure to efficiently manage prefixes and words starting with those prefixes.
+
+### Key Concepts:
+
+1. **Trie**: Store words to quickly find all words with a given prefix.
+2. **Backtracking**: Build word squares row by row, ensuring that each partial square is valid.
+3. **Word Square Validity**: A word square is valid if the k-th row and k-th column form the same word.
+
+### Steps to Solve the Problem:
+
+1. **Build a Trie**: Insert all words into a Trie.
+2. **Backtracking**: Use backtracking to explore all possible word squares. For each partial square, ensure that adding a new word still forms a valid word square.
+3. **Collect Results**: Collect and return all valid word squares.
+
+### Implementation:
+
+1. **TrieNode Class**: Represents a node in the Trie.
+2. **Trie Class**: Manages the Trie and provides methods to insert words and search words by prefix.
+3. **Main Function**: Uses the Trie and backtracking to find all word squares.
+
+Here's the Python code for the solution:
+
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.words = []
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word):
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+            node.words.append(word)
+    
+    def find_words_with_prefix(self, prefix):
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return []
+            node = node.children[char]
+        return node.words
+
+def wordSquares(words):
+    def backtrack(step, word_square):
+        if step == len(words[0]):
+            result.append(word_square[:])
+            return
+        
+        # Build the prefix for the next word
+        prefix = ''.join([word_square[i][step] for i in range(step)])
+        for candidate in trie.find_words_with_prefix(prefix):
+            word_square.append(candidate)
+            backtrack(step + 1, word_square)
+            word_square.pop()
+    
+    trie = Trie()
+    for word in words:
+        trie.insert(word)
+    
+    result = []
+    for word in words:
+        backtrack(1, [word])
+    
+    return result
+
+# Example usage:
+words = ["ball", "area", "lead", "lady"]
+print(wordSquares(words))  # Output: [["ball","area","lead","lady"], ["ball","area","lady","lead"]]
+```
+
+### Explanation:
+
+1. **TrieNode Class**:
+   - Each node contains `children` (a dictionary of child nodes) and `words` (a list of words that pass through this node).
+
+2. **Trie Class**:
+   - **insert**: Adds a word to the Trie and updates the `words` list at each node.
+   - **find_words_with_prefix**: Returns all words that start with a given prefix by traversing the Trie.
+
+3. **Main Function (`wordSquares`)**:
+   - **backtrack**: Uses backtracking to build word squares. At each step, it ensures that the next word added maintains the word square property.
+   - **result**: A list to store all valid word squares.
+   - **Initialize Trie**: Insert all words into the Trie.
+   - **Start Backtracking**: For each word, start the backtracking process to build word squares.
+
+### Complexity:
+- **Time Complexity**: O(N * L^2 + N * L * 26^L), where N is the number of words and L is the length of the words.
+- **Space Complexity**: O(N * L), for storing the Trie and the result list.
+
+This solution ensures efficient word prefix searching and backtracking to find all valid word squares from the given list of words.
+
+To solve the problem of finding all palindrome pairs in an array of unique strings, we need to ensure that our solution is efficient, ideally with a runtime complexity of O(sum of all words' lengths). Here’s how we can approach the problem:
+
+### Steps:
+
+1. **Reverse Words**: Create a map where the keys are the reversed words and the values are their original indices.
+2. **Check Palindrome Pairs**: For each word, check different splits to see if any concatenation forms a palindrome by leveraging the reversed words map.
+3. **Handle Special Cases**: Specifically check cases where either part of the word or the entire word forms a palindrome with some other word.
+
+### Detailed Approach:
+
+1. **Build a Map**:
+   - Store each word in a map with its reversed version as the key.
+
+2. **Iterate Over Each Word**:
+   - For each word, split it into two parts (prefix and suffix) and check:
+     - If the prefix is a palindrome and the reversed suffix exists in the map.
+     - If the suffix is a palindrome and the reversed prefix exists in the map.
+
+3. **Collect Results**:
+   - Collect indices where valid palindrome pairs are found.
+
+### Implementation:
+
+Here's the Python implementation of the described approach:
+
+```python
+def is_palindrome(word):
+    return word == word[::-1]
+
+def palindromePairs(words):
+    reversed_words_map = {word[::-1]: i for i, word in enumerate(words)}
+    results = []
+    
+    for i, word in enumerate(words):
+        word_len = len(word)
+        
+        for j in range(word_len + 1):
+            prefix, suffix = word[:j], word[j:]
+            
+            if is_palindrome(prefix):
+                reversed_suffix = suffix[::-1]
+                if reversed_suffix in reversed_words_map and reversed_words_map[reversed_suffix] != i:
+                    results.append([reversed_words_map[reversed_suffix], i])
+            
+            if j != word_len and is_palindrome(suffix):
+                reversed_prefix = prefix[::-1]
+                if reversed_prefix in reversed_words_map and reversed_words_map[reversed_prefix] != i:
+                    results.append([i, reversed_words_map[reversed_prefix]])
+    
+    return results
+
+# Example usage:
+words = ["abcd", "dcba", "lls", "s", "sssll"]
+print(palindromePairs(words))  # Output: [[0, 1], [1, 0], [3, 2], [2, 4]]
+```
+
+### Explanation:
+
+1. **is_palindrome Function**:
+   - A helper function to check if a given word is a palindrome by comparing it to its reverse.
+
+2. **palindromePairs Function**:
+   - **reversed_words_map**: A dictionary where the key is the reversed word, and the value is its index in the original list.
+   - **results**: A list to store the resulting pairs of indices.
+   - **Iterate Over Each Word**: For each word in the list, split it into all possible pairs of prefix and suffix.
+   - **Check Palindromes**:
+     - If the prefix is a palindrome, check if the reversed suffix exists in the map (and is a different word).
+     - If the suffix is a palindrome, check if the reversed prefix exists in the map (and is a different word).
+
+3. **Collect and Return Results**:
+   - The results list is populated with valid indices of palindrome pairs and returned.
+
+### Complexity:
+- **Time Complexity**: O(sum of words[i].length), as we only iterate through each character of each word a constant number of times.
+- **Space Complexity**: O(n * m), where n is the number of words and m is the average length of the words, for storing the reversed words map.
+
+This solution ensures an efficient way to find all palindrome pairs by leveraging a map and checking each possible split of the words.
+

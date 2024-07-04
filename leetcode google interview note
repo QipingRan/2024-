@@ -1,0 +1,3760 @@
+https://leetcode.com/explore/featured/card/google/66/others-4/3105/
+
+To solve the problem of finding the number of unique email addresses, we need to process each email according to the given rules and normalize them. The rules are:
+1. Any '.' in the local name should be ignored.
+2. Any characters after the first '+' in the local name should be ignored.
+
+We can follow these steps:
+
+1. Split each email into the local name and the domain name.
+2. Process the local name to remove any '.' characters and ignore any characters after the first '+'.
+3. Reconstruct the normalized email and store it in a set to ensure uniqueness.
+4. Return the size of the set, which represents the number of unique email addresses.
+
+Here's the Python implementation of the solution:
+
+```python
+def numUniqueEmails(emails):
+    unique_emails = set()
+    
+    for email in emails:
+        local, domain = email.split('@')
+        local = local.split('+')[0]
+        local = local.replace('.', '')
+        normalized_email = local + '@' + domain
+        unique_emails.add(normalized_email)
+    
+    return len(unique_emails)
+
+# Example usage:
+emails = [
+    "test.email+alex@leetcode.com", 
+    "test.e.mail+bob.cathy@leetcode.com", 
+    "testemail+david@lee.tcode.com"
+]
+print(numUniqueEmails(emails))  # Output: 2
+```
+
+### Explanation:
+
+1. **Splitting the Email**:
+   - `local, domain = email.split('@')` splits the email into the local part and the domain part.
+
+2. **Processing the Local Name**:
+   - `local = local.split('+')[0]` removes everything after the first '+'.
+   - `local = local.replace('.', '')` removes all '.' characters from the local name.
+
+3. **Reconstructing the Normalized Email**:
+   - `normalized_email = local + '@' + domain` combines the processed local name with the domain to form the normalized email.
+
+4. **Storing Unique Emails**:
+   - `unique_emails.add(normalized_email)` adds the normalized email to a set, ensuring that only unique emails are stored.
+
+5. **Returning the Count**:
+   - `return len(unique_emails)` returns the number of unique emails by counting the elements in the set.
+
+This approach ensures that each email is processed efficiently, and the use of a set guarantees that only unique emails are counted. The time complexity is O(n * m), where n is the number of emails and m is the average length of an email. The space complexity is O(n * m) for storing the unique emails in the set.
+
+To solve the problem of finding the number of good starting indices for odd and even jumps, we can use a dynamic programming approach combined with sorting and a stack to efficiently find the next indices for odd and even jumps.
+
+### Steps:
+
+1. **Define Two Arrays**:
+   - `odd_jump[i]`: Whether we can reach the end starting from index `i` using an odd jump.
+   - `even_jump[i]`: Whether we can reach the end starting from index `i` using an even jump.
+
+2. **Next Higher and Next Lower Arrays**:
+   - `next_higher[i]`: The index we can jump to from index `i` during an odd-numbered jump.
+   - `next_lower[i]`: The index we can jump to from index `i` during an even-numbered jump.
+
+3. **Compute Next Higher and Next Lower**:
+   - Use sorting and a stack to compute the next higher and lower indices efficiently.
+
+4. **Dynamic Programming**:
+   - Use the `next_higher` and `next_lower` arrays to fill the `odd_jump` and `even_jump` arrays from right to left.
+
+5. **Count Good Starting Indices**:
+   - Count the number of indices where `odd_jump[i]` is `True`.
+
+### Implementation:
+
+Here's the Python code implementing the solution:
+
+```python
+def oddEvenJumps(arr):
+    n = len(arr)
+    if n == 1:
+        return 1
+
+    next_higher = [0] * n
+    next_lower = [0] * n
+
+    def make_monotonic_stack(indexes):
+        result = [0] * len(indexes)
+        stack = []
+        for i in indexes:
+            while stack and stack[-1] < i:
+                result[stack.pop()] = i
+            stack.append(i)
+        return result
+
+    sorted_indexes = sorted(range(n), key=lambda i: (arr[i], i))
+    next_higher = make_monotonic_stack(sorted_indexes)
+
+    sorted_indexes = sorted(range(n), key=lambda i: (-arr[i], i))
+    next_lower = make_monotonic_stack(sorted_indexes)
+
+    odd_jump = [False] * n
+    even_jump = [False] * n
+    odd_jump[n - 1] = True
+    even_jump[n - 1] = True
+
+    for i in range(n - 2, -1, -1):
+        if next_higher[i]:
+            odd_jump[i] = even_jump[next_higher[i]]
+        if next_lower[i]:
+            even_jump[i] = odd_jump[next_lower[i]]
+
+    return sum(odd_jump)
+
+# Example usage:
+arr = [10, 13, 12, 14, 15]
+print(oddEvenJumps(arr))  # Output: 2
+
+arr = [2, 3, 1, 1, 4]
+print(oddEvenJumps(arr))  # Output: 3
+
+arr = [5, 1, 3, 4, 2]
+print(oddEvenJumps(arr))  # Output: 3
+```
+
+### Explanation:
+
+1. **Make Monotonic Stack**:
+   - This helper function is used to calculate the next higher or next lower indices using a stack.
+
+2. **Next Higher and Next Lower**:
+   - The next higher indices are found by sorting the indices based on the values in ascending order.
+   - The next lower indices are found by sorting the indices based on the values in descending order.
+
+3. **Dynamic Programming Initialization**:
+   - The last index can always reach itself, so we initialize `odd_jump[n - 1]` and `even_jump[n - 1]` to `True`.
+
+4. **Dynamic Programming Calculation**:
+   - For each index from `n-2` to `0`, we determine whether an odd or even jump can reach the end by looking at the respective next indices.
+
+5. **Count Good Starting Indices**:
+   - The result is the count of indices where `odd_jump` is `True`.
+
+### Complexity:
+- **Time Complexity**: O(n log n) due to sorting the indices.
+- **Space Complexity**: O(n) for storing the next higher, next lower, odd_jump, and even_jump arrays.
+
+This approach efficiently finds the number of good starting indices using a combination of sorting, stack-based processing, and dynamic programming.
+
+To solve the problem of reformatting a license key, we can follow these steps:
+
+1. **Remove Dashes and Convert to Uppercase**: First, remove all existing dashes from the string and convert all characters to uppercase.
+2. **Determine the Length of the First Group**: Calculate the length of the first group which might be shorter than `k`.
+3. **Split the String into Groups**: Split the remaining string into groups of size `k`.
+4. **Combine Groups with Dashes**: Join the groups with dashes to form the final formatted license key.
+
+### Implementation:
+
+Here's the Python code to implement this solution:
+
+```python
+def licenseKeyFormatting(s, k):
+    # Remove all dashes and convert to uppercase
+    s = s.replace('-', '').upper()
+    
+    # Determine the length of the first group
+    n = len(s)
+    first_group_length = n % k if n % k != 0 else k
+    
+    # Create a list to store the groups
+    groups = [s[:first_group_length]]
+    
+    # Add the remaining groups of size k
+    for i in range(first_group_length, n, k):
+        groups.append(s[i:i+k])
+    
+    # Join the groups with dashes
+    formatted_key = '-'.join(groups)
+    
+    return formatted_key
+
+# Example usage:
+s = "5F3Z-2e-9-w"
+k = 4
+print(licenseKeyFormatting(s, k))  # Output: "5F3Z-2E9W"
+
+s = "2-5g-3-J"
+k = 2
+print(licenseKeyFormatting(s, k))  # Output: "2-5G-3J"
+```
+
+### Explanation:
+
+1. **Remove Dashes and Convert to Uppercase**:
+   - `s.replace('-', '').upper()` removes all dashes from the string and converts all characters to uppercase.
+
+2. **Determine the Length of the First Group**:
+   - `first_group_length = n % k if n % k != 0 else k` calculates the length of the first group. If `n % k` is zero, the first group length should be `k`.
+
+3. **Create Groups**:
+   - `groups = [s[:first_group_length]]` initializes the list of groups with the first group.
+   - `for i in range(first_group_length, n, k): groups.append(s[i:i+k])` iterates through the remaining string and adds groups of size `k` to the list.
+
+4. **Combine Groups with Dashes**:
+   - `'-'.join(groups)` joins the groups with dashes to form the final formatted license key.
+
+### Complexity:
+- **Time Complexity**: O(n), where n is the length of the string, due to iterating through the string to remove dashes, convert to uppercase, and create groups.
+- **Space Complexity**: O(n), for storing the processed string and the groups.
+
+This approach ensures that the license key is reformatted correctly with each group containing exactly `k` characters, except for the first group, and all characters are converted to uppercase.
+
+To solve the problem of collecting the maximum number of fruits with only two baskets, we can use the sliding window technique. This approach helps us find the longest subarray with at most two distinct types of fruits.
+
+### Approach:
+
+1. **Sliding Window**: Use two pointers to represent the current window of trees.
+2. **HashMap (or Dictionary)**: Keep track of the count of each type of fruit within the window.
+3. **Expand and Contract Window**: Expand the window by moving the right pointer and include fruits in the baskets. If the window contains more than two types of fruits, contract the window by moving the left pointer until only two types of fruits are in the baskets.
+4. **Track Maximum**: Throughout the process, track the maximum number of fruits collected.
+
+### Implementation:
+
+Here's the Python code implementing the above approach:
+
+```python
+def totalFruit(fruits):
+    basket = {}
+    left = 0
+    max_fruits = 0
+
+    for right in range(len(fruits)):
+        # Add the current fruit to the basket
+        if fruits[right] in basket:
+            basket[fruits[right]] += 1
+        else:
+            basket[fruits[right]] = 1
+
+        # If we have more than two types of fruits, shrink the window
+        while len(basket) > 2:
+            basket[fruits[left]] -= 1
+            if basket[fruits[left]] == 0:
+                del basket[fruits[left]]
+            left += 1
+
+        # Calculate the maximum number of fruits in the current window
+        max_fruits = max(max_fruits, right - left + 1)
+
+    return max_fruits
+
+# Example usage:
+fruits = [1, 2, 1]
+print(totalFruit(fruits))  # Output: 3
+
+fruits = [0, 1, 2, 2]
+print(totalFruit(fruits))  # Output: 3
+
+fruits = [1, 2, 3, 2, 2]
+print(totalFruit(fruits))  # Output: 4
+
+fruits = [3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4]
+print(totalFruit(fruits))  # Output: 5
+```
+
+### Explanation:
+
+1. **Initialization**:
+   - `basket` is a dictionary to keep track of the count of each type of fruit in the current window.
+   - `left` is the left pointer of the sliding window.
+   - `max_fruits` keeps track of the maximum number of fruits collected.
+
+2. **Expand the Window**:
+   - Iterate over the array with the right pointer.
+   - Add the current fruit to the `basket` dictionary and update its count.
+
+3. **Contract the Window**:
+   - If the number of distinct fruits in the `basket` exceeds two, move the left pointer to the right until we have at most two distinct types of fruits.
+   - Update the counts in the `basket` and remove a fruit type from the `basket` if its count reaches zero.
+
+4. **Update Maximum**:
+   - At each step, update the `max_fruits` with the size of the current valid window (`right - left + 1`).
+
+### Complexity:
+- **Time Complexity**: O(n), where n is the length of the array. Each element is added and removed from the dictionary at most once.
+- **Space Complexity**: O(1), since the dictionary can hold at most three keys (since we remove keys when their count is zero and we only allow two distinct fruits).
+
+This approach efficiently finds the longest subarray with at most two distinct types of fruits, ensuring we collect the maximum number of fruits.
+
+To solve the problem of finding the length of the longest substring without repeating characters, we can use the sliding window technique combined with a set to keep track of characters in the current window.
+
+### Approach:
+
+1. **Sliding Window**: Use two pointers to represent the current window of characters.
+2. **Set**: Use a set to store characters in the current window.
+3. **Expand and Contract Window**: Expand the window by moving the right pointer and include characters in the set. If a character is already in the set, contract the window by moving the left pointer until the duplicate character is removed.
+4. **Track Maximum Length**: Keep track of the maximum length of the window during the process.
+
+### Implementation:
+
+Here's the Python code implementing the above approach:
+
+```python
+def lengthOfLongestSubstring(s):
+    char_set = set()
+    left = 0
+    max_length = 0
+
+    for right in range(len(s)):
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        char_set.add(s[right])
+        max_length = max(max_length, right - left + 1)
+
+    return max_length
+
+# Example usage:
+s = "abcabcbb"
+print(lengthOfLongestSubstring(s))  # Output: 3 ("abc")
+
+s = "bbbbb"
+print(lengthOfLongestSubstring(s))  # Output: 1 ("b")
+
+s = "pwwkew"
+print(lengthOfLongestSubstring(s))  # Output: 3 ("wke")
+
+s = ""
+print(lengthOfLongestSubstring(s))  # Output: 0
+```
+
+### Explanation:
+
+1. **Initialization**:
+   - `char_set` is a set to keep track of characters in the current window.
+   - `left` is the left pointer of the sliding window.
+   - `max_length` keeps track of the maximum length of substrings without repeating characters.
+
+2. **Expand the Window**:
+   - Iterate over the string with the right pointer.
+   - If the character at the right pointer is already in the `char_set`, it means we have encountered a duplicate character.
+   - Move the left pointer to the right and remove characters from the `char_set` until the duplicate character is removed.
+
+3. **Update the Set and Maximum Length**:
+   - Add the current character to the `char_set`.
+   - Update the `max_length` with the size of the current valid window (`right - left + 1`).
+
+### Complexity:
+- **Time Complexity**: O(n), where n is the length of the string. Each character is added and removed from the set at most once.
+- **Space Complexity**: O(min(n, m)), where n is the length of the string and m is the size of the character set (in the worst case, m is 26 for lowercase English letters).
+
+This approach efficiently finds the length of the longest substring without repeating characters using the sliding window technique and a set to track characters in the current window.
+
+To solve the problem of finding the two lines that form the container with the most water, we can use the two-pointer technique. This approach is efficient and leverages the properties of the container to maximize the area.
+
+### Approach:
+
+1. **Two Pointers**: Initialize two pointers, one at the beginning (`left`) and one at the end (`right`) of the array.
+2. **Calculate Area**: Calculate the area formed by the lines at the `left` and `right` pointers.
+3. **Update Pointers**: Move the pointer that points to the shorter line towards the other pointer to potentially find a container with a greater height.
+4. **Track Maximum Area**: Keep track of the maximum area found during the process.
+
+### Implementation:
+
+Here is the Python code implementing this approach:
+
+```python
+def maxArea(height):
+    left = 0
+    right = len(height) - 1
+    max_area = 0
+
+    while left < right:
+        # Calculate the area with the current left and right pointers
+        width = right - left
+        current_area = min(height[left], height[right]) * width
+        max_area = max(max_area, current_area)
+
+        # Move the pointer pointing to the shorter line
+        if height[left] < height[right]:
+            left += 1
+        else:
+            right -= 1
+
+    return max_area
+
+# Example usage:
+height = [1,8,6,2,5,4,8,3,7]
+print(maxArea(height))  # Output: 49
+
+height = [1,1]
+print(maxArea(height))  # Output: 1
+
+height = [4,3,2,1,4]
+print(maxArea(height))  # Output: 16
+
+height = [1,2,1]
+print(maxArea(height))  # Output: 2
+```
+
+### Explanation:
+
+1. **Initialization**:
+   - `left` pointer is initialized to the start of the array.
+   - `right` pointer is initialized to the end of the array.
+   - `max_area` keeps track of the maximum area found.
+
+2. **Calculate Area**:
+   - The area formed by the lines at the `left` and `right` pointers is calculated using the formula: `min(height[left], height[right]) * (right - left)`.
+
+3. **Update Pointers**:
+   - To potentially find a container with greater height, move the pointer pointing to the shorter line.
+   - If `height[left] < height[right]`, increment the `left` pointer.
+   - Otherwise, decrement the `right` pointer.
+
+4. **Track Maximum Area**:
+   - Update `max_area` with the maximum area found during the process.
+
+5. **Repeat**:
+   - Continue the process until the `left` pointer meets the `right` pointer.
+
+### Complexity:
+- **Time Complexity**: O(n), where n is the number of elements in the array. Each element is processed at most once.
+- **Space Complexity**: O(1), since we are using only a constant amount of extra space.
+
+This approach ensures that we efficiently find the maximum area of water that can be contained using the two-pointer technique, making it optimal for large input sizes.
+
+To solve the 3Sum problem where we need to find all unique triplets in an array that sum up to zero, we can use a combination of sorting and the two-pointer technique. This approach helps us efficiently find the triplets while avoiding duplicates.
+
+### Steps:
+
+1. **Sort the Array**: Sorting the array helps in easily avoiding duplicates and using the two-pointer technique.
+2. **Iterate and Use Two-Pointer**: Iterate through the array and for each element, use the two-pointer technique to find the other two elements that sum up to zero.
+3. **Avoid Duplicates**: Ensure that the solution set does not contain duplicate triplets by skipping over duplicate elements during iteration.
+
+### Implementation:
+
+Here is the Python code implementing this approach:
+
+```python
+def threeSum(nums):
+    nums.sort()  # Step 1: Sort the array
+    result = []
+    
+    for i in range(len(nums) - 2):  # Step 2: Iterate through the array
+        if i > 0 and nums[i] == nums[i - 1]:  # Skip duplicate elements
+            continue
+        
+        left, right = i + 1, len(nums) - 1
+        while left < right:  # Use the two-pointer technique
+            current_sum = nums[i] + nums[left] + nums[right]
+            if current_sum == 0:
+                result.append([nums[i], nums[left], nums[right]])
+                
+                while left < right and nums[left] == nums[left + 1]:  # Skip duplicates
+                    left += 1
+                while left < right and nums[right] == nums[right - 1]:  # Skip duplicates
+                    right -= 1
+                
+                left += 1
+                right -= 1
+            elif current_sum < 0:
+                left += 1  # Move left pointer to the right to increase the sum
+            else:
+                right -= 1  # Move right pointer to the left to decrease the sum
+    
+    return result
+
+# Example usage:
+nums = [-1, 0, 1, 2, -1, -4]
+print(threeSum(nums))  # Output: [[-1, -1, 2], [-1, 0, 1]]
+
+nums = []
+print(threeSum(nums))  # Output: []
+
+nums = [0]
+print(threeSum(nums))  # Output: []
+```
+
+### Explanation:
+
+1. **Sort the Array**:
+   - `nums.sort()` sorts the array in non-decreasing order, which helps in managing duplicates and applying the two-pointer technique.
+
+2. **Iterate through the Array**:
+   - Iterate through the array using index `i` from `0` to `len(nums) - 2`. The loop ensures that there are at least three elements to form a triplet.
+
+3. **Skip Duplicates**:
+   - `if i > 0 and nums[i] == nums[i - 1]` checks if the current element is the same as the previous element and skips to avoid duplicates.
+
+4. **Two-Pointer Technique**:
+   - Initialize two pointers: `left` at `i + 1` and `right` at `len(nums) - 1`.
+   - Calculate the sum of the current triplet `current_sum = nums[i] + nums[left] + nums[right]`.
+   - If `current_sum == 0`, add the triplet to the result list and move both pointers inward while skipping duplicate elements.
+   - If `current_sum < 0`, move the `left` pointer to the right to increase the sum.
+   - If `current_sum > 0`, move the `right` pointer to the left to decrease the sum.
+
+5. **Return the Result**:
+   - After iterating through the array and finding all valid triplets, return the result list.
+
+### Complexity:
+- **Time Complexity**: O(n^2), where n is the number of elements in the array. Sorting the array takes O(n log n), and the two-pointer technique runs in O(n) for each element.
+- **Space Complexity**: O(1) for extra space, ignoring the space required for the output list.
+
+This approach efficiently finds all unique triplets that sum up to zero using sorting and the two-pointer technique, ensuring that the solution is optimal for large input sizes.
+To find the next permutation of an array of integers in-place and using only constant extra memory, you can follow these steps:
+
+1. **Identify the Rightmost Ascending Pair**:
+   - Traverse the array from the end to find the first pair of consecutive elements where the left element is smaller than the right element. This identifies the point where the array starts descending.
+
+2. **Find the Element to Swap**:
+   - If such a pair is found, identify the smallest element to the right of the left element of the pair that is larger than it. This will be the element to swap.
+
+3. **Swap and Reverse**:
+   - Swap the identified element with the left element of the pair.
+   - Reverse the elements to the right of the position of the left element of the pair to get the next permutation in lexicographical order.
+
+4. **Handle Edge Case**:
+   - If no such pair is found, the array is sorted in descending order. In this case, reverse the entire array to get the smallest permutation.
+
+### Implementation:
+
+Here is the Python code for the described approach:
+
+```python
+def nextPermutation(nums):
+    n = len(nums)
+    if n <= 1:
+        return
+
+    # Step 1: Find the first pair (i, i+1) from the end where nums[i] < nums[i+1]
+    i = n - 2
+    while i >= 0 and nums[i] >= nums[i + 1]:
+        i -= 1
+
+    if i >= 0:
+        # Step 2: Find the element just larger than nums[i] to swap with
+        j = n - 1
+        while nums[j] <= nums[i]:
+            j -= 1
+        # Step 3: Swap the elements
+        nums[i, nums[j] = nums[j], nums[i]
+
+    # Step 4: Reverse the elements to the right of the initial i
+    left, right = i + 1, n - 1
+    while left < right:
+        nums[left], nums[right] = nums[right], nums[left]
+        left += 1
+        right -= 1
+
+# Example usage:
+nums = [1, 2, 3]
+nextPermutation(nums)
+print(nums)  # Output: [1, 3, 2]
+
+nums = [3, 2, 1]
+nextPermutation(nums)
+print(nums)  # Output: [1, 2, 3]
+
+nums = [1, 1, 5]
+nextPermutation(nums)
+print(nums)  # Output: [1, 5, 1]
+```
+
+### Explanation:
+
+1. **Identify the Rightmost Ascending Pair**:
+   - Start from the end of the array and move leftwards to find the first index `i` such that `nums[i] < nums[i + 1]`. This step identifies where the array starts descending.
+
+2. **Find the Element to Swap**:
+   - If such an index `i` is found, find the smallest index `j` such that `nums[j] > nums[i]` by scanning from the end of the array. This element is the next larger element that needs to be swapped with `nums[i]`.
+
+3. **Swap and Reverse**:
+   - Swap `nums[i]` with `nums[j]`.
+   - Reverse the subarray starting from `i + 1` to the end of the array to ensure the smallest lexicographical order.
+
+4. **Handle Edge Case**:
+   - If no such index `i` is found, it means the array is in descending order, and the next permutation is the smallest permutation, which is obtained by reversing the entire array.
+
+### Complexity:
+- **Time Complexity**: O(n), where n is the length of the array. Each step involves a linear scan of the array.
+- **Space Complexity**: O(1), since we are performing the operations in-place without using extra space.
+
+This approach ensures that the next permutation is found efficiently and in constant space, meeting the problem's constraints.
+
+To multiply two non-negative integers represented as strings without using built-in BigInteger libraries or converting the inputs directly to integers, you can implement a multiplication algorithm similar to the way you multiply numbers by hand. 
+
+### Approach:
+
+1. **Initialize an Array for Result**: Use an array to hold the intermediate results of the multiplication. The size of this array will be the sum of the lengths of `num1` and `num2` since the maximum possible length of the product is `len(num1) + len(num2)`.
+
+2. **Multiply Digits**: Iterate over each digit of `num1` and `num2` in reverse order, multiply them, and add the results to the corresponding positions in the result array.
+
+3. **Handle Carries**: After performing the multiplications, handle the carries for each digit in the result array.
+
+4. **Construct the Final Result String**: Convert the result array to a string while skipping any leading zeros.
+
+### Implementation:
+
+Here is the Python code to implement the described approach:
+
+```python
+def multiply(num1, num2):
+    # Edge case: if either of the number is '0', the result is '0'
+    if num1 == "0" or num2 == "0":
+        return "0"
+
+    # Initialize result array
+    result = [0] * (len(num1) + len(num2))
+
+    # Reverse the strings to simplify the position calculations
+    num1, num2 = num1[::-1], num2[::-1]
+
+    # Perform multiplication digit by digit
+    for i in range(len(num1)):
+        for j in range(len(num2)):
+            mul = int(num1[i]) * int(num2[j])
+            result[i + j] += mul
+            result[i + j + 1] += result[i + j] // 10
+            result[i + j] %= 10
+
+    # Skip any leading zeros in the result array
+    while len(result) > 1 and result[-1] == 0:
+        result.pop()
+
+    # Convert result array to string
+    return ''.join(map(str, result[::-1]))
+
+# Example usage:
+num1 = "123"
+num2 = "456"
+print(multiply(num1, num2))  # Output: "56088"
+```
+
+### Explanation:
+
+1. **Edge Case**:
+   - If either `num1` or `num2` is `"0"`, return `"0"` since anything multiplied by zero is zero.
+
+2. **Initialize Result Array**:
+   - `result` is initialized to hold the maximum possible number of digits in the product, which is `len(num1) + len(num2)`.
+
+3. **Reverse Strings**:
+   - Reverse `num1` and `num2` to make it easier to handle the positions during multiplication.
+
+4. **Multiply Digits**:
+   - Iterate over each digit of `num1` and `num2` in a nested loop.
+   - Multiply the digits and add the product to the corresponding position in the result array.
+   - Handle carries by distributing the tens place to the next position.
+
+5. **Remove Leading Zeros**:
+   - Remove any leading zeros from the result array by popping the last elements if they are zero (except for the last element).
+
+6. **Convert to String**:
+   - Convert the result array to a string by mapping each digit to a character and joining them.
+
+### Complexity:
+- **Time Complexity**: O(n * m), where n and m are the lengths of `num1` and `num2`, respectively. This is due to the nested loop used for multiplying each digit.
+- **Space Complexity**: O(n + m), for storing the intermediate results in the result array.
+
+This approach ensures that the multiplication is performed efficiently without converting the strings to integers directly, meeting the problem's constraints.
+
+To rotate an \( n \times n \) 2D matrix by 90 degrees clockwise in place, you can follow these steps:
+
+1. **Transpose the Matrix**: Convert rows to columns.
+2. **Reverse Each Row**: After transposing, reverse each row to achieve the 90-degree clockwise rotation.
+
+### Steps to Rotate the Image:
+
+1. **Transpose the Matrix**:
+   - Swap elements `matrix[i][j]` with `matrix[j][i]`.
+
+2. **Reverse Each Row**:
+   - For each row in the matrix, reverse the elements in that row.
+
+### Implementation:
+
+Here is the Python code to implement this approach:
+
+```python
+def rotate(matrix):
+    n = len(matrix)
+    
+    # Step 1: Transpose the matrix
+    for i in range(n):
+        for j in range(i, n):
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+    
+    # Step 2: Reverse each row
+    for i in range(n):
+        matrix[i].reverse()
+
+# Example usage:
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+rotate(matrix)
+print(matrix)
+# Output:
+# [
+#   [7, 4, 1],
+#   [8, 5, 2],
+#   [9, 6, 3]
+# ]
+```
+
+### Explanation:
+
+1. **Transpose the Matrix**:
+   - Iterate over each element `matrix[i][j]` where \( i \leq j \) and swap it with `matrix[j][i]`. This operation converts rows into columns.
+   
+   ```python
+   for i in range(n):
+       for j in range(i, n):
+           matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+   ```
+
+   After transposing, the matrix for the example will be:
+   ```
+   [
+     [1, 4, 7],
+     [2, 5, 8],
+     [3, 6, 9]
+   ]
+   ```
+
+2. **Reverse Each Row**:
+   - For each row in the transposed matrix, reverse the elements.
+
+   ```python
+   for i in range(n):
+       matrix[i].reverse()
+   ```
+
+   After reversing each row, the final rotated matrix will be:
+   ```
+   [
+     [7, 4, 1],
+     [8, 5, 2],
+     [9, 6, 3]
+   ]
+   ```
+
+### Complexity:
+- **Time Complexity**: O(n^2), where \( n \) is the dimension of the matrix. This is because both transposing and reversing each row take O(n^2) time.
+- **Space Complexity**: O(1), since the rotation is done in place without using any extra space.
+
+This approach ensures that the matrix is rotated 90 degrees clockwise in place efficiently.
+
+To determine if you can reach the last index in the array `nums`, where each element in the array represents your maximum jump length at that position, we can use a greedy approach.
+
+### Greedy Approach:
+
+The idea is to keep track of the furthest index that can be reached as we iterate through the array. If at any point the current index is greater than the furthest reachable index, it means we cannot proceed further and thus cannot reach the last index.
+
+### Steps:
+
+1. Initialize a variable `farthest` to keep track of the furthest index that can be reached. Initially, it is set to 0.
+2. Iterate through the array using a loop.
+3. For each index, update the `farthest` index.
+4. If the current index exceeds the `farthest` index, return `false`.
+5. If the loop completes, return `true`.
+
+### Implementation:
+
+Here is the Python code implementing this approach:
+
+```python
+def canJump(nums):
+    farthest = 0
+    for i in range(len(nums)):
+        if i > farthest:
+            return False
+        farthest = max(farthest, i + nums[i])
+    return True
+
+# Example usage:
+nums1 = [2, 3, 1, 1, 4]
+print(canJump(nums1))  # Output: True
+
+nums2 = [3, 2, 1, 0, 4]
+print(canJump(nums2))  # Output: False
+```
+
+### Explanation:
+
+1. **Initialize Farthest**:
+   - `farthest` is initialized to 0, which represents the furthest index we can reach from the start.
+
+2. **Iterate Through the Array**:
+   - For each index `i`, check if it is within the reach of the furthest index.
+   - If `i` is greater than `farthest`, it means we cannot move further from that position, so return `false`.
+
+3. **Update Farthest**:
+   - Update the `farthest` index as the maximum of the current `farthest` and `i + nums[i]`.
+   - This ensures that we are always keeping track of the furthest index that can be reached from any position.
+
+4. **Return Result**:
+   - If the loop completes, it means we can reach or exceed the last index, so return `true`.
+
+### Complexity:
+- **Time Complexity**: O(n), where `n` is the length of the array. We iterate through the array once.
+- **Space Complexity**: O(1), since we are using only a constant amount of extra space.
+
+This approach ensures that we efficiently determine if the last index can be reached using a greedy algorithm.
+
+To increment a large integer represented as an array of digits, you can follow these steps:
+
+1. **Traverse the Array from Right to Left**: Start from the least significant digit and move towards the most significant digit.
+2. **Handle the Carry**: If adding one to the digit results in a value less than 10, you can update the digit and return the array. If it results in a value of 10, set the digit to 0 and carry over the 1 to the next more significant digit.
+3. **Handle the Overflow**: If after processing all digits, there is still a carry (e.g., all digits were 9), you need to insert an additional digit at the beginning of the array.
+
+### Implementation:
+
+Here's the Python code to implement the described approach:
+
+```python
+def plusOne(digits):
+    n = len(digits)
+    
+    for i in range(n - 1, -1, -1):
+        if digits[i] < 9:
+            digits[i] += 1
+            return digits
+        digits[i] = 0
+    
+    return [1] + digits
+
+# Example usage:
+digits1 = [1, 2, 3]
+print(plusOne(digits1))  # Output: [1, 2, 4]
+
+digits2 = [4, 3, 2, 1]
+print(plusOne(digits2))  # Output: [4, 3, 2, 2]
+
+digits3 = [9, 9, 9]
+print(plusOne(digits3))  # Output: [1, 0, 0, 0]
+```
+
+### Explanation:
+
+1. **Traverse the Array from Right to Left**:
+   - Iterate from the last digit to the first digit (from least significant to most significant).
+
+2. **Handle the Carry**:
+   - If the current digit is less than 9, simply increment the digit by 1 and return the result as no further processing is needed.
+   - If the current digit is 9, set it to 0 and continue to the next more significant digit.
+
+3. **Handle the Overflow**:
+   - If all digits are 9, after the loop, all digits will be set to 0. You need to add a 1 at the beginning of the array to handle the carry overflow.
+
+### Complexity:
+- **Time Complexity**: O(n), where `n` is the number of digits in the array. We iterate through the array once.
+- **Space Complexity**: O(1) additional space, excluding the input and output space. The space required for the result is O(n), which is the same as the input size.
+
+This approach efficiently handles the increment operation for a large integer represented as an array of digits, ensuring correctness for cases with and without carry overflow.
+
+To solve the problem of finding the minimum window substring in string `s` that contains all the characters of string `t` (including duplicates), we can use the sliding window technique combined with a hash map to keep track of character counts.
+
+### Approach:
+
+1. **Initialize Data Structures**:
+   - Use a hash map to store the frequency of each character in `t`.
+   - Use another hash map to store the current window's character counts in `s`.
+
+2. **Sliding Window Technique**:
+   - Use two pointers (`left` and `right`) to represent the window's boundaries.
+   - Expand the window by moving the `right` pointer and include characters in the window's hash map.
+   - When the window contains all characters of `t`, try to contract the window by moving the `left` pointer to find the minimum window.
+
+3. **Track the Minimum Window**:
+   - Keep track of the minimum window size and its starting index.
+
+### Implementation:
+
+Here's the Python code to implement this approach:
+
+```python
+from collections import Counter, defaultdict
+
+def minWindow(s, t):
+    if not s or not t:
+        return ""
+
+    dict_t = Counter(t)
+    required = len(dict_t)
+    
+    l, r = 0, 0
+    formed = 0
+    window_counts = defaultdict(int)
+    
+    min_len = float('inf')
+    min_left = 0
+    
+    while r < len(s):
+        character = s[r]
+        window_counts[character] += 1
+        
+        if character in dict_t and window_counts[character] == dict_t[character]:
+            formed += 1
+        
+        while l <= r and formed == required:
+            character = s[l]
+            
+            if r - l + 1 < min_len:
+                min_len = r - l + 1
+                min_left = l
+            
+            window_counts[character] -= 1
+            if character in dict_t and window_counts[character] < dict_t[character]:
+                formed -= 1
+            
+            l += 1
+        
+        r += 1
+    
+    return "" if min_len == float('inf') else s[min_left:min_left + min_len]
+
+# Example usage:
+s = "ADOBECODEBANC"
+t = "ABC"
+print(minWindow(s, t))  # Output: "BANC"
+
+s = "a"
+t = "a"
+print(minWindow(s, t))  # Output: "a"
+
+s = "a"
+t = "aa"
+print(minWindow(s, t))  # Output: ""
+```
+
+### Explanation:
+
+1. **Initialize Data Structures**:
+   - `dict_t` stores the frequency of characters in `t`.
+   - `required` is the number of unique characters in `t` that must be present in the window.
+   - `window_counts` keeps track of character counts in the current window.
+
+2. **Expand the Window**:
+   - Move the `right` pointer to expand the window.
+   - Include the character at the `right` pointer in `window_counts`.
+
+3. **Contract the Window**:
+   - When the window contains all characters of `t` (i.e., `formed` equals `required`), try to contract the window by moving the `left` pointer.
+   - Update the minimum window size if the current window is smaller.
+   - Remove the character at the `left` pointer from `window_counts` and adjust `formed` if necessary.
+
+4. **Track the Minimum Window**:
+   - Keep track of the minimum window size and its starting index.
+   - Return the minimum window substring.
+
+### Complexity:
+- **Time Complexity**: O(m + n), where `m` is the length of `s` and `n` is the length of `t`. This is because both pointers traverse `s` at most once.
+- **Space Complexity**: O(n + m), due to the storage of character frequencies in `dict_t` and `window_counts`.
+
+This approach efficiently finds the minimum window substring that contains all characters of `t` using the sliding window technique combined with hash maps.
+
+To solve the problem of implementing a method `read` to read `n` characters from a file using the given method `read4`, we need to handle the fact that `read` may be called multiple times. This means we need to maintain a state between multiple calls to `read`.
+
+### Key Points:
+
+1. **Buffer Management**: We need to use a buffer to store extra characters read from the file that were not consumed during the previous call to `read`.
+2. **State Persistence**: Maintain the state across multiple calls, including a buffer for extra characters and pointers to keep track of the buffer state.
+
+### Approach:
+
+1. **Buffer State**: Use a buffer `buf4` to store characters read by `read4`. Also, maintain an index (`buf_ptr`) and count (`buf_count`) to keep track of the characters in `buf4` that haven't been consumed yet.
+2. **Read Characters**: When `read` is called, first consume the characters in the buffer from the previous `read4` call. If more characters are needed, call `read4` again.
+3. **Store Extra Characters**: Store any extra characters read by `read4` that are not immediately needed in subsequent calls.
+
+### Implementation:
+
+Here's the Python code to implement the described approach:
+
+```python
+class Solution:
+    def __init__(self):
+        self.buf4 = [''] * 4
+        self.buf_ptr = 0
+        self.buf_count = 0
+    
+    def read4(self, buf4):
+        # Simulated read4 method. Replace with actual read4 logic
+        pass
+
+    def read(self, buf, n):
+        # Pointer for buf
+        buf_index = 0
+        
+        while buf_index < n:
+            if self.buf_ptr == self.buf_count:
+                self.buf_count = self.read4(self.buf4)
+                self.buf_ptr = 0
+                if self.buf_count == 0:
+                    break
+            
+            while buf_index < n and self.buf_ptr < self.buf_count:
+                buf[buf_index] = self.buf4[self.buf_ptr]
+                buf_index += 1
+                self.buf_ptr += 1
+        
+        return buf_index
+
+# Example usage:
+solution = Solution()
+
+# Assuming read4 is defined and we have a file to read from, usage would be:
+# buf = [''] * 10
+# n = 10
+# print(solution.read(buf, n))  # Read n characters into buf
+```
+
+### Explanation:
+
+1. **Initialization**:
+   - `buf4`: A buffer to store characters read by `read4`.
+   - `buf_ptr`: A pointer to track the current position in `buf4`.
+   - `buf_count`: The number of characters in `buf4` that were read by the last `read4` call.
+
+2. **read Method**:
+   - `buf_index`: A pointer to track the current position in the destination buffer `buf`.
+   - Loop to fill `buf` with up to `n` characters.
+   - If `buf_ptr` reaches `buf_count`, it means all characters in `buf4` have been consumed, so call `read4` again to fill `buf4`.
+   - If `read4` returns 0, it means there are no more characters to read from the file, and we break out of the loop.
+   - Copy characters from `buf4` to `buf` until either `buf` is full or `buf4` is exhausted.
+
+3. **Return Value**:
+   - The method returns the number of characters read into `buf`.
+
+This approach ensures that the `read` method can be called multiple times while correctly handling any leftover characters from previous `read4` calls, providing an efficient solution to the problem.
+
+To solve the problem of finding the length of the longest substring that contains at most two distinct characters, we can use the sliding window technique combined with a hash map to track the characters and their counts within the current window.
+
+### Approach:
+
+1. **Sliding Window Technique**: Use two pointers (`left` and `right`) to represent the current window. The `right` pointer will expand the window by including new characters, and the `left` pointer will contract the window when there are more than two distinct characters.
+2. **Hash Map**: Use a hash map to keep track of the count of each character within the current window.
+3. **Track Maximum Length**: Keep track of the maximum length of the window that contains at most two distinct characters.
+
+### Implementation:
+
+Here's the Python code to implement this approach:
+
+```python
+def lengthOfLongestSubstringTwoDistinct(s):
+    if not s:
+        return 0
+
+    left = 0
+    right = 0
+    max_len = 0
+    char_map = {}
+
+    while right < len(s):
+        char_map[s[right]] = char_map.get(s[right], 0) + 1
+        right += 1
+
+        while len(char_map) > 2:
+            char_map[s[left]] -= 1
+            if char_map[s[left]] == 0:
+                del char_map[s[left]]
+            left += 1
+
+        max_len = max(max_len, right - left)
+
+    return max_len
+
+# Example usage:
+s = "eceba"
+print(lengthOfLongestSubstringTwoDistinct(s))  # Output: 3 ("ece")
+
+s = "ccaabbb"
+print(lengthOfLongestSubstringTwoDistinct(s))  # Output: 5 ("aabbb")
+```
+
+### Explanation:
+
+1. **Initialization**:
+   - `left` and `right` pointers are initialized to the beginning of the string.
+   - `max_len` keeps track of the maximum length of the valid window.
+   - `char_map` is a hash map to store the count of each character within the current window.
+
+2. **Expand the Window**:
+   - Move the `right` pointer to expand the window by including new characters.
+   - Update the `char_map` with the count of the character at the `right` pointer.
+
+3. **Contract the Window**:
+   - If the number of distinct characters in the `char_map` exceeds two, move the `left` pointer to contract the window until the window contains at most two distinct characters.
+   - Update the `char_map` by decrementing the count of the character at the `left` pointer and removing it if the count becomes zero.
+
+4. **Update Maximum Length**:
+   - After adjusting the window, update `max_len` with the size of the current valid window (`right - left`).
+
+5. **Return the Result**:
+   - Return the maximum length of the substring that contains at most two distinct characters.
+
+### Complexity:
+- **Time Complexity**: O(n), where `n` is the length of the string. Each character is processed at most twice (once by the `right` pointer and once by the `left` pointer).
+- **Space Complexity**: O(1), since the hash map will store at most three keys (in the worst case scenario, when contracting the window to ensure it contains at most two distinct characters).
+
+This approach ensures that we efficiently find the length of the longest substring containing at most two distinct characters using the sliding window technique and a hash map.
+
+To solve the problem of finding missing ranges within a given inclusive range `[lower, upper]` based on a sorted unique integer array `nums`, we can follow these steps:
+
+1. **Initialization**:
+   - Initialize a variable `current` to `lower` to keep track of the current number being checked.
+   - Create an empty list `result` to store the missing ranges.
+
+2. **Iterate Through nums**:
+   - For each number in `nums`, check if there are missing numbers between `current` and the current number in `nums`.
+   - If there are missing numbers, add the range to the result list.
+   - Update `current` to the next number after the current number in `nums`.
+
+3. **Handle Remaining Range**:
+   - After iterating through `nums`, if `current` is still within the range `[lower, upper]`, add the remaining range to the result list.
+
+### Implementation:
+
+Here is the Python code implementing this approach:
+
+```python
+def findMissingRanges(nums, lower, upper):
+    result = []
+    current = lower
+    
+    for num in nums:
+        if num > current:
+            result.append(formatRange(current, num - 1))
+        current = num + 1
+    
+    if current <= upper:
+        result.append(formatRange(current, upper))
+    
+    return result
+
+def formatRange(lower, upper):
+    if lower == upper:
+        return str(lower)
+    else:
+        return f"{lower}->{upper}"
+
+# Example usage:
+nums = [0, 1, 3, 50, 75]
+lower = 0
+upper = 99
+print(findMissingRanges(nums, lower, upper))  
+# Output: ['2', '4->49', '51->74', '76->99']
+
+nums = []
+lower = 1
+upper = 1
+print(findMissingRanges(nums, lower, upper))  
+# Output: ['1']
+
+nums = []
+lower = -3
+upper = -1
+print(findMissingRanges(nums, lower, upper))  
+# Output: ['-3->-1']
+
+nums = [-1]
+lower = -1
+upper = -1
+print(findMissingRanges(nums, lower, upper))  
+# Output: []
+```
+
+### Explanation:
+
+1. **Initialization**:
+   - `current` is initialized to `lower` to start checking for missing numbers from the lower bound.
+   - `result` is an empty list that will store the missing ranges.
+
+2. **Iterate Through nums**:
+   - For each `num` in `nums`, check if `num` is greater than `current`. If it is, it means there are missing numbers between `current` and `num - 1`.
+   - The `formatRange` function is used to format the range as a string (either as a single number or a range).
+
+3. **Handle Remaining Range**:
+   - After processing all numbers in `nums`, check if `current` is still within the range `[lower, upper]`. If it is, add the remaining range from `current` to `upper`.
+
+4. **Helper Function `formatRange`**:
+   - `formatRange` formats the range as a string. If the lower and upper bounds are the same, it returns a single number as a string. Otherwise, it returns a range in the format "lower->upper".
+
+### Complexity:
+- **Time Complexity**: O(n), where `n` is the length of `nums`. We iterate through the `nums` array once.
+- **Space Complexity**: O(1) for extra space (excluding the space required for the result list).
+
+This approach ensures that we efficiently find and format the missing ranges within the given bounds.
+
+To solve the problem of finding the next closest time by reusing the current digits, we need to generate all possible valid times using the given digits and then find the one that is closest to the current time but still in the future.
+
+### Steps to Solve:
+
+1. **Extract Digits**: Extract all unique digits from the given time.
+2. **Generate All Valid Times**: Generate all possible valid times using these digits.
+3. **Find the Next Closest Time**: Compare each generated time with the given time and find the next closest time.
+
+### Implementation:
+
+Here's the Python code implementing this approach:
+
+```python
+from itertools import product
+
+def nextClosestTime(time):
+    # Extract the unique digits from the given time
+    digits = set(time.replace(":", ""))
+    
+    # Generate all possible times using the digits
+    possible_times = sorted(["".join(p) for p in product(digits, repeat=4)])
+    
+    # Function to check if a generated time is valid
+    def is_valid(t):
+        return t[:2] < '24' and t[2:] < '60'
+    
+    # Filter only valid times
+    valid_times = [t for t in possible_times if is_valid(t)]
+    
+    # Convert given time to a comparable format
+    current_time = time[:2] + time[3:]
+    
+    # Find the next closest time
+    for t in valid_times:
+        if t > current_time:
+            return t[:2] + ':' + t[2:]
+    
+    # If no valid time is found that is greater, return the smallest valid time (wrap around)
+    return valid_times[0][:2] + ':' + valid_times[0][2:]
+
+# Example usage:
+print(nextClosestTime("19:34"))  # Output: "19:39"
+print(nextClosestTime("23:59"))  # Output: "22:22"
+```
+
+### Explanation:
+
+1. **Extract Digits**:
+   - We extract all unique digits from the given time string and store them in a set.
+
+2. **Generate All Possible Times**:
+   - Using `itertools.product`, generate all possible combinations of these digits taken 4 at a time.
+   - These combinations represent possible hours and minutes in the form "HHMM".
+
+3. **Validate Times**:
+   - Define a helper function `is_valid` to check if a generated time string is a valid time (hours less than 24 and minutes less than 60).
+
+4. **Find the Next Closest Time**:
+   - Convert the given time into a comparable format without the colon.
+   - Iterate through the sorted list of valid times. If a time greater than the current time is found, format and return it.
+   - If no valid time greater than the current time is found, return the smallest valid time (wrap-around case).
+
+### Complexity:
+- **Time Complexity**: O(1), since the maximum number of possible times is fixed (24*60 = 1440). The generation of times and validation is done in constant time.
+- **Space Complexity**: O(1), excluding the input and output space. The space used for storing possible times is constant because the number of unique possible times is bounded by 1440.
+
+This approach ensures we efficiently find the next closest time using the same digits as in the given time.
+
+To solve the problem of finding the next closest time by reusing the current digits, we need to generate all possible valid times using the given digits and then find the one that is closest to the current time but still in the future.
+
+### Steps to Solve:
+
+1. **Extract Digits**: Extract all unique digits from the given time.
+2. **Generate All Valid Times**: Generate all possible valid times using these digits.
+3. **Find the Next Closest Time**: Compare each generated time with the given time and find the next closest time.
+
+### Implementation:
+
+Here's the Python code implementing this approach:
+
+```python
+from itertools import product
+
+def nextClosestTime(time):
+    # Extract the unique digits from the given time
+    digits = set(time.replace(":", ""))
+    
+    # Generate all possible times using the digits
+    possible_times = sorted(["".join(p) for p in product(digits, repeat=4)])
+    
+    # Function to check if a generated time is valid
+    def is_valid(t):
+        return t[:2] < '24' and t[2:] < '60'
+    
+    # Filter only valid times
+    valid_times = [t for t in possible_times if is_valid(t)]
+    
+    # Convert given time to a comparable format
+    current_time = time[:2] + time[3:]
+    
+    # Find the next closest time
+    for t in valid_times:
+        if t > current_time:
+            return t[:2] + ':' + t[2:]
+    
+    # If no valid time is found that is greater, return the smallest valid time (wrap around)
+    return valid_times[0][:2] + ':' + valid_times[0][2:]
+
+# Example usage:
+print(nextClosestTime("19:34"))  # Output: "19:39"
+print(nextClosestTime("23:59"))  # Output: "22:22"
+```
+
+### Explanation:
+
+1. **Extract Digits**:
+   - We extract all unique digits from the given time string and store them in a set.
+
+2. **Generate All Possible Times**:
+   - Using `itertools.product`, generate all possible combinations of these digits taken 4 at a time.
+   - These combinations represent possible hours and minutes in the form "HHMM".
+
+3. **Validate Times**:
+   - Define a helper function `is_valid` to check if a generated time string is a valid time (hours less than 24 and minutes less than 60).
+
+4. **Find the Next Closest Time**:
+   - Convert the given time into a comparable format without the colon.
+   - Iterate through the sorted list of valid times. If a time greater than the current time is found, format and return it.
+   - If no valid time greater than the current time is found, return the smallest valid time (wrap-around case).
+
+### Complexity:
+- **Time Complexity**: O(1), since the maximum number of possible times is fixed (24*60 = 1440). The generation of times and validation is done in constant time.
+- **Space Complexity**: O(1), excluding the input and output space. The space used for storing possible times is constant because the number of unique possible times is bounded by 1440.
+
+This approach ensures we efficiently find the next closest time using the same digits as in the given time.
+
+To determine how many words in the array `words` are "stretchy" versions of the given string `s`, we need to analyze and compare the structure of `s` with each word. A word is considered "stretchy" if it can be transformed into `s` by extending groups of characters in `s`.
+
+### Steps to Solve:
+
+1. **Group Characters**: For the given string `s` and each word in `words`, group adjacent identical characters and count their occurrences. For example, for "heeellooo", the groups would be `[(h, 1), (e, 3), (l, 2), (o, 3)]`.
+
+2. **Compare Groups**: Compare the groups of `s` with the groups of each word. A group in the word can match a group in `s` if:
+   - The characters are the same.
+   - The group in `s` has at least three characters, and the group in the word has fewer characters but at least one.
+   - The group sizes are the same.
+
+3. **Count Stretchy Words**: Count the number of words that meet the criteria for being stretchy.
+
+### Implementation:
+
+Here's the Python code to implement this approach:
+
+```python
+def expressiveWords(s, words):
+    def get_groups(word):
+        groups = []
+        i = 0
+        while i < len(word):
+            start = i
+            while i < len(word) and word[i] == word[start]:
+                i += 1
+            groups.append((word[start], i - start))
+        return groups
+    
+    def is_stretchy(s_groups, w_groups):
+        if len(s_groups) != len(w_groups):
+            return False
+        
+        for (sc, scount), (wc, wcount) in zip(s_groups, w_groups):
+            if sc != wc:
+                return False
+            if scount < wcount:
+                return False
+            if scount < 3 and scount != wcount:
+                return False
+        
+        return True
+    
+    s_groups = get_groups(s)
+    count = 0
+    for word in words:
+        w_groups = get_groups(word)
+        if is_stretchy(s_groups, w_groups):
+            count += 1
+    
+    return count
+
+# Example usage:
+s = "heeellooo"
+words = ["hello", "hi", "helo"]
+print(expressiveWords(s, words))  # Output: 1
+
+s = "zzzzzyyyyy"
+words = ["zzyy","zy","zyy"]
+print(expressiveWords(s, words))  # Output: 3
+```
+
+### Explanation:
+
+1. **Group Characters**:
+   - The `get_groups` function takes a word and groups adjacent identical characters, returning a list of tuples where each tuple contains a character and its count in the group.
+
+2. **Compare Groups**:
+   - The `is_stretchy` function compares the groups of `s` and a word. It checks:
+     - If the characters in corresponding groups are the same.
+     - If the group in `s` can be "stretched" to match the group in the word.
+
+3. **Count Stretchy Words**:
+   - For each word in `words`, check if it is stretchy by comparing its groups with the groups of `s`. If it is stretchy, increment the count.
+
+### Complexity:
+- **Time Complexity**: O(n * m), where `n` is the length of `s` and `m` is the total length of all words in `words`. Grouping each word and comparing groups both run in linear time relative to the length of the word.
+- **Space Complexity**: O(n + m), for storing the groups of `s` and the current word being processed.
+
+This approach efficiently determines the number of stretchy words by breaking down the problem into manageable steps involving character grouping and comparison.
+
+To solve the problem of performing multiple replacement operations on a string `s` based on the given `indices`, `sources`, and `targets` arrays, we need to carefully handle the replacements to ensure they don't affect each other. 
+
+### Approach:
+
+1. **Store Replacements**: Create a list of tuples where each tuple contains the index, source string, and target string.
+2. **Sort Replacements**: Sort the replacements based on the indices. This ensures that we can perform replacements from left to right without worrying about the changing positions of characters in the string.
+3. **Perform Replacements**: Use a list to build the final string. Iterate through the sorted replacements, check if each source string matches the substring at the given index, and perform the replacement if it matches.
+
+### Implementation:
+
+Here's the Python code to implement the above approach:
+
+```python
+def findReplaceString(s, indices, sources, targets):
+    # Create a list of tuples (index, source, target)
+    replacements = sorted(zip(indices, sources, targets))
+    
+    # Initialize the result list
+    result = []
+    last_index = 0
+    
+    # Perform replacements
+    for index, source, target in replacements:
+        # Add the part of the string before the current replacement
+        result.append(s[last_index:index])
+        
+        # Check if the source matches the substring at the given index
+        if s[index:index+len(source)] == source:
+            # Add the target if the source matches
+            result.append(target)
+            last_index = index + len(source)
+        else:
+            # If source does not match, just continue and adjust the last index
+            last_index = index
+    
+    # Add the remaining part of the string after the last replacement
+    result.append(s[last_index:])
+    
+    # Join the result list into a single string and return
+    return ''.join(result)
+
+# Example usage:
+s = "abcd"
+indices = [0, 2]
+sources = ["a", "cd"]
+targets = ["eee", "ffff"]
+print(findReplaceString(s, indices, sources, targets))  # Output: "eeebffff"
+
+s = "abcd"
+indices = [0, 2]
+sources = ["ab", "ec"]
+targets = ["eee", "ffff"]
+print(findReplaceString(s, indices, sources, targets))  # Output: "eeecd"
+```
+
+### Explanation:
+
+1. **Create Tuples**:
+   - Combine `indices`, `sources`, and `targets` into a list of tuples and sort it based on `indices`. Sorting ensures that replacements are processed from left to right.
+
+2. **Initialize Result List**:
+   - Initialize a list `result` to build the final string and a variable `last_index` to keep track of the last position in the original string that was processed.
+
+3. **Perform Replacements**:
+   - Iterate through the sorted list of tuples. For each replacement:
+     - Append the part of the string from `last_index` to the current `index` to `result`.
+     - Check if the substring of `s` starting at `index` matches `source`.
+     - If it matches, append `target` to `result` and update `last_index` to the end of the replaced substring.
+     - If it doesn't match, just move `last_index` to the current `index`.
+
+4. **Finalize Result**:
+   - After the loop, append any remaining part of the string after the last replacement to `result`.
+
+5. **Return the Result**:
+   - Join the elements of `result` into a single string and return it.
+
+### Complexity:
+- **Time Complexity**: O(n + k log k), where `n` is the length of the string `s` and `k` is the number of replacements. Sorting the replacements takes O(k log k), and iterating through the string takes O(n).
+- **Space Complexity**: O(n), for storing the resulting string in the list `result`.
+
+This approach ensures that the replacements are performed correctly and efficiently, even when multiple replacements are needed.
+
+To maximize the distance to the closest person in an array of seats, we need to consider the distances from each empty seat to the nearest occupied seat. Here's a clear approach to solve the problem:
+
+### Steps to Solve:
+
+1. **Identify Segments of Empty Seats**:
+   - Traverse the array and identify the segments of consecutive empty seats.
+   - Keep track of the distance to the nearest person at the beginning and end of each segment.
+
+2. **Calculate Maximum Distance**:
+   - For each segment, calculate the maximum distance to the closest person.
+   - Special cases:
+     - If the segment is at the beginning of the array, consider the distance from the first empty seat to the first occupied seat.
+     - If the segment is at the end of the array, consider the distance from the last empty seat to the last occupied seat.
+
+### Implementation:
+
+Here's the Python code to implement this approach:
+
+```python
+def maxDistToClosest(seats):
+    n = len(seats)
+    max_distance = 0
+    last_person = -1
+
+    for i in range(n):
+        if seats[i] == 1:
+            if last_person == -1:
+                # Distance from the start to the first person
+                max_distance = i
+            else:
+                # Distance between two people
+                max_distance = max(max_distance, (i - last_person) // 2)
+            last_person = i
+
+    # Distance from the last person to the end
+    max_distance = max(max_distance, n - 1 - last_person)
+
+    return max_distance
+
+# Example usage:
+seats1 = [1, 0, 0, 0, 1, 0, 1]
+print(maxDistToClosest(seats1))  # Output: 2
+
+seats2 = [1, 0, 0, 0]
+print(maxDistToClosest(seats2))  # Output: 3
+
+seats3 = [0, 1]
+print(maxDistToClosest(seats3))  # Output: 1
+```
+
+### Explanation:
+
+1. **Initialization**:
+   - `max_distance` is initialized to 0 to keep track of the maximum distance found.
+   - `last_person` is initialized to -1 to keep track of the last person found in the seats array.
+
+2. **Traverse the Array**:
+   - Loop through the `seats` array.
+   - When a person (seat with 1) is found:
+     - If `last_person` is -1, it means this is the first person encountered. The maximum distance is the distance from the start to this person.
+     - Otherwise, calculate the distance between the current person and the last person, and update `max_distance` to the maximum value between the current `max_distance` and half of this distance (because Alex can sit in the middle of the segment of empty seats).
+   - Update `last_person` to the current index.
+
+3. **Handle the End of the Array**:
+   - After the loop, check the distance from the last person to the end of the array and update `max_distance` if this distance is greater.
+
+4. **Return the Result**:
+   - Return `max_distance`, which represents the maximum distance to the closest person Alex can achieve.
+
+### Complexity:
+- **Time Complexity**: O(n), where `n` is the length of the seats array. We traverse the array once.
+- **Space Complexity**: O(1), as we are using a constant amount of extra space.
+
+This approach efficiently finds the maximum distance to the closest person by considering all possible segments of empty seats and updating the maximum distance accordingly.
+
+To determine if a string containing just the characters '(', ')', '{', '}', '[' and ']' is valid, we can use a stack data structure. The stack helps to keep track of the open brackets and ensures they are closed in the correct order.
+
+### Approach:
+
+1. **Initialize a Stack**: Use a stack to store open brackets as they are encountered.
+2. **Use a Mapping**: Create a mapping of closing brackets to their corresponding opening brackets for easy checking.
+3. **Iterate Through the String**:
+   - For each character in the string:
+     - If it's an opening bracket, push it onto the stack.
+     - If it's a closing bracket, check if the stack is not empty and the top of the stack is the corresponding opening bracket. If so, pop the stack.
+     - If it doesn't match or the stack is empty, return false.
+4. **Final Check**: After iterating through the string, the stack should be empty if the string is valid.
+
+### Implementation:
+
+Here's the Python code to implement this approach:
+
+```python
+def isValid(s):
+    # Dictionary to hold the mappings of closing to opening brackets
+    bracket_map = {')': '(', '}': '{', ']': '['}
+    # Initialize an empty stack
+    stack = []
+    
+    # Iterate through each character in the string
+    for char in s:
+        # If the character is a closing bracket
+        if char in bracket_map:
+            # Pop the top element from the stack if it is non-empty, otherwise use a dummy value
+            top_element = stack.pop() if stack else '#'
+            # Check if the popped element matches the corresponding opening bracket
+            if bracket_map[char] != top_element:
+                return False
+        else:
+            # If it is an opening bracket, push it onto the stack
+            stack.append(char)
+    
+    # If the stack is empty, all opening brackets were matched correctly
+    return not stack
+
+# Example usage:
+s1 = "()"
+print(isValid(s1))  # Output: True
+
+s2 = "()[]{}"
+print(isValid(s2))  # Output: True
+
+s3 = "(]"
+print(isValid(s3))  # Output: False
+
+s4 = "([)]"
+print(isValid(s4))  # Output: False
+
+s5 = "{[]}"
+print(isValid(s5))  # Output: True
+```
+
+### Explanation:
+
+1. **Bracket Map**:
+   - `bracket_map` is a dictionary that maps each closing bracket to its corresponding opening bracket.
+
+2. **Iterate Through the String**:
+   - For each character in the string `s`:
+     - If the character is a closing bracket, check if it matches the top of the stack.
+     - If it matches, pop the stack.
+     - If it doesn't match or the stack is empty, return `False`.
+     - If the character is an opening bracket, push it onto the stack.
+
+3. **Final Check**:
+   - After processing all characters, the stack should be empty if the string is valid (all opening brackets have been matched and closed correctly).
+
+### Complexity:
+- **Time Complexity**: O(n), where `n` is the length of the string. Each character is processed once.
+- **Space Complexity**: O(n), for the stack that stores opening brackets.
+
+This approach ensures that the string is valid by checking that every closing bracket matches the most recent unmatched opening bracket and that all brackets are correctly nested.
+
+To merge \( k \) sorted linked lists into one sorted linked list, we can use a min-heap (priority queue) to efficiently find the smallest current head among the lists. This approach ensures that the merge operation is performed optimally.
+
+### Approach:
+
+1. **Use a Min-Heap**: Use a min-heap to keep track of the smallest current head of the \( k \) linked lists.
+2. **Insert Initial Heads**: Insert the head node of each linked list into the min-heap.
+3. **Extract and Merge**: Extract the smallest node from the min-heap, add it to the merged list, and then insert the next node from the same linked list into the min-heap.
+4. **Continue Until Done**: Continue this process until the min-heap is empty, indicating that all nodes have been processed and added to the merged list.
+
+### Implementation:
+
+Here is the Python code implementing this approach:
+
+```python
+from heapq import heappush, heappop
+from typing import List
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+    def __lt__(self, other):
+        return self.val < other.val
+
+def mergeKLists(lists: List[ListNode]) -> ListNode:
+    min_heap = []
+
+    # Push the head node of each list into the min-heap
+    for l in lists:
+        if l:
+            heappush(min_heap, l)
+    
+    # Create a dummy node to simplify the merging process
+    dummy = ListNode(0)
+    current = dummy
+
+    # Continue until the heap is empty
+    while min_heap:
+        # Get the smallest node from the heap
+        smallest_node = heappop(min_heap)
+        # Add it to the merged list
+        current.next = smallest_node
+        current = current.next
+        # If there is a next node in the list, push it into the heap
+        if smallest_node.next:
+            heappush(min_heap, smallest_node.next)
+    
+    # Return the merged list, which is next to the dummy node
+    return dummy.next
+
+# Helper function to create linked list from list
+def create_linked_list(arr):
+    dummy = ListNode(0)
+    current = dummy
+    for num in arr:
+        current.next = ListNode(num)
+        current = current.next
+    return dummy.next
+
+# Helper function to print linked list
+def print_linked_list(head):
+    vals = []
+    while head:
+        vals.append(head.val)
+        head = head.next
+    print(vals)
+
+# Example usage:
+lists = [
+    create_linked_list([1, 4, 5]),
+    create_linked_list([1, 3, 4]),
+    create_linked_list([2, 6])
+]
+
+merged_list = mergeKLists(lists)
+print_linked_list(merged_list)  # Output: [1, 1, 2, 3, 4, 4, 5, 6]
+```
+
+### Explanation:
+
+1. **ListNode Class**:
+   - The `ListNode` class represents a node in a linked list. The `__lt__` method is overridden to make `ListNode` objects comparable based on their `val` attribute, which is necessary for the min-heap to work correctly.
+
+2. **Merge Function**:
+   - `mergeKLists` function takes a list of linked lists (`lists`) and returns the head of the merged linked list.
+   - A min-heap (`min_heap`) is used to keep track of the smallest current head of the \( k \) linked lists.
+   - Initially, the head node of each linked list is pushed into the min-heap.
+   - A dummy node (`dummy`) is used to simplify the process of merging the lists. The `current` pointer is used to build the merged list.
+   - The smallest node is extracted from the heap, added to the merged list, and if the smallest node has a next node, the next node is pushed into the heap.
+   - This process continues until the heap is empty.
+
+3. **Helper Functions**:
+   - `create_linked_list` creates a linked list from a Python list.
+   - `print_linked_list` prints the linked list for easy verification.
+
+### Complexity:
+- **Time Complexity**: O(N log k), where \( N \) is the total number of nodes in all linked lists and \( k \) is the number of linked lists. The heap operations (insertion and extraction) take \( O(log k) \) time.
+- **Space Complexity**: O(k), for storing the nodes in the heap.
+
+This approach ensures that the merging of \( k \) sorted linked lists is performed efficiently using a min-heap, resulting in an overall optimal solution.
+
+To solve the problem of calculating the amount of water that can be trapped by the elevation map represented by an array of non-negative integers, we can use several methods. One efficient approach is the two-pointer technique, which allows us to solve the problem in linear time with constant space.
+
+### Approach: Two-Pointer Technique
+
+1. **Initialize Two Pointers**:
+   - Use two pointers, `left` and `right`, starting at the beginning and end of the array, respectively.
+   - Maintain variables `left_max` and `right_max` to keep track of the maximum heights encountered from the left and right sides.
+
+2. **Move Pointers Towards Each Other**:
+   - Compare the heights at the `left` and `right` pointers.
+   - If `height[left]` is less than `height[right]`, it means the amount of water trapped depends on `left_max`. Calculate the water trapped and move the `left` pointer to the right.
+   - If `height[right]` is less than or equal to `height[left]`, it means the amount of water trapped depends on `right_max`. Calculate the water trapped and move the `right` pointer to the left.
+
+3. **Update Maximum Heights**:
+   - Update `left_max` and `right_max` as you move the pointers to ensure they always hold the maximum height encountered so far from the left and right, respectively.
+
+4. **Calculate Trapped Water**:
+   - For each position, calculate the trapped water by subtracting the current height from the minimum of `left_max` and `right_max`.
+
+### Implementation:
+
+Here is the Python code implementing the two-pointer approach:
+
+```python
+def trap(height):
+    if not height:
+        return 0
+
+    left, right = 0, len(height) - 1
+    left_max, right_max = height[left], height[right]
+    water_trapped = 0
+
+    while left < right:
+        if height[left] < height[right]:
+            left += 1
+            left_max = max(left_max, height[left])
+            water_trapped += max(0, left_max - height[left])
+        else:
+            right -= 1
+            right_max = max(right_max, height[right])
+            water_trapped += max(0, right_max - height[right])
+
+    return water_trapped
+
+# Example usage:
+height1 = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
+print(trap(height1))  # Output: 6
+
+height2 = [4, 2, 0, 3, 2, 5]
+print(trap(height2))  # Output: 9
+```
+
+### Explanation:
+
+1. **Initialization**:
+   - The `left` pointer starts at the beginning (index 0) and the `right` pointer starts at the end (index `len(height) - 1`).
+   - `left_max` and `right_max` are initialized to the heights at the `left` and `right` pointers, respectively.
+   - `water_trapped` is initialized to 0 to accumulate the total amount of water trapped.
+
+2. **Move Pointers and Calculate Water**:
+   - Compare the heights at the `left` and `right` pointers.
+   - Move the pointer that points to the smaller height towards the other pointer.
+   - Update the `left_max` or `right_max` to the maximum height encountered so far.
+   - Calculate the water trapped at the current position and add it to `water_trapped`.
+
+3. **Continue Until Pointers Meet**:
+   - Repeat the process until the `left` pointer meets or surpasses the `right` pointer.
+
+### Complexity:
+- **Time Complexity**: O(n), where `n` is the length of the `height` array. Each element is processed at most twice.
+- **Space Complexity**: O(1), as we are using a constant amount of extra space.
+
+This approach ensures that we efficiently compute the total amount of water that can be trapped by the elevation map using the two-pointer technique.
+
+To find the kth largest element in an array without sorting the entire array, we can use a min-heap. This approach ensures that we only maintain the k largest elements seen so far, resulting in an efficient solution.
+
+### Approach: Min-Heap
+
+1. **Use a Min-Heap**: Maintain a min-heap of size k. The smallest element in the heap will be the kth largest element when the heap is full.
+2. **Iterate through the Array**: For each element in the array:
+   - Add the element to the heap.
+   - If the heap size exceeds k, remove the smallest element (which is the root of the heap).
+3. **Result**: The root of the heap will be the kth largest element after processing all elements in the array.
+
+### Implementation:
+
+Here's the Python code implementing this approach:
+
+```python
+import heapq
+
+def findKthLargest(nums, k):
+    # Initialize a min-heap
+    min_heap = []
+    
+    # Iterate over all elements in the array
+    for num in nums:
+        # Add the current number to the heap
+        heapq.heappush(min_heap, num)
+        
+        # If the heap size exceeds k, remove the smallest element
+        if len(min_heap) > k:
+            heapq.heappop(min_heap)
+    
+    # The root of the heap is the kth largest element
+    return min_heap[0]
+
+# Example usage:
+nums1 = [3, 2, 1, 5, 6, 4]
+k1 = 2
+print(findKthLargest(nums1, k1))  # Output: 5
+
+nums2 = [3, 2, 3, 1, 2, 4, 5, 5, 6]
+k2 = 4
+print(findKthLargest(nums2, k2))  # Output: 4
+```
+
+### Explanation:
+
+1. **Initialization**:
+   - Initialize an empty min-heap `min_heap`.
+
+2. **Iterate through the Array**:
+   - For each element `num` in `nums`, push it onto the heap using `heapq.heappush(min_heap, num)`.
+   - If the size of the heap exceeds k, remove the smallest element (the root of the heap) using `heapq.heappop(min_heap)`.
+
+3. **Result**:
+   - After processing all elements, the root of the heap (`min_heap[0]`) will be the kth largest element because the heap contains exactly k largest elements from the array.
+
+### Complexity:
+- **Time Complexity**: O(n log k), where `n` is the number of elements in the array. Each insertion and deletion operation in the heap takes O(log k) time.
+- **Space Complexity**: O(k), for storing the k largest elements in the heap.
+
+This approach efficiently finds the kth largest element without sorting the entire array by leveraging the properties of a min-heap.
+
+To determine the minimum number of conference rooms required to accommodate all given meeting intervals, we can use a strategy based on sorting and a min-heap (priority queue). This approach allows us to efficiently keep track of the end times of ongoing meetings and determine when a new room is needed.
+
+### Approach:
+
+1. **Sort the Intervals**:
+   - Sort the meeting intervals based on their start times.
+
+2. **Use a Min-Heap**:
+   - Use a min-heap to keep track of the end times of meetings currently using a room. The smallest end time is at the root of the heap.
+   - Iterate through the sorted intervals:
+     - If the current meeting's start time is greater than or equal to the smallest end time in the heap, it means a room has been freed up, and we can reuse that room by updating its end time.
+     - Otherwise, allocate a new room by adding the current meeting's end time to the heap.
+   - The size of the heap at any point in time will represent the number of rooms currently in use.
+
+3. **Result**:
+   - The size of the heap after processing all intervals will give the minimum number of conference rooms required.
+
+### Implementation:
+
+Here's the Python code implementing this approach:
+
+```python
+import heapq
+
+def minMeetingRooms(intervals):
+    if not intervals:
+        return 0
+
+    # Sort the intervals based on their start time
+    intervals.sort(key=lambda x: x[0])
+
+    # Initialize a min-heap
+    min_heap = []
+
+    # Add the end time of the first meeting
+    heapq.heappush(min_heap, intervals[0][1])
+
+    # Iterate over the remaining intervals
+    for i in range(1, len(intervals)):
+        # If the current meeting starts after the earliest ending meeting ends, reuse the room
+        if intervals[i][0] >= min_heap[0]:
+            heapq.heappop(min_heap)
+        
+        # Add the current meeting's end time to the heap
+        heapq.heappush(min_heap, intervals[i][1])
+
+    # The size of the heap is the number of rooms required
+    return len(min_heap)
+
+# Example usage:
+intervals1 = [[0, 30], [5, 10], [15, 20]]
+print(minMeetingRooms(intervals1))  # Output: 2
+
+intervals2 = [[7, 10], [2, 4]]
+print(minMeetingRooms(intervals2))  # Output: 1
+```
+
+### Explanation:
+
+1. **Sorting**:
+   - Sort the intervals based on the start time to process meetings in chronological order.
+
+2. **Using a Min-Heap**:
+   - The heap is used to keep track of the end times of meetings that are currently using a room.
+   - For each meeting, check if it can reuse an existing room by comparing its start time with the earliest end time in the heap.
+   - If it can reuse a room (i.e., start time is greater than or equal to the smallest end time), pop the heap to remove the earliest end time.
+   - Push the end time of the current meeting into the heap.
+
+3. **Result**:
+   - After processing all intervals, the size of the heap represents the minimum number of conference rooms needed since it keeps track of the active meetings.
+
+### Complexity:
+- **Time Complexity**: O(n log n), where \( n \) is the number of intervals. Sorting the intervals takes \( O(n log n) \), and each insertion and removal operation on the heap takes \( O(log n) \).
+- **Space Complexity**: O(n), for storing the end times in the heap.
+
+This approach ensures that we efficiently determine the minimum number of conference rooms required using sorting and a min-heap to manage overlapping intervals.
+
+To determine if two strings `s` and `t` are equal when both are typed into empty text editors that interpret `#` as a backspace character, we can use a stack-based approach. This approach effectively handles the backspace characters by simulating the typing process.
+
+### Approach:
+
+1. **Use a Stack to Simulate Typing**:
+   - For each string, use a stack to simulate the typing process, where each character is pushed onto the stack unless it is a backspace character (`#`), in which case the top character is popped from the stack.
+   - After processing both strings, compare the final contents of the stacks.
+
+2. **Alternative Approach (Two Pointers)**:
+   - We can also solve this problem using a two-pointer approach, where we traverse the strings from the end to the beginning and count the backspaces to determine the final characters.
+
+### Implementation (Stack Approach):
+
+Here's the Python code to implement the stack-based approach:
+
+```python
+def build_string(s):
+    stack = []
+    for char in s:
+        if char != '#':
+            stack.append(char)
+        elif stack:
+            stack.pop()
+    return ''.join(stack)
+
+def backspaceCompare(s, t):
+    return build_string(s) == build_string(t)
+
+# Example usage:
+s1 = "ab#c"
+t1 = "ad#c"
+print(backspaceCompare(s1, t1))  # Output: True
+
+s2 = "ab##"
+t2 = "c#d#"
+print(backspaceCompare(s2, t2))  # Output: True
+
+s3 = "a#c"
+t3 = "b"
+print(backspaceCompare(s3, t3))  # Output: False
+```
+
+### Explanation:
+
+1. **build_string Function**:
+   - This function takes a string `s` and uses a stack to simulate the typing process.
+   - For each character in the string:
+     - If the character is not a backspace (`#`), push it onto the stack.
+     - If the character is a backspace and the stack is not empty, pop the top character from the stack.
+   - After processing the entire string, return the final content of the stack as a string.
+
+2. **backspaceCompare Function**:
+   - This function compares the results of `build_string` for both `s` and `t`.
+
+### Complexity:
+- **Time Complexity**: O(n + m), where `n` is the length of `s` and `m` is the length of `t`. Each character in both strings is processed once.
+- **Space Complexity**: O(n + m), for storing the characters in the stacks.
+
+### Implementation (Two Pointers Approach):
+
+Here's the Python code to implement the two-pointers approach:
+
+```python
+def backspaceCompare(s, t):
+    def final_index(string, index):
+        backspace_count = 0
+        while index >= 0:
+            if string[index] == '#':
+                backspace_count += 1
+            elif backspace_count > 0:
+                backspace_count -= 1
+            else:
+                break
+            index -= 1
+        return index
+
+    i, j = len(s) - 1, len(t) - 1
+    while i >= 0 or j >= 0:
+        i = final_index(s, i)
+        j = final_index(t, j)
+
+        if i >= 0 and j >= 0 and s[i] != t[j]:
+            return False
+        if (i >= 0) != (j >= 0):
+            return False
+
+        i -= 1
+        j -= 1
+
+    return True
+
+# Example usage:
+s1 = "ab#c"
+t1 = "ad#c"
+print(backspaceCompare(s1, t1))  # Output: True
+
+s2 = "ab##"
+t2 = "c#d#"
+print(backspaceCompare(s2, t2))  # Output: True
+
+s3 = "a#c"
+t3 = "b"
+print(backspaceCompare(s3, t3))  # Output: False
+```
+
+### Explanation:
+
+1. **final_index Function**:
+   - This function finds the next valid character index in the string, considering backspaces.
+   - It skips characters based on the number of backspaces (`#`) encountered.
+
+2. **backspaceCompare Function**:
+   - Use two pointers `i` and `j` starting from the end of `s` and `t`, respectively.
+   - Adjust the pointers using `final_index` to find the next valid character.
+   - Compare the characters at the adjusted pointers. If they differ, return `False`.
+   - If one pointer reaches the beginning before the other, also return `False`.
+   - Continue this until both pointers have processed the entire strings.
+
+### Complexity:
+- **Time Complexity**: O(n + m), where `n` is the length of `s` and `m` is the length of `t`.
+- **Space Complexity**: O(1), as no additional space proportional to the input size is used.
+
+Both approaches efficiently determine if two strings are equal when considering backspace characters.
+
+To solve the problem of finding the minimum cost to hire exactly \( k \) workers such that their wages are directly proportional to their quality, we can leverage a combination of sorting and using a min-heap (priority queue). Here's a detailed approach:
+
+### Approach:
+
+1. **Calculate Ratios**:
+   - For each worker, calculate the ratio of wage to quality. This ratio determines the minimum amount you need to pay per unit of quality for that worker.
+   
+2. **Sort by Ratio**:
+   - Sort the workers based on the calculated ratio. This sorting helps in ensuring that for any group of workers we consider, we start with the minimum possible wage-to-quality ratio.
+
+3. **Use a Max-Heap for Quality**:
+   - Maintain a max-heap to store the quality of the selected workers. This helps in efficiently managing the group of \( k \) workers with the lowest total quality.
+
+4. **Iterate and Calculate Minimum Cost**:
+   - Iterate through the sorted workers. For each worker, add their quality to a running total and push it into the max-heap.
+   - If the heap size exceeds \( k \), remove the worker with the highest quality (to keep only \( k \) workers).
+   - Calculate the cost to hire the current group of \( k \) workers and update the minimum cost if the current cost is lower.
+
+### Implementation:
+
+Here's the Python code implementing this approach:
+
+```python
+import heapq
+
+def mincostToHireWorkers(quality, wage, k):
+    # Calculate the ratio of wage to quality for each worker
+    workers = [(w / q, q, w) for q, w in zip(quality, wage)]
+    # Sort workers by their ratio
+    workers.sort()
+    
+    # Min-heap to store the qualities of the workers
+    max_heap = []
+    sum_quality = 0
+    min_cost = float('inf')
+    
+    for ratio, q, w in workers:
+        # Add the current worker's quality to the total quality
+        sum_quality += q
+        # Push the current quality into the max-heap (negated for max-heap simulation)
+        heapq.heappush(max_heap, -q)
+        
+        # If we have more than k workers, remove the worker with the highest quality
+        if len(max_heap) > k:
+            sum_quality += heapq.heappop(max_heap)
+        
+        # If we have exactly k workers, calculate the cost
+        if len(max_heap) == k:
+            min_cost = min(min_cost, sum_quality * ratio)
+    
+    return min_cost
+
+# Example usage:
+quality = [10, 20, 5]
+wage = [70, 50, 30]
+k = 2
+print(mincostToHireWorkers(quality, wage, k))  # Output: 105.0
+
+quality = [3, 1, 10, 10, 1]
+wage = [4, 8, 2, 2, 7]
+k = 3
+print(mincostToHireWorkers(quality, wage, k))  # Output: 30.66667
+```
+
+### Explanation:
+
+1. **Calculate Ratios**:
+   - We calculate the wage-to-quality ratio for each worker and store it along with the quality and wage in a tuple.
+
+2. **Sort by Ratio**:
+   - We sort the workers by the ratio of wage to quality. This helps in ensuring we are considering the workers with the lowest possible wage requirements per unit of quality first.
+
+3. **Max-Heap for Quality**:
+   - As we iterate through the sorted workers, we maintain a max-heap to store the qualities of the selected workers.
+   - If the number of workers in the heap exceeds \( k \), we remove the worker with the highest quality to keep the total number of workers exactly \( k \).
+
+4. **Calculate Minimum Cost**:
+   - For each group of \( k \) workers, we calculate the cost as `sum_quality * ratio`, where `ratio` is the current worker's wage-to-quality ratio. This cost reflects the proportional wage requirements of all workers in the group.
+   - We update the minimum cost if the current cost is lower.
+
+### Complexity:
+- **Time Complexity**: O(n log n), where \( n \) is the number of workers. This comes from sorting the workers and heap operations.
+- **Space Complexity**: O(n) for storing the workers' data and the heap.
+
+This approach ensures that we efficiently find the minimum cost to hire exactly \( k \) workers while meeting the specified wage conditions.
+
+To find the k closest points to the origin (0,0) using the Euclidean distance, we can use a max-heap (priority queue) to keep track of the closest points efficiently.
+
+### Approach:
+
+1. **Calculate Distances**:
+   - For each point, calculate its Euclidean distance squared from the origin. We use the squared distance to avoid unnecessary computation of the square root.
+
+2. **Use a Max-Heap**:
+   - Use a max-heap to keep the k closest points. This allows us to efficiently maintain the closest points.
+   - If the heap size exceeds k, remove the farthest point.
+
+3. **Return the Result**:
+   - The remaining points in the heap will be the k closest points to the origin.
+
+### Implementation:
+
+Here’s the Python code to implement this approach:
+
+```python
+import heapq
+
+def kClosest(points, k):
+    # Define a max-heap
+    max_heap = []
+    
+    # Iterate over all points
+    for (x, y) in points:
+        dist = x**2 + y**2
+        # Add the current point to the heap
+        heapq.heappush(max_heap, (-dist, x, y))
+        
+        # If the heap size exceeds k, remove the farthest point
+        if len(max_heap) > k:
+            heapq.heappop(max_heap)
+    
+    # Extract the k closest points from the heap
+    return [(x, y) for (neg_dist, x, y) in max_heap]
+
+# Example usage:
+points1 = [[1, 3], [-2, 2]]
+k1 = 1
+print(kClosest(points1, k1))  # Output: [[-2, 2]]
+
+points2 = [[3, 3], [5, -1], [-2, 4]]
+k2 = 2
+print(kClosest(points2, k2))  # Output: [[3, 3], [-2, 4]]
+```
+
+### Explanation:
+
+1. **Calculate Distances**:
+   - For each point `(x, y)`, calculate the squared distance from the origin using `dist = x**2 + y**2`.
+
+2. **Use a Max-Heap**:
+   - We use a max-heap to store the points with their negative distances. By using negative distances, Python's `heapq` (which is a min-heap by default) behaves like a max-heap.
+   - Insert each point into the heap. If the heap exceeds size `k`, remove the point with the largest distance.
+
+3. **Return the Result**:
+   - After processing all points, extract the k closest points from the heap. The points stored in the heap are the k closest points to the origin.
+
+### Complexity:
+- **Time Complexity**: O(n log k), where \( n \) is the number of points. Each point insertion into the heap takes O(log k) time, and we do this for all \( n \) points.
+- **Space Complexity**: O(k), for storing the k closest points in the heap.
+
+This approach efficiently finds the k closest points to the origin by leveraging the properties of a max-heap.
+
+To solve the problem of adding two numbers represented by linked lists, where each linked list stores the digits in reverse order, we can use a straightforward approach that mimics the manual addition process. We need to add corresponding digits of the linked lists, handle the carry, and continue until we have processed all the digits.
+
+### Approach:
+
+1. **Initialize Pointers and Variables**:
+   - Use pointers to traverse both linked lists.
+   - Use a variable to keep track of the carry.
+
+2. **Iterate Through Linked Lists**:
+   - Add corresponding digits from both linked lists along with the carry.
+   - Create a new node for the sum of these digits (modulo 10) and update the carry.
+
+3. **Handle Remaining Digits**:
+   - If one of the linked lists is longer, continue adding its digits along with the carry.
+   - If there's a remaining carry after processing both linked lists, create a new node for the carry.
+
+4. **Return the Result**:
+   - Return the head of the new linked list representing the sum.
+
+### Implementation:
+
+Here's the Python code to implement this approach:
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def addTwoNumbers(l1, l2):
+    dummy = ListNode(0)
+    current = dummy
+    carry = 0
+
+    while l1 or l2 or carry:
+        val1 = l1.val if l1 else 0
+        val2 = l2.val if l2 else 0
+
+        # Sum of the two digits plus carry
+        total = val1 + val2 + carry
+        carry = total // 10
+        new_val = total % 10
+
+        current.next = ListNode(new_val)
+        current = current.next
+
+        if l1:
+            l1 = l1.next
+        if l2:
+            l2 = l2.next
+
+    return dummy.next
+
+# Helper function to create linked list from list of digits
+def create_linked_list(lst):
+    dummy = ListNode(0)
+    current = dummy
+    for number in lst:
+        current.next = ListNode(number)
+        current = current.next
+    return dummy.next
+
+# Helper function to print linked list
+def print_linked_list(head):
+    result = []
+    while head:
+        result.append(head.val)
+        head = head.next
+    print(result)
+
+# Example usage:
+l1 = create_linked_list([2, 4, 3])
+l2 = create_linked_list([5, 6, 4])
+result = addTwoNumbers(l1, l2)
+print_linked_list(result)  # Output: [7, 0, 8]
+
+l1 = create_linked_list([0])
+l2 = create_linked_list([0])
+result = addTwoNumbers(l1, l2)
+print_linked_list(result)  # Output: [0]
+
+l1 = create_linked_list([9, 9, 9, 9, 9, 9, 9])
+l2 = create_linked_list([9, 9, 9, 9])
+result = addTwoNumbers(l1, l2)
+print_linked_list(result)  # Output: [8, 9, 9, 9, 0, 0, 0, 1]
+```
+
+### Explanation:
+
+1. **ListNode Class**:
+   - Defines the structure of a node in the linked list.
+
+2. **addTwoNumbers Function**:
+   - Initializes a dummy node to help build the result list.
+   - Uses a pointer `current` to traverse and build the result list.
+   - Uses a variable `carry` to keep track of the carry from the sum of digits.
+   - Iterates through the lists, adds corresponding digits along with the carry, and updates the carry.
+   - Adds the new digit to the result list and moves the pointers of the input lists.
+
+3. **Helper Functions**:
+   - `create_linked_list` converts a list of integers to a linked list.
+   - `print_linked_list` prints the linked list in a readable format.
+
+### Complexity:
+- **Time Complexity**: O(max(m, n)), where `m` and `n` are the lengths of the two linked lists. We iterate through each list once.
+- **Space Complexity**: O(max(m, n)), for storing the result in a new linked list.
+
+This approach ensures that we correctly add two numbers represented by linked lists and handle the carry efficiently.
+
+class Solution:
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        dummy = ListNode(0)
+        dummy.next = head
+        length = 0
+        first = head
+        while first is not None:
+            length += 1
+            first = first.next
+        length -= n
+        first = dummy
+        while length > 0:
+            length -= 1
+            first = first.next
+        first.next = first.next.next
+        return dummy.next
+
+ntuition
+We can recursively define the result of a merge operation on two lists as
+the following (avoiding the corner case logic surrounding empty lists):
+{list1[0]+merge(list1[1:],list2)list2[0]+merge(list1,list2[1:])​list1[0]<list2[0]otherwise​
+Namely, the smaller of the two lists' heads plus the result of a merge on
+the rest of the elements.
+Algorithm
+We model the above recurrence directly, first accounting for edge cases.
+Specifically, if either of l1 or l2 is initially null, there is no
+merge to perform, so we simply return the non-null list. Otherwise, we
+determine which of l1 and l2 has a smaller head, and recursively set the
+next value for that head to the next merge result. Given that both lists
+are null-terminated, the recursion will eventually terminate.
+class Solution:
+    def mergeTwoLists(self, l1, l2):
+        if l1 is None:
+            return l2
+        elif l2 is None:
+            return l1
+        elif l1.val < l2.val:
+            l1.next = self.mergeTwoLists(l1.next, l2)
+            return l1
+        else:
+            l2.next = self.mergeTwoLists(l1, l2.next)
+            return l2
+
+Copy List with Random Pointer
+Solution
+A linked list of length n is given such that each node contains an additional random pointer, which could point to any node in the list, or null.
+Construct a deep copy of the list. The deep copy should consist of exactly n brand new nodes, where each new node has its value set to the value of its corresponding original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list such that the pointers in the original list and copied list represent the same list state. None of the pointers in the new list should point to nodes in the original list.
+For example, if there are two nodes X and Y in the original list, where X.random --> Y, then for the corresponding two nodes x and y in the copied list, x.random --> y.
+Return the head of the copied linked list.
+The linked list is represented in the input/output as a list of n nodes. Each node is represented as a pair of [val, random_index] where:
+val: an integer representing Node.val
+random_index: the index of the node (range from 0 to n-1) that the random pointer points to, or null if it does not point to any node.
+Your code will only be given the head of the original linked list.
+
+class Solution:
+    def __init__(self):
+        # Dictionary which holds old nodes as keys and new nodes as its values.
+        self.visitedHash = {}
+
+    def copyRandomList(self, head: "Optional[Node]") -> "Optional[Node]":
+
+        if head == None:
+            return None
+
+        # If we have already processed the current node, then we simply return the cloned version of it.
+        if head in self.visitedHash:
+            return self.visitedHash[head]
+
+        # create a new node
+        # with the value same as old node.
+        node = Node(head.val, None, None)
+
+        # Save this value in the hash map. This is needed since there might be
+        # loops during traversal due to randomness of random pointers and this would help us avoid them.
+        self.visitedHash[head] = node
+
+        # Recursively copy the remaining linked list starting once from the next pointer and then from the random pointer.
+        # Thus we have two independent recursive calls.
+        # Finally we update the next and random pointers for the new node created.
+        node.next = self.copyRandomList(head.next)
+        node.random = self.copyRandomList(head.random)
+
+        return node
+
+To find the maximum path sum in a binary tree, we can use a depth-first search (DFS) approach. We need to keep track of the maximum path sum that can be achieved by considering each node as a potential root of a path. 
+
+### Key Concepts:
+
+1. **Maximum Gain from Each Node**:
+   - For each node, we calculate the maximum gain it can contribute if it's part of the path. This gain includes the node's value and the maximum gain from its left and right subtrees.
+
+2. **Global Maximum Path Sum**:
+   - While calculating the maximum gain for each node, we also track the maximum path sum seen so far. This path can pass through the node, its left child, and its right child, forming a "V" shape.
+
+3. **Recursive DFS Function**:
+   - A recursive function calculates the maximum gain for each node. It also updates the global maximum path sum.
+
+### Implementation:
+
+Here's the Python code to implement the above approach:
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def maxPathSum(root):
+    def max_gain(node):
+        nonlocal max_sum
+        if not node:
+            return 0
+
+        # Recursively get the maximum gain from left and right subtrees
+        left_gain = max(max_gain(node.left), 0)
+        right_gain = max(max_gain(node.right), 0)
+
+        # Current path sum including the current node
+        current_path_sum = node.val + left_gain + right_gain
+
+        # Update the global maximum sum if the current path sum is greater
+        max_sum = max(max_sum, current_path_sum)
+
+        # Return the maximum gain the node and one of its subtrees can contribute
+        return node.val + max(left_gain, right_gain)
+
+    max_sum = float('-inf')
+    max_gain(root)
+    return max_sum
+
+# Helper function to build a tree from a list (level-order)
+def build_tree(lst):
+    if not lst:
+        return None
+    root = TreeNode(lst[0])
+    queue = [root]
+    i = 1
+    while queue and i < len(lst):
+        current = queue.pop(0)
+        if lst[i] is not None:
+            current.left = TreeNode(lst[i])
+            queue.append(current.left)
+        i += 1
+        if i < len(lst) and lst[i] is not None:
+            current.right = TreeNode(lst[i])
+            queue.append(current.right)
+        i += 1
+    return root
+
+# Example usage:
+tree1 = build_tree([1, 2, 3])
+print(maxPathSum(tree1))  # Output: 6
+
+tree2 = build_tree([-10, 9, 20, None, None, 15, 7])
+print(maxPathSum(tree2))  # Output: 42
+```
+
+### Explanation:
+
+1. **TreeNode Class**:
+   - Represents a node in the binary tree with a value, and pointers to left and right children.
+
+2. **maxPathSum Function**:
+   - Calls a helper function `max_gain` to calculate the maximum path sum starting from the root.
+   - Initializes `max_sum` to negative
+
+To solve the Word Ladder problem, we need to find the shortest transformation sequence from `beginWord` to `endWord`, where each intermediate word must be in the `wordList` and each transformation changes exactly one letter. The optimal solution for this problem can be achieved using Breadth-First Search (BFS) since BFS explores all nodes at the present depth level before moving on to nodes at the next depth level, ensuring that the shortest path is found.
+
+### Steps:
+
+1. **Initialize Data Structures**:
+   - Use a queue to perform BFS.
+   - Use a set to keep track of the words in the `wordList` for O(1) look-up.
+   - Use another set to keep track of visited words to prevent cycles.
+
+2. **Start BFS**:
+   - Initialize the queue with the `beginWord` and the initial depth (level) 1.
+
+3. **BFS Loop**:
+   - For each word, generate all possible next words by changing one letter at a time.
+   - If the next word is `endWord`, return the current depth + 1.
+   - If the next word is in the `wordList` and not visited, add it to the queue and mark it as visited.
+
+4. **No Path Found**:
+   - If the queue is exhausted without finding the `endWord`, return 0.
+
+### Implementation:
+
+Here's the Python code implementing this approach:
+
+```python
+from collections import deque
+
+def ladderLength(beginWord, endWord, wordList):
+    word_set = set(wordList)
+    if endWord not in word_set:
+        return 0
+
+    queue = deque([(beginWord, 1)])
+    visited = set([beginWord])
+
+    while queue:
+        current_word, level = queue.popleft()
+
+        for i in range(len(current_word)):
+            for char in 'abcdefghijklmnopqrstuvwxyz':
+                next_word = current_word[:i] + char + current_word[i+1:]
+
+                if next_word == endWord:
+                    return level + 1
+
+                if next_word in word_set and next_word not in visited:
+                    queue.append((next_word, level + 1))
+                    visited.add(next_word)
+
+    return 0
+
+# Example usage:
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot", "dot", "dog", "lot", "log", "cog"]
+print(ladderLength(beginWord, endWord, wordList))  # Output: 5
+
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot", "dot", "dog", "lot", "log"]
+print(ladderLength(beginWord, endWord, wordList))  # Output: 0
+```
+
+### Explanation:
+
+1. **Data Structures**:
+   - `word_set`: Contains all the words from `wordList` for quick lookup.
+   - `queue`: Used for BFS, initialized with the `beginWord` and starting level 1.
+   - `visited`: Keeps track of visited words to avoid revisiting and cycles.
+
+2. **BFS Process**:
+   - Dequeue the current word and its level from the queue.
+   - Generate all possible words by changing each letter of the current word.
+   - If the generated word matches the `endWord`, return the current level + 1.
+   - If the generated word is in the `word_set` and not yet visited, enqueue it with the next level and mark it as visited.
+
+3. **Termination**:
+   - If the queue is empty and no transformation sequence is found, return 0.
+
+### Complexity:
+- **Time Complexity**: O(M^2 * N), where \( M \) is the length of each word and \( N \) is the total number of words in the `wordList`. We potentially explore each word for each letter position and character replacement.
+- **Space Complexity**: O(M * N), for storing the words in the queue, the visited set, and the word set.
+
+This approach ensures that we find the shortest transformation sequence (if it exists) using BFS.
+
+class Solution:
+    def numIslands(self, grid):
+        if not grid:
+            return 0
+
+        num_islands = 0
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == "1":
+                    self.dfs(grid, i, j)
+                    num_islands += 1
+
+        return num_islands
+
+    def dfs(self, grid, r, c):
+        if (
+            r < 0
+            or c < 0
+            or r >= len(grid)
+            or c >= len(grid[0])
+            or grid[r][c] != "1"
+        ):
+            return
+        grid[r][c] = "0"
+
+        self.dfs(grid, r - 1, c)
+        self.dfs(grid, r + 1, c)
+        self.dfs(grid, r, c - 1)
+        self.dfs(grid, r, c + 1)
+
+from collections import defaultdict
+
+
+class Solution:
+
+    WHITE = 1
+    GRAY = 2
+    BLACK = 3
+
+    def findOrder(
+        self, numCourses: int, prerequisites: List[List[int]]
+    ) -> List[int]:
+
+        # Create the adjacency list representation of the graph
+        adj_list = defaultdict(list)
+
+        # A pair [a, b] in the input represents edge from b --> a
+        for dest, src in prerequisites:
+            adj_list[src].append(dest)
+
+        topological_sorted_order = []
+        is_possible = True
+
+        # By default all vertces are WHITE
+        color = {k: Solution.WHITE for k in range(numCourses)}
+
+        def dfs(node: int) -> None:
+            nonlocal is_possible
+
+            # Don't recurse further if we found a cycle already
+            if not is_possible:
+                return
+
+            # Start the recursion
+            color[node] = Solution.GRAY
+
+            # Traverse on neighboring vertices
+            if node in adj_list:
+                for neighbor in adj_list[node]:
+                    if color[neighbor] == Solution.WHITE:
+                        dfs(neighbor)
+                    elif color[neighbor] == Solution.GRAY:
+                        # An edge to a GRAY vertex represents a cycle
+                        is_possible = False
+
+            # Recursion ends. We mark it as black
+            color[node] = Solution.BLACK
+            topological_sorted_order.append(node)
+
+        for vertex in range(numCourses):
+            # If the node is unprocessed, then call dfs on it.
+            if color[vertex] == Solution.WHITE:
+                dfs(vertex)
+
+        return topological_sorted_order[::-1] if is_possible else []
+
+class Solution:
+    def compute_depth(self, node: TreeNode) -> int:
+        """
+        Return tree depth in O(d) time.
+        """
+        d = 0
+        while node.left:
+            node = node.left
+            d += 1
+        return d
+
+    def exists(self, idx: int, d: int, node: TreeNode) -> bool:
+        """
+        Last level nodes are enumerated from 0 to 2**d - 1 (left -> right).
+        Return True if last level node idx exists. 
+        Binary search with O(d) complexity.
+        """
+        left, right = 0, 2**d - 1
+        for _ in range(d):
+            pivot = left + (right - left) // 2
+            if idx <= pivot:
+                node = node.left
+                right = pivot
+            else:
+                node = node.right
+                left = pivot + 1
+        return node is not None
+        
+    def countNodes(self, root: TreeNode) -> int:
+        # if the tree is empty
+        if not root:
+            return 0
+        
+        d = self.compute_depth(root)
+        # if the tree contains 1 node
+        if d == 0:
+            return 1
+        
+        # Last level nodes are enumerated from 0 to 2**d - 1 (left -> right).
+        # Perform binary search to check how many nodes exist.
+        left, right = 1, 2**d - 1
+        while left <= right:
+            pivot = left + (right - left) // 2
+            if self.exists(pivot, d, root):
+                left = pivot + 1
+            else:
+                right = pivot - 1
+        
+        # The tree contains 2**d - 1 nodes on the first (d - 1) levels
+        # and left nodes on the last level.
+        return (2**d - 1) + left
+
+// DFS + Memoization Solution
+// Accepted and Recommended
+public class Solution {
+    private static final int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    private int m, n;
+
+    public int longestIncreasingPath(int[][] matrix) {
+        if (matrix.length == 0) return 0;
+        m = matrix.length; n = matrix[0].length;
+        int[][] cache = new int[m][n];
+        int ans = 0;
+        for (int i = 0; i < m; ++i)
+            for (int j = 0; j < n; ++j)
+                ans = Math.max(ans, dfs(matrix, i, j, cache));
+        return ans;
+    }
+
+    private int dfs(int[][] matrix, int i, int j, int[][] cache) {
+        if (cache[i][j] != 0) return cache[i][j];
+        for (int[] d : dirs) {
+            int x = i + d[0], y = j + d[1];
+            if (0 <= x && x < m && 0 <= y && y < n && matrix[x][y] > matrix[i][j])
+                cache[i][j] = Math.max(cache[i][j], dfs(matrix, x, y, cache));
+        }
+        return ++cache[i][j];
+    }
+}
+
+Decode String
+Solution
+Given an encoded string, return its decoded string.
+The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+You may assume that the input string is always valid; there are no extra white spaces, square brackets are well-formed, etc. Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there will not be input like 3a or 2[4].
+The test cases are generated so that the length of the output will never exceed 105.
+
+To decode an encoded string where the encoding rule is `k[encoded_string]`, we can use a stack to keep track of the number of repetitions and the current substring being processed. The stack helps in handling nested encoded strings.
+
+### Approach:
+
+1. **Use a Stack**:
+   - Use a stack to store characters and numbers.
+   - Iterate through the input string character by character.
+
+2. **Process Characters**:
+   - If the character is a digit, accumulate the digit to form the complete number.
+   - If the character is `[`, push the current number (k) and the current string onto the stack, then reset them.
+   - If the character is `]`, pop the stack to get the last number and the last string. Repeat the current substring (enclosed within `[` and `]`) by the popped number and append it to the last string from the stack.
+   - If the character is a letter, add it to the current substring.
+
+3. **Final Result**:
+   - The result will be the current substring after processing all characters.
+
+### Implementation:
+
+Here is the Python code implementing this approach:
+
+```python
+def decodeString(s):
+    stack = []
+    current_string = ""
+    current_number = 0
+    
+    for char in s:
+        if char.isdigit():
+            current_number = current_number * 10 + int(char)
+        elif char == '[':
+            stack.append((current_string, current_number))
+            current_string = ""
+            current_number = 0
+        elif char == ']':
+            last_string, number = stack.pop()
+            current_string = last_string + current_string * number
+        else:
+            current_string += char
+    
+    return current_string
+
+# Example usage:
+s1 = "3[a]2[bc]"
+print(decodeString(s1))  # Output: "aaabcbc"
+
+s2 = "3[a2[c]]"
+print(decodeString(s2))  # Output: "accaccacc"
+
+s3 = "2[abc]3[cd]ef"
+print(decodeString(s3))  # Output: "abcabccdcdcdef"
+```
+
+### Explanation:
+
+1. **Initialization**:
+   - `stack`: Used to store pairs of (current_string, current_number) when encountering `[`.
+   - `current_string`: Accumulates the current substring being processed.
+   - `current_number`: Accumulates the current number being processed.
+
+2. **Processing the Input String**:
+   - **Digit**: Accumulate the digit to form the full number.
+   - **`[`**: Push the current string and number onto the stack, then reset them for the next substring.
+   - **`]`**: Pop from the stack, repeat the current substring by the popped number, and append it to the string popped from the stack.
+   - **Letter**: Append the character to the current substring.
+
+3. **Final Result**:
+   - After processing all characters, `current_string` contains the fully decoded string.
+
+### Complexity:
+- **Time Complexity**: O(n), where \( n \) is the length of the input string. Each character is processed once.
+- **Space Complexity**: O(n), for the stack used to store intermediate strings and numbers.
+
+This approach ensures that nested encoded strings are correctly handled, and the overall decoding process is efficient.
+
+class Solution:
+    def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+
+        gid_weight = {}
+
+        def find(node_id):
+            if node_id not in gid_weight:
+                gid_weight[node_id] = (node_id, 1)
+            group_id, node_weight = gid_weight[node_id]
+            # The above statements are equivalent to the following one
+            #group_id, node_weight = gid_weight.setdefault(node_id, (node_id, 1))
+
+            if group_id != node_id:
+                # found inconsistency, trigger chain update
+                new_group_id, group_weight = find(group_id)
+                gid_weight[node_id] = \
+                    (new_group_id, node_weight * group_weight)
+            return gid_weight[node_id]
+
+        def union(dividend, divisor, value):
+            dividend_gid, dividend_weight = find(dividend)
+            divisor_gid, divisor_weight = find(divisor)
+            if dividend_gid != divisor_gid:
+                # merge the two groups together,
+                # by attaching the dividend group to the one of divisor
+                gid_weight[dividend_gid] = \
+                    (divisor_gid, divisor_weight * value / dividend_weight)
+
+        # Step 1). build the union groups
+        for (dividend, divisor), value in zip(equations, values):
+            union(dividend, divisor, value)
+
+        results = []
+        # Step 2). run the evaluation, with "lazy" updates in find() function
+        for (dividend, divisor) in queries:
+            if dividend not in gid_weight or divisor not in gid_weight:
+                # case 1). at least one variable did not appear before
+                results.append(-1.0)
+            else:
+                dividend_gid, dividend_weight = find(dividend)
+                divisor_gid, divisor_weight = find(divisor)
+                if dividend_gid != divisor_gid:
+                    # case 2). the variables do not belong to the same chain/group
+                    results.append(-1.0)
+                else:
+                    # case 3). there is a chain/path between the variables
+                    results.append(dividend_weight / divisor_weight)
+        return results
+
+class Solution:
+    def diameterOfBinaryTree(self, root: TreeNode) -> int:
+        diameter = 0
+
+        def longest_path(node):
+            if not node:
+                return 0
+            nonlocal diameter
+            # recursively find the longest path in
+            # both left child and right child
+            left_path = longest_path(node.left)
+            right_path = longest_path(node.right)
+
+            # update the diameter if left_path plus right_path is larger
+            diameter = max(diameter, left_path + right_path)
+
+            # return the longest one between left_path and right_path;
+            # remember to add 1 for the path connecting the node and its parent
+            return max(left_path, right_path) + 1
+
+        longest_path(root)
+        return diameter
+
+Cracking the Safe
+There is a safe protected by a password. The password is a sequence of n digits where each digit can be in the range [0, k - 1].
+The safe has a peculiar way of checking the password. When you enter in a sequence, it checks the most recent n digits that were entered each time you type a digit.
+For example, the correct password is "345" and you enter in "012345":
+oAfter typing 0, the most recent 3 digits is "0", which is incorrect.
+oAfter typing 1, the most recent 3 digits is "01", which is incorrect.
+oAfter typing 2, the most recent 3 digits is "012", which is incorrect.
+oAfter typing 3, the most recent 3 digits is "123", which is incorrect.
+oAfter typing 4, the most recent 3 digits is "234", which is incorrect.
+oAfter typing 5, the most recent 3 digits is "345", which is correct and the safe unlocks.
+Return any string of minimum length that will unlock the safe at some point of entering it.
+
+Robot Room Cleaner
+Solution
+You are controlling a robot that is located somewhere in a room. The room is modeled as an m x n binary grid where 0 represents a wall and 1 represents an empty slot.
+The robot starts at an unknown location in the room that is guaranteed to be empty, and you do not have access to the grid, but you can move the robot using the given API Robot.
+You are tasked to use the robot to clean the entire room (i.e., clean every empty cell in the room). The robot with the four given APIs can move forward, turn left, or turn right. Each turn is 90 degrees.
+When the robot tries to move into a wall cell, its bumper sensor detects the obstacle, and it stays on the current cell.
+Design an algorithm to clean the entire room using the following APIs:
+
+class Solution:       
+    def cleanRoom(self, robot):
+        """
+        :type robot: Robot
+        :rtype: None
+        """
+        def go_back():
+            robot.turnRight()
+            robot.turnRight()
+            robot.move()
+            robot.turnRight()
+            robot.turnRight()
+            
+        def backtrack(cell = (0, 0), d = 0):
+            visited.add(cell)
+            robot.clean()
+            # going clockwise : 0: 'up', 1: 'right', 2: 'down', 3: 'left'
+            for i in range(4):
+                new_d = (d + i) % 4
+                new_cell = (cell[0] + directions[new_d][0], \
+                            cell[1] + directions[new_d][1])
+                
+                if not new_cell in visited and robot.move():
+                    backtrack(new_cell, new_d)
+                    go_back()
+                # turn the robot following chosen direction : clockwise
+                robot.turnRight()
+    
+        # going clockwise : 0: 'up', 1: 'right', 2: 'down', 3: 'left'
+        directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+        visited = set()
+        backtrack()
+
+Most Stones Removed with Same Row or Column
+Solution
+On a 2D plane, we place n stones at some integer coordinate points. Each coordinate point may have at most one stone.
+A stone can be removed if it shares either the same row or the same column as another stone that has not been removed.
+Given an array stones of length n where stones[i] = [xi, yi] represents the location of the ith stone, return the largest possible number of stones that can be removed.
+
+class Solution {
+    // Return true if stone a and b shares row or column
+    boolean shareSameRowOrColumn(int[] a, int[] b) {
+        return a[0] == b[0] || a[1] == b[1];
+    }
+    
+    void dfs(int[][] stones, List<Integer>[] adj, int[] visited, int src) {
+        // Mark the stone as visited
+        visited[src] = 1;
+        
+        // Iterate over the adjacent, and iterate over it if not visited yet
+        for (int adjacent : adj[src]) {
+            if (visited[adjacent] == 0) {
+                dfs(stones, adj, visited, adjacent);
+            }
+        }
+    }
+    
+    int removeStones(int[][] stones) {
+        // Adjacency list to store edges
+        List<Integer>[] adj = new ArrayList[stones.length]; 
+        for (int i = 0; i < stones.length; i++) {
+            adj[i] = new ArrayList<>();
+        }
+        
+        for (int i = 0; i < stones.length; i++) {
+            for (int j = i + 1; j < stones.length; j++) {
+                if (shareSameRowOrColumn(stones[i], stones[j])) {
+                    adj[i].add(j);
+                    adj[j].add(i);
+                }
+            }
+        }
+        
+        // Array to mark visited stones
+        int[] visited = new int[stones.length];
+        // Counter for connected components
+        int componentCount = 0;
+        for (int i = 0; i < stones.length; i++) {
+            if (visited[i] == 0) {
+                // If the stone is not visited yet,
+                // Start the DFS and increment the counter
+                componentCount++;
+                dfs(stones, adj, visited, i);
+            }
+        }
+        
+        // Return the maximum stone that can be removed
+        return stones.length - componentCount;
+    }
+};
+
+To solve the problem of cracking the safe, we need to generate the shortest string that contains every possible sequence of length `n` composed of digits in the range `[0, k-1]`. This problem can be solved using the concept of De Bruijn sequences, which are cyclic sequences that contain every possible combination of a given length over a specified alphabet exactly once.
+
+However, because the safe checks non-cyclically (i.e., it checks substrings of length `n` at every position), we need to adapt the De Bruijn sequence approach to generate a non-cyclic sequence.
+
+### Approach:
+
+1. **Eulerian Path in De Bruijn Graph**:
+   - Represent the problem as finding an Eulerian path in a De Bruijn graph.
+   - Each node in the graph represents a sequence of length `n-1`.
+   - Each edge represents appending a new digit to the sequence, resulting in a sequence of length `n`.
+
+2. **Hierholzer's Algorithm**:
+   - Use Hierholzer's algorithm to find an Eulerian path in the graph.
+   - Start from a node and keep visiting unvisited edges until you return to the start node, then merge this cycle with previously found cycles.
+
+### Implementation:
+
+Here is the Python code implementing this approach:
+
+```python
+def crackSafe(n, k):
+    def dfs(node):
+        for x in range(k):
+            nei = node + str(x)
+            if nei not in visited:
+                visited.add(nei)
+                dfs(nei[1:])
+                result.append(str(x))
+
+    start_node = "0" * (n - 1)
+    visited = set()
+    result = []
+    
+    dfs(start_node)
+    return start_node + "".join(result)
+
+# Example usage:
+n = 2
+k = 2
+print(crackSafe(n, k))  # Output: "00110" or any valid sequence
+
+n = 1
+k = 2
+print(crackSafe(n, k))  # Output: "01" or "10"
+```
+
+### Explanation:
+
+1. **DFS Function**:
+   - The `dfs` function performs a depth-first search starting from the given node.
+   - For each possible digit from `0` to `k-1`, it generates the next node (`nei`) by appending the digit to the current node.
+   - If the next node (`nei`) has not been visited, it is added to the visited set, and the `dfs` function is called recursively on the next node's suffix (excluding the first character to maintain the length `n-1`).
+   - The digit is added to the result list after the recursive call, ensuring the sequence is constructed correctly.
+
+2. **Start Node**:
+   - The starting node is `"0" * (n - 1)`, which represents the initial state of the password.
+
+3. **Building the Result**:
+   - The final result is constructed by concatenating the starting node with the digits in the result list, which represent the Eulerian path found in the De Bruijn graph.
+
+### Complexity:
+- **Time Complexity**: O(k^n), where \( k \) is the range of digits and \( n \) is the length of the password. This is because there are \( k^n \) possible sequences of length \( n \) and each sequence is visited exactly once.
+- **Space Complexity**: O(k^n), for storing the visited nodes and the result.
+
+This approach efficiently generates the shortest sequence that contains all possible combinations of length `n` using digits `[0, k-1]`, ensuring that the safe can be unlocked at some point during the sequence.
+lip Equivalent Binary Trees
+Solution
+For a binary tree T, we can define a flip operation as follows: choose any node, and swap the left and right child subtrees.
+A binary tree X is flip equivalent to a binary tree Y if and only if we can make X equal to Y after some number of flip operations.
+Given the roots of two binary trees root1 and root2, return true if the two trees are flip equivalent or false otherwise.
+
+class Solution(object):
+    def flipEquiv(self, root1, root2):
+        if root1 is root2:
+            return True
+        if not root1 or not root2 or root1.val != root2.val:
+            return False
+
+        return (self.flipEquiv(root1.left, root2.left) and
+                self.flipEquiv(root1.right, root2.right) or
+                self.flipEquiv(root1.left, root2.right) and
+                self.flipEquiv(root1.right, root2.left))
+
+Word Squares
+Solution
+Given an array of unique strings words, return all the word squares you can build from words. The same word from words can be used multiple times. You can return the answer in any order.
+A sequence of strings forms a valid word square if the kth row and column read the same string, where 0 <= k < max(numRows, numColumns).
+For example, the word sequence ["ball","area","lead","lady"] forms a word square because each word reads the same both horizontally and vertically.
+
+class Solution {
+  int N = 0;
+  String[] words = null;
+  HashMap<String, List<String>> prefixHashTable = null;
+
+  public List<List<String>> wordSquares(String[] words) {
+    this.words = words;
+    this.N = words[0].length();
+
+    List<List<String>> results = new ArrayList<List<String>>();
+    this.buildPrefixHashTable(words);
+
+    for (String word : words) {
+      LinkedList<String> wordSquares = new LinkedList<String>();
+      wordSquares.addLast(word);
+      this.backtracking(1, wordSquares, results);
+    }
+    return results;
+  }
+
+  protected void backtracking(int step, LinkedList<String> wordSquares,
+                              List<List<String>> results) {
+    if (step == N) {
+      results.add((List<String>) wordSquares.clone());
+      return;
+    }
+
+    StringBuilder prefix = new StringBuilder();
+    for (String word : wordSquares) {
+      prefix.append(word.charAt(step));
+    }
+
+    for (String candidate : this.getWordsWithPrefix(prefix.toString())) {
+      wordSquares.addLast(candidate);
+      this.backtracking(step + 1, wordSquares, results);
+      wordSquares.removeLast();
+    }
+  }
+
+  protected void buildPrefixHashTable(String[] words) {
+    this.prefixHashTable = new HashMap<String, List<String>>();
+
+    for (String word : words) {
+      for (int i = 1; i < this.N; ++i) {
+        String prefix = word.substring(0, i);
+        List<String> wordList = this.prefixHashTable.get(prefix);
+        if (wordList == null) {
+          wordList = new ArrayList<String>();
+          wordList.add(word);
+          this.prefixHashTable.put(prefix, wordList);
+        } else {
+          wordList.add(word);
+        }
+      }
+    }
+  }
+
+  protected List<String> getWordsWithPrefix(String prefix) {
+    List<String> wordList = this.prefixHashTable.get(prefix);
+    return (wordList != null ? wordList : new ArrayList<String>());
+  }
+}
+
+To solve the problem of generating all strobogrammatic numbers of a given length \( n \), we need to understand the nature of strobogrammatic numbers. These are numbers that look the same when rotated 180 degrees. The valid strobogrammatic digit pairs are:
+
+- 0 and 0
+- 1 and 1
+- 6 and 9
+- 8 and 8
+- 9 and 6
+
+### Approach:
+
+1. **Recursive Generation**:
+   - Use a recursive approach to build the strobogrammatic numbers from the middle outwards.
+   - Start with the base cases: an empty string, "0", "1", and "8" for even-length numbers, and "0", "1", and "8" for odd-length numbers.
+
+2. **Pairing Digits**:
+   - For each recursive step, add pairs of strobogrammatic digits to both ends of the current string.
+   - Ensure that "0" is not added to the outermost positions if the number length is greater than 1 (to avoid leading zeros).
+
+### Implementation:
+
+Here is the Python code implementing this approach:
+
+```python
+def findStrobogrammatic(n):
+    def buildStrobogrammatic(m, n):
+        if m == 0: 
+            return [""]
+        if m == 1: 
+            return ["0", "1", "8"]
+
+        middles = buildStrobogrammatic(m - 2, n)
+        result = []
+
+        for middle in middles:
+            if m != n:
+                result.append("0" + middle + "0")
+            result.append("1" + middle + "1")
+            result.append("6" + middle + "9")
+            result.append("8" + middle + "8")
+            result.append("9" + middle + "6")
+        
+        return result
+
+    return buildStrobogrammatic(n, n)
+
+# Example usage:
+print(findStrobogrammatic(2))  # Output: ['11', '69', '96', '88']
+print(findStrobogrammatic(3))  # Output: ['101', '609', '906', '808', '181', '689', '986', '888', '818', '619', '916', '111', ...]
+```
+
+### Explanation:
+
+1. **Base Cases**:
+   - For `m == 0`, return an empty string (base case for even-length numbers).
+   - For `m == 1`, return ["0", "1", "8"] (base case for odd-length numbers).
+
+2. **Recursive Case**:
+   - For each middle string generated by the recursive call `buildStrobogrammatic(m - 2, n)`, add strobogrammatic digit pairs to both ends of the middle string.
+   - Ensure that "0" is not added to the outermost positions if `m != n` to avoid numbers with leading zeros.
+
+3. **Helper Function `buildStrobogrammatic`**:
+   - This function generates strobogrammatic numbers of length `m`, considering the total desired length `n` to avoid leading zeros in the final numbers.
+
+### Complexity:
+- **Time Complexity**: O(k^n), where \( k \) is a constant factor (5 in this case, due to the 5 pairs), and \( n \) is the length of the number. The actual growth is constrained by the recursive structure.
+- **Space Complexity**: O(k^n), for storing the results of strobogrammatic numbers.
+
+This approach efficiently generates all strobogrammatic numbers of length `n` by recursively building them from the middle outwards, ensuring that all generated numbers meet the strobogrammatic property.
+
+Word Search II
+Solution
+Given an m x n board of characters and a list of strings words, return all words on the board.
+Each word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        WORD_KEY = "$"
+
+        trie = {}
+        for word in words:
+            node = trie
+            for letter in word:
+                # retrieve the next node; If not found, create a empty node.
+                node = node.setdefault(letter, {})
+            # mark the existence of a word in trie node
+            node[WORD_KEY] = word
+
+        rowNum = len(board)
+        colNum = len(board[0])
+
+        matchedWords = []
+
+        def backtracking(row, col, parent):
+
+            letter = board[row][col]
+            currNode = parent[letter]
+
+            # check if we find a match of word
+            word_match = currNode.pop(WORD_KEY, False)
+            if word_match:
+                # also we removed the matched word to avoid duplicates,
+                #   as well as avoiding using set() for results.
+                matchedWords.append(word_match)
+
+            # Before the EXPLORATION, mark the cell as visited
+            board[row][col] = "#"
+
+            # Explore the neighbors in 4 directions, i.e. up, right, down, left
+            for rowOffset, colOffset in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+                newRow, newCol = row + rowOffset, col + colOffset
+                if (
+                    newRow < 0
+                    or newRow >= rowNum
+                    or newCol < 0
+                    or newCol >= colNum
+                ):
+                    continue
+                if not board[newRow][newCol] in currNode:
+                    continue
+                backtracking(newRow, newCol, currNode)
+
+            # End of EXPLORATION, we restore the cell
+            board[row][col] = letter
+
+            # Optimization: incrementally remove the matched leaf node in Trie.
+            if not currNode:
+                parent.pop(letter)
+
+        for row in range(rowNum):
+            for col in range(colNum):
+                # starting from each of the cells
+                if board[row][col] in trie:
+                    backtracking(row, col, trie)
+
+        return matchedWords
+Android Unlock Patterns
+Android devices have a special lock screen with a 3 x 3 grid of dots. Users can set an "unlock pattern" by connecting the dots in a specific sequence, forming a series of joined line segments where each segment's endpoints are two consecutive dots in the sequence. A sequence of k dots is a valid unlock pattern if both of the following are true:
+All the dots in the sequence are distinct.
+If the line segment connecting two consecutive dots in the sequence passes through the center of any other dot, the other dot must have previously appeared in the sequence. No jumps through the center non-selected dots are allowed.
+oFor example, connecting dots 2 and 9 without dots 5 or 6 appearing beforehand is valid because the line from dot 2 to dot 9 does not pass through the center of either dot 5 or 6.
+oHowever, connecting dots 1 and 3 without dot 2 appearing beforehand is invalid because the line from dot 1 to dot 3 passes through the center of dot 2.
+
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        # If the input is empty, immediately return an empty answer array
+        if len(digits) == 0:
+            return []
+
+        # Map all the digits to their corresponding letters
+        letters = {
+            "2": "abc",
+            "3": "def",
+            "4": "ghi",
+            "5": "jkl",
+            "6": "mno",
+            "7": "pqrs",
+            "8": "tuv",
+            "9": "wxyz",
+        }
+
+        def backtrack(index, path):
+            # If the path is the same length as digits, we have a complete combination
+            if len(path) == len(digits):
+                combinations.append("".join(path))
+                return  # Backtrack
+
+            # Get the letters that the current digit maps to, and loop through them
+            possible_letters = letters[digits[index]]
+            for letter in possible_letters:
+                # Add the letter to our current path
+                path.append(letter)
+                # Move on to the next digit
+                backtrack(index + 1, path)
+                # Backtrack by removing the letter before moving onto the next
+                path.pop()
+
+        # Initiate backtracking with an empty path and starting index of 0
+        combinations = []
+        backtrack(0, [])
+        return combinations
+Generate Parentheses
+Solution
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        answer = []
+
+        def backtracking(cur_string, left_count, right_count):
+            if len(cur_string) == 2 * n:
+                answer.append("".join(cur_string))
+                return
+            if left_count < n:
+                cur_string.append("(")
+                backtracking(cur_string, left_count + 1, right_count)
+                cur_string.pop()
+            if right_count < left_count:
+                cur_string.append(")")
+                backtracking(cur_string, left_count, right_count + 1)
+                cur_string.pop()
+
+        backtracking([], 0, 0)
+        return answer
+
+Median of Two Sorted Arrays
+Solution
+Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
+The overall run time complexity should be O(log (m+n))
+
+
+class Solution:
+    def findMedianSortedArrays(
+        self, nums1: List[int], nums2: List[int]
+    ) -> float:
+        m, n = len(nums1), len(nums2)
+        p1, p2 = 0, 0
+
+        # Get the smaller value between nums1[p1] and nums2[p2].
+        def get_min():
+            nonlocal p1, p2
+            if p1 < m and p2 < n:
+                if nums1[p1] < nums2[p2]:
+                    ans = nums1[p1]
+                    p1 += 1
+                else:
+                    ans = nums2[p2]
+                    p2 += 1
+            elif p2 == n:
+                ans = nums1[p1]
+                p1 += 1
+            else:
+                ans = nums2[p2]
+                p2 += 1
+            return ans
+
+        if (m + n) % 2 == 0:
+            for _ in range((m + n) // 2 - 1):
+                _ = get_min()
+            return (get_min() + get_min()) / 2
+        else:
+            for _ in range((m + n) // 2):
+                _ = get_min()
+            return get_min()
+
+To solve the problem of counting valid Android unlock patterns, we need to implement a recursive backtracking approach to explore all possible patterns while adhering to the constraints given. The constraints are:
+
+1. All dots in the sequence must be distinct.
+2. If the line segment connecting two consecutive dots passes through the center of any other dot, that center dot must have been previously selected in the sequence.
+
+### Approach:
+
+1. **Adjacency Checks**:
+   - Create a function to check if moving from one dot to another is valid, considering the jump condition.
+
+2. **Recursive Backtracking**:
+   - Use backtracking to explore all possible patterns starting from each dot.
+   - Keep track of visited dots to ensure all dots in the sequence are distinct.
+   - For each valid move, recursively continue to the next dot.
+
+3. **Symmetry Optimization**:
+   - Use symmetry in the 3x3 grid to reduce the number of starting points and multiply the results appropriately.
+
+### Implementation:
+
+Here's the Python code to implement this approach:
+
+```python
+def numberOfPatterns(m, n):
+    def is_valid_move(used, r1, c1, r2, c2):
+        # If the target cell is already used
+        if used[r2][c2]:
+            return False
+        # If it's the same cell
+        if r1 == r2 and c1 == c2:
+            return False
+        # Calculate mid points
+        mid_r, mid_c = (r1 + r2) // 2, (c1 + c2) // 2
+        if (r1 == r2 or c1 == c2 or abs(r1 - r2) == abs(c1 - c2)):
+            if not used[mid_r][mid_c] and (r1 != r2 and c1 != c2):
+                return False
+        return True
+
+    def dfs(used, r, c, len_pattern, m, n):
+        if len_pattern > n:
+            return 0
+        if len_pattern >= m:
+            count = 1
+        else:
+            count = 0
+        used[r][c] = True
+        for nr in range(3):
+            for nc in range(3):
+                if is_valid_move(used, r, c, nr, nc):
+                    count += dfs(used, nr, nc, len_pattern + 1, m, n)
+        used[r][c] = False
+        return count
+
+    used = [[False] * 3 for _ in range(3)]
+    total_patterns = 0
+
+    # Symmetry: calculate one corner (1,1), one edge (0,1) and center (1,1)
+    total_patterns += dfs(used, 0, 0, 1, m, n) * 4
+    total_patterns += dfs(used, 0, 1, 1, m, n) * 4
+    total_patterns += dfs(used, 1, 1, 1, m, n)
+
+    return total_patterns
+
+# Example usage:
+print(numberOfPatterns(1, 1))  # Output: 9 (all single dots)
+print(numberOfPatterns(1, 2))  # Output: 65 (patterns with length 1 and 2)
+print(numberOfPatterns(2, 3))  # Output: 320 (patterns with length 2 and 3)
+```
+
+### Explanation:
+
+1. **`is_valid_move` Function**:
+   - Checks if moving from `(r1, c1)` to `(r2, c2)` is valid based on the rules.
+   - It ensures that if the move passes through the center of any other dot, that dot must have been used previously.
+   - Handles direct neighbors and diagonal jumps by checking the mid-points.
+
+2. **`dfs` Function**:
+   - A depth-first search function that explores all valid patterns starting from a given dot.
+   - It increments the length of the current pattern and recursively calls itself for the next valid moves.
+   - Marks the current dot as used and backtracks by unmarking it after exploring.
+
+3. **Symmetry Optimization**:
+   - Uses symmetry to reduce redundant calculations:
+     - There are 4 corner dots, 4 edge dots, and 1 center dot.
+     - Computes patterns starting from one corner and one edge, then multiplies the result by 4 (due to symmetry).
+
+4. **Counting Patterns**:
+   - Counts the valid patterns with lengths between `m` and `n` by invoking the `dfs` function from appropriate starting dots and summing the results.
+
+This approach ensures an efficient exploration of all possible patterns, adhering to the constraints, and leverages symmetry to minimize computations.
+
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+
+        lower_bound = self.findBound(nums, target, True)
+        if lower_bound == -1:
+            return [-1, -1]
+
+        upper_bound = self.findBound(nums, target, False)
+
+        return [lower_bound, upper_bound]
+
+    def findBound(self, nums: List[int], target: int, isFirst: bool) -> int:
+
+        N = len(nums)
+        begin, end = 0, N - 1
+        while begin <= end:
+            mid = int((begin + end) / 2)
+
+            if nums[mid] == target:
+
+                if isFirst:
+                    # This means we found our lower bound.
+                    if mid == begin or nums[mid - 1] < target:
+                        return mid
+
+                    # Search on the left side for the bound.
+                    end = mid - 1
+                else:
+
+                    # This means we found our upper bound.
+                    if mid == end or nums[mid + 1] > target:
+                        return mid
+
+                    # Search on the right side for the bound.
+                    begin = mid + 1
+
+            elif nums[mid] > target:
+                end = mid - 1
+            else:
+                begin = mid + 1
+
+        return -1
+
+Merge Intervals
+Solution
+Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+ 
+
+
+class Solution:
+    def overlap(self, a, b):
+        return a[0] <= b[1] and b[0] <= a[1]
+
+    # generate graph where there is an undirected edge between intervals u
+    # and v iff u and v overlap.
+    def buildGraph(self, intervals):
+        graph = collections.defaultdict(list)
+
+        for i, interval_i in enumerate(intervals):
+            for j in range(i + 1, len(intervals)):
+                if self.overlap(interval_i, intervals[j]):
+                    graph[tuple(interval_i)].append(intervals[j])
+                    graph[tuple(intervals[j])].append(interval_i)
+
+        return graph
+
+    # merges all of the nodes in this connected component into one interval.
+    def mergeNodes(self, nodes):
+        min_start = min(node[0] for node in nodes)
+        max_end = max(node[1] for node in nodes)
+        return [min_start, max_end]
+
+    # gets the connected components of the interval overlap graph.
+    def getComponents(self, graph, intervals):
+        visited = set()
+        comp_number = 0
+        nodes_in_comp = collections.defaultdict(list)
+
+        def markComponentDFS(start):
+            stack = [start]
+            while stack:
+                node = tuple(stack.pop())
+                if node not in visited:
+                    visited.add(node)
+                    nodes_in_comp[comp_number].append(node)
+                    stack.extend(graph[node])
+
+        # mark all nodes in the same connected component with the same integer.
+        for interval in intervals:
+            if tuple(interval) not in visited:
+                markComponentDFS(interval)
+                comp_number += 1
+
+        return nodes_in_comp, comp_number
+
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        graph = self.buildGraph(intervals)
+        nodes_in_comp, number_of_comps = self.getComponents(graph, intervals)
+
+        # all intervals in each connected component must be merged.
+        return [
+            self.mergeNodes(nodes_in_comp[comp])
+            for comp in range(number_of_comps)
+        ]
+
+To solve the Bulls and Cows problem, we need to calculate two values based on the comparison between the `secret` number and the `guess` number:
+
+1. **Bulls**: The number of digits in the guess that are in the correct position.
+2. **Cows**: The number of digits in the guess that are in the secret number but in the wrong position, excluding the bulls.
+
+### Approach:
+
+1. **Calculate Bulls**:
+   - Compare each digit of the `secret` and `guess` numbers at the same positions.
+   - If they match, increment the bulls count.
+
+2. **Calculate Cows**:
+   - Use two arrays (or dictionaries) to count the occurrences of each digit (0-9) in the `secret` and `guess` numbers, excluding the bulls.
+   - For each digit, the number of cows is the minimum of the counts from the `secret` and `guess` arrays.
+
+3. **Format the Result**:
+   - Return the result as a string in the format "xAyB", where x is the number of bulls and y is the number of cows.
+
+### Implementation:
+
+Here's the Python code to implement this approach:
+
+```python
+def getHint(secret, guess):
+    bulls = 0
+    cows = 0
+
+    # Arrays to count the frequency of each digit in secret and guess
+    secret_counts = [0] * 10
+    guess_counts = [0] * 10
+
+    # First pass: find bulls and count frequencies
+    for i in range(len(secret)):
+        if secret[i] == guess[i]:
+            bulls += 1
+        else:
+            secret_counts[int(secret[i])] += 1
+            guess_counts[int(guess[i])] += 1
+
+    # Second pass: find cows
+    for i in range(10):
+        cows += min(secret_counts[i], guess_counts[i])
+
+    return f"{bulls}A{cows}B"
+
+# Example usage:
+secret = "1807"
+guess = "7810"
+print(getHint(secret, guess))  # Output: "1A3B"
+
+secret = "1123"
+guess = "0111"
+print(getHint(secret, guess))  # Output: "1A1B"
+```
+
+### Explanation:
+
+1. **Initialize Variables**:
+   - `bulls` and `cows` are initialized to 0.
+   - `secret_counts` and `guess_counts` arrays are initialized to store the frequency of each digit (0-9) in the `secret` and `guess` strings, respectively.
+
+2. **First Pass (Calculate Bulls and Count Frequencies)**:
+   - Iterate through each digit of the `secret` and `guess` strings.
+   - If the digits match at the same position, increment the `bulls` count.
+   - If they don't match, update the frequency counts in the respective arrays.
+
+3. **Second Pass (Calculate Cows)**:
+   - Iterate through the digit counts (0-9).
+   - For each digit, the number of cows is the minimum of the counts from the `secret` and `guess` arrays (since a cow represents a digit in the wrong position but still present in both).
+
+4. **Format the Result**:
+   - Return the result string in the format "xAyB".
+
+### Complexity:
+- **Time Complexity**: O(n), where \( n \) is the length of the `secret` (or `guess`) string. We perform a single pass to calculate bulls and count frequencies, and another pass to calculate cows.
+- **Space Complexity**: O(1), since the size of the frequency count arrays is fixed at 10.
+
+This approach ensures efficient computation of the bulls and cows while handling all edge cases, including duplicate digits and varying positions.
+
+To find the minimum area of a rectangle formed by given points with sides parallel to the X and Y axes, we can use a set to store the points and then check each pair of points to see if they can form the diagonal of a rectangle. By leveraging a set for quick lookup, we can efficiently determine if the other two points needed to complete the rectangle are present.
+
+### Approach:
+
+1. **Store Points in a Set**:
+   - Use a set to store the points for O(1) average-time complexity for point existence checks.
+
+2. **Check Pairs of Points**:
+   - Iterate through all pairs of points.
+   - For each pair of points, treat them as the diagonal corners of a potential rectangle.
+   - If the x-coordinates and y-coordinates differ, check if the other two points required to form the rectangle exist in the set.
+
+3. **Calculate Area**:
+   - Calculate the area of the rectangle using the distance between the x-coordinates and y-coordinates of the diagonal points.
+   - Track the minimum area encountered.
+
+4. **Edge Cases**:
+   - If no rectangle can be formed, return 0.
+
+### Implementation:
+
+Here’s the Python code implementing this approach:
+
+```python
+def minAreaRect(points):
+    point_set = set(map(tuple, points))
+    min_area = float('inf')
+    
+    for i in range(len(points)):
+        for j in range(i + 1, len(points)):
+            x1, y1 = points[i]
+            x2, y2 = points[j]
+            
+            # Check if we have a diagonal by ensuring the x and y coordinates differ
+            if x1 != x2 and y1 != y2:
+                # Check if the other two points exist in the set
+                if (x1, y2) in point_set and (x2, y1) in point_set:
+                    area = abs(x2 - x1) * abs(y2 - y1)
+                    min_area = min(min_area, area)
+    
+    return min_area if min_area != float('inf') else 0
+
+# Example usage:
+points1 = [[1, 1], [1, 3], [3, 1], [3, 3], [2, 2]]
+print(minAreaRect(points1))  # Output: 4
+
+points2 = [[1, 1], [1, 3], [3, 1], [3, 3], [4, 1], [4, 3]]
+print(minAreaRect(points2))  # Output: 2
+```
+
+### Explanation:
+
+1. **Store Points in a Set**:
+   - Convert the list of points to tuples and store them in a set called `point_set`.
+
+2. **Check Pairs of Points**:
+   - Use two nested loops to iterate over all pairs of points.
+   - For each pair, check if

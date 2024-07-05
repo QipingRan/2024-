@@ -1,0 +1,3686 @@
+https://leetcode.com/explore/interview/card/adobe/491/sql/2542/
+
+To solve the Two Sum problem, you can use a hash map to store the indices of the elements as you iterate through the array. This way, you can check in constant time whether the complement (i.e., `target - nums[i]`) of the current element exists in the hash map. Here is a Python solution:
+
+```python
+def two_sum(nums, target):
+    # Create a dictionary to store the complement and its index
+    num_to_index = {}
+    
+    # Iterate over the list of numbers
+    for i, num in enumerate(nums):
+        # Calculate the complement
+        complement = target - num
+        
+        # Check if the complement is in the dictionary
+        if complement in num_to_index:
+            # If found, return the indices
+            return [num_to_index[complement], i]
+        
+        # Otherwise, add the number and its index to the dictionary
+        num_to_index[num] = i
+    
+    # If no solution is found, return an empty list
+    return []
+
+# Example usage
+nums = [2, 7, 11, 15]
+target = 9
+print(two_sum(nums, target))  # Output: [0, 1]
+```
+
+### Explanation
+1. **Initialization**: Create an empty dictionary `num_to_index` to store the numbers and their indices as you iterate through the list.
+2. **Iterate through the array**: For each number in `nums`, calculate its complement (i.e., `target - num`).
+3. **Check for the complement**: If the complement is already in the dictionary, it means we have found the two numbers that add up to the target. Return their indices.
+4. **Store the current number and its index**: If the complement is not in the dictionary, store the current number and its index in the dictionary.
+5. **Return the result**: The solution is guaranteed to exist, so the function will always return the indices of the two numbers.
+
+This algorithm runs in O(n) time complexity, where n is the length of the input list, because each lookup and insertion operation in the dictionary is O(1) on average.
+
+To solve the problem of finding the length of the longest substring without repeating characters, you can use a sliding window approach along with a hash map (or a set) to keep track of the characters and their positions. Here is a Python solution:
+
+```python
+def length_of_longest_substring(s):
+    # Create a set to store the characters in the current window
+    char_set = set()
+    
+    # Initialize pointers for the sliding window
+    left = 0
+    right = 0
+    max_length = 0
+    
+    # Iterate through the string with the right pointer
+    while right < len(s):
+        # If the character at the right pointer is not in the set
+        if s[right] not in char_set:
+            # Add the character to the set
+            char_set.add(s[right])
+            # Update the maximum length if needed
+            max_length = max(max_length, right - left + 1)
+            # Move the right pointer to the right
+            right += 1
+        else:
+            # If the character is in the set, remove the character at the left pointer
+            char_set.remove(s[left])
+            # Move the left pointer to the right
+            left += 1
+    
+    # Return the maximum length of the substring without repeating characters
+    return max_length
+
+# Example usage
+s = "abcabcbb"
+print(length_of_longest_substring(s))  # Output: 3
+```
+
+### Explanation
+1. **Initialization**: Create a set `char_set` to store the characters in the current window, and initialize pointers `left` and `right` to mark the boundaries of the sliding window. Also, initialize `max_length` to keep track of the maximum length of the substring without repeating characters.
+2. **Sliding Window**: Use a while loop to iterate through the string with the `right` pointer.
+3. **Expand the Window**: If the character at the `right` pointer is not in the set, add it to the set and update the `max_length` if the current window size is larger than the previously recorded maximum. Move the `right` pointer to the right.
+4. **Shrink the Window**: If the character at the `right` pointer is already in the set, remove the character at the `left` pointer from the set and move the `left` pointer to the right. This shrinks the window from the left until the character at the `right` pointer is no longer in the set.
+5. **Return the Result**: After iterating through the string, return the maximum length of the substring without repeating characters.
+
+This algorithm runs in O(n) time complexity, where n is the length of the input string, because each character is processed at most twice (once by the `right` pointer and once by the `left` pointer).
+
+To solve the "Container With Most Water" problem, you can use the two-pointer approach. This approach is efficient and intuitive. Here is a Python solution:
+
+```python
+def max_area(height):
+    # Initialize two pointers
+    left = 0
+    right = len(height) - 1
+    
+    # Initialize the maximum area
+    max_area = 0
+    
+    # Iterate until the two pointers meet
+    while left < right:
+        # Calculate the current area
+        width = right - left
+        current_area = min(height[left], height[right]) * width
+        
+        # Update the maximum area if the current area is larger
+        max_area = max(max_area, current_area)
+        
+        # Move the pointer pointing to the shorter line
+        if height[left] < height[right]:
+            left += 1
+        else:
+            right -= 1
+    
+    # Return the maximum area found
+    return max_area
+
+# Example usage
+height = [1,8,6,2,5,4,8,3,7]
+print(max_area(height))  # Output: 49
+```
+
+### Explanation
+1. **Initialization**: Set two pointers, `left` at the beginning (index 0) and `right` at the end (index `len(height) - 1`) of the array. Initialize `max_area` to keep track of the maximum water container area found so far.
+2. **Iterate with Two Pointers**: Use a while loop to iterate until the two pointers meet.
+3. **Calculate Current Area**: For each pair of lines pointed to by the two pointers, calculate the current area using the formula `min(height[left], height[right]) * (right - left)`. The width of the container is the distance between the two pointers.
+4. **Update Maximum Area**: Update `max_area` if the current area is larger than the previously recorded maximum.
+5. **Move Pointers**: Move the pointer pointing to the shorter line to try to find a potentially larger area. If `height[left]` is less than `height[right]`, move the `left` pointer to the right. Otherwise, move the `right` pointer to the left.
+6. **Return the Result**: After iterating through the array, return the maximum area found.
+
+This algorithm runs in O(n) time complexity, where n is the length of the input array, because each element is processed at most once. This approach ensures that you efficiently find the maximum container area by leveraging the two-pointer technique.
+
+To convert an integer to a Roman numeral, you can use a dictionary to map the integer values to their respective Roman numeral symbols and iterate over this mapping to build the Roman numeral string. Here is a Python solution:
+
+```python
+def int_to_roman(num):
+    # Define the mapping of integer values to Roman numeral symbols
+    value_to_roman = [
+        (1000, 'M'), (900, 'CM'), (500, 'D'), (400, 'CD'),
+        (100, 'C'), (90, 'XC'), (50, 'L'), (40, 'XL'),
+        (10, 'X'), (9, 'IX'), (5, 'V'), (4, 'IV'), (1, 'I')
+    ]
+    
+    # Initialize an empty result string
+    roman_numeral = ""
+    
+    # Iterate over the value to Roman numeral mapping
+    for value, symbol in value_to_roman:
+        # While the current value can be subtracted from the number
+        while num >= value:
+            # Append the corresponding Roman numeral symbol to the result
+            roman_numeral += symbol
+            # Subtract the value from the number
+            num -= value
+    
+    # Return the resulting Roman numeral string
+    return roman_numeral
+
+# Example usage
+num = 1994
+print(int_to_roman(num))  # Output: "MCMXCIV"
+```
+
+### Explanation
+1. **Mapping Initialization**: Create a list of tuples `value_to_roman` where each tuple contains an integer value and its corresponding Roman numeral symbol. The list is ordered from the highest to the lowest value.
+2. **Result Initialization**: Initialize an empty string `roman_numeral` to build the result.
+3. **Iterate Over Mapping**: Iterate over each (value, symbol) pair in the `value_to_roman` list.
+4. **Append Symbols**: For each pair, use a while loop to append the corresponding symbol to `roman_numeral` while the current value can be subtracted from `num`.
+5. **Subtract Value**: Subtract the value from `num` each time the symbol is appended.
+6. **Return Result**: After processing all values, return the resulting Roman numeral string.
+
+This approach ensures that the conversion adheres to the rules of Roman numerals, including handling subtractive forms like 4 (IV), 9 (IX), 40 (XL), etc.
+
+To convert a Roman numeral to an integer, you can iterate through the characters of the Roman numeral string, checking for the special cases where a smaller numeral appears before a larger one, indicating subtraction. Here's a Python solution:
+
+```python
+def roman_to_int(s):
+    # Define the mapping of Roman numeral symbols to integer values
+    roman_to_value = {
+        'I': 1,
+        'V': 5,
+        'X': 10,
+        'L': 50,
+        'C': 100,
+        'D': 500,
+        'M': 1000
+    }
+    
+    # Initialize the total to 0
+    total = 0
+    # Get the length of the Roman numeral string
+    n = len(s)
+    
+    # Iterate through the string
+    for i in range(n):
+        # If this is not the last character and the current character is less than the next character
+        if i < n - 1 and roman_to_value[s[i]] < roman_to_value[s[i + 1]]:
+            # Subtract the current character's value from the total
+            total -= roman_to_value[s[i]]
+        else:
+            # Otherwise, add the current character's value to the total
+            total += roman_to_value[s[i]]
+    
+    # Return the total integer value
+    return total
+
+# Example usage
+s = "MCMXCIV"
+print(roman_to_int(s))  # Output: 1994
+```
+
+### Explanation
+1. **Mapping Initialization**: Create a dictionary `roman_to_value` where each key is a Roman numeral symbol, and its corresponding value is the integer value.
+2. **Initialize Total**: Initialize a variable `total` to 0 to store the resulting integer value.
+3. **Iterate Through the String**: Use a for loop to iterate through the characters of the input string `s`.
+4. **Check for Subtractive Combination**: For each character, check if it is not the last character (`i < n - 1`) and if its value is less than the value of the next character (`roman_to_value[s[i]] < roman_to_value[s[i + 1]]`). If both conditions are true, subtract the current character's value from `total`.
+5. **Add Value Otherwise**: If the current character is not part of a subtractive combination, add its value to `total`.
+6. **Return Result**: After processing all characters, return `total`.
+
+This approach ensures that the conversion adheres to the rules of Roman numerals, correctly handling both additive and subtractive cases.
+
+To find the longest common prefix among an array of strings, you can compare characters of the strings one by one until a mismatch is found or you reach the end of one of the strings. Here is a Python solution:
+
+```python
+def longest_common_prefix(strs):
+    if not strs:
+        return ""
+    
+    # Find the minimum length string in the list
+    min_length = min(len(s) for s in strs)
+    
+    # Initialize the prefix to an empty string
+    prefix = ""
+    
+    # Iterate over the range of minimum length
+    for i in range(min_length):
+        # Get the current character from the first string
+        current_char = strs[0][i]
+        
+        # Check if this character is common to all strings
+        for s in strs:
+            if s[i] != current_char:
+                return prefix
+        
+        # If the current character is common to all strings, add it to the prefix
+        prefix += current_char
+    
+    return prefix
+
+# Example usage
+strs = ["flower", "flow", "flight"]
+print(longest_common_prefix(strs))  # Output: "fl"
+```
+
+### Explanation
+1. **Empty Input Check**: If the input list `strs` is empty, return an empty string immediately.
+2. **Find Minimum Length**: Determine the length of the shortest string in the list, `min_length`. This ensures that we don't try to access characters beyond the length of the shortest string.
+3. **Initialize Prefix**: Initialize an empty string `prefix` to build the common prefix.
+4. **Iterate Over Characters**: Use a for loop to iterate over the characters up to the `min_length`.
+   - For each character position `i`, get the character from the first string (`strs[0][i]`).
+   - Check if this character matches the corresponding character in all other strings.
+5. **Check for Mismatch**: If a mismatch is found, return the `prefix` immediately.
+6. **Build Prefix**: If the character is common to all strings, append it to the `prefix`.
+7. **Return Prefix**: After iterating through all characters up to `min_length`, return the `prefix`.
+
+This solution ensures that the longest common prefix is found efficiently by comparing characters one by one until a mismatch is encountered.
+
+To solve the 3Sum problem, you can use a combination of sorting and the two-pointer technique. This approach efficiently finds all unique triplets that sum to zero. Here is a Python solution:
+
+```python
+def three_sum(nums):
+    # Sort the input array
+    nums = sorted(nums)
+    result = []
+    
+    # Iterate through the array
+    for i in range(len(nums) - 2):
+        # Skip duplicates for the first element
+        if i > 0 and nums[i] == nums[i - 1]:
+            continue
+        
+        # Initialize two pointers
+        left, right = i + 1, len(nums) - 1
+        
+        # Use the two-pointer technique to find the other two elements
+        while left < right:
+            total = nums[i] + nums[left] + nums[right]
+            
+            if total == 0:
+                # If the sum is zero, add the triplet to the result
+                result.append([nums[i], nums[left], nums[right]])
+                
+                # Skip duplicates for the second and third elements
+                while left < right and nums[left] == nums[left + 1]:
+                    left += 1
+                while left < right and nums[right] == nums[right - 1]:
+                    right -= 1
+                
+                # Move the pointers
+                left += 1
+                right -= 1
+            elif total < 0:
+                # If the sum is less than zero, move the left pointer to the right
+                left += 1
+            else:
+                # If the sum is greater than zero, move the right pointer to the left
+                right -= 1
+    
+    return result
+
+# Example usage
+nums = [-1, 0, 1, 2, -1, -4]
+print(three_sum(nums))  # Output: [[-1, -1, 2], [-1, 0, 1]]
+```
+
+### Explanation
+1. **Sorting**: First, sort the input array `nums` to facilitate the two-pointer approach.
+2. **Iterate Through the Array**: Use a for loop to iterate through the sorted array. For each element `nums[i]`, treat it as the first element of the triplet.
+   - Skip duplicates to ensure the result set contains only unique triplets.
+3. **Two-Pointer Technique**: Initialize two pointers, `left` (just after the current element) and `right` (at the end of the array), to find pairs that sum to the negative of the current element (`-nums[i]`).
+   - Calculate the sum of the current triplet (`nums[i] + nums[left] + nums[right]`).
+   - If the sum is zero, add the triplet to the result list, then skip duplicates for the `left` and `right` elements and move both pointers inward.
+   - If the sum is less than zero, increment the `left` pointer to increase the sum.
+   - If the sum is greater than zero, decrement the `right` pointer to decrease the sum.
+4. **Return Result**: After iterating through the array, return the result list containing all unique triplets.
+
+This solution ensures that the triplets are found efficiently and that no duplicate triplets are included in the result. The time complexity is O(n^2), which is efficient for this problem.
+
+To solve the 3Sum Closest problem, you can use a similar approach to the 3Sum problem with a two-pointer technique. Here's a Python solution:
+
+```python
+def three_sum_closest(nums, target):
+    # Sort the input array
+    nums.sort()
+    # Initialize the closest sum to a large number
+    closest_sum = float('inf')
+    
+    # Iterate through the array
+    for i in range(len(nums) - 2):
+        # Initialize two pointers
+        left, right = i + 1, len(nums) - 1
+        
+        # Use the two-pointer technique to find the closest sum
+        while left < right:
+            total = nums[i] + nums[left] + nums[right]
+            
+            # If the current total is closer to the target, update the closest sum
+            if abs(total - target) < abs(closest_sum - target):
+                closest_sum = total
+            
+            # Move the pointers
+            if total < target:
+                left += 1
+            elif total > target:
+                right -= 1
+            else:
+                # If the total is exactly equal to the target, return the total
+                return total
+    
+    # Return the closest sum found
+    return closest_sum
+
+# Example usage
+nums = [-1, 2, 1, -4]
+target = 1
+print(three_sum_closest(nums, target))  # Output: 2
+```
+
+### Explanation
+1. **Sorting**: First, sort the input array `nums` to facilitate the two-pointer approach.
+2. **Initialize Closest Sum**: Initialize a variable `closest_sum` to a large number (infinity) to keep track of the closest sum found so far.
+3. **Iterate Through the Array**: Use a for loop to iterate through the sorted array. For each element `nums[i]`, treat it as the first element of the triplet.
+4. **Two-Pointer Technique**: Initialize two pointers, `left` (just after the current element) and `right` (at the end of the array), to find pairs that sum to the closest to the target.
+   - Calculate the sum of the current triplet (`nums[i] + nums[left] + nums[right]`).
+   - If the current total is closer to the target than the previously recorded closest sum, update `closest_sum`.
+   - Move the pointers based on whether the current total is less than or greater than the target:
+     - If `total < target`, increment the `left` pointer to increase the sum.
+     - If `total > target`, decrement the `right` pointer to decrease the sum.
+     - If `total == target`, the exact target has been found, so return the total.
+5. **Return Result**: After iterating through the array, return the closest sum found.
+
+This approach ensures that the closest sum is found efficiently by leveraging the two-pointer technique. The time complexity is O(n^2), which is optimal for this problem.
+
+To solve the 4Sum problem, you can use a combination of sorting and the two-pointer technique, similar to the 3Sum problem. Here's a Python solution that finds all unique quadruplets that sum to the target:
+
+```python
+def four_sum(nums, target):
+    # Sort the input array
+    nums.sort()
+    result = []
+    n = len(nums)
+    
+    # Iterate through the array with the first pointer
+    for i in range(n - 3):
+        # Skip duplicates for the first element
+        if i > 0 and nums[i] == nums[i - 1]:
+            continue
+        
+        # Iterate through the array with the second pointer
+        for j in range(i + 1, n - 2):
+            # Skip duplicates for the second element
+            if j > i + 1 and nums[j] == nums[j - 1]:
+                continue
+            
+            # Initialize two pointers
+            left, right = j + 1, n - 1
+            
+            # Use the two-pointer technique to find the other two elements
+            while left < right:
+                total = nums[i] + nums[j] + nums[left] + nums[right]
+                
+                if total == target:
+                    # If the sum is equal to the target, add the quadruplet to the result
+                    result.append([nums[i], nums[j], nums[left], nums[right]])
+                    
+                    # Skip duplicates for the third and fourth elements
+                    while left < right and nums[left] == nums[left + 1]:
+                        left += 1
+                    while left < right and nums[right] == nums[right - 1]:
+                        right -= 1
+                    
+                    # Move the pointers
+                    left += 1
+                    right -= 1
+                elif total < target:
+                    # If the sum is less than the target, move the left pointer to the right
+                    left += 1
+                else:
+                    # If the sum is greater than the target, move the right pointer to the left
+                    right -= 1
+    
+    return result
+
+# Example usage
+nums = [1, 0, -1, 0, -2, 2]
+target = 0
+print(four_sum(nums, target))  # Output: [[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]
+```
+
+### Explanation
+1. **Sorting**: First, sort the input array `nums` to facilitate the two-pointer approach.
+2. **Result Initialization**: Initialize an empty list `result` to store the unique quadruplets.
+3. **First Pointer**: Use a for loop to iterate through the sorted array with the first pointer `i`. Skip duplicates to ensure unique quadruplets.
+4. **Second Pointer**: Use a nested for loop to iterate with the second pointer `j`. Again, skip duplicates for the second element.
+5. **Two-Pointer Technique**: Initialize two pointers, `left` (just after the second pointer) and `right` (at the end of the array), to find pairs that sum to the remaining target.
+   - Calculate the sum of the current quadruplet (`nums[i] + nums[j] + nums[left] + nums[right]`).
+   - If the sum is equal to the target, add the quadruplet to the result list, and skip duplicates for the third and fourth elements.
+   - If the sum is less than the target, increment the `left` pointer to increase the sum.
+   - If the sum is greater than the target, decrement the `right` pointer to decrease the sum.
+6. **Return Result**: After iterating through the array, return the list of unique quadruplets that sum to the target.
+
+This solution ensures that all unique quadruplets are found efficiently by leveraging the two-pointer technique within nested loops. The time complexity is O(n^3), which is manageable for moderate-sized input arrays.
+
+To solve the problem of finding all starting indices of concatenated substrings in a given string `s` that exactly contain all the strings from the array `words`, you can use a sliding window approach combined with a hash map to track the counts of words. Here is a Python solution:
+
+```python
+def find_substring(s, words):
+    if not s or not words:
+        return []
+
+    # Length of each word and the total length of concatenated words
+    word_length = len(words[0])
+    num_words = len(words)
+    total_length = word_length * num_words
+
+    # Create a dictionary to count the frequency of each word in words
+    word_count = {}
+    for word in words:
+        word_count[word] = word_count.get(word, 0) + 1
+
+    # Result list to store starting indices
+    result = []
+
+    # Slide over s with a window of total_length
+    for i in range(word_length):
+        left = i
+        right = i
+        current_count = {}
+        count = 0
+
+        while right + word_length <= len(s):
+            # Get the next word from s
+            word = s[right:right + word_length]
+            right += word_length
+
+            # Check if the word is in the word_count dictionary
+            if word in word_count:
+                current_count[word] = current_count.get(word, 0) + 1
+                count += 1
+
+                # If there are more occurrences of "word" than required, move the left pointer to the right
+                while current_count[word] > word_count[word]:
+                    left_word = s[left:left + word_length]
+                    current_count[left_word] -= 1
+                    count -= 1
+                    left += word_length
+
+                # If all words match, add the starting index to the result
+                if count == num_words:
+                    result.append(left)
+            else:
+                # If the word is not in the word_count dictionary, reset the counts and move the left pointer
+                current_count.clear()
+                count = 0
+                left = right
+
+    return result
+
+# Example usage
+s = "barfoothefoobarman"
+words = ["foo", "bar"]
+print(find_substring(s, words))  # Output: [0, 9]
+```
+
+### Explanation
+1. **Initialization**: Check for edge cases where `s` or `words` is empty. Initialize variables for the length of each word, the number of words, and the total length of concatenated words.
+2. **Word Count Dictionary**: Create a dictionary `word_count` to store the frequency of each word in `words`.
+3. **Sliding Window**: Use a for loop to iterate over possible starting positions (`i`) of the sliding window.
+   - Use two pointers, `left` and `right`, to manage the window.
+   - Initialize `current_count` to keep track of the counts of words in the current window and `count` to keep track of the number of valid words in the window.
+4. **Expand Window**: Use a while loop to expand the window by moving the `right` pointer and checking substrings of length `word_length`.
+   - If the word is in `word_count`, update `current_count` and increment `count`.
+   - If the count of the word exceeds the required count, move the `left` pointer to reduce the count until it is valid again.
+   - If all words match (`count == num_words`), add the starting index `left` to the result.
+5. **Reset Counts**: If a word is not in `word_count`, reset `current_count` and `count`, and move the `left` pointer to the `right` pointer.
+6. **Return Result**: After processing all possible windows, return the list of starting indices.
+
+This approach ensures that you efficiently find all starting indices of concatenated substrings by leveraging the sliding window technique and hash maps to track word counts. The time complexity is O(n * word_length), where n is the length of the input string `s`.
+
+To solve the problem of traversing a matrix in spiral order, you can use a structured approach to simulate the spiral traversal. Here's a Python solution:
+
+```python
+def spiral_order(matrix):
+    if not matrix or not matrix[0]:
+        return []
+
+    result = []
+    rows, cols = len(matrix), len(matrix[0])
+    left, right, top, bottom = 0, cols - 1, 0, rows - 1
+
+    while left <= right and top <= bottom:
+        # Traverse from left to right along the top row
+        for col in range(left, right + 1):
+            result.append(matrix[top][col])
+        top += 1
+
+        # Traverse from top to bottom along the right column
+        for row in range(top, bottom + 1):
+            result.append(matrix[row][right])
+        right -= 1
+
+        if top <= bottom:
+            # Traverse from right to left along the bottom row
+            for col in range(right, left - 1, -1):
+                result.append(matrix[bottom][col])
+            bottom -= 1
+
+        if left <= right:
+            # Traverse from bottom to top along the left column
+            for row in range(bottom, top - 1, -1):
+                result.append(matrix[row][left])
+            left += 1
+
+    return result
+
+# Example usage
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+print(spiral_order(matrix))  # Output: [1, 2, 3, 6, 9, 8, 7, 4, 5]
+```
+
+### Explanation
+1. **Initialization**: Check if the matrix is empty. If so, return an empty list. Initialize `result` to store the spiral order traversal, and define variables `rows` and `cols` to store the dimensions of the matrix. Initialize four pointers: `left`, `right`, `top`, and `bottom` to represent the boundaries of the current layer of the matrix to traverse.
+
+2. **Traverse Matrix**:
+   - **Top Row**: Traverse from left to right along the top row, appending each element to `result`. Increment `top` to move the top boundary down.
+   - **Right Column**: Traverse from top to bottom along the right column, appending each element to `result`. Decrement `right` to move the right boundary left.
+   - **Bottom Row**: If there are still rows to traverse (`top <= bottom`), traverse from right to left along the bottom row, appending each element to `result`. Decrement `bottom` to move the bottom boundary up.
+   - **Left Column**: If there are still columns to traverse (`left <= right`), traverse from bottom to top along the left column, appending each element to `result`. Increment `left` to move the left boundary right.
+
+3. **Continue Traversal**: Continue the traversal while `left <= right` and `top <= bottom` to ensure all layers are covered.
+
+4. **Return Result**: After the traversal is complete, return the `result` list containing the elements of the matrix in spiral order.
+
+This approach ensures that you efficiently traverse the matrix in spiral order by updating the boundaries appropriately and appending elements to the result list.
+
+To solve the "Product of Array Except Self" problem without using division and in O(n) time complexity, you can use a two-pass approach to calculate the product of all elements except the current one. Here is a Python solution:
+
+```python
+def product_except_self(nums):
+    n = len(nums)
+    answer = [1] * n
+    
+    # Calculate the prefix product for each element
+    prefix_product = 1
+    for i in range(n):
+        answer[i] = prefix_product
+        prefix_product *= nums[i]
+    
+    # Calculate the suffix product for each element
+    suffix_product = 1
+    for i in range(n-1, -1, -1):
+        answer[i] *= suffix_product
+        suffix_product *= nums[i]
+    
+    return answer
+
+# Example usage
+nums = [1, 2, 3, 4]
+print(product_except_self(nums))  # Output: [24, 12, 8, 6]
+```
+
+### Explanation
+1. **Initialization**: 
+   - `n` is the length of the input array `nums`.
+   - `answer` is an array of length `n` initialized with 1s, which will store the result.
+
+2. **Calculate Prefix Product**:
+   - Iterate over the array from left to right.
+   - `prefix_product` keeps track of the product of all elements to the left of the current element.
+   - For each element, set `answer[i]` to `prefix_product` and then update `prefix_product` by multiplying it with `nums[i]`.
+
+3. **Calculate Suffix Product**:
+   - Iterate over the array from right to left.
+   - `suffix_product` keeps track of the product of all elements to the right of the current element.
+   - For each element, multiply `answer[i]` by `suffix_product` and then update `suffix_product` by multiplying it with `nums[i]`.
+
+4. **Return Result**: After calculating the prefix and suffix products, `answer` contains the product of all elements except the current one for each index.
+
+This approach ensures that the solution runs in O(n) time complexity and does not use the division operation, as required.
+
+To solve the "Missing Number" problem efficiently, you can use a mathematical approach based on the sum of the first \( n \) natural numbers. Here's a Python solution:
+
+```python
+def missing_number(nums):
+    n = len(nums)
+    # Calculate the expected sum of numbers from 0 to n
+    expected_sum = n * (n + 1) // 2
+    # Calculate the actual sum of numbers in the array
+    actual_sum = sum(nums)
+    # The missing number is the difference between the expected sum and the actual sum
+    return expected_sum - actual_sum
+
+# Example usage
+nums = [3, 0, 1]
+print(missing_number(nums))  # Output: 2
+```
+
+### Explanation
+1. **Calculate the Expected Sum**:
+   - The sum of the first \( n \) natural numbers can be calculated using the formula \( \text{expected\_sum} = \frac{n \times (n + 1)}{2} \).
+   - Here, \( n \) is the length of the input array `nums`.
+
+2. **Calculate the Actual Sum**:
+   - Calculate the sum of all the numbers present in the array `nums` using the `sum()` function.
+
+3. **Find the Missing Number**:
+   - The missing number is the difference between the expected sum and the actual sum.
+
+This approach ensures that the solution runs in O(n) time complexity and uses O(1) additional space. The mathematical method is efficient and leverages the properties of arithmetic series.
+
+To find all the numbers that are missing from an array where each element is supposed to be in the range [1, n], you can use the following approach:
+
+1. Iterate through the array and mark elements as seen by using their value as an index.
+2. Iterate through the array again to collect the indices of the unmarked elements, which correspond to the missing numbers.
+
+Here is a Python solution:
+
+```python
+def find_disappeared_numbers(nums):
+    # Iterate over each number and mark the index corresponding to the number
+    for num in nums:
+        index = abs(num) - 1
+        # Mark the element at this index as negative
+        if nums[index] > 0:
+            nums[index] = -nums[index]
+    
+    # Collect all indices which have positive numbers, those indices + 1 are the missing numbers
+    result = []
+    for i in range(len(nums)):
+        if nums[i] > 0:
+            result.append(i + 1)
+    
+    return result
+
+# Example usage
+nums = [4,3,2,7,8,2,3,1]
+print(find_disappeared_numbers(nums))  # Output: [5, 6]
+```
+
+### Explanation
+1. **Mark Elements**:
+   - Iterate through each element in the array `nums`.
+   - For each element `num`, compute the index `index = abs(num) - 1`.
+   - Mark the element at this index as negative to indicate that the number `index + 1` has been seen.
+
+2. **Collect Missing Numbers**:
+   - Iterate through the modified array.
+   - If an element at index `i` is positive, it means the number `i + 1` was not seen in the original array.
+   - Collect these indices (plus one) as they represent the missing numbers.
+
+3. **Return Result**:
+   - Return the list of missing numbers.
+
+This approach ensures that the solution runs in O(n) time complexity and uses O(1) additional space, as it modifies the input array in place.
+
+To find the positions of large groups in a given string, you can iterate through the string and keep track of the start and end indices of each group. When you find a group with 3 or more characters, you record its interval. Here is a Python solution:
+
+```python
+def large_group_positions(s):
+    result = []
+    i = 0
+    n = len(s)
+    
+    while i < n:
+        start = i
+        while i < n - 1 and s[i] == s[i + 1]:
+            i += 1
+        end = i
+        if end - start + 1 >= 3:
+            result.append([start, end])
+        i += 1
+    
+    return result
+
+# Example usage
+s = "abbxxxxzyy"
+print(large_group_positions(s))  # Output: [[3, 6]]
+```
+
+### Explanation
+1. **Initialization**:
+   - `result`: List to store the intervals of large groups.
+   - `i`: Pointer to iterate through the string.
+   - `n`: Length of the string.
+
+2. **Iterate Through the String**:
+   - Use a while loop to iterate through the string until `i` reaches the end.
+   - Set `start` to the current index `i`.
+   - Use another while loop to find the end of the current group by checking consecutive characters.
+   - Set `end` to the current index `i`.
+
+3. **Check for Large Group**:
+   - If the length of the group (`end - start + 1`) is 3 or more, append the interval `[start, end]` to the `result` list.
+
+4. **Move to the Next Group**:
+   - Increment `i` to move to the next character and continue the process.
+
+5. **Return Result**:
+   - After iterating through the string, return the `result` list containing the intervals of all large groups.
+
+This solution ensures that the positions of large groups are found efficiently with a time complexity of O(n), where n is the length of the input string.
+
+To solve the problem of finding the number of unique email addresses after applying the given rules, you can follow these steps:
+
+1. Split each email into the local name and the domain name.
+2. Process the local name to remove dots and ignore the part after the plus sign.
+3. Combine the processed local name with the domain name and add it to a set to ensure uniqueness.
+4. Return the size of the set, which represents the number of unique email addresses.
+
+Here is a Python solution:
+
+```python
+def num_unique_emails(emails):
+    unique_emails = set()
+    
+    for email in emails:
+        local, domain = email.split('@')
+        local = local.split('+')[0].replace('.', '')
+        unique_email = local + '@' + domain
+        unique_emails.add(unique_email)
+    
+    return len(unique_emails)
+
+# Example usage
+emails = [
+    "test.email+alex@leetcode.com",
+    "test.e.mail+bob.cathy@leetcode.com",
+    "testemail+david@lee.tcode.com"
+]
+print(num_unique_emails(emails))  # Output: 2
+```
+
+### Explanation
+1. **Initialization**: Create an empty set `unique_emails` to store unique email addresses.
+2. **Process Each Email**:
+   - Split the email into the local part and the domain part using the `split('@')` method.
+   - In the local part, remove everything after the first plus sign using `split('+')[0]`.
+   - Replace all periods in the local part with empty strings using `replace('.', '')`.
+3. **Combine and Add to Set**:
+   - Combine the processed local part with the domain part.
+   - Add the resulting email address to the `unique_emails` set.
+4. **Return Result**:
+   - Return the size of the `unique_emails` set, which represents the number of unique email addresses.
+
+This solution ensures that you efficiently count the unique email addresses by leveraging a set to handle duplicates and applying string processing rules to each email. The time complexity is O(n * m), where n is the number of emails and m is the average length of an email.
+
+To solve the problem of adding two numbers represented by linked lists in reverse order, you can use the following approach:
+
+1. Initialize a dummy head for the result linked list.
+2. Traverse both linked lists, adding corresponding digits and handling any carry.
+3. Create new nodes in the result linked list with the sum of the corresponding digits (plus any carry).
+4. Continue until both linked lists are fully traversed and there is no carry left.
+
+Here's a Python solution:
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def add_two_numbers(l1, l2):
+    dummy_head = ListNode(0)
+    current = dummy_head
+    carry = 0
+    
+    while l1 is not None or l2 is not None or carry != 0:
+        l1_val = l1.val if l1 is not None else 0
+        l2_val = l2.val if l2 is not None else 0
+        
+        total = l1_val + l2_val + carry
+        carry = total // 10
+        current.next = ListNode(total % 10)
+        current = current.next
+        
+        if l1 is not None:
+            l1 = l1.next
+        if l2 is not None:
+            l2 = l2.next
+    
+    return dummy_head.next
+
+# Helper function to create a linked list from a list
+def create_linked_list(lst):
+    dummy_head = ListNode(0)
+    current = dummy_head
+    for number in lst:
+        current.next = ListNode(number)
+        current = current.next
+    return dummy_head.next
+
+# Helper function to print linked list
+def print_linked_list(node):
+    while node:
+        print(node.val, end=" -> ")
+        node = node.next
+    print("None")
+
+# Example usage
+l1 = create_linked_list([2, 4, 3])
+l2 = create_linked_list([5, 6, 4])
+result = add_two_numbers(l1, l2)
+print_linked_list(result)  # Output: 7 -> 0 -> 8 -> None
+```
+
+### Explanation
+1. **ListNode Class**: Define a `ListNode` class to represent the nodes of the linked list.
+2. **Initialize Dummy Head**: Create a dummy head for the result linked list to simplify the insertion process. Use `current` to track the end of the result linked list.
+3. **Carry Initialization**: Initialize `carry` to 0 to handle sums greater than 9.
+4. **Traverse Both Lists**: Use a while loop to traverse both linked lists until all nodes are processed and no carry is left.
+   - **Extract Values**: Get the current values from `l1` and `l2`. If a list is exhausted, use 0.
+   - **Calculate Sum and Carry**: Compute the sum of the current digits plus the carry. Update the carry for the next iteration.
+   - **Create New Node**: Create a new node with the sum modulo 10 and link it to the result linked list.
+   - **Move to Next Nodes**: Move `l1` and `l2` to their next nodes if available.
+5. **Return Result**: Return the next node of the dummy head, which is the actual start of the result linked list.
+
+### Helper Functions
+- **create_linked_list**: Convert a list of integers into a linked list for easy testing.
+- **print_linked_list**: Print the linked list in a readable format to verify the result.
+
+This approach ensures that the two numbers are added correctly, handling any carry from one digit to the next, and produces the sum as a new linked list.
+
+To remove the nth node from the end of a linked list, you can use a two-pointer approach (often referred to as the "fast and slow pointer" technique). This allows you to efficiently locate the node to be removed in a single pass through the list. Here's a step-by-step solution in Python:
+
+1. Use two pointers, `first` and `second`.
+2. Move `first` ahead by `n+1` steps so that the gap between `first` and `second` is `n`.
+3. Move both pointers until `first` reaches the end of the list. At this point, `second` will be just before the node to be removed.
+4. Adjust the pointers to remove the target node.
+
+Here is the Python code for the solution:
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def remove_nth_from_end(head, n):
+    dummy = ListNode(0, head)
+    first = dummy
+    second = dummy
+    
+    # Move first pointer n+1 steps ahead
+    for _ in range(n + 1):
+        first = first.next
+    
+    # Move both pointers until first reaches the end
+    while first is not None:
+        first = first.next
+        second = second.next
+    
+    # Remove the nth node from the end
+    second.next = second.next.next
+    
+    return dummy.next
+
+# Helper function to create a linked list from a list
+def create_linked_list(lst):
+    dummy_head = ListNode(0)
+    current = dummy_head
+    for number in lst:
+        current.next = ListNode(number)
+        current = current.next
+    return dummy_head.next
+
+# Helper function to print linked list
+def print_linked_list(node):
+    while node:
+        print(node.val, end=" -> ")
+        node = node.next
+    print("None")
+
+# Example usage
+head = create_linked_list([1, 2, 3, 4, 5])
+n = 2
+new_head = remove_nth_from_end(head, n)
+print_linked_list(new_head)  # Output: 1 -> 2 -> 3 -> 5 -> None
+```
+
+### Explanation
+1. **ListNode Class**: Define a `ListNode` class to represent the nodes of the linked list.
+2. **Initialize Dummy Node**: Create a dummy node and link it to the head of the list. This helps handle edge cases like removing the head node.
+3. **Two Pointers**: Initialize two pointers, `first` and `second`, both starting at the dummy node.
+4. **Move `first` Pointer**: Move the `first` pointer `n+1` steps ahead. This creates a gap of `n` nodes between `first` and `second`.
+5. **Move Both Pointers**: Move both pointers one step at a time until `first` reaches the end of the list. At this point, `second` is just before the node to be removed.
+6. **Remove Target Node**: Adjust the `next` pointer of `second` to skip the target node.
+7. **Return New Head**: Return the `next` of the dummy node, which is the new head of the list after removal.
+
+### Helper Functions
+- **create_linked_list**: Converts a list of integers into a linked list.
+- **print_linked_list**: Prints the linked list in a readable format for verification.
+
+This approach ensures that the nth node from the end is removed efficiently in one pass through the list, with a time complexity of O(n).
+
+To merge two sorted linked lists into one sorted linked list, you can use a two-pointer approach to traverse both lists simultaneously, comparing their elements and building the merged list. Here's a Python solution:
+
+1. Initialize a dummy node to act as the starting point of the merged list.
+2. Use two pointers to traverse both input lists.
+3. Compare the current nodes of both lists and append the smaller node to the merged list.
+4. Continue until one of the lists is fully traversed.
+5. Append the remaining nodes of the other list to the merged list.
+
+Here's the implementation:
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def merge_two_lists(list1, list2):
+    dummy = ListNode(0)
+    current = dummy
+    
+    while list1 and list2:
+        if list1.val <= list2.val:
+            current.next = list1
+            list1 = list1.next
+        else:
+            current.next = list2
+            list2 = list2.next
+        current = current.next
+    
+    # If there are remaining nodes in either list, append them
+    if list1:
+        current.next = list1
+    elif list2:
+        current.next = list2
+    
+    return dummy.next
+
+# Helper function to create a linked list from a list
+def create_linked_list(lst):
+    dummy_head = ListNode(0)
+    current = dummy_head
+    for number in lst:
+        current.next = ListNode(number)
+        current = current.next
+    return dummy_head.next
+
+# Helper function to print linked list
+def print_linked_list(node):
+    while node:
+        print(node.val, end=" -> ")
+        node = node.next
+    print("None")
+
+# Example usage
+list1 = create_linked_list([1, 2, 4])
+list2 = create_linked_list([1, 3, 4])
+merged_list = merge_two_lists(list1, list2)
+print_linked_list(merged_list)  # Output: 1 -> 1 -> 2 -> 3 -> 4 -> 4 -> None
+```
+
+### Explanation
+1. **ListNode Class**: Define a `ListNode` class to represent the nodes of the linked list.
+2. **Initialize Dummy Node**: Create a dummy node to act as the starting point of the merged list. Use `current` to track the end of the merged list.
+3. **Traverse and Compare**: Use a while loop to traverse both input lists (`list1` and `list2`). Compare the values of the current nodes of both lists and append the smaller node to the merged list.
+4. **Move Pointers**: Move the pointers of the list from which the node was taken.
+5. **Append Remaining Nodes**: If one of the lists is fully traversed, append the remaining nodes of the other list to the merged list.
+6. **Return Merged List**: Return the next node of the dummy node, which is the head of the merged list.
+
+### Helper Functions
+- **create_linked_list**: Converts a list of integers into a linked list for easy testing.
+- **print_linked_list**: Prints the linked list in a readable format to verify the result.
+
+This approach ensures that the two sorted lists are merged into one sorted list efficiently with a time complexity of O(n + m), where n and m are the lengths of the input lists.
+
+To copy a linked list with random pointers, you can use a three-step process. Here is a detailed approach along with the Python implementation:
+
+1. **Copy Nodes and Create Interleaved List**: Create a new node for each node in the original list and insert it right after the original node. This step interleaves the original list and the new nodes.
+
+2. **Set Random Pointers**: Traverse the interleaved list and set the random pointers of the new nodes. The random pointer of a new node should point to the next node of the original node's random pointer.
+
+3. **Separate the Lists**: Restore the original list and extract the new list. The interleaved structure is used to easily extract the new list while restoring the original list.
+
+Here's the implementation in Python:
+
+```python
+class Node:
+    def __init__(self, val=0, next=None, random=None):
+        self.val = val
+        self.next = next
+        self.random = random
+
+def copy_random_list(head):
+    if not head:
+        return None
+    
+    # Step 1: Copy nodes and create the interleaved list
+    current = head
+    while current:
+        new_node = Node(current.val, current.next)
+        current.next = new_node
+        current = new_node.next
+    
+    # Step 2: Set random pointers for the copied nodes
+    current = head
+    while current:
+        if current.random:
+            current.next.random = current.random.next
+        current = current.next.next
+    
+    # Step 3: Separate the original and copied lists
+    original = head
+    copy = head.next
+    new_head = copy
+    
+    while original:
+        original.next = original.next.next
+        if copy.next:
+            copy.next = copy.next.next
+        original = original.next
+        copy = copy.next
+    
+    return new_head
+
+# Helper function to create a linked list from a list of tuples
+def create_linked_list_with_random(arr):
+    if not arr:
+        return None
+    
+    nodes = [Node(val=val) for val, _ in arr]
+    
+    for i, (val, random_index) in enumerate(arr):
+        if i < len(arr) - 1:
+            nodes[i].next = nodes[i + 1]
+        if random_index is not None:
+            nodes[i].random = nodes[random_index]
+    
+    return nodes[0]
+
+# Helper function to print linked list
+def print_linked_list_with_random(node):
+    result = []
+    while node:
+        random_val = node.random.val if node.random else None
+        result.append((node.val, random_val))
+        node = node.next
+    print(result)
+
+# Example usage
+arr = [(7, None), (13, 0), (11, 4), (10, 2), (1, 0)]
+head = create_linked_list_with_random(arr)
+new_head = copy_random_list(head)
+print_linked_list_with_random(new_head)
+# Output: [(7, None), (13, 7), (11, 1), (10, 11), (1, 7)]
+```
+
+### Explanation
+1. **Node Class**: Define a `Node` class to represent each node in the linked list, with `val`, `next`, and `random` attributes.
+2. **Copy Nodes and Create Interleaved List**: Traverse the original list and for each node, create a new node and insert it right after the original node.
+3. **Set Random Pointers**: Traverse the interleaved list again and set the random pointers of the new nodes. The random pointer of a new node points to the next node of the original node's random pointer.
+4. **Separate the Lists**: Restore the original list by skipping every other node and extract the new list by skipping every other node starting from the first new node.
+5. **Helper Functions**:
+   - `create_linked_list_with_random`: Creates a linked list from a list of tuples where each tuple contains the node value and the index of the random pointer.
+   - `print_linked_list_with_random`: Prints the linked list with random pointers in a readable format.
+
+This approach ensures that you create a deep copy of the list with both `next` and `random` pointers correctly set. The time complexity is O(n) and the space complexity is O(1) for the interleaving and separating steps.
+
+To determine if a linked list has a cycle, you can use the Floyd's Tortoise and Hare algorithm. This algorithm uses two pointers, a slow pointer (tortoise) and a fast pointer (hare). The slow pointer moves one step at a time, while the fast pointer moves two steps at a time. If there is a cycle in the linked list, the fast pointer will eventually meet the slow pointer.
+
+Here is the Python solution:
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def has_cycle(head):
+    if not head or not head.next:
+        return False
+    
+    slow = head
+    fast = head.next
+    
+    while slow != fast:
+        if not fast or not fast.next:
+            return False
+        slow = slow.next
+        fast = fast.next.next
+    
+    return True
+
+# Helper function to create a linked list with a cycle
+def create_linked_list_with_cycle(arr, pos):
+    if not arr:
+        return None
+    
+    nodes = [ListNode(val=val) for val in arr]
+    
+    for i in range(len(arr) - 1):
+        nodes[i].next = nodes[i + 1]
+    
+    if pos != -1:
+        nodes[-1].next = nodes[pos]
+    
+    return nodes[0]
+
+# Example usage
+arr = [3, 2, 0, -4]
+pos = 1
+head = create_linked_list_with_cycle(arr, pos)
+print(has_cycle(head))  # Output: True
+```
+
+### Explanation
+1. **ListNode Class**: Define a `ListNode` class to represent each node in the linked list.
+2. **Check for Cycle**:
+   - Initialize two pointers, `slow` and `fast`. Start `slow` at `head` and `fast` at `head.next`.
+   - Use a while loop to move `slow` one step and `fast` two steps at a time.
+   - If `slow` equals `fast`, a cycle is detected, so return `True`.
+   - If `fast` or `fast.next` is `None`, it means there is no cycle, so return `False`.
+3. **Helper Function to Create a Linked List with a Cycle**:
+   - `create_linked_list_with_cycle`: Takes a list of values and a position `pos`. It creates a linked list from the list of values and introduces a cycle at the position `pos` if `pos` is not -1.
+4. **Example Usage**: Create a linked list with a cycle and check if the linked list has a cycle using the `has_cycle` function.
+
+This approach ensures that the cycle detection runs in O(n) time complexity and O(1) space complexity, making it an efficient solution for this problem.
+
+To reverse a singly linked list, you can use an iterative approach. The idea is to keep track of the previous node as you iterate through the list and adjust the `next` pointers to reverse the direction of the list. Here's a Python solution:
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def reverse_list(head):
+    prev = None
+    current = head
+    
+    while current:
+        next_node = current.next  # Save the next node
+        current.next = prev       # Reverse the current node's pointer
+        prev = current            # Move prev and current one step forward
+        current = next_node
+    
+    return prev  # prev will be the new head of the reversed list
+
+# Helper function to create a linked list from a list
+def create_linked_list(lst):
+    dummy_head = ListNode(0)
+    current = dummy_head
+    for number in lst:
+        current.next = ListNode(number)
+        current = current.next
+    return dummy_head.next
+
+# Helper function to print linked list
+def print_linked_list(node):
+    while node:
+        print(node.val, end=" -> ")
+        node = node.next
+    print("None")
+
+# Example usage
+head = create_linked_list([1, 2, 3, 4, 5])
+print("Original list:")
+print_linked_list(head)
+
+reversed_head = reverse_list(head)
+print("Reversed list:")
+print_linked_list(reversed_head)
+```
+
+### Explanation
+1. **ListNode Class**: Define a `ListNode` class to represent each node in the linked list.
+2. **Reverse List Function**:
+   - Initialize `prev` to `None` and `current` to `head`.
+   - Iterate through the list using a while loop until `current` is `None`.
+   - In each iteration:
+     - Save the next node (`next_node = current.next`).
+     - Reverse the current node's pointer (`current.next = prev`).
+     - Move `prev` and `current` one step forward (`prev = current`, `current = next_node`).
+   - When the loop ends, `prev` will be the new head of the reversed list.
+3. **Helper Functions**:
+   - `create_linked_list`: Converts a list of integers into a linked list for easy testing.
+   - `print_linked_list`: Prints the linked list in a readable format to verify the result.
+4. **Example Usage**: Create a linked list, print the original list, reverse it using the `reverse_list` function, and print the reversed list.
+
+This approach ensures that the linked list is reversed in O(n) time complexity and O(1) space complexity, making it an efficient solution for reversing a singly linked list.
+
+To determine if a binary tree is a valid binary search tree (BST), you can use a recursive approach to ensure that each node satisfies the BST properties. Specifically, you can use a helper function that checks whether each node's value lies within a valid range. Here's the Python solution:
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def is_valid_bst(root):
+    def validate(node, low=float('-inf'), high=float('inf')):
+        if not node:
+            return True
+        
+        # Check if the current node's value is within the valid range
+        if not (low < node.val < high):
+            return False
+        
+        # Recursively validate the left and right subtrees with updated ranges
+        return (validate(node.left, low, node.val) and
+                validate(node.right, node.val, high))
+    
+    return validate(root)
+
+# Helper function to create a binary tree from a list
+def create_binary_tree(arr, index=0):
+    if index < len(arr) and arr[index] is not None:
+        node = TreeNode(arr[index])
+        node.left = create_binary_tree(arr, 2 * index + 1)
+        node.right = create_binary_tree(arr, 2 * index + 2)
+        return node
+    return None
+
+# Example usage
+arr = [2, 1, 3]
+root = create_binary_tree(arr)
+print(is_valid_bst(root))  # Output: True
+
+arr = [5, 1, 4, None, None, 3, 6]
+root = create_binary_tree(arr)
+print(is_valid_bst(root))  # Output: False
+```
+
+### Explanation
+1. **TreeNode Class**: Define a `TreeNode` class to represent each node in the binary tree.
+2. **Validation Function**:
+   - The `validate` function is a helper function that takes a node and a range (`low`, `high`) as arguments.
+   - If the node is `None`, it returns `True` since an empty tree is a valid BST.
+   - It checks if the node's value is within the valid range. If not, it returns `False`.
+   - It recursively validates the left subtree, ensuring all nodes are less than the current node's value, and the right subtree, ensuring all nodes are greater than the current node's value.
+3. **is_valid_bst Function**: This function starts the validation process by calling the `validate` function with the root of the tree and the initial range of `(-inf, inf)`.
+4. **Helper Function to Create Binary Tree**:
+   - `create_binary_tree` function takes a list representation of a binary tree and constructs the corresponding `TreeNode` structure.
+   - This function is used to create binary trees for testing purposes.
+5. **Example Usage**: Create binary trees using the `create_binary_tree` function and check if they are valid BSTs using the `is_valid_bst` function.
+
+This approach ensures that the binary tree is validated in O(n) time complexity, where n is the number of nodes in the tree, as each node is visited once. The space complexity is O(h) due to the recursion stack, where h is the height of the tree.
+
+To find the sum of all left leaves in a binary tree, you can use a recursive approach. Here is the Python solution:
+
+1. Define a helper function that checks if a given node is a leaf.
+2. Traverse the tree recursively and add the value of each left leaf to the sum.
+
+Here is the implementation:
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def sum_of_left_leaves(root):
+    def is_leaf(node):
+        return node is not None and node.left is None and node.right is None
+    
+    def dfs(node, is_left):
+        if not node:
+            return 0
+        
+        if is_left and is_leaf(node):
+            return node.val
+        
+        left_sum = dfs(node.left, True)
+        right_sum = dfs(node.right, False)
+        
+        return left_sum + right_sum
+    
+    return dfs(root, False)
+
+# Helper function to create a binary tree from a list
+def create_binary_tree(arr, index=0):
+    if index < len(arr) and arr[index] is not None:
+        node = TreeNode(arr[index])
+        node.left = create_binary_tree(arr, 2 * index + 1)
+        node.right = create_binary_tree(arr, 2 * index + 2)
+        return node
+    return None
+
+# Example usage
+arr = [3, 9, 20, None, None, 15, 7]
+root = create_binary_tree(arr)
+print(sum_of_left_leaves(root))  # Output: 24 (9 + 15)
+```
+
+### Explanation
+1. **TreeNode Class**: Define a `TreeNode` class to represent each node in the binary tree.
+2. **is_leaf Function**: A helper function to check if a given node is a leaf. It returns `True` if the node is not `None` and both its left and right children are `None`.
+3. **dfs Function**: A helper function for depth-first search (DFS) to traverse the tree.
+   - It takes two arguments: `node` (the current node) and `is_left` (a boolean indicating whether the node is a left child).
+   - If the node is `None`, return 0.
+   - If the node is a left leaf (`is_left` is `True` and the node is a leaf), return its value.
+   - Recursively call `dfs` for the left and right children, passing `True` for the left child and `False` for the right child.
+   - Return the sum of the results from the left and right subtree traversals.
+4. **sum_of_left_leaves Function**: The main function that calls the `dfs` function starting from the root node, with `is_left` set to `False` since the root is not a left child.
+5. **Helper Function to Create Binary Tree**:
+   - `create_binary_tree` function takes a list representation of a binary tree and constructs the corresponding `TreeNode` structure.
+   - This function is used to create binary trees for testing purposes.
+6. **Example Usage**: Create a binary tree using the `create_binary_tree` function and find the sum of all left leaves using the `sum_of_left_leaves` function.
+
+This approach ensures that the binary tree is traversed efficiently in O(n) time complexity, where n is the number of nodes in the tree. The space complexity is O(h) due to the recursion stack, where h is the height of the tree.
+To perform an inorder traversal of a binary tree, you can use a recursive approach or an iterative approach with a stack. The inorder traversal visits nodes in the following order: left subtree, root, right subtree.
+
+Here's the Python solution using both recursive and iterative approaches:
+
+### Recursive Approach
+
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def inorder_traversal_recursive(root):
+    def inorder(node):
+        if node:
+            inorder(node.left)
+            result.append(node.val)
+            inorder(node.right)
+    
+    result = []
+    inorder(root)
+    return result
+
+# Helper function to create a binary tree from a list
+def create_binary_tree(arr, index=0):
+    if index < len(arr) and arr[index] is not None:
+        node = TreeNode(arr[index])
+        node.left = create_binary_tree(arr, 2 * index + 1)
+        node.right = create_binary_tree(arr, 2 * index + 2)
+        return node
+    return None
+
+# Example usage
+arr = [1, None, 2, 3]
+root = create_binary_tree(arr)
+print(inorder_traversal_recursive(root))  # Output: [1, 3, 2]
+```
+
+### Iterative Approach
+
+```python
+def inorder_traversal_iterative(root):
+    result = []
+    stack = []
+    current = root
+    
+    while current or stack:
+        while current:
+            stack.append(current)
+            current = current.left
+        current = stack.pop()
+        result.append(current.val)
+        current = current.right
+    
+    return result
+
+# Example usage
+arr = [1, None, 2, 3]
+root = create_binary_tree(arr)
+print(inorder_traversal_iterative(root))  # Output: [1, 3, 2]
+```
+
+### Explanation
+
+1. **TreeNode Class**: Define a `TreeNode` class to represent each node in the binary tree.
+
+2. **Recursive Approach**:
+   - Define a helper function `inorder` that takes a node as an argument.
+   - If the node is not `None`, recursively call `inorder` on the left child, append the node's value to the result list, and recursively call `inorder` on the right child.
+   - Initialize an empty list `result` and call the `inorder` function starting from the root node.
+
+3. **Iterative Approach**:
+   - Initialize an empty list `result` to store the values and an empty stack to manage the nodes.
+   - Use a while loop to iterate until both `current` (starting from the root) and the stack are empty.
+   - Within the loop, push the current node to the stack and move to its left child until reaching a `None` node.
+   - Pop a node from the stack, append its value to `result`, and move to its right child.
+   - Repeat the process until all nodes are visited.
+
+4. **Helper Function to Create Binary Tree**:
+   - `create_binary_tree` function takes a list representation of a binary tree and constructs the corresponding `TreeNode` structure.
+   - This function is used to create binary trees for testing purposes.
+
+5. **Example Usage**: Create a binary tree using the `create_binary_tree` function and perform inorder traversal using both recursive and iterative functions.
+
+Both approaches ensure that the binary tree is traversed in the correct inorder sequence. The time complexity is O(n) for both, where n is the number of nodes in the tree. The space complexity is O(h) for the recursive approach due to the recursion stack and O(n) for the iterative approach due to the explicit stack, where h is the height of the tree.
+
+To perform a zigzag level order traversal of a binary tree, you can use a breadth-first search (BFS) approach while keeping track of the current level and its order (left-to-right or right-to-left). Here is a Python solution that accomplishes this:
+
+```python
+from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def zigzag_level_order(root):
+    if not root:
+        return []
+    
+    result = []
+    queue = deque([root])
+    left_to_right = True
+    
+    while queue:
+        level_size = len(queue)
+        level = deque()
+        
+        for _ in range(level_size):
+            node = queue.popleft()
+            if left_to_right:
+                level.append(node.val)
+            else:
+                level.appendleft(node.val)
+            
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        
+        result.append(list(level))
+        left_to_right = not left_to_right
+    
+    return result
+
+# Helper function to create a binary tree from a list
+def create_binary_tree(arr, index=0):
+    if index < len(arr) and arr[index] is not None:
+        node = TreeNode(arr[index])
+        node.left = create_binary_tree(arr, 2 * index + 1)
+        node.right = create_binary_tree(arr, 2 * index + 2)
+        return node
+    return None
+
+# Example usage
+arr = [3, 9, 20, None, None, 15, 7]
+root = create_binary_tree(arr)
+print(zigzag_level_order(root))  # Output: [[3], [20, 9], [15, 7]]
+```
+
+### Explanation
+
+1. **TreeNode Class**: Define a `TreeNode` class to represent each node in the binary tree.
+
+2. **zigzag_level_order Function**:
+   - Check if the root is `None`. If it is, return an empty list.
+   - Initialize an empty list `result` to store the final zigzag level order traversal.
+   - Use a deque `queue` to facilitate level order traversal and append the root to the queue.
+   - Initialize a boolean variable `left_to_right` to keep track of the current traversal direction.
+   
+3. **BFS Traversal**:
+   - Use a while loop to process each level until the queue is empty.
+   - Determine the number of nodes at the current level (`level_size`).
+   - Initialize a deque `level` to store the current level's values.
+   - Use a for loop to process each node at the current level:
+     - Dequeue a node from `queue`.
+     - If `left_to_right` is `True`, append the node's value to `level`. Otherwise, append the node's value to the front of `level`.
+     - Enqueue the node's left and right children if they exist.
+   - Append the list of values from `level` to `result`.
+   - Toggle the value of `left_to_right` to alternate the traversal direction for the next level.
+   
+4. **Return Result**:
+   - After processing all levels, return the `result` list containing the zigzag level order traversal.
+
+5. **Helper Function to Create Binary Tree**:
+   - `create_binary_tree` function takes a list representation of a binary tree and constructs the corresponding `TreeNode` structure.
+   - This function is used to create binary trees for testing purposes.
+
+6. **Example Usage**:
+   - Create a binary tree using the `create_binary_tree` function and perform zigzag level order traversal using the `zigzag_level_order` function.
+
+This approach ensures that the binary tree is traversed in a zigzag level order efficiently. The time complexity is O(n), where n is the number of nodes in the tree, and the space complexity is also O(n) due to the usage of the deque for storing nodes at each level.
+
+To merge k sorted linked lists into one sorted linked list, you can use a priority queue (min-heap) to efficiently get the smallest element among the heads of the lists. Here is a Python solution:
+
+### Steps:
+1. Use a min-heap to store the nodes, with the value of the node as the key.
+2. Initialize the heap with the head nodes of all the lists.
+3. Extract the smallest node from the heap, add it to the merged list, and then push its next node to the heap.
+4. Repeat the process until the heap is empty.
+
+Here's the implementation:
+
+```python
+import heapq
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def merge_k_lists(lists):
+    ListNode.__lt__ = lambda self, other: self.val < other.val
+    min_heap = []
+    
+    # Initialize the heap with the head nodes of all lists
+    for l in lists:
+        if l:
+            heapq.heappush(min_heap, l)
+    
+    dummy = ListNode(0)
+    current = dummy
+    
+    while min_heap:
+        # Extract the smallest node from the heap
+        smallest_node = heapq.heappop(min_heap)
+        current.next = smallest_node
+        current = current.next
+        
+        # Push the next node of the extracted node into the heap
+        if smallest_node.next:
+            heapq.heappush(min_heap, smallest_node.next)
+    
+    return dummy.next
+
+# Helper function to create a linked list from a list
+def create_linked_list(lst):
+    dummy_head = ListNode(0)
+    current = dummy_head
+    for number in lst:
+        current.next = ListNode(number)
+        current = current.next
+    return dummy_head.next
+
+# Helper function to print linked list
+def print_linked_list(node):
+    while node:
+        print(node.val, end=" -> ")
+        node = node.next
+    print("None")
+
+# Example usage
+lists = [
+    create_linked_list([1, 4, 5]),
+    create_linked_list([1, 3, 4]),
+    create_linked_list([2, 6])
+]
+merged_list = merge_k_lists(lists)
+print_linked_list(merged_list)  # Output: 1 -> 1 -> 2 -> 3 -> 4 -> 4 -> 5 -> 6 -> None
+```
+
+### Explanation
+
+1. **ListNode Class**: Define a `ListNode` class to represent each node in the linked list.
+
+2. **Min-Heap Initialization**: Use a min-heap (priority queue) to store the nodes. In Python, you can use the `heapq` module. To make the `ListNode` objects comparable based on their values, override the `__lt__` method in the `ListNode` class.
+
+3. **Initialize Heap**: Push the head nodes of all the linked lists into the min-heap.
+
+4. **Merge Process**:
+   - Initialize a dummy node to act as the starting point of the merged list.
+   - While the heap is not empty:
+     - Extract the smallest node from the heap.
+     - Add this node to the merged list.
+     - If the extracted node has a next node, push the next node into the heap.
+
+5. **Return Merged List**: After merging all the lists, return the next node of the dummy node, which is the head of the merged list.
+
+6. **Helper Functions**:
+   - `create_linked_list`: Converts a list of integers into a linked list.
+   - `print_linked_list`: Prints the linked list in a readable format to verify the result.
+
+### Complexity
+
+- **Time Complexity**: O(N log k), where N is the total number of nodes across all k linked lists. Each insertion and extraction operation on the heap takes O(log k) time.
+- **Space Complexity**: O(k) for storing nodes in the heap.
+
+To simplify a given Unix-style file system path, you can use a stack to help manage the directories as you process each part of the path. Here's a Python solution that adheres to the rules specified:
+
+### Steps:
+1. Split the input path by slashes to get individual parts.
+2. Use a stack to handle the directories:
+   - Push directory names onto the stack.
+   - Pop the stack for ".." to move up one directory.
+   - Ignore "." and empty parts resulting from consecutive slashes.
+3. Join the stack elements to form the simplified path.
+
+Here's the implementation:
+
+```python
+def simplify_path(path):
+    parts = path.split('/')
+    stack = []
+    
+    for part in parts:
+        if part == '..':
+            if stack:
+                stack.pop()
+        elif part and part != '.':
+            stack.append(part)
+    
+    return '/' + '/'.join(stack)
+
+# Example usage
+path = "/home/"
+print(simplify_path(path))  # Output: "/home"
+
+path = "/../"
+print(simplify_path(path))  # Output: "/"
+
+path = "/home//foo/"
+print(simplify_path(path))  # Output: "/home/foo"
+
+path = "/a/./b/../../c/"
+print(simplify_path(path))  # Output: "/c"
+```
+
+### Explanation
+
+1. **Split the Path**:
+   - Use `split('/')` to break the path into components based on the slash `/`. This will handle multiple slashes and empty parts correctly.
+
+2. **Initialize a Stack**:
+   - Use a stack to keep track of valid directory names as you process each component.
+
+3. **Process Each Part**:
+   - If the part is `".."`, pop the stack to move up one directory level, but only if the stack is not empty.
+   - If the part is `"."` or empty (resulting from multiple slashes), do nothing.
+   - Otherwise, push the directory name onto the stack.
+
+4. **Construct the Simplified Path**:
+   - Join the elements in the stack with slashes `/` to form the simplified path.
+   - Ensure the path starts with a single slash `/`.
+
+### Example Walkthrough
+
+For the input path `"/a/./b/../../c/"`:
+- Split into parts: `["", "a", ".", "b", "..", "..", "c", ""]`
+- Process each part:
+  - `""`: Ignore
+  - `"a"`: Push to stack → `stack = ["a"]`
+  - `"."`: Ignore
+  - `"b"`: Push to stack → `stack = ["a", "b"]`
+  - `".."`: Pop stack → `stack = ["a"]`
+  - `".."`: Pop stack → `stack = []`
+  - `"c"`: Push to stack → `stack = ["c"]`
+  - `""`: Ignore
+- Join stack elements with `/` to get `"/c"`
+
+This method ensures the path is simplified according to Unix-style file system rules, handling edge cases such as multiple slashes, current directory symbols `"."`, and parent directory symbols `".."` correctly.
+
+To implement a basic calculator to evaluate a given string representing a valid expression, you can use a stack to handle the operators and operands. The following implementation supports addition, subtraction, and parentheses.
+
+Here's a Python solution for the basic calculator:
+
+```python
+def basic_calculator(s):
+    def update(op, num):
+        if op == '+':
+            return num
+        elif op == '-':
+            return -num
+    
+    stack = []
+    num = 0
+    op = '+'
+    s = s.replace(' ', '')
+    
+    for i, c in enumerate(s):
+        if c.isdigit():
+            num = num * 10 + int(c)
+        if c in '+-(' or i == len(s) - 1:
+            if c == '(':
+                stack.append(op)
+                stack.append('(')
+                op = '+'
+                num = 0
+            else:
+                if stack and stack[-1] == '(':
+                    stack.pop()
+                    stack.append(update(op, num))
+                else:
+                    stack.append(update(op, num))
+                op = c
+                num = 0
+        elif c == ')':
+            if stack and stack[-1] == '(':
+                stack.pop()
+                stack.append(update(op, num))
+            else:
+                stack.append(update(op, num))
+            num = 0
+            
+            while stack and stack[-1] != '(':
+                num += stack.pop()
+            stack.pop()
+            
+            if stack:
+                op = stack.pop()
+            stack.append(update(op, num))
+            num = 0
+
+    while stack:
+        num += stack.pop()
+    
+    return num
+
+# Example usage
+print(basic_calculator("1 + 1"))          # Output: 2
+print(basic_calculator(" 2-1 + 2 "))      # Output: 3
+print(basic_calculator("(1+(4+5+2)-3)+(6+8)"))  # Output: 23
+```
+
+### Explanation
+
+1. **Remove Spaces**:
+   - Remove any spaces from the string to simplify processing.
+
+2. **Initialization**:
+   - Use a stack to handle operators and intermediate results.
+   - Initialize `num` to 0 and `op` to '+' to handle the first number correctly.
+
+3. **Process Each Character**:
+   - If the character is a digit, update the `num`.
+   - If the character is an operator (`+`, `-`), or an open parenthesis `(`, or the end of the string:
+     - If the character is an open parenthesis `(`:
+       - Push the current operator and the open parenthesis onto the stack.
+       - Reset `op` to '+' and `num` to 0.
+     - Otherwise:
+       - Use the `update` function to calculate the value based on the current operator and number, and push it onto the stack.
+       - Update the operator to the current character and reset `num` to 0.
+   - If the character is a close parenthesis `)`:
+     - Use the `update` function to calculate the value based on the current operator and number, and push it onto the stack.
+     - Pop the stack and sum all values until encountering the open parenthesis `(`.
+     - Pop the open parenthesis `(`.
+     - If there is an operator before the parenthesis, pop it from the stack and update the result accordingly.
+
+4. **Final Sum**:
+   - Sum all values in the stack to get the final result.
+
+### Example Walkthrough
+
+For the input string `"(1+(4+5+2)-3)+(6+8)"`:
+- Remove spaces: `"(1+(4+5+2)-3)+(6+8)"`
+- Initialize `stack`, `num`, and `op`.
+- Process each character:
+  - Handle digits by forming the complete number.
+  - Handle operators by using the `update` function and updating the stack.
+  - Handle parentheses by pushing operators and intermediate results onto the stack, and summing results inside the parentheses.
+
+This approach ensures that the expression is evaluated correctly, including handling nested parentheses, and supports basic operations (addition and subtraction).
+
+To solve the problem of removing `k` digits from a given string representing a non-negative integer `num` to get the smallest possible integer, you can use a greedy approach with a stack. Here's how you can do it:
+
+### Steps:
+1. Iterate through each digit in the input number.
+2. Use a stack to build the smallest possible number:
+   - While the stack is not empty and the current digit is less than the top of the stack, and `k` is greater than 0, pop the stack. This step ensures that we are removing larger digits when possible to form a smaller number.
+3. After processing all digits, if `k` is still greater than 0, remove the remaining `k` digits from the end of the stack.
+4. Convert the stack back to a string, removing any leading zeros.
+5. Return the result or "0" if the result is an empty string.
+
+Here's the implementation:
+
+```python
+def remove_k_digits(num, k):
+    stack = []
+    
+    for digit in num:
+        while stack and k > 0 and stack[-1] > digit:
+            stack.pop()
+            k -= 1
+        stack.append(digit)
+    
+    # If k is still greater than 0, remove the remaining digits from the end
+    while k > 0:
+        stack.pop()
+        k -= 1
+    
+    # Join the stack to form the final number string and strip leading zeros
+    result = ''.join(stack).lstrip('0')
+    
+    # Return '0' if result is empty
+    return result if result else '0'
+
+# Example usage
+print(remove_k_digits("1432219", 3))  # Output: "1219"
+print(remove_k_digits("10200", 1))    # Output: "200"
+print(remove_k_digits("10", 2))       # Output: "0"
+```
+
+### Explanation
+
+1. **Stack Initialization**:
+   - Initialize an empty stack to build the smallest number.
+
+2. **Iterate Through Digits**:
+   - For each digit in the input string `num`:
+     - While the stack is not empty, `k` is greater than 0, and the top of the stack is greater than the current digit, pop the stack and decrement `k`. This ensures that we remove larger digits when a smaller digit can replace them to form a smaller number.
+     - Append the current digit to the stack.
+
+3. **Handle Remaining k**:
+   - If `k` is still greater than 0 after processing all digits, remove the remaining `k` digits from the end of the stack. This step handles cases where the digits are in increasing order, and we haven't removed enough digits yet.
+
+4. **Form Result String**:
+   - Join the digits in the stack to form the final result string.
+   - Remove any leading zeros using `lstrip('0')`.
+   - Return the result or "0" if the result is an empty string after removing leading zeros.
+
+### Example Walkthrough
+
+For the input `num = "1432219"` and `k = 3`:
+- Iteration 1: Stack = `['1']`
+- Iteration 2: Stack = `['1', '4']`
+- Iteration 3: Stack = `['1', '3']` (removed `4`)
+- Iteration 4: Stack = `['1', '2']` (removed `3`)
+- Iteration 5: Stack = `['1', '2', '2']`
+- Iteration 6: Stack = `['1', '2', '1']` (removed `2`)
+- Iteration 7: Stack = `['1', '2', '1', '9']`
+- Since `k` is now 0, join the stack and remove leading zeros: Result = `"1219"`
+
+This approach ensures that the smallest possible number is formed by using a greedy algorithm with a stack to maintain the order of digits while removing the necessary number of digits. The time complexity is O(n), where n is the length of the input string `num`.
+
+To find the median of two sorted arrays with a time complexity of O(log (m+n)), you can use a binary search approach. The idea is to partition the arrays such that the left half contains the smaller elements and the right half contains the larger elements. Here is a Python implementation of this approach:
+
+```python
+def find_median_sorted_arrays(nums1, nums2):
+    # Ensure nums1 is the smaller array
+    if len(nums1) > len(nums2):
+        nums1, nums2 = nums2, nums1
+    
+    m, n = len(nums1), len(nums2)
+    imin, imax, half_len = 0, m, (m + n + 1) // 2
+    
+    while imin <= imax:
+        i = (imin + imax) // 2
+        j = half_len - i
+        
+        if i < m and nums1[i] < nums2[j-1]:
+            # i is too small, must increase it
+            imin = i + 1
+        elif i > 0 and nums1[i-1] > nums2[j]:
+            # i is too big, must decrease it
+            imax = i - 1
+        else:
+            # i is perfect
+            if i == 0: max_of_left = nums2[j-1]
+            elif j == 0: max_of_left = nums1[i-1]
+            else: max_of_left = max(nums1[i-1], nums2[j-1])
+            
+            if (m + n) % 2 == 1:
+                return max_of_left
+            
+            if i == m: min_of_right = nums2[j]
+            elif j == n: min_of_right = nums1[i]
+            else: min_of_right = min(nums1[i], nums2[j])
+            
+            return (max_of_left + min_of_right) / 2.0
+
+# Example usage
+nums1 = [1, 3]
+nums2 = [2]
+print(find_median_sorted_arrays(nums1, nums2))  # Output: 2.0
+
+nums1 = [1, 2]
+nums2 = [3, 4]
+print(find_median_sorted_arrays(nums1, nums2))  # Output: 2.5
+```
+
+### Explanation
+
+1. **Ensure nums1 is the smaller array**:
+   - Swap `nums1` and `nums2` if `nums1` is longer than `nums2`. This ensures that the binary search is performed on the smaller array, which reduces the complexity.
+
+2. **Initialization**:
+   - `m` and `n` are the lengths of `nums1` and `nums2`, respectively.
+   - `imin`, `imax` are the bounds for the binary search on `nums1`.
+   - `half_len` is the half length of the combined arrays.
+
+3. **Binary Search**:
+   - Use binary search to partition `nums1` and `nums2` such that the left half contains the smaller elements and the right half contains the larger elements.
+   - `i` is the partition index for `nums1`, and `j` is the partition index for `nums2`.
+
+4. **Adjust the Search**:
+   - If `nums1[i] < nums2[j-1]`, increase `i` (`imin = i + 1`) because `i` is too small.
+   - If `nums1[i-1] > nums2[j]`, decrease `i` (`imax = i - 1`) because `i` is too large.
+   - Otherwise, `i` is perfect, and we have found the correct partition.
+
+5. **Find the Median**:
+   - Determine the maximum element on the left half: `max_of_left`.
+     - If `i` is 0, `max_of_left` is `nums2[j-1]`.
+     - If `j` is 0, `max_of_left` is `nums1[i-1]`.
+     - Otherwise, `max_of_left` is the maximum of `nums1[i-1]` and `nums2[j-1]`.
+   - If the total number of elements `(m + n)` is odd, the median is `max_of_left`.
+   - Otherwise, determine the minimum element on the right half: `min_of_right`.
+     - If `i` is `m`, `min_of_right` is `nums2[j]`.
+     - If `j` is `n`, `min_of_right` is `nums1[i]`.
+     - Otherwise, `min_of_right` is the minimum of `nums1[i]` and `nums2[j]`.
+   - The median is the average of `max_of_left` and `min_of_right`.
+
+This approach ensures that the solution runs in O(log (m+n)) time complexity, leveraging the efficiency of binary search.
+
+To solve the problem of finding the insert position of a target value in a sorted array of distinct integers with O(log n) runtime complexity, you can use binary search. Binary search efficiently narrows down the possible positions of the target by repeatedly dividing the search interval in half.
+
+Here's the Python implementation of the solution:
+
+```python
+def search_insert(nums, target):
+    left, right = 0, len(nums) - 1
+    
+    while left <= right:
+        mid = (left + right) // 2
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return left
+
+# Example usage
+nums = [1, 3, 5, 6]
+target = 5
+print(search_insert(nums, target))  # Output: 2
+
+target = 2
+print(search_insert(nums, target))  # Output: 1
+
+target = 7
+print(search_insert(nums, target))  # Output: 4
+
+target = 0
+print(search_insert(nums, target))  # Output: 0
+```
+
+### Explanation
+
+1. **Initialize Pointers**:
+   - `left` pointer starts at the beginning of the array (index 0).
+   - `right` pointer starts at the end of the array (index `len(nums) - 1`).
+
+2. **Binary Search Loop**:
+   - Calculate the middle index `mid` as the average of `left` and `right` pointers.
+   - Compare the middle element `nums[mid]` with the target:
+     - If `nums[mid]` equals the target, return `mid` because the target is found.
+     - If `nums[mid]` is less than the target, move the `left` pointer to `mid + 1` because the target must be in the right half.
+     - If `nums[mid]` is greater than the target, move the `right` pointer to `mid - 1` because the target must be in the left half.
+
+3. **Return Insert Position**:
+   - If the target is not found in the array, the `left` pointer will indicate the correct insert position where the target should be placed to maintain the sorted order.
+
+### Example Walkthrough
+
+For the input `nums = [1, 3, 5, 6]` and `target = 5`:
+- Initialize `left = 0`, `right = 3`.
+- Calculate `mid = (0 + 3) // 2 = 1`. Compare `nums[1]` (which is 3) with the target 5. Since 3 is less than 5, move `left` to `2`.
+- Calculate `mid = (2 + 3) // 2 = 2`. Compare `nums[2]` (which is 5) with the target 5. They are equal, so return `2`.
+
+For the input `nums = [1, 3, 5, 6]` and `target = 2`:
+- Initialize `left = 0`, `right = 3`.
+- Calculate `mid = (0 + 3) // 2 = 1`. Compare `nums[1]` (which is 3) with the target 2. Since 3 is greater than 2, move `right` to `0`.
+- Calculate `mid = (0 + 0) // 2 = 0`. Compare `nums[0]` (which is 1) with the target 2. Since 1 is less than 2, move `left` to `1`.
+- The loop exits, and the correct insert position is `1`.
+
+This approach ensures the solution runs in O(log n) time complexity, efficiently finding the insert position in a sorted array.
+
+To merge overlapping intervals, you can follow these steps:
+
+1. **Sort the intervals** by their starting points.
+2. **Initialize a list** to store the merged intervals.
+3. **Iterate through the sorted intervals** and merge them if they overlap. If the current interval does not overlap with the last merged interval, add it to the merged intervals list.
+
+Here's the Python implementation:
+
+```python
+def merge_intervals(intervals):
+    # Sort the intervals by their start time
+    intervals.sort(key=lambda x: x[0])
+    
+    # Initialize the merged intervals list
+    merged = []
+    
+    for interval in intervals:
+        # If merged is empty or the current interval does not overlap with the last merged interval, add it to merged
+        if not merged or merged[-1][1] < interval[0]:
+            merged.append(interval)
+        else:
+            # There is an overlap, so merge the current interval with the last interval in merged
+            merged[-1][1] = max(merged[-1][1], interval[1])
+    
+    return merged
+
+# Example usage
+intervals = [[1,3],[2,6],[8,10],[15,18]]
+print(merge_intervals(intervals))  # Output: [[1, 6], [8, 10], [15, 18]]
+
+intervals = [[1,4],[4,5]]
+print(merge_intervals(intervals))  # Output: [[1, 5]]
+```
+
+### Explanation
+
+1. **Sorting the Intervals**:
+   - Sort the intervals based on their start time using `intervals.sort(key=lambda x: x[0])`. This ensures that intervals are processed in the correct order.
+
+2. **Initialize the Merged List**:
+   - Create an empty list `merged` to store the merged intervals.
+
+3. **Iterate through Intervals**:
+   - For each interval in the sorted list:
+     - If `merged` is empty or the current interval does not overlap with the last interval in `merged` (i.e., `merged[-1][1] < interval[0]`), append the current interval to `merged`.
+     - If there is an overlap (i.e., `merged[-1][1] >= interval[0]`), merge the current interval with the last interval in `merged` by updating the end time of the last interval to the maximum end time between the two intervals.
+
+4. **Return the Merged List**:
+   - After processing all intervals, return the `merged` list containing the non-overlapping intervals.
+
+### Example Walkthrough
+
+For the input `intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]`:
+- Sort the intervals: `[[1, 3], [2, 6], [8, 10], [15, 18]]`
+- Initialize `merged = []`
+- Process each interval:
+  - `[1, 3]`: `merged` is empty, so add `[1, 3]` to `merged` → `merged = [[1, 3]]`
+  - `[2, 6]`: Overlaps with `[1, 3]`, so merge them to `[1, 6]` → `merged = [[1, 6]]`
+  - `[8, 10]`: No overlap with `[1, 6]`, so add `[8, 10]` to `merged` → `merged = [[1, 6], [8, 10]]`
+  - `[15, 18]`: No overlap with `[8, 10]`, so add `[15, 18]` to `merged` → `merged = [[1, 6], [8, 10], [15, 18]]`
+- Return `merged`: `[[1, 6], [8, 10], [15, 18]]`
+
+For the input `intervals = [[1, 4], [4, 5]]`:
+- Sort the intervals: `[[1, 4], [4, 5]]`
+- Initialize `merged = []`
+- Process each interval:
+  - `[1, 4]`: `merged` is empty, so add `[1, 4]` to `merged` → `merged = [[1, 4]]`
+  - `[4, 5]`: Overlaps with `[1, 4]`, so merge them to `[1, 5]` → `merged = [[1, 5]]`
+- Return `merged`: `[[1, 5]]`
+
+This approach ensures that the intervals are merged correctly with a time complexity of O(n log n) due to the sorting step, followed by O(n) for the merging step, making it efficient for merging intervals.
+
+To find the longest palindromic substring in a given string `s`, you can use the expand around center approach. This approach involves expanding around each possible center of the palindrome, which can be a single character or between two characters.
+
+Here's the Python implementation of this approach:
+
+```python
+def longest_palindromic_substring(s):
+    def expand_around_center(left, right):
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return left + 1, right - 1
+
+    start, end = 0, 0
+    for i in range(len(s)):
+        l1, r1 = expand_around_center(i, i)       # Odd length palindromes
+        l2, r2 = expand_around_center(i, i + 1)   # Even length palindromes
+        
+        if r1 - l1 > end - start:
+            start, end = l1, r1
+        if r2 - l2 > end - start:
+            start, end = l2, r2
+
+    return s[start:end + 1]
+
+# Example usage
+print(longest_palindromic_substring("babad"))  # Output: "bab" or "aba"
+print(longest_palindromic_substring("cbbd"))   # Output: "bb"
+```
+
+### Explanation
+
+1. **Expand Around Center Function**:
+   - The `expand_around_center` function takes two indices, `left` and `right`, and expands outwards as long as the characters at these indices are equal and the indices are within bounds. It returns the start and end indices of the palindrome.
+
+2. **Main Function**:
+   - Initialize `start` and `end` to track the starting and ending indices of the longest palindromic substring found.
+   - Iterate through each character in the string `s`.
+     - For each character, consider it as the center of an odd-length palindrome and call `expand_around_center(i, i)`.
+     - Also, consider the space between the character and the next one as the center of an even-length palindrome and call `expand_around_center(i, i + 1)`.
+   - Update the `start` and `end` indices if a longer palindrome is found.
+   - After iterating through all possible centers, return the longest palindromic substring using `s[start:end + 1]`.
+
+### Example Walkthrough
+
+For the input `s = "babad"`:
+- Expand around each center:
+  - Center at index 0: "b" (odd), "ba" (even)
+  - Center at index 1: "bab" (odd), "ab" (even)
+  - Center at index 2: "aba" (odd), "ba" (even)
+  - Center at index 3: "a" (odd), "ad" (even)
+  - Center at index 4: "d" (odd), "" (even)
+- The longest palindrome found is "bab" or "aba".
+
+For the input `s = "cbbd"`:
+- Expand around each center:
+  - Center at index 0: "c" (odd), "cb" (even)
+  - Center at index 1: "b" (odd), "bb" (even)
+  - Center at index 2: "b" (odd), "bd" (even)
+  - Center at index 3: "d" (odd), "" (even)
+- The longest palindrome found is "bb".
+
+This approach ensures that the solution runs in O(n^2) time complexity, which is efficient for this problem given the constraints.
+
+To solve the problem of finding the subarray with the largest sum, you can use Kadane's Algorithm. This algorithm efficiently finds the maximum sum subarray in O(n) time complexity.
+
+Here's the Python implementation of Kadane's Algorithm:
+
+```python
+def max_subarray(nums):
+    max_current = max_global = nums[0]
+    
+    for num in nums[1:]:
+        max_current = max(num, max_current + num)
+        if max_current > max_global:
+            max_global = max_current
+            
+    return max_global
+
+# Example usage
+nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+print(max_subarray(nums))  # Output: 6
+
+nums = [1]
+print(max_subarray(nums))  # Output: 1
+
+nums = [5, 4, -1, 7, 8]
+print(max_subarray(nums))  # Output: 23
+```
+
+### Explanation
+
+1. **Initialization**:
+   - Initialize two variables: `max_current` and `max_global` with the first element of the array. `max_current` keeps track of the maximum sum of the subarray that ends at the current position, while `max_global` keeps track of the maximum sum found so far.
+
+2. **Iterate through the Array**:
+   - For each element in the array starting from the second element:
+     - Update `max_current` to be the maximum of the current element (`num`) and the sum of `max_current` and the current element (`max_current + num`). This step decides whether to start a new subarray at the current element or to continue with the existing subarray.
+     - Update `max_global` to be the maximum of `max_global` and `max_current`. This ensures that `max_global` always contains the maximum sum of any subarray found so far.
+
+3. **Return the Result**:
+   - After iterating through the array, `max_global` will contain the sum of the subarray with the largest sum.
+
+### Example Walkthrough
+
+For the input `nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]`:
+- Initialize `max_current = -2` and `max_global = -2`.
+- Iterate through the array:
+  - `1`: `max_current = max(1, -2 + 1) = 1`, `max_global = max(-2, 1) = 1`
+  - `-3`: `max_current = max(-3, 1 - 3) = -2`, `max_global = max(1, -2) = 1`
+  - `4`: `max_current = max(4, -2 + 4) = 4`, `max_global = max(1, 4) = 4`
+  - `-1`: `max_current = max(-1, 4 - 1) = 3`, `max_global = max(4, 3) = 4`
+  - `2`: `max_current = max(2, 3 + 2) = 5`, `max_global = max(4, 5) = 5`
+  - `1`: `max_current = max(1, 5 + 1) = 6`, `max_global = max(5, 6) = 6`
+  - `-5`: `max_current = max(-5, 6 - 5) = 1`, `max_global = max(6, 1) = 6`
+  - `4`: `max_current = max(4, 1 + 4) = 5`, `max_global = max(6, 5) = 6`
+- The maximum subarray sum is `6`.
+
+This approach ensures that you efficiently find the maximum sum subarray in linear time.
+
+To solve the problem of finding the best time to buy and sell stock to maximize profit, you can use a single-pass algorithm. The idea is to keep track of the minimum price observed so far and calculate the potential profit at each step by subtracting the current price from the minimum price. Update the maximum profit accordingly.
+
+Here's the Python implementation:
+
+```python
+def max_profit(prices):
+    if not prices:
+        return 0
+    
+    min_price = float('inf')
+    max_profit = 0
+    
+    for price in prices:
+        if price < min_price:
+            min_price = price
+        elif price - min_price > max_profit:
+            max_profit = price - min_price
+    
+    return max_profit
+
+# Example usage
+prices = [7, 1, 5, 3, 6, 4]
+print(max_profit(prices))  # Output: 5
+
+prices = [7, 6, 4, 3, 1]
+print(max_profit(prices))  # Output: 0
+```
+
+### Explanation
+
+1. **Initialization**:
+   - `min_price` is initialized to infinity to ensure any price in the list will be smaller.
+   - `max_profit` is initialized to 0 to store the maximum profit found.
+
+2. **Iterate Through Prices**:
+   - For each price in the list:
+     - Update `min_price` if the current price is smaller than the `min_price` observed so far.
+     - Calculate the potential profit by subtracting the current `min_price` from the current price.
+     - Update `max_profit` if the calculated profit is greater than the current `max_profit`.
+
+3. **Return the Result**:
+   - After iterating through all prices, `max_profit` will contain the maximum profit that can be achieved from a single buy-sell transaction.
+
+### Example Walkthrough
+
+For the input `prices = [7, 1, 5, 3, 6, 4]`:
+- Initialize `min_price = infinity` and `max_profit = 0`.
+- Iterate through the array:
+  - `7`: `min_price = 7`, `max_profit = 0`
+  - `1`: `min_price = 1`, `max_profit = 0`
+  - `5`: `profit = 5 - 1 = 4`, `max_profit = 4`
+  - `3`: `profit = 3 - 1 = 2`, `max_profit = 4`
+  - `6`: `profit = 6 - 1 = 5`, `max_profit = 5`
+  - `4`: `profit = 4 - 1 = 3`, `max_profit = 5`
+- The maximum profit is `5`.
+
+For the input `prices = [7, 6, 4, 3, 1]`:
+- Initialize `min_price = infinity` and `max_profit = 0`.
+- Iterate through the array:
+  - `7`: `min_price = 7`, `max_profit = 0`
+  - `6`: `min_price = 6`, `max_profit = 0`
+  - `4`: `min_price = 4`, `max_profit = 0`
+  - `3`: `min_price = 3`, `max_profit = 0`
+  - `1`: `min_price = 1`, `max_profit = 0`
+- The maximum profit is `0` (no profit can be made as prices are decreasing).
+
+This approach ensures that you find the maximum profit in a single pass through the array, resulting in a time complexity of O(n) and a space complexity of O(1).
+
+To solve the problem of determining the number of distinct ways to climb a staircase where each step can be either 1 or 2 steps, you can use dynamic programming. The problem can be broken down into a recurrence relation, similar to the Fibonacci sequence.
+
+### Explanation
+
+If you are on step \(i\), you could have reached there either from step \(i-1\) or step \(i-2\). Therefore, the number of ways to reach step \(i\) is the sum of the ways to reach step \(i-1\) and the ways to reach step \(i-2\):
+
+\[ \text{ways}(i) = \text{ways}(i-1) + \text{ways}(i-2) \]
+
+The base cases are:
+- There is 1 way to reach the 1st step (just a single step).
+- There are 2 ways to reach the 2nd step (two 1-steps or one 2-step).
+
+Here's the Python implementation:
+
+```python
+def climb_stairs(n):
+    if n == 1:
+        return 1
+    if n == 2:
+        return 2
+
+    first = 1
+    second = 2
+    
+    for i in range(3, n + 1):
+        third = first + second
+        first = second
+        second = third
+    
+    return second
+
+# Example usage
+print(climb_stairs(2))  # Output: 2
+print(climb_stairs(3))  # Output: 3
+print(climb_stairs(4))  # Output: 5
+```
+
+### Explanation of the Code
+
+1. **Base Cases**:
+   - If `n` is 1, return 1 because there's only one way to climb one step.
+   - If `n` is 2, return 2 because there are two ways to climb two steps: (1 step + 1 step) or (2 steps).
+
+2. **Initialization**:
+   - Use two variables, `first` and `second`, to store the number of ways to reach the first and second steps respectively.
+
+3. **Iterate through Steps**:
+   - Use a for loop to iterate from step 3 to `n`.
+   - For each step, calculate the number of ways to reach that step as the sum of the ways to reach the previous two steps (`third = first + second`).
+   - Update `first` to `second` and `second` to `third` for the next iteration.
+
+4. **Return Result**:
+   - After the loop, `second` contains the number of ways to reach the nth step.
+
+### Time and Space Complexity
+
+- **Time Complexity**: O(n) because the loop runs `n-2` times.
+- **Space Complexity**: O(1) because only a fixed amount of extra space is used, regardless of the input size `n`.
+
+This dynamic programming approach ensures that you calculate the number of distinct ways to climb the stairs efficiently.
+
+To solve the problem of finding the largest rectangle containing only 1's in a given binary matrix, you can use a combination of dynamic programming and the largest rectangle in histogram technique. Here's a step-by-step explanation and the Python solution:
+
+### Explanation
+
+1. **Transform the Problem**:
+   - Treat each row of the matrix as the base of a histogram.
+   - Compute the height of bars in the histogram for each column, where the height is the number of consecutive 1's ending at that row.
+
+2. **Dynamic Programming**:
+   - Use a `heights` array to store the height of the histogram bars for each column.
+   - For each row in the matrix, update the `heights` array.
+
+3. **Largest Rectangle in Histogram**:
+   - For each updated `heights` array (histogram), use a stack-based approach to find the largest rectangle area in the histogram.
+
+### Python Solution
+
+```python
+def maximal_rectangle(matrix):
+    if not matrix or not matrix[0]:
+        return 0
+    
+    rows, cols = len(matrix), len(matrix[0])
+    heights = [0] * cols
+    max_area = 0
+    
+    for row in matrix:
+        for j in range(cols):
+            if row[j] == '1':
+                heights[j] += 1
+            else:
+                heights[j] = 0
+        
+        max_area = max(max_area, largest_rectangle_area(heights))
+    
+    return max_area
+
+def largest_rectangle_area(heights):
+    stack = []
+    max_area = 0
+    heights.append(0)  # Append a zero to ensure the stack is emptied at the end
+    
+    for i, h in enumerate(heights):
+        while stack and heights[stack[-1]] > h:
+            height = heights[stack.pop()]
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, height * width)
+        stack.append(i)
+    
+    heights.pop()  # Remove the appended zero
+    return max_area
+
+# Example usage
+matrix = [
+    ["1","0","1","0","0"],
+    ["1","0","1","1","1"],
+    ["1","1","1","1","1"],
+    ["1","0","0","1","0"]
+]
+print(maximal_rectangle(matrix))  # Output: 6
+```
+
+### Explanation of the Code
+
+1. **Initialization**:
+   - Check if the matrix is empty and return 0 if it is.
+   - Initialize `heights` array with zeros to store the heights of the histogram bars.
+   - Initialize `max_area` to keep track of the maximum rectangle area found.
+
+2. **Update Heights and Calculate Maximum Area**:
+   - Iterate through each row in the matrix.
+   - For each element in the row, update the corresponding element in the `heights` array. If the element is '1', increment the height by 1. If it is '0', reset the height to 0.
+   - Call the `largest_rectangle_area` function with the updated `heights` array to find the largest rectangle area in the histogram for that row and update `max_area`.
+
+3. **Largest Rectangle in Histogram**:
+   - Use a stack to find the largest rectangle area in the histogram.
+   - Iterate through the `heights` array and use the stack to maintain the indices of the bars.
+   - For each bar, pop from the stack while the current bar height is less than the height of the bar at the index stored in the stack.
+   - Calculate the area for the popped bar and update `max_area`.
+   - Append the current index to the stack.
+   - Finally, remove the appended zero from the `heights` array.
+
+### Complexity
+
+- **Time Complexity**: O(rows * cols), since each row is processed once and the largest rectangle in histogram is found in O(cols) time.
+- **Space Complexity**: O(cols), for the `heights` array and the stack used in the histogram calculation.
+
+This solution efficiently finds the largest rectangle of 1's in the given binary matrix.
+
+To solve the problem of finding the maximum product subarray, you can use a dynamic programming approach that keeps track of both the maximum and minimum product ending at each position. This is necessary because a negative number could turn a large negative product into a large positive product. Here’s how you can implement this solution:
+
+### Explanation
+
+1. **Initialize Variables**:
+   - `max_prod` to store the maximum product found so far.
+   - `min_prod` to store the minimum product ending at the current position (to handle negative numbers).
+   - `result` to store the final maximum product.
+
+2. **Iterate Through the Array**:
+   - For each element in the array, update the `max_prod` and `min_prod` considering the current element, the product of the current element and the previous `max_prod`, and the product of the current element and the previous `min_prod`.
+   - Update the `result` with the maximum value of `max_prod`.
+
+3. **Return the Result**:
+   - The `result` will contain the maximum product of any subarray.
+
+Here’s the Python implementation:
+
+```python
+def max_product(nums):
+    if not nums:
+        return 0
+    
+    max_prod = min_prod = result = nums[0]
+    
+    for num in nums[1:]:
+        if num < 0:
+            max_prod, min_prod = min_prod, max_prod
+        
+        max_prod = max(num, max_prod * num)
+        min_prod = min(num, min_prod * num)
+        
+        result = max(result, max_prod)
+    
+    return result
+
+# Example usage
+nums = [2, 3, -2, 4]
+print(max_product(nums))  # Output: 6
+
+nums = [-2, 0, -1]
+print(max_product(nums))  # Output: 0
+
+nums = [-2, 3, -4]
+print(max_product(nums))  # Output: 24
+```
+
+### Explanation of the Code
+
+1. **Initialization**:
+   - Initialize `max_prod`, `min_prod`, and `result` with the first element of the array.
+
+2. **Iterate Through the Array**:
+   - For each element starting from the second element, check if the element is negative. If it is, swap `max_prod` and `min_prod` because multiplying by a negative number will swap the maximum and minimum products.
+   - Update `max_prod` to be the maximum of the current element and the product of the current element and `max_prod`.
+   - Update `min_prod` to be the minimum of the current element and the product of the current element and `min_prod`.
+   - Update `result` to be the maximum of `result` and `max_prod`.
+
+3. **Return the Result**:
+   - After iterating through the array, return `result` which contains the maximum product of any subarray.
+
+### Example Walkthrough
+
+For the input `nums = [2, 3, -2, 4]`:
+- Initialize `max_prod = 2`, `min_prod = 2`, `result = 2`.
+- Iterate through the array:
+  - `3`: `max_prod = max(3, 2*3) = 6`, `min_prod = min(3, 2*3) = 3`, `result = max(2, 6) = 6`.
+  - `-2`: Swap `max_prod` and `min_prod` because `-2` is negative, `max_prod = max(-2, 3*-2) = -2`, `min_prod = min(-2, 6*-2) = -12`, `result = max(6, -2) = 6`.
+  - `4`: `max_prod = max(4, -2*4) = 4`, `min_prod = min(4, -12*4) = -48`, `result = max(6, 4) = 6`.
+
+For the input `nums = [-2, 3, -4]`:
+- Initialize `max_prod = -2`, `min_prod = -2`, `result = -2`.
+- Iterate through the array:
+  - `3`: `max_prod = max(3, -2*3) = 3`, `min_prod = min(3, -2*3) = -6`, `result = max(-2, 3) = 3`.
+  - `-4`: Swap `max_prod` and `min_prod` because `-4` is negative, `max_prod = max(-4, -6*-4) = 24`, `min_prod = min(-4, 3*-4) = -12`, `result = max(3, 24) = 24`.
+
+This approach ensures that the solution runs efficiently in O(n) time complexity, where n is the length of the input array, and uses O(1) space complexity.
+
+To solve the problem of regular expression matching with support for `'.'` and `'*'`, you can use dynamic programming. The key is to create a 2D table `dp` where `dp[i][j]` indicates whether the first `i` characters of the input string `s` match the first `j` characters of the pattern `p`.
+
+### Explanation
+
+1. **Dynamic Programming Table**:
+   - `dp[i][j]` is `True` if the first `i` characters of `s` match the first `j` characters of `p`.
+   - Initialize a table `dp` with dimensions `(len(s) + 1) x (len(p) + 1)` filled with `False`.
+
+2. **Base Cases**:
+   - `dp[0][0]` is `True` because an empty string matches an empty pattern.
+   - Handle patterns that can match an empty string (patterns like `a*`, `a*b*`, etc.).
+
+3. **Filling the Table**:
+   - Iterate through the table and fill in values based on the current characters in `s` and `p` and the previous results stored in `dp`.
+
+4. **Handling Special Characters**:
+   - `'.'` matches any single character.
+   - `'*'` can match zero or more of the preceding element. This requires considering two cases:
+     1. Zero occurrences of the preceding element.
+     2. One or more occurrences of the preceding element.
+
+### Python Implementation
+
+Here’s the complete Python code to solve this problem:
+
+```python
+def is_match(s, p):
+    # Create a DP table with default values False
+    dp = [[False] * (len(p) + 1) for _ in range(len(s) + 1)]
+    dp[0][0] = True  # Empty pattern matches empty string
+
+    # Populate the first row for patterns like a*, a*b*, a*b*c* that can match an empty string
+    for j in range(2, len(p) + 1):
+        if p[j - 1] == '*':
+            dp[0][j] = dp[0][j - 2]
+
+    # Fill the DP table
+    for i in range(1, len(s) + 1):
+        for j in range(1, len(p) + 1):
+            if p[j - 1] == '*':
+                # Two cases:
+                # 1. Zero occurrence of the character before '*'
+                # 2. One or more occurrence of the character before '*'
+                dp[i][j] = dp[i][j - 2] or (dp[i - 1][j] and (p[j - 2] == '.' or p[j - 2] == s[i - 1]))
+            else:
+                # Direct match or match via '.'
+                dp[i][j] = dp[i - 1][j - 1] and (p[j - 1] == '.' or p[j - 1] == s[i - 1])
+
+    return dp[len(s)][len(p)]
+
+# Example usage
+print(is_match("aa", "a"))         # Output: False
+print(is_match("aa", "a*"))        # Output: True
+print(is_match("ab", ".*"))        # Output: True
+print(is_match("aab", "c*a*b"))    # Output: True
+print(is_match("mississippi", "mis*is*p*."))  # Output: False
+```
+
+### Explanation of the Code
+
+1. **Initialization**:
+   - Create a DP table `dp` where `dp[i][j]` is initialized to `False`.
+   - Set `dp[0][0]` to `True` because an empty pattern matches an empty string.
+   - Handle patterns that can match an empty string by setting `dp[0][j]` for patterns ending in `'*'`.
+
+2. **Filling the DP Table**:
+   - Iterate through each character of the string `s` and the pattern `p`.
+   - If the current pattern character is `'*'`, there are two cases to consider:
+     1. Zero occurrences of the preceding character: `dp[i][j] = dp[i][j - 2]`.
+     2. One or more occurrences of the preceding character: `dp[i][j] = dp[i - 1][j]` if the previous character matches the current character in `s` or is `'.'`.
+   - If the current pattern character is not `'*'`, then it must directly match the current character in `s` or be `'.'`.
+
+3. **Result**:
+   - The result is stored in `dp[len(s)][len(p)]`, indicating whether the entire string `s` matches the entire pattern `p`.
+
+This dynamic programming approach ensures that the solution runs efficiently with a time complexity of O(m * n), where `m` is the length of the string `s` and `n` is the length of the pattern `p`.
+
+To solve the problem of finding the length of the longest strictly increasing subsequence (LIS) in an integer array, you can use dynamic programming. Here’s a detailed explanation and the Python implementation for this approach:
+
+### Explanation
+
+1. **Dynamic Programming Table**:
+   - Use a `dp` array where `dp[i]` represents the length of the longest increasing subsequence that ends with the element `nums[i]`.
+
+2. **Initialization**:
+   - Initialize the `dp` array with 1s because the minimum length of the increasing subsequence for each element is 1 (the element itself).
+
+3. **Filling the DP Table**:
+   - For each element `nums[i]`, iterate through all the previous elements `nums[j]` (where `j < i`).
+   - If `nums[i] > nums[j]`, it means `nums[i]` can extend the increasing subsequence that ends with `nums[j]`. Update `dp[i]` as `dp[i] = max(dp[i], dp[j] + 1)`.
+
+4. **Result**:
+   - The length of the longest increasing subsequence will be the maximum value in the `dp` array.
+
+### Python Implementation
+
+Here’s the complete Python code for this approach:
+
+```python
+def length_of_lis(nums):
+    if not nums:
+        return 0
+    
+    dp = [1] * len(nums)
+    
+    for i in range(1, len(nums)):
+        for j in range(i):
+            if nums[i] > nums[j]:
+                dp[i] = max(dp[i], dp[j] + 1)
+    
+    return max(dp)
+
+# Example usage
+print(length_of_lis([10, 9, 2, 5, 3, 7, 101, 18]))  # Output: 4
+print(length_of_lis([0, 1, 0, 3, 2, 3]))           # Output: 4
+print(length_of_lis([7, 7, 7, 7, 7, 7, 7]))         # Output: 1
+```
+
+### Explanation of the Code
+
+1. **Initialization**:
+   - If `nums` is empty, return 0.
+   - Create a `dp` array of the same length as `nums`, initialized with 1s. Each element in `dp` represents the length of the longest increasing subsequence ending at that index.
+
+2. **Filling the DP Table**:
+   - Iterate through each element `nums[i]` starting from the second element.
+   - For each element `nums[i]`, check all previous elements `nums[j]` (where `j < i`).
+   - If `nums[i] > nums[j]`, update `dp[i]` as `dp[i] = max(dp[i], dp[j] + 1)` to extend the increasing subsequence.
+
+3. **Return Result**:
+   - The length of the longest increasing subsequence is the maximum value in the `dp` array.
+
+### Complexity
+
+- **Time Complexity**: O(n^2), where n is the length of the input array `nums`. This is because of the nested loop used to fill the `dp` array.
+- **Space Complexity**: O(n), for storing the `dp` array.
+
+### Alternative Approach: Using Binary Search
+
+To improve the time complexity, you can use a more advanced approach with binary search, which achieves O(n log n) complexity. Here’s a brief explanation and implementation using the `bisect` module:
+
+```python
+import bisect
+
+def length_of_lis(nums):
+    if not nums:
+        return 0
+    
+    lis = []
+    
+    for num in nums:
+        pos = bisect.bisect_left(lis, num)
+        if pos < len(lis):
+            lis[pos] = num
+        else:
+            lis.append(num)
+    
+    return len(lis)
+
+# Example usage
+print(length_of_lis([10, 9, 2, 5, 3, 7, 101, 18]))  # Output: 4
+print(length_of_lis([0, 1, 0, 3, 2, 3]))           # Output: 4
+print(length_of_lis([7, 7, 7, 7, 7, 7, 7]))         # Output: 1
+```
+
+### Explanation of the Binary Search Approach
+
+1. **Initialize an Empty List `lis`**:
+   - This list will store the end elements of the potential increasing subsequences.
+
+2. **Iterate Through `nums`**:
+   - For each element `num` in `nums`, find its position `pos` in the `lis` using `bisect_left`.
+   - If `pos` is equal to the length of `lis`, append `num` to `lis` (extend the subsequence).
+   - Otherwise, replace the element at `pos` in `lis` with `num` (maintain the smallest possible end element for increasing subsequences of that length).
+
+3. **Return Result**:
+   - The length of `lis` is the length of the longest increasing subsequence.
+
+### Complexity of the Binary Search Approach
+
+- **Time Complexity**: O(n log n), due to the binary search operation for each element.
+- **Space Complexity**: O(n), for storing the `lis` list.
+
+Both approaches effectively solve the problem, with the binary search approach being more efficient for larger input arrays.
+
+To find the least number of perfect square numbers that sum to a given integer \( n \), you can use a dynamic programming approach. The idea is to build a solution using previously computed results.
+
+### Explanation
+
+1. **Dynamic Programming Table**:
+   - Use an array `dp` where `dp[i]` represents the least number of perfect squares that sum to `i`.
+
+2. **Initialization**:
+   - Initialize `dp[0]` to 0 because zero perfect squares sum to 0.
+   - Initialize `dp` for all other values with infinity (or a large number) since initially, we don't know the minimum number of perfect squares required.
+
+3. **Filling the DP Table**:
+   - For each number from 1 to \( n \), determine the minimum number of perfect squares that sum to that number by checking all perfect squares less than the current number.
+
+4. **Result**:
+   - The value `dp[n]` will contain the least number of perfect squares that sum to \( n \).
+
+Here is the Python implementation:
+
+```python
+import math
+
+def num_squares(n):
+    # Initialize the dp array with infinity for all values except dp[0]
+    dp = [float('inf')] * (n + 1)
+    dp[0] = 0
+    
+    # Calculate the least number of perfect squares for each number up to n
+    for i in range(1, n + 1):
+        j = 1
+        while j * j <= i:
+            dp[i] = min(dp[i], dp[i - j * j] + 1)
+            j += 1
+            
+    return dp[n]
+
+# Example usage
+print(num_squares(12))  # Output: 3 (4 + 4 + 4)
+print(num_squares(13))  # Output: 2 (4 + 9)
+print(num_squares(1))   # Output: 1 (1)
+print(num_squares(25))  # Output: 1 (25)
+```
+
+### Explanation of the Code
+
+1. **Initialization**:
+   - Create a `dp` array of size \( n + 1 \) initialized to infinity, except for `dp[0]` which is set to 0 because 0 perfect squares sum to 0.
+
+2. **Fill the DP Table**:
+   - For each number \( i \) from 1 to \( n \):
+     - Iterate through all perfect squares less than or equal to \( i \).
+     - For each perfect square \( j \), update `dp[i]` to the minimum of its current value and `dp[i - j * j] + 1`.
+
+3. **Return the Result**:
+   - The value `dp[n]` contains the least number of perfect squares that sum to \( n \).
+
+### Complexity
+
+- **Time Complexity**: O(n \sqrt{n}), where \( n \) is the input integer. For each \( i \) from 1 to \( n \), the inner loop runs up to \(\sqrt{i}\) times.
+- **Space Complexity**: O(n), for the `dp` array.
+
+This dynamic programming approach efficiently finds the minimum number of perfect squares that sum to \( n \).
+
+To design a stack that supports push, pop, top, and retrieving the minimum element in constant time, you can use an auxiliary stack to keep track of the minimum values. Here is how you can implement the `MinStack` class:
+
+### Explanation
+
+1. **Primary Stack**:
+   - This stack will store all the elements.
+
+2. **Auxiliary Stack (min_stack)**:
+   - This stack will keep track of the minimum elements. Each time a new element is pushed, we compare it with the current minimum and push the smaller value onto the auxiliary stack.
+   - When an element is popped from the primary stack, the corresponding minimum value is also popped from the auxiliary stack.
+
+### Implementation
+
+Here's the Python code for the `MinStack` class:
+
+```python
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
+    def pop(self) -> None:
+        if self.stack:
+            val = self.stack.pop()
+            if self.min_stack and val == self.min_stack[-1]:
+                self.min_stack.pop()
+
+    def top(self) -> int:
+        if self.stack:
+            return self.stack[-1]
+        return None
+
+    def getMin(self) -> int:
+        if self.min_stack:
+            return self.min_stack[-1]
+        return None
+
+# Example usage
+min_stack = MinStack()
+min_stack.push(-2)
+min_stack.push(0)
+min_stack.push(-3)
+print(min_stack.getMin())  # Output: -3
+min_stack.pop()
+print(min_stack.top())     # Output: 0
+print(min_stack.getMin())  # Output: -2
+```
+
+### Explanation of the Code
+
+1. **Initialization (`__init__`)**:
+   - Initialize two empty lists: `stack` to store the elements and `min_stack` to store the minimum values.
+
+2. **Push (`push`)**:
+   - Append the element `val` to the `stack`.
+   - If `min_stack` is empty or `val` is less than or equal to the top element of `min_stack`, also append `val` to `min_stack`.
+
+3. **Pop (`pop`)**:
+   - Pop the top element from `stack`.
+   - If the popped element is equal to the top element of `min_stack`, also pop the top element from `min_stack`.
+
+4. **Top (`top`)**:
+   - Return the top element of `stack`.
+
+5. **Get Minimum (`getMin`)**:
+   - Return the top element of `min_stack`.
+
+### Time Complexity
+
+- **Push**: O(1) - Both appending to `stack` and `min_stack` take constant time.
+- **Pop**: O(1) - Both popping from `stack` and `min_stack` take constant time.
+- **Top**: O(1) - Accessing the top element of `stack` takes constant time.
+- **GetMin**: O(1) - Accessing the top element of `min_stack` takes constant time.
+
+This implementation ensures that all operations (push, pop, top, and getMin) are performed in constant time.
+
+To implement an LRU (Least Recently Used) Cache with O(1) average time complexity for both get and put operations, you can use a combination of a hash map and a doubly linked list. The hash map provides O(1) access to the elements, and the doubly linked list maintains the order of usage.
+
+### Explanation
+
+1. **Hash Map (Dictionary)**:
+   - Use a hash map to store the key-value pairs. The keys are the cache keys, and the values are pointers (references) to the nodes in the doubly linked list.
+
+2. **Doubly Linked List**:
+   - Use a doubly linked list to maintain the order of usage. The most recently used items are moved to the front (head) of the list, and the least recently used items are at the end (tail) of the list.
+   - This allows O(1) insertion and deletion of nodes.
+
+3. **Operations**:
+   - **Get**: Retrieve the value from the hash map and move the accessed node to the front of the doubly linked list.
+   - **Put**: Insert or update the value in the hash map and move the node to the front of the doubly linked list. If the cache exceeds its capacity, remove the node from the tail of the list and delete the corresponding key from the hash map.
+
+### Python Implementation
+
+Here is the complete implementation:
+
+```python
+class Node:
+    def __init__(self, key=None, value=None):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = Node()
+        self.tail = Node()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _remove(self, node):
+        prev = node.prev
+        next = node.next
+        prev.next = next
+        next.prev = prev
+
+    def _add_to_head(self, node):
+        node.next = self.head.next
+        node.prev = self.head
+        self.head.next.prev = node
+        self.head.next = node
+
+    def get(self, key: int) -> int:
+        node = self.cache.get(key)
+        if not node:
+            return -1
+        # Move the accessed node to the head
+        self._remove(node)
+        self._add_to_head(node)
+        return node.value
+
+    def put(self, key: int, value: int) -> None:
+        node = self.cache.get(key)
+        if node:
+            # Update the value
+            node.value = value
+            # Move the node to the head
+            self._remove(node)
+            self._add_to_head(node)
+        else:
+            new_node = Node(key, value)
+            self.cache[key] = new_node
+            self._add_to_head(new_node)
+            if len(self.cache) > self.capacity:
+                # Remove the LRU entry
+                tail = self.tail.prev
+                self._remove(tail)
+                del self.cache[tail.key]
+
+# Example usage
+cache = LRUCache(2)
+
+cache.put(1, 1)               # cache is {1=1}
+cache.put(2, 2)               # cache is {1=1, 2=2}
+print(cache.get(1))           # returns 1, cache is {2=2, 1=1}
+cache.put(3, 3)               # evicts key 2, cache is {1=1, 3=3}
+print(cache.get(2))           # returns -1 (not found)
+cache.put(4, 4)               # evicts key 1, cache is {3=3, 4=4}
+print(cache.get(1))           # returns -1 (not found)
+print(cache.get(3))           # returns 3, cache is {4=4, 3=3}
+print(cache.get(4))           # returns 4, cache is {3=3, 4=4}
+```
+
+### Explanation of the Code
+
+1. **Node Class**:
+   - A `Node` class to represent each node in the doubly linked list, containing `key`, `value`, `prev`, and `next`.
+
+2. **LRUCache Class**:
+   - `__init__`: Initializes the LRU cache with the specified capacity, an empty hash map (`cache`), and the head and tail of the doubly linked list.
+   - `_remove`: Removes a node from the doubly linked list.
+   - `_add_to_head`: Adds a node to the front of the doubly linked list (just after the head).
+   - `get`: Retrieves a value from the cache. If the key is found, the corresponding node is moved to the head of the list.
+   - `put`: Inserts or updates a value in the cache. If the cache exceeds its capacity, the least recently used node (at the tail) is removed.
+
+### Complexity
+
+- **Time Complexity**: O(1) for both `get` and `put` operations.
+- **Space Complexity**: O(capacity) for storing the hash map and doubly linked list nodes.
+
+This design ensures that the LRU cache operations are efficient and meet the required time complexity constraints.
+
+To reverse a 32-bit signed integer while ensuring the result stays within the valid range, you can follow these steps:
+
+1. Handle the sign of the integer.
+2. Reverse the digits of the absolute value.
+3. Check if the reversed integer falls within the 32-bit signed integer range.
+4. Return the reversed integer with the correct sign, or return 0 if it overflows.
+
+Here's the Python implementation of this approach:
+
+### Python Code
+
+```python
+def reverse(x: int) -> int:
+    INT_MIN, INT_MAX = -2**31, 2**31 - 1
+    
+    result = 0
+    sign = -1 if x < 0 else 1
+    x = abs(x)
+    
+    while x != 0:
+        pop = x % 10
+        x //= 10
+        
+        # Check for overflow
+        if (result > INT_MAX // 10) or (result == INT_MAX // 10 and pop > 7):
+            return 0
+        if (result < INT_MIN // 10) or (result == INT_MIN // 10 and pop < -8):
+            return 0
+        
+        result = result * 10 + pop
+    
+    return sign * result
+
+# Example usage
+print(reverse(123))     # Output: 321
+print(reverse(-123))    # Output: -321
+print(reverse(120))     # Output: 21
+print(reverse(0))       # Output: 0
+print(reverse(1534236469))  # Output: 0 (since it overflows)
+```
+
+### Explanation
+
+1. **Initialization**:
+   - Define `INT_MIN` and `INT_MAX` to represent the 32-bit signed integer range.
+   - Initialize `result` to 0 to store the reversed integer.
+   - Determine the `sign` of the input integer and convert `x` to its absolute value for easier manipulation.
+
+2. **Reversing the Digits**:
+   - Use a while loop to process each digit of the integer.
+   - Extract the last digit (`pop`) using `x % 10`.
+   - Remove the last digit from `x` using integer division (`x //= 10`).
+
+3. **Check for Overflow**:
+   - Before appending the digit to the `result`, check if appending it would cause an overflow.
+   - If `result` is greater than `INT_MAX // 10`, appending any digit would overflow.
+   - If `result` equals `INT_MAX // 10`, appending a digit greater than 7 would overflow because `INT_MAX` is 2147483647.
+   - Similar checks apply for underflow (though in this implementation, it's handled by the integer range itself).
+
+4. **Appending the Digit**:
+   - Update `result` by appending the digit (`result = result * 10 + pop`).
+
+5. **Return the Result**:
+   - Multiply the `result` by the original `sign` to restore the correct sign.
+   - If overflow was detected during processing, return 0.
+
+### Complexity
+
+- **Time Complexity**: O(log(x)) where x is the number of digits in the integer. This is because each iteration of the loop processes one digit.
+- **Space Complexity**: O(1) since no additional space proportional to the input size is used.
+
+This implementation ensures that the reversed integer stays within the 32-bit signed integer range, and it handles both positive and negative inputs correctly.
+
+To print just the 10th line of a file named `file.txt`, you can use several methods depending on the tools available in your environment. Here are three common ways to achieve this in a Unix-like environment:
+
+### Using `sed`
+
+The `sed` (stream editor) command can be used to directly print the 10th line of the file:
+
+```sh
+sed -n '10p' file.txt
+```
+
+### Using `awk`
+
+The `awk` command is a powerful text processing tool that can also be used to print the 10th line:
+
+```sh
+awk 'NR==10' file.txt
+```
+
+### Using `head` and `tail`
+
+You can combine the `head` and `tail` commands to achieve the same result:
+
+```sh
+head -n 10 file.txt | tail -n 1
+```
+
+### Explanation
+
+- **`sed -n '10p' file.txt`**:
+  - The `-n` option suppresses automatic printing.
+  - `'10p'` instructs `sed` to print the 10th line.
+
+- **`awk 'NR==10' file.txt`**:
+  - `NR` is a built-in variable in `awk` that stands for "Number of Records" (lines by default).
+  - `NR==10` checks if the current line number is 10, and if so, prints it.
+
+- **`head -n 10 file.txt | tail -n 1`**:
+  - `head -n 10` prints the first 10 lines of the file.
+  - `tail -n 1` prints the last line of the input it receives, which is the 10th line from the `head` output.
+
+### Additional Considerations
+
+- **Handling Files with Less Than 10 Lines**:
+  - If `file.txt` has fewer than 10 lines, the above commands will handle it gracefully by simply not printing anything or raising an error depending on the command used.
+
+Choose the method that best fits your environment and needs. All these methods are efficient and widely used for this purpose.
+
+To solve the problem of repeatedly adding all the digits of a given integer until the result has only one digit, you can use a mathematical approach known as the digital root. The digital root of a number is the single digit obtained by repeatedly summing the digits of the number.
+
+### Explanation
+
+The process of repeatedly summing the digits of a number until a single digit is obtained can be solved using the properties of modular arithmetic. Specifically, for any non-negative integer \( n \):
+
+\[ \text{digital root}(n) = 1 + (n - 1) \% 9 \]
+
+This formula works because the digital root of a number is equivalent to the number modulo 9, with an adjustment for the case when \( n \) is 0. Here's why:
+
+- If \( n \) is 0, the result is 0.
+- Otherwise, the result is the remainder of \( n \) divided by 9. If this remainder is 0 (and \( n \) is not 0), the result should be 9.
+
+### Python Implementation
+
+Here is a Python function to implement this solution:
+
+```python
+def add_digits(num):
+    if num == 0:
+        return 0
+    return 1 + (num - 1) % 9
+
+# Example usage
+print(add_digits(38))  # Output: 2 (3 + 8 = 11, 1 + 1 = 2)
+print(add_digits(0))   # Output: 0
+print(add_digits(12345))  # Output: 6 (1+2+3+4+5=15, 1+5=6)
+```
+
+### Explanation of the Code
+
+1. **Base Case**:
+   - If `num` is 0, return 0.
+
+2. **Digital Root Calculation**:
+   - Use the formula \( 1 + (num - 1) \% 9 \) to compute the digital root for any non-negative integer `num`.
+
+### Time Complexity
+
+- **Time Complexity**: O(1), because the solution involves a simple mathematical calculation without any loops or recursion.
+- **Space Complexity**: O(1), because no extra space is required beyond a few variables.
+
+This mathematical approach is efficient and avoids the need for iterative or recursive digit summing, providing a direct computation of the desired result.
+
+To find the nth digit in the infinite sequence of integers [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ...], we can break the problem down into several steps. Here's the detailed approach and implementation:
+
+### Steps:
+
+1. **Determine the Length of Numbers**:
+   - Identify the range in which the nth digit lies by figuring out the number of digits in the numbers that contribute to this position.
+
+2. **Calculate the Number of Digits**:
+   - Calculate how many digits contribute from 1-digit numbers, 2-digit numbers, etc., until you find the correct range.
+
+3. **Find the Exact Number and Digit**:
+   - Once the range is identified, calculate the exact number and the specific digit within that number.
+
+### Implementation
+
+Here's the step-by-step Python code for the solution:
+
+```python
+def find_nth_digit(n):
+    # Start with 1-digit numbers
+    length = 1
+    count = 9
+    start = 1
+
+    # Find the range where the nth digit lies
+    while n > length * count:
+        n -= length * count
+        length += 1
+        count *= 10
+        start *= 10
+
+    # Find the exact number where the nth digit is located
+    start += (n - 1) // length
+    s = str(start)
+    return int(s[(n - 1) % length])
+
+# Example usage
+print(find_nth_digit(3))    # Output: 3
+print(find_nth_digit(11))   # Output: 0
+print(find_nth_digit(15))   # Output: 2
+print(find_nth_digit(1000)) # Output: 3
+```
+
+### Explanation
+
+1. **Initialization**:
+   - `length`: Number of digits in the current range of numbers.
+   - `count`: Total count of numbers in the current range (e.g., 9 for 1-digit numbers, 90 for 2-digit numbers, etc.).
+   - `start`: The first number in the current range (e.g., 1 for 1-digit numbers, 10 for 2-digit numbers, etc.).
+
+2. **Find the Range**:
+   - Iterate and subtract the total digits in each range until `n` fits within the current range. This loop narrows down the range where the nth digit lies.
+
+3. **Locate the Exact Number and Digit**:
+   - Once the correct range is identified, calculate the specific number by adjusting the `start` value.
+   - Convert the number to a string to easily index the correct digit.
+   - Use `(n - 1) % length` to find the specific digit within the number.
+
+### Complexity
+
+- **Time Complexity**: O(log(n)), because the while loop increments the number length logarithmically (1-digit, 2-digit, etc.).
+- **Space Complexity**: O(1), as the space used does not depend on the input size.
+
+This approach ensures that the solution is efficient and straightforward, handling large values of `n` within reasonable time limits.
+
+To implement the TinyURL service, we need to encode a long URL into a short URL and decode the short URL back into the original long URL. Here is a simple design using a hash map (dictionary) to store the mappings between the short URLs and the original URLs.
+
+### Approach:
+
+1. **Encode**:
+   - Generate a unique identifier for each URL.
+   - Store the mapping from the unique identifier to the original URL.
+   - Create a short URL using this unique identifier.
+
+2. **Decode**:
+   - Use the unique identifier from the short URL to retrieve the original URL from the mapping.
+
+### Implementation:
+
+Here’s the Python implementation of the `Solution` class:
+
+```python
+import random
+import string
+
+class Solution:
+    def __init__(self):
+        self.url_to_code = {}
+        self.code_to_url = {}
+        self.base_url = "http://tinyurl.com/"
+        self.charset = string.ascii_letters + string.digits
+    
+    def _generate_code(self):
+        return ''.join(random.choice(self.charset) for _ in range(6))
+    
+    def encode(self, longUrl: str) -> str:
+        if longUrl in self.url_to_code:
+            return self.base_url + self.url_to_code[longUrl]
+        
+        code = self._generate_code()
+        while code in self.code_to_url:
+            code = self._generate_code()
+        
+        self.url_to_code[longUrl] = code
+        self.code_to_url[code] = longUrl
+        
+        return self.base_url + code
+    
+    def decode(self, shortUrl: str) -> str:
+        code = shortUrl.replace(self.base_url, "")
+        return self.code_to_url.get(code, "")
+
+# Example usage
+solution = Solution()
+long_url = "https://leetcode.com/problems/design-tinyurl"
+short_url = solution.encode(long_url)
+print(f"Encoded URL: {short_url}")
+decoded_url = solution.decode(short_url)
+print(f"Decoded URL: {decoded_url}")
+```
+
+### Explanation:
+
+1. **Initialization**:
+   - `self.url_to_code`: A dictionary to map long URLs to their unique codes.
+   - `self.code_to_url`: A dictionary to map unique codes to their long URLs.
+   - `self.base_url`: The base URL used for all short URLs.
+   - `self.charset`: A set of characters used to generate unique codes, consisting of uppercase and lowercase letters and digits.
+
+2. **Generate Code**:
+   - The `_generate_code` method generates a random 6-character string from the `charset`.
+
+3. **Encode Method**:
+   - If the long URL is already encoded, return the existing short URL.
+   - Otherwise, generate a unique code and ensure it’s not already used (regenerate if necessary).
+   - Store the mappings in both dictionaries (`url_to_code` and `code_to_url`).
+   - Return the complete short URL by appending the code to the `base_url`.
+
+4. **Decode Method**:
+   - Extract the code from the short URL.
+   - Retrieve the original long URL from the `code_to_url` dictionary using the extracted code.
+
+### Complexity:
+- **Time Complexity**:
+  - `encode`: O(1) average time for generating a code and storing mappings.
+  - `decode`: O(1) time for retrieving the long URL from the mapping.
+- **Space Complexity**: O(n), where `n` is the number of URLs encoded, due to the storage used by the dictionaries.
+
+This implementation ensures that the encode and decode operations are efficient and meet the requirements of the problem.
+
+To solve the "Jewels and Stones" problem, you can use a set to efficiently check whether each stone is a jewel. Here's a step-by-step explanation and implementation:
+
+### Approach:
+
+1. **Use a Set for Jewels**:
+   - Convert the string `jewels` into a set to allow O(1) average time complexity for membership checks.
+
+2. **Count the Jewels**:
+   - Iterate over each character in the string `stones`.
+   - For each character, check if it is in the set of jewels.
+   - Keep a counter to count how many stones are jewels.
+
+### Implementation:
+
+Here's the Python implementation of the solution:
+
+```python
+def num_jewels_in_stones(jewels: str, stones: str) -> int:
+    jewel_set = set(jewels)  # Create a set of jewels for O(1) look-up
+    count = 0
+    
+    for stone in stones:
+        if stone in jewel_set:
+            count += 1
+    
+    return count
+
+# Example usage
+jewels = "aA"
+stones = "aAAbbbb"
+print(num_jewels_in_stones(jewels, stones))  # Output: 3
+
+jewels = "z"
+stones = "ZZ"
+print(num_jewels_in_stones(jewels, stones))  # Output: 0
+```
+
+### Explanation of the Code:
+
+1. **Create a Set of Jewels**:
+   - Convert the string `jewels` into a set `jewel_set` to allow fast membership checking.
+
+2. **Iterate Over Stones**:
+   - Initialize a counter `count` to 0.
+   - For each character in the string `stones`, check if it exists in `jewel_set`.
+   - If it does, increment the `count`.
+
+3. **Return the Count**:
+   - After iterating through all the stones, return the `count`.
+
+### Complexity:
+
+- **Time Complexity**: O(m + n), where `m` is the length of the `jewels` string and `n` is the length of the `stones` string. Converting `jewels` to a set takes O(m) time, and iterating through `stones` takes O(n) time.
+- **Space Complexity**: O(m), where `m` is the number of unique characters in the `jewels` string. This is the space required to store the set of jewels.
+
+This solution is efficient and straightforward, leveraging the power of sets for fast look-up operations.
+
+To determine if two axis-aligned rectangles overlap, you can use the following approach. 
+
+### Approach:
+Two rectangles `rec1` and `rec2` overlap if and only if both of the following conditions are true:
+1. The rectangles are not completely separated along the x-axis.
+2. The rectangles are not completely separated along the y-axis.
+
+Formally, rectangles `rec1` and `rec2` overlap if:
+- The left edge of one rectangle is to the left of the right edge of the other rectangle.
+- The bottom edge of one rectangle is below the top edge of the other rectangle.
+
+### Conditions:
+Given two rectangles `rec1 = [x1, y1, x2, y2]` and `rec2 = [x3, y3, x4, y4]`, the rectangles overlap if:
+- `x1 < x4` and `x3 < x2` (the rectangles are not separated along the x-axis).
+- `y1 < y4` and `y3 < y2` (the rectangles are not separated along the y-axis).
+
+### Implementation:
+
+Here's the Python implementation to check if two rectangles overlap:
+
+```python
+def is_rectangle_overlap(rec1, rec2):
+    # Extract the coordinates of the rectangles
+    x1, y1, x2, y2 = rec1
+    x3, y3, x4, y4 = rec2
+    
+    # Check if the rectangles are not separated along the x-axis and y-axis
+    return x1 < x4 and x3 < x2 and y1 < y4 and y3 < y2
+
+# Example usage
+rec1 = [0, 0, 2, 2]
+rec2 = [1, 1, 3, 3]
+print(is_rectangle_overlap(rec1, rec2))  # Output: True
+
+rec1 = [0, 0, 1, 1]
+rec2 = [1, 0, 2, 1]
+print(is_rectangle_overlap(rec1, rec2))  # Output: False
+
+rec1 = [0, 0, 1, 1]
+rec2 = [2, 2, 3, 3]
+print(is_rectangle_overlap(rec1, rec2))  # Output: False
+```
+
+### Explanation of the Code:
+
+1. **Extract Coordinates**:
+   - Extract the coordinates from the input lists `rec1` and `rec2`.
+
+2. **Check Overlapping Conditions**:
+   - Check if `rec1`'s left edge is to the left of `rec2`'s right edge and `rec2`'s left edge is to the left of `rec1`'s right edge.
+   - Check if `rec1`'s bottom edge is below `rec2`'s top edge and `rec2`'s bottom edge is below `rec1`'s top edge.
+
+3. **Return Result**:
+   - If both conditions are true, the rectangles overlap; otherwise, they do not.
+
+### Complexity:
+- **Time Complexity**: O(1), since it involves a constant number of arithmetic operations.
+- **Space Complexity**: O(1), since no additional space is required beyond a few variables.
+
+This approach ensures that you can efficiently determine whether two rectangles overlap based on their coordinates.
+
+To combine two tables in SQL, you typically use a JOIN operation. However, since your question only provided the schema for the `Person` table, I'll assume the goal is to combine it with another table. For this example, let's assume you have another table named `Address` which contains information about where each person lives.
+
+### Schema for the `Address` Table
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| addressId   | int     |
+| personId    | int     |
+| city        | varchar |
+| state       | varchar |
++-------------+---------+
+addressId is the primary key for this table.
+personId is a foreign key linking to the Person table.
+This table contains information about the addresses of the persons.
+```
+
+### Task:
+Combine the `Person` and `Address` tables to get a complete view of each person along with their address.
+
+### SQL Query
+To achieve this, you would use an `INNER JOIN` if you want to include only those persons who have an address, or a `LEFT JOIN` if you want to include all persons, even those without an address.
+
+```sql
+SELECT 
+    p.personId,
+    p.lastName,
+    p.firstName,
+    a.city,
+    a.state
+FROM 
+    Person p
+LEFT JOIN 
+    Address a
+ON 
+    p.personId = a.personId;
+```
+
+### Explanation:
+1. **SELECT Clause**:
+   - `p.personId`: Selects the `personId` from the `Person` table.
+   - `p.lastName`: Selects the `lastName` from the `Person` table.
+   - `p.firstName`: Selects the `firstName` from the `Person` table.
+   - `a.city`: Selects the `city` from the `Address` table.
+   - `a.state`: Selects the `state` from the `Address` table.
+
+2. **FROM Clause**:
+   - Specifies the `Person` table with an alias `p`.
+
+3. **JOIN Clause**:
+   - `LEFT JOIN Address a`: Specifies a left join with the `Address` table with an alias `a`.
+
+4. **ON Clause**:
+   - Specifies the join condition: `p.personId = a.personId`. This means the join is made based on matching `personId` values in both tables.
+
+### Additional Considerations:
+- **INNER JOIN**: If you want to include only those persons who have an address.
+  ```sql
+  SELECT 
+      p.personId,
+      p.lastName,
+      p.firstName,
+      a.city,
+      a.state
+  FROM 
+      Person p
+  INNER JOIN 
+      Address a
+  ON 
+      p.personId = a.personId;
+  ```
+
+- **Full Outer Join**: If you want to include all persons and all addresses, even if some persons do not have addresses and some addresses do not have persons.
+  ```sql
+  SELECT 
+      p.personId,
+      p.lastName,
+      p.firstName,
+      a.city,
+      a.state
+  FROM 
+      Person p
+  FULL OUTER JOIN 
+      Address a
+  ON 
+      p.personId = a.personId;
+  ```
+
+- **RIGHT JOIN**: If you want to include all addresses, even those that do not have corresponding persons.
+  ```sql
+  SELECT 
+      p.personId,
+      p.lastName,
+      p.firstName,
+      a.city,
+      a.state
+  FROM 
+      Person p
+  RIGHT JOIN 
+      Address a
+  ON 
+      p.personId = a.personId;
+  ```
+
+### Conclusion:
+The choice of join type (`INNER JOIN`, `LEFT JOIN`, `FULL OUTER JOIN`, `RIGHT JOIN`) depends on your specific requirement for how you want to handle rows that do not have matches in the other table. In most practical cases, a `LEFT JOIN` is used to include all records from the left table (`Person`) and the matched records from the right table (`Address`).
+To find the nth highest salary from the `Employee` table, you can use a combination of SQL window functions or subqueries. Here's a solution using a subquery with the `LIMIT` and `OFFSET` clauses.
+
+### Solution Using Subquery with `LIMIT` and `OFFSET`
+
+```sql
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+  RETURN (
+      SELECT DISTINCT salary
+      FROM Employee
+      ORDER BY salary DESC
+      LIMIT 1 OFFSET N-1
+  );
+END;
+```
+
+### Explanation
+
+1. **Function Creation**:
+   - We create a function `getNthHighestSalary` that takes an integer `N` as an argument and returns an integer.
+
+2. **Subquery**:
+   - `SELECT DISTINCT salary`: Selects distinct salary values from the `Employee` table to avoid duplicates.
+   - `ORDER BY salary DESC`: Orders the salary values in descending order so that the highest salaries come first.
+   - `LIMIT 1 OFFSET N-1`: Limits the result to 1 row and skips the first `N-1` rows, effectively returning the nth highest salary.
+
+### Handling Edge Cases
+- If there is no nth highest salary (e.g., N is larger than the number of distinct salaries), the function will return `NULL`.
+
+### Example Usage
+To use the function, you would call it as follows:
+```sql
+SELECT getNthHighestSalary(2) AS SecondHighestSalary;
+```
+
+This query would return the second highest salary from the `Employee` table.
+
+### Alternate Solution Using Window Functions (For SQL environments that support window functions)
+
+If your SQL environment supports window functions, you can use the `DENSE_RANK()` function to achieve this:
+
+```sql
+SELECT DISTINCT salary
+FROM (
+    SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) as rank
+    FROM Employee
+) as ranked
+WHERE rank = N;
+```
+
+### Explanation of Window Function Solution
+1. **Subquery with `DENSE_RANK()`**:
+   - `DENSE_RANK() OVER (ORDER BY salary DESC) as rank`: Assigns a rank to each salary in descending order. `DENSE_RANK()` ensures that duplicate salaries get the same rank.
+   - This subquery creates a temporary table with `salary` and `rank` columns.
+
+2. **Outer Query**:
+   - `SELECT DISTINCT salary FROM ... WHERE rank = N`: Selects the distinct salary where the rank is equal to `N`.
+
+This approach is particularly useful for databases that support window functions, as it provides a more readable and often more efficient way to solve the problem compared to subqueries with `LIMIT` and `OFFSET`.
+
+### Conclusion
+
+Both approaches effectively solve the problem of finding the nth highest salary from the `Employee` table. The choice between them depends on the SQL features supported by your database system. The first approach using subqueries is more universally supported, while the second approach using window functions can be more elegant and efficient if supported by your database system.
+
+To find the employees who are high earners in each department, you can use a combination of window functions and joins. The goal is to rank the salaries within each department and then select the top three unique salaries per department.
+
+Here is the SQL solution using window functions:
+
+```sql
+WITH RankedSalaries AS (
+    SELECT 
+        E.name AS EmployeeName,
+        E.salary AS Salary,
+        D.name AS DepartmentName,
+        DENSE_RANK() OVER (PARTITION BY E.departmentId ORDER BY E.salary DESC) AS SalaryRank
+    FROM 
+        Employee E
+    JOIN 
+        Department D
+    ON 
+        E.departmentId = D.id
+)
+SELECT 
+    DepartmentName,
+    EmployeeName,
+    Salary
+FROM 
+    RankedSalaries
+WHERE 
+    SalaryRank <= 3;
+```
+
+### Explanation
+
+1. **Common Table Expression (CTE)**:
+   - **RankedSalaries**: This CTE calculates the rank of each employee's salary within their department using the `DENSE_RANK()` window function.
+   - `PARTITION BY E.departmentId`: This partitions the data by each department.
+   - `ORDER BY E.salary DESC`: This orders the salaries in descending order within each partition (department).
+
+2. **Select from CTE**:
+   - Selects the department name, employee name, and salary from the `RankedSalaries` CTE.
+   - Filters the results to include only those rows where `SalaryRank <= 3`, which ensures that only the top three unique salaries per department are included.
+
+### Example Usage
+
+Assume the following data in the `Employee` table:
+```
++----+-------+--------+--------------+
+| id | name  | salary | departmentId |
++----+-------+--------+--------------+
+|  1 | John  | 1000   | 1            |
+|  2 | Jane  | 2000   | 1            |
+|  3 | Doe   | 3000   | 1            |
+|  4 | Alice | 1500   | 1            |
+|  5 | Bob   | 2000   | 1            |
+|  6 | Carol | 2500   | 2            |
+|  7 | Dave  | 3000   | 2            |
+|  8 | Eve   | 4000   | 2            |
+|  9 | Frank | 2000   | 2            |
++----+-------+--------+--------------+
+```
+
+And the following data in the `Department` table:
+```
++----+------------+
+| id | name       |
++----+------------+
+|  1 | Engineering|
+|  2 | HR         |
++----+------------+
+```
+
+The query will produce results like:
+```
++---------------+--------------+--------+
+| DepartmentName| EmployeeName | Salary |
++---------------+--------------+--------+
+| Engineering   | Doe          | 3000   |
+| Engineering   | Bob          | 2000   |
+| Engineering   | Jane         | 2000   |
+| HR            | Eve          | 4000   |
+| HR            | Dave         | 3000   |
+| HR            | Carol        | 2500   |
++---------------+--------------+--------+
+```
+
+### Notes:
+- The `DENSE_RANK()` function is used to handle cases where multiple employees have the same salary, ensuring they receive the same rank.
+- This query assumes the database supports window functions. Most modern relational database systems (like MySQL, PostgreSQL, SQL Server, and Oracle) support these functions.
+
+This solution ensures that you correctly identify the top three unique salaries within each department and list the corresponding employees.
+
+To find the name, population, and area of the big countries from the `World` table based on the given criteria (area of at least 3 million square kilometers or population of at least 25 million), you can use a simple `SELECT` statement with a `WHERE` clause to filter the relevant rows.
+
+### SQL Query
+
+```sql
+SELECT
+    name,
+    population,
+    area
+FROM
+    World
+WHERE
+    area >= 3000000
+    OR population >= 25000000;
+```
+
+### Explanation
+
+1. **SELECT Clause**:
+   - `name`: Selects the name of the country.
+   - `population`: Selects the population of the country.
+   - `area`: Selects the area of the country.
+
+2. **FROM Clause**:
+   - Specifies the `World` table to retrieve the data from.
+
+3. **WHERE Clause**:
+   - `area >= 3000000`: Filters the countries that have an area of at least 3 million square kilometers.
+   - `OR population >= 25000000`: Filters the countries that have a population of at least 25 million.
+   - The `OR` operator ensures that countries meeting either one of the conditions will be included in the result.
+
+### Example
+
+Assume the `World` table has the following data:
+
+| name         | continent  | area    | population | gdp         |
+|--------------|------------|---------|------------|-------------|
+| CountryA     | ContinentX | 5000000 | 100000000  | 2000000000  |
+| CountryB     | ContinentY | 2000000 | 30000000   | 1500000000  |
+| CountryC     | ContinentZ | 1000000 | 10000000   | 500000000   |
+| CountryD     | ContinentX | 800000  | 40000000   | 1000000000  |
+| CountryE     | ContinentY | 3500000 | 5000000    | 800000000   |
+
+The query will return:
+
+| name     | population | area    |
+|----------|------------|---------|
+| CountryA | 100000000  | 5000000 |
+| CountryB | 30000000   | 2000000 |
+| CountryD | 40000000   | 800000  |
+| CountryE | 5000000    | 3500000 |
+
+### Notes
+- The result can be returned in any order, as specified in the problem statement.
+- The conditions in the `WHERE` clause ensure that only the countries satisfying at least one of the given criteria are selected.
+
+This query efficiently retrieves the required information about the big countries based on the specified conditions.
+

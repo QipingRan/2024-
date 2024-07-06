@@ -1,0 +1,2324 @@
+https://leetcode.com/explore/interview/card/yelp/42/hash-table/223/
+
+Two Sum
+Solution
+Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+You can return the answer in any order.
+To solve the Two Sum problem, you can use a hash map (dictionary in Python) to store the indices of the elements as you iterate through the list. This allows you to check if the complement of the current element (i.e., `target - current element`) exists in the hash map. If it does, you have found the two indices that sum up to the target. Here's a Python implementation of the solution:
+
+```python
+def two_sum(nums, target):
+    num_to_index = {}  # Create a hash map to store the value to index mapping
+    
+    for i, num in enumerate(nums):
+        complement = target - num  # Calculate the complement of the current element
+        
+        if complement in num_to_index:
+            return [num_to_index[complement], i]  # Return the indices of the complement and the current element
+        
+        num_to_index[num] = i  # Add the current element to the hash map
+
+    return []  # In case there is no solution, though the problem states there will be exactly one solution
+
+# Example usage:
+nums = [2, 7, 11, 15]
+target = 9
+print(two_sum(nums, target))  # Output: [0, 1]
+```
+
+### Explanation:
+1. Create an empty dictionary `num_to_index` to store the value-to-index mapping.
+2. Iterate through the list `nums` using `enumerate` to get both the index and the value of each element.
+3. For each element, calculate the complement needed to reach the target by subtracting the current element from the target.
+4. Check if this complement is already in the dictionary:
+   - If it is, return the indices of the complement and the current element.
+   - If it is not, add the current element and its index to the dictionary.
+5. The loop ensures that you will find the solution as it processes each element in the list.
+
+This algorithm has a time complexity of \(O(n)\) and a space complexity of \(O(n)\), where \(n\) is the number of elements in the input list.
+
+To solve the problem of finding the length of the longest substring without repeating characters, you can use a sliding window approach with two pointers and a hash set to keep track of the characters in the current window. Here's a Python implementation of the solution:
+
+```python
+def length_of_longest_substring(s):
+    char_set = set()  # Set to store the characters in the current window
+    left = 0  # Left pointer for the sliding window
+    max_length = 0  # Variable to store the maximum length of the substring found
+    
+    for right in range(len(s)):
+        # If the character is already in the set, remove the leftmost character until it's not in the set
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        
+        # Add the current character to the set
+        char_set.add(s[right])
+        
+        # Update the maximum length if the current window is larger
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length
+
+# Example usage:
+s = "abcabcbb"
+print(length_of_longest_substring(s))  # Output: 3 (the longest substring is "abc")
+```
+
+### Explanation:
+1. **Initialize a Set:** Use a set `char_set` to store the characters of the current substring without duplicates.
+2. **Sliding Window Pointers:** Use two pointers, `left` and `right`, to represent the current window of characters.
+3. **Iterate Over the String:** Loop through the string using the `right` pointer.
+   - If the character at `right` is already in the set, it means there is a duplicate. Remove the character at `left` from the set and increment `left` until there are no duplicates.
+   - Add the current character at `right` to the set.
+   - Update the maximum length of the substring if the current window size (`right - left + 1`) is greater than the previous maximum length.
+4. **Return the Maximum Length:** After the loop ends, `max_length` will hold the length of the longest substring without repeating characters.
+
+This algorithm has a time complexity of \(O(n)\) and a space complexity of \(O(min(n, m))\), where \(n\) is the length of the input string and \(m\) is the size of the character set (e.g., 26 for lowercase English letters).
+
+To find the longest common prefix string among an array of strings, you can use a vertical scanning approach. This method compares characters of each string one by one. If all characters at a given position match, it continues to the next position; otherwise, it stops and returns the prefix found so far.
+
+Here’s a Python implementation of the solution:
+
+```python
+def longest_common_prefix(strs):
+    if not strs:
+        return ""
+
+    # Take the first string as the reference
+    prefix = strs[0]
+    
+    for i in range(len(prefix)):
+        char = prefix[i]
+        for string in strs:
+            # If we reach the end of a string or a character mismatch, return the prefix up to that point
+            if i == len(string) or string[i] != char:
+                return prefix[:i]
+    
+    return prefix
+
+# Example usage:
+strs = ["flower", "flow", "flight"]
+print(longest_common_prefix(strs))  # Output: "fl"
+
+strs = ["dog", "racecar", "car"]
+print(longest_common_prefix(strs))  # Output: ""
+```
+
+### Explanation:
+1. **Handle Empty Input:** If the input list `strs` is empty, return an empty string.
+2. **Reference Prefix:** Assume the first string in the array as the reference prefix.
+3. **Vertical Scanning:** Iterate through each character index `i` of the reference prefix:
+   - For each character `char` at index `i` of the reference prefix, compare it with the corresponding character in all other strings.
+   - If you reach the end of a string or find a mismatch, return the substring of the reference prefix up to but not including the current index `i`.
+4. **All Characters Matched:** If all characters match for the length of the reference prefix, return the entire reference prefix.
+
+This approach efficiently finds the longest common prefix with a time complexity of \(O(n \times m)\), where \(n\) is the number of strings and \(m\) is the length of the shortest string in the list.
+
+To solve the 3Sum problem, you can use a combination of sorting and the two-pointer technique. This approach helps to efficiently find all unique triplets that sum up to zero. Here’s the Python implementation:
+
+```python
+def three_sum(nums):
+    nums.sort()  # Sort the array to facilitate the two-pointer technique
+    result = []  # List to store the triplets
+    
+    for i in range(len(nums) - 2):
+        # Skip the duplicate elements
+        if i > 0 and nums[i] == nums[i - 1]:
+            continue
+        
+        left, right = i + 1, len(nums) - 1  # Two pointers
+        
+        while left < right:
+            total = nums[i] + nums[left] + nums[right]
+            
+            if total < 0:
+                left += 1  # Move the left pointer to the right
+            elif total > 0:
+                right -= 1  # Move the right pointer to the left
+            else:
+                # Found a triplet
+                result.append([nums[i], nums[left], nums[right]])
+                
+                # Skip duplicate elements
+                while left < right and nums[left] == nums[left + 1]:
+                    left += 1
+                while left < right and nums[right] == nums[right - 1]:
+                    right -= 1
+                
+                # Move both pointers after finding a valid triplet
+                left += 1
+                right -= 1
+    
+    return result
+
+# Example usage:
+nums = [-1, 0, 1, 2, -1, -4]
+print(three_sum(nums))  # Output: [[-1, -1, 2], [-1, 0, 1]]
+```
+
+### Explanation:
+1. **Sort the Array:** Sorting the array helps to use the two-pointer technique and manage duplicates easily.
+2. **Iterate Through the Array:** Loop through each element `nums[i]` (up to `len(nums) - 2` to leave space for two pointers).
+3. **Skip Duplicates:** If the current element is the same as the previous one, skip it to avoid duplicate triplets.
+4. **Two Pointers:** Use two pointers, `left` (starting from `i + 1`) and `right` (starting from the end of the array), to find pairs that sum up to `-nums[i]`.
+   - If the sum of `nums[i]`, `nums[left]`, and `nums[right]` is less than zero, move the left pointer to the right.
+   - If the sum is greater than zero, move the right pointer to the left.
+   - If the sum is zero, append the triplet to the result list and skip duplicates.
+5. **Return the Result:** After iterating through the array, return the list of unique triplets.
+
+This approach ensures that the solution is efficient and avoids duplicates, with a time complexity of \(O(n^2)\) due to the nested loops and a space complexity of \(O(\text{log}n)\) for sorting.
+
+To solve the problem of grouping anagrams together, you can use a hash map (dictionary in Python) to group words that are anagrams of each other. By sorting each word, you can use the sorted version as the key in the hash map. Words that are anagrams will have the same sorted version and can be grouped together. Here’s a Python implementation:
+
+```python
+from collections import defaultdict
+
+def group_anagrams(strs):
+    anagrams = defaultdict(list)  # Create a default dictionary to store lists of anagrams
+    
+    for word in strs:
+        # Sort the word to form the key
+        sorted_word = ''.join(sorted(word))
+        # Append the original word to the list of its sorted version
+        anagrams[sorted_word].append(word)
+    
+    # Return the values of the dictionary, which are lists of anagrams
+    return list(anagrams.values())
+
+# Example usage:
+strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+print(group_anagrams(strs))  
+# Output: [['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']]
+```
+
+### Explanation:
+1. **Import defaultdict:** Use `defaultdict` from the `collections` module to simplify the creation of the dictionary.
+2. **Initialize Dictionary:** Create a `defaultdict` where each key will map to a list of strings.
+3. **Sort Each Word:** For each word in the input list, sort the characters in the word. The sorted word will be the key in the dictionary.
+4. **Group Anagrams:** Append the original word to the list corresponding to the sorted word key.
+5. **Return the Result:** The values of the dictionary are the groups of anagrams, so return them as a list.
+
+This approach ensures that words that are anagrams are grouped together efficiently. The time complexity is \(O(n \cdot k \log k)\), where \(n\) is the number of words and \(k\) is the maximum length of a word (for sorting each word). The space complexity is \(O(n \cdot k)\), for storing the grouped anagrams.
+
+To traverse a matrix in spiral order, you need to carefully manage the boundaries and directions of traversal. The approach involves using four boundaries: top, bottom, left, and right. You move in the order of right, down, left, and up while adjusting the boundaries accordingly. Here's the Python implementation of the solution:
+
+```python
+def spiral_order(matrix):
+    if not matrix or not matrix[0]:
+        return []
+    
+    top, bottom = 0, len(matrix) - 1
+    left, right = 0, len(matrix[0]) - 1
+    result = []
+
+    while top <= bottom and left <= right:
+        # Traverse from left to right along the top row
+        for i in range(left, right + 1):
+            result.append(matrix[top][i])
+        top += 1
+
+        # Traverse from top to bottom along the right column
+        for i in range(top, bottom + 1):
+            result.append(matrix[i][right])
+        right -= 1
+
+        if top <= bottom:
+            # Traverse from right to left along the bottom row
+            for i in range(right, left - 1, -1):
+                result.append(matrix[bottom][i])
+            bottom -= 1
+
+        if left <= right:
+            # Traverse from bottom to top along the left column
+            for i in range(bottom, top - 1, -1):
+                result.append(matrix[i][left])
+            left += 1
+
+    return result
+
+# Example usage:
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+print(spiral_order(matrix))  # Output: [1, 2, 3, 6, 9, 8, 7, 4, 5]
+```
+
+### Explanation:
+1. **Initialize Boundaries:** Set the initial boundaries for the top, bottom, left, and right edges of the matrix.
+2. **Check for Empty Matrix:** If the matrix is empty, return an empty list.
+3. **Traverse the Matrix in Spiral Order:** Use a while loop to traverse the matrix until the boundaries overlap:
+   - **Traverse Right:** Move from the left boundary to the right boundary along the top row, then increment the top boundary.
+   - **Traverse Down:** Move from the top boundary to the bottom boundary along the right column, then decrement the right boundary.
+   - **Traverse Left:** If the top boundary is still less than or equal to the bottom boundary, move from the right boundary to the left boundary along the bottom row, then decrement the bottom boundary.
+   - **Traverse Up:** If the left boundary is still less than or equal to the right boundary, move from the bottom boundary to the top boundary along the left column, then increment the left boundary.
+4. **Return the Result:** After completing the traversal, return the list of elements in spiral order.
+
+This approach ensures that all elements of the matrix are visited in spiral order, with a time complexity of \(O(m \cdot n)\), where \(m\) is the number of rows and \(n\) is the number of columns in the matrix. The space complexity is \(O(1)\) additional space, as the result list is not counted in the space complexity.
+
+To merge two sorted arrays `nums1` and `nums2` in-place, you can use a three-pointer approach. This method involves starting from the end of both arrays and placing the largest element at the end of `nums1`. This way, you avoid overwriting elements in `nums1` that have not yet been merged. Here's the Python implementation:
+
+```python
+def merge(nums1, m, nums2, n):
+    # Pointers for nums1, nums2 and the merged array
+    p1, p2, p = m - 1, n - 1, m + n - 1
+    
+    # While there are elements to be compared in both nums1 and nums2
+    while p1 >= 0 and p2 >= 0:
+        if nums1[p1] > nums2[p2]:
+            nums1[p] = nums1[p1]
+            p1 -= 1
+        else:
+            nums1[p] = nums2[p2]
+            p2 -= 1
+        p -= 1
+    
+    # If there are remaining elements in nums2, copy them over to nums1
+    while p2 >= 0:
+        nums1[p] = nums2[p2]
+        p2 -= 1
+        p -= 1
+
+# Example usage:
+nums1 = [1, 2, 3, 0, 0, 0]
+m = 3
+nums2 = [2, 5, 6]
+n = 3
+merge(nums1, m, nums2, n)
+print(nums1)  # Output: [1, 2, 2, 3, 5, 6]
+```
+
+### Explanation:
+1. **Pointers Initialization:** Initialize three pointers:
+   - `p1` for the last element in the valid part of `nums1` (i.e., `m - 1`).
+   - `p2` for the last element in `nums2` (i.e., `n - 1`).
+   - `p` for the last position in the merged array (i.e., `m + n - 1`).
+2. **Merge in Reverse Order:** Compare elements from the end of `nums1` and `nums2`, and place the larger one at the end of `nums1`:
+   - If `nums1[p1]` is greater than `nums2[p2]`, place `nums1[p1]` at `nums1[p]` and decrement `p1`.
+   - Otherwise, place `nums2[p2]` at `nums1[p]` and decrement `p2`.
+   - Decrement `p` in each iteration.
+3. **Copy Remaining Elements:** If there are any remaining elements in `nums2` (i.e., `p2 >= 0`), copy them over to `nums1`. This step ensures that any remaining elements in `nums2` are correctly placed in `nums1` in case all elements in `nums1` were larger.
+4. **No Need to Copy from `nums1`:** There is no need to copy remaining elements from `nums1` because they are already in place.
+
+This approach effectively merges the arrays in-place with a time complexity of \(O(m + n)\) and a space complexity of \(O(1)\), as it only uses a constant amount of extra space for the pointers.
+
+To generate the first `numRows` of Pascal's Triangle, you can use a nested list approach where each row is built based on the previous row. Here's a Python implementation:
+
+```python
+def generate_pascals_triangle(numRows):
+    if numRows == 0:
+        return []
+
+    # Initialize the triangle with the first row
+    triangle = [[1]]
+
+    for i in range(1, numRows):
+        row = [1]  # Start each row with a '1'
+        for j in range(1, i):
+            # Each element is the sum of the two elements above it
+            row.append(triangle[i-1][j-1] + triangle[i-1][j])
+        row.append(1)  # End each row with a '1'
+        triangle.append(row)
+
+    return triangle
+
+# Example usage:
+numRows = 5
+print(generate_pascals_triangle(numRows))
+# Output:
+# [
+#   [1],
+#   [1, 1],
+#   [1, 2, 1],
+#   [1, 3, 1],
+#   [1, 3, 3, 1],
+#   [1, 4, 6, 4, 1]
+# ]
+```
+
+### Explanation:
+1. **Initialization:** Start with the base case of `numRows == 0` returning an empty list. If `numRows` is at least 1, initialize the triangle with the first row, which is `[1]`.
+2. **Building Rows:** For each subsequent row from 1 to `numRows - 1`:
+   - Start the row with `1`.
+   - For each position `j` from 1 to `i - 1` (excluding the first and last position), calculate the value by summing the two values directly above it from the previous row (`triangle[i-1][j-1]` and `triangle[i-1][j]`).
+   - End the row with `1`.
+3. **Append Row:** Append the constructed row to the triangle.
+4. **Return Triangle:** Return the list of lists representing the first `numRows` of Pascal's Triangle.
+
+This approach ensures that each row is correctly constructed based on the properties of Pascal's Triangle. The time complexity is \(O(\text{numRows}^2)\) and the space complexity is also \(O(\text{numRows}^2)\), due to storing all the elements of the triangle.
+
+To solve the problem of evaluating a basic arithmetic expression represented by a string, you can use a stack to handle the intermediate results. The operations supported are addition, subtraction, multiplication, and division. Here’s the Python implementation of the solution:
+
+```python
+def calculate(s):
+    # Helper function to perform the operations
+    def operate(op, second, first):
+        if op == '+':
+            return first + second
+        if op == '-':
+            return first - second
+        if op == '*':
+            return first * second
+        if op == '/':
+            return int(first / second)  # Integer division truncating towards zero
+
+    stack = []
+    num = 0
+    op = '+'  # Initialize the operator to '+'
+
+    for i, char in enumerate(s):
+        if char.isdigit():
+            num = num * 10 + int(char)
+        if char in "+-*/" or i == len(s) - 1:
+            if op == '+':
+                stack.append(num)
+            elif op == '-':
+                stack.append(-num)
+            elif op in "*/":
+                stack.append(operate(op, num, stack.pop()))
+            num = 0
+            op = char
+
+    return sum(stack)
+
+# Example usage:
+s = "3+2*2"
+print(calculate(s))  # Output: 7
+
+s = " 3/2 "
+print(calculate(s))  # Output: 1
+
+s = " 3+5 / 2 "
+print(calculate(s))  # Output: 5
+```
+
+### Explanation:
+1. **Initialization:** 
+   - `stack`: to store the intermediate results.
+   - `num`: to build the current number.
+   - `op`: to keep track of the current operation.
+2. **Iteration:** Loop through each character in the string.
+   - **Digit:** If the character is a digit, build the current number.
+   - **Operator or End of String:** If the character is an operator or it's the last character:
+     - Based on the current operator (`op`), decide how to handle the current number (`num`):
+       - **'+':** Push `num` onto the stack.
+       - **'-':** Push `-num` onto the stack.
+       - **'*' or '/':** Pop the top of the stack, apply the operation with `num`, and push the result back onto the stack.
+     - Reset `num` to 0 and update `op` to the current character.
+3. **Sum the Stack:** The result is the sum of all numbers in the stack, which includes all intermediate results.
+
+This approach ensures that multiplication and division are handled with higher precedence over addition and subtraction, as required. The time complexity is \(O(n)\), where \(n\) is the length of the string, and the space complexity is \(O(n)\) for the stack.
+
+To solve the problem of finding the product of all elements of an array except for the element itself without using division and in \(O(n)\) time, you can use a two-pass approach. The idea is to construct two auxiliary arrays (or use a single result array) to keep track of the product of all elements to the left and to the right of each element.
+
+Here's the Python implementation:
+
+```python
+def product_except_self(nums):
+    length = len(nums)
+    answer = [1] * length
+    
+    # Step 1: Calculate left products
+    left_product = 1
+    for i in range(length):
+        answer[i] = left_product
+        left_product *= nums[i]
+    
+    # Step 2: Calculate right products and multiply with left products
+    right_product = 1
+    for i in range(length - 1, -1, -1):
+        answer[i] *= right_product
+        right_product *= nums[i]
+    
+    return answer
+
+# Example usage:
+nums = [1, 2, 3, 4]
+print(product_except_self(nums))  # Output: [24, 12, 8, 6]
+```
+
+### Explanation:
+1. **Initialization:** 
+   - `length` to store the length of the input array `nums`.
+   - `answer` array initialized to 1's which will store the final result.
+   - `left_product` initialized to 1 to keep track of the product of elements to the left of the current element.
+   - `right_product` initialized to 1 to keep track of the product of elements to the right of the current element.
+2. **Left Products Calculation:** 
+   - Iterate over the array from left to right.
+   - For each element `i`, set `answer[i]` to `left_product`.
+   - Update `left_product` by multiplying it with `nums[i]`.
+3. **Right Products Calculation and Multiplication:** 
+   - Iterate over the array from right to left.
+   - For each element `i`, multiply `answer[i]` with `right_product`.
+   - Update `right_product` by multiplying it with `nums[i]`.
+4. **Return the Result:** 
+   - The `answer` array now contains the product of all elements except for the element itself for each position in the input array.
+
+This approach ensures that we only traverse the array twice, achieving \(O(n)\) time complexity. The space complexity is \(O(1)\) if we don't count the output array `answer` as extra space.
+
+To find the closest palindrome to a given integer represented as a string `n`, you can follow these steps:
+
+1. **Generate Potential Candidates:** Generate a list of potential palindrome candidates.
+2. **Check and Compare Candidates:** Compare these candidates with the given number to find the closest one.
+
+Here’s a Python implementation of the solution:
+
+```python
+def closest_palindrome(n):
+    length = len(n)
+    num = int(n)
+
+    # Candidates: Largest and smallest palindromes of different digit lengths
+    candidates = {str(10**(length-1) - 1), str(10**length + 1)}
+
+    # Middle part to form palindromes
+    prefix = int(n[:(length+1)//2])
+
+    # Generate palindromes by modifying the middle part
+    for i in [-1, 0, 1]:
+        candidate = str(prefix + i)
+        if length % 2 == 0:
+            candidate = candidate + candidate[::-1]
+        else:
+            candidate = candidate + candidate[-2::-1]
+        candidates.add(candidate)
+
+    # Remove the original number if it exists in candidates
+    candidates.discard(n)
+
+    # Find the closest palindrome
+    closest_palindrome = min(candidates, key=lambda x: (abs(int(x) - num), int(x)))
+
+    return closest_palindrome
+
+# Example usage:
+n = "123"
+print(closest_palindrome(n))  # Output: "121"
+
+n = "1"
+print(closest_palindrome(n))  # Output: "0"
+```
+
+### Explanation:
+1. **Generate Edge Case Candidates:**
+   - `10**(length-1) - 1`: Largest palindrome with one less digit.
+   - `10**length + 1`: Smallest palindrome with one more digit.
+   
+2. **Generate Palindromes by Modifying the Middle Part:**
+   - Compute the prefix (the first half of the number).
+   - Create three variations of this prefix by decrementing, keeping, and incrementing the prefix.
+   - For each variation, form a palindrome:
+     - If the number length is even, mirror the prefix.
+     - If the number length is odd, mirror the prefix excluding the last digit of the prefix.
+   
+3. **Remove the Original Number:**
+   - Remove the original number from the set of candidates if it is present.
+
+4. **Find the Closest Palindrome:**
+   - Use a lambda function to sort the candidates based on the absolute difference from the original number.
+   - In case of a tie, the lambda function ensures the smaller number is chosen.
+
+This approach ensures that you correctly find the closest palindrome, handling various edge cases and ensuring efficient comparisons.
+
+To determine if two strings `s` and `t` are isomorphic, you can use two dictionaries (or hash maps) to keep track of the mappings between characters from `s` to `t` and vice versa. Here's a Python implementation of the solution:
+
+```python
+def is_isomorphic(s, t):
+    if len(s) != len(t):
+        return False
+
+    # Dictionaries to store mappings
+    s_to_t = {}
+    t_to_s = {}
+
+    for char_s, char_t in zip(s, t):
+        # Check and update the mapping from s to t
+        if char_s in s_to_t:
+            if s_to_t[char_s] != char_t:
+                return False
+        else:
+            s_to_t[char_s] = char_t
+
+        # Check and update the mapping from t to s
+        if char_t in t_to_s:
+            if t_to_s[char_t] != char_s:
+                return False
+        else:
+            t_to_s[char_t] = char_s
+
+    return True
+
+# Example usage:
+s = "egg"
+t = "add"
+print(is_isomorphic(s, t))  # Output: True
+
+s = "foo"
+t = "bar"
+print(is_isomorphic(s, t))  # Output: False
+
+s = "paper"
+t = "title"
+print(is_isomorphic(s, t))  # Output: True
+```
+
+### Explanation:
+1. **Check Lengths:** If the lengths of `s` and `t` are different, they cannot be isomorphic.
+2. **Initialize Dictionaries:** Use two dictionaries:
+   - `s_to_t` for mapping characters from `s` to `t`.
+   - `t_to_s` for mapping characters from `t` to `s`.
+3. **Iterate and Map Characters:**
+   - For each pair of characters `(char_s, char_t)` from `s` and `t`:
+     - Check if `char_s` is already mapped to a different character in `s_to_t`. If so, return `False`.
+     - Check if `char_t` is already mapped to a different character in `t_to_s`. If so, return `False`.
+     - If the characters are not already mapped, update the mappings in both dictionaries.
+4. **Return Result:** If all character pairs are correctly mapped without conflicts, return `True`.
+
+This approach ensures that both strings maintain a consistent one-to-one mapping between their characters. The time complexity is \(O(n)\), where \(n\) is the length of the strings, and the space complexity is also \(O(n)\) for storing the mappings.
+
+To find the common strings between two lists with the minimum index sum, you can use a dictionary to store the indices of the strings in the first list. Then, iterate through the second list to check for common strings and calculate the index sums. Keep track of the minimum index sum and update the result accordingly.
+
+Here’s a Python implementation of the solution:
+
+```python
+def find_restaurant(list1, list2):
+    index_map = {restaurant: i for i, restaurant in enumerate(list1)}
+    min_sum = float('inf')
+    result = []
+
+    for j, restaurant in enumerate(list2):
+        if restaurant in index_map:
+            index_sum = index_map[restaurant] + j
+            if index_sum < min_sum:
+                min_sum = index_sum
+                result = [restaurant]
+            elif index_sum == min_sum:
+                result.append(restaurant)
+
+    return result
+
+# Example usage:
+list1 = ["Shogun", "Tapioca Express", "Burger King", "KFC"]
+list2 = ["Piatti", "The Grill at Torrey Pines", "Hungry Hunter Steakhouse", "Shogun"]
+print(find_restaurant(list1, list2))  # Output: ["Shogun"]
+
+list1 = ["Shogun", "Tapioca Express", "Burger King", "KFC"]
+list2 = ["KFC", "Shogun", "Burger King"]
+print(find_restaurant(list1, list2))  # Output: ["Shogun"]
+```
+
+### Explanation:
+1. **Create a Dictionary for list1:** Create a dictionary `index_map` where the keys are the strings from `list1` and the values are their respective indices.
+2. **Initialize Variables:** Initialize `min_sum` to infinity and `result` to an empty list. `min_sum` will keep track of the smallest index sum found, and `result` will store the strings with this minimum index sum.
+3. **Iterate Through list2:** For each string in `list2`:
+   - Check if the string exists in `index_map`.
+   - If it does, calculate the index sum (`index_map[restaurant] + j`).
+   - Compare the index sum with `min_sum`:
+     - If the index sum is smaller than `min_sum`, update `min_sum` and reset `result` to the current string.
+     - If the index sum equals `min_sum`, append the current string to `result`.
+4. **Return Result:** Return the list of strings with the minimum index sum.
+
+This approach ensures that you efficiently find the common strings with the least index sum in \(O(n + m)\) time, where \(n\) and \(m\) are the lengths of `list1` and `list2`, respectively. The space complexity is \(O(n)\) due to the dictionary used for storing indices.
+
+To merge two sorted linked lists, you can use a dummy node to simplify the merging process and iterate through both lists, attaching the smaller node to the merged list at each step. Here’s the Python implementation of the solution:
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def merge_two_lists(list1, list2):
+    # Create a dummy node to act as the start of the merged list
+    dummy = ListNode()
+    current = dummy
+
+    # Iterate through both lists until we reach the end of one
+    while list1 and list2:
+        if list1.val < list2.val:
+            current.next = list1
+            list1 = list1.next
+        else:
+            current.next = list2
+            list2 = list2.next
+        current = current.next
+
+    # Attach the remaining nodes of the non-empty list, if any
+    if list1:
+        current.next = list1
+    elif list2:
+        current.next = list2
+
+    # The merged list is next to the dummy node
+    return dummy.next
+
+# Example usage:
+# Helper function to create a linked list from a list
+def create_linked_list(arr):
+    if not arr:
+        return None
+    head = ListNode(arr[0])
+    current = head
+    for val in arr[1:]:
+        current.next = ListNode(val)
+        current = current.next
+    return head
+
+# Helper function to print the linked list
+def print_linked_list(node):
+    result = []
+    while node:
+        result.append(node.val)
+        node = node.next
+    print(result)
+
+list1 = create_linked_list([1, 2, 4])
+list2 = create_linked_list([1, 3, 4])
+merged_list = merge_two_lists(list1, list2)
+print_linked_list(merged_list)  # Output: [1, 1, 2, 3, 4, 4]
+```
+
+### Explanation:
+1. **Create a Dummy Node:** Initialize a dummy node, which helps simplify edge cases and allows easy return of the merged list. Use `current` to keep track of the last node in the merged list.
+2. **Merge the Lists:** Iterate through `list1` and `list2` while both are not null:
+   - Compare the current nodes of `list1` and `list2`.
+   - Attach the smaller node to `current.next`.
+   - Move `current` to `current.next` and advance the pointer (`list1` or `list2`) from which the node was taken.
+3. **Attach Remaining Nodes:** If there are remaining nodes in `list1` or `list2` (one of them might be longer), attach them to the end of the merged list.
+4. **Return the Merged List:** The merged list starts from `dummy.next`.
+
+### Helper Functions:
+- **create_linked_list:** Creates a linked list from a Python list for testing purposes.
+- **print_linked_list:** Prints the linked list as a Python list for easy visualization of the result.
+
+This approach ensures that the lists are merged in \(O(n + m)\) time, where \(n\) and \(m\) are the lengths of `list1` and `list2`, respectively. The space complexity is \(O(1)\), as the merging is done in-place without using extra space apart from the dummy node.
+
+To create a deep copy of a linked list with random pointers, you can use a three-step process. First, interweave the original list with the copied nodes. Second, assign the random pointers for the copied nodes. Finally, separate the interwoven lists into the original and the copied lists. Here’s a Python implementation of the solution:
+
+```python
+class Node:
+    def __init__(self, val=0, next=None, random=None):
+        self.val = val
+        self.next = next
+        self.random = random
+
+def copy_random_list(head):
+    if not head:
+        return None
+
+    # Step 1: Interweave the original list with the copied nodes
+    current = head
+    while current:
+        new_node = Node(current.val, current.next)
+        current.next = new_node
+        current = new_node.next
+
+    # Step 2: Assign random pointers for the copied nodes
+    current = head
+    while current:
+        if current.random:
+            current.next.random = current.random.next
+        current = current.next.next
+
+    # Step 3: Separate the interwoven lists into the original and the copied lists
+    current = head
+    copy_head = head.next
+    while current:
+        copy = current.next
+        current.next = copy.next
+        if copy.next:
+            copy.next = copy.next.next
+        current = current.next
+
+    return copy_head
+
+# Example usage:
+def print_list(head):
+    while head:
+        random_val = head.random.val if head.random else None
+        print(f"Node val: {head.val}, Random val: {random_val}")
+        head = head.next
+
+# Create a sample list for testing: 1 -> 2 -> 3
+n1 = Node(1)
+n2 = Node(2)
+n3 = Node(3)
+n1.next = n2
+n2.next = n3
+n1.random = n3
+n2.random = n1
+n3.random = n2
+
+# Print original list
+print("Original list:")
+print_list(n1)
+
+# Copy the list
+copied_list = copy_random_list(n1)
+
+# Print copied list
+print("\nCopied list:")
+print_list(copied_list)
+```
+
+### Explanation:
+1. **Interweave the Original List:**
+   - For each node in the original list, create a new node with the same value and insert it right after the original node.
+   - The list structure will be: original1 -> copy1 -> original2 -> copy2 -> ...
+
+2. **Assign Random Pointers:**
+   - Iterate through the interwoven list and set the random pointer of each copied node. If the original node's random pointer is not null, the copied node's random pointer should point to `current.random.next`.
+
+3. **Separate the Lists:**
+   - Separate the interwoven list into the original list and the copied list. Restore the original list by pointing each original node to its original next node and do the same for the copied list.
+
+This approach ensures that the deep copy is created in \(O(n)\) time with \(O(1)\) additional space (excluding the space required for the output).
+
+To solve the Word Ladder problem, you can use the Breadth-First Search (BFS) algorithm. BFS is suitable for this problem because it explores all possibilities level by level, ensuring the shortest path is found. Here’s how you can implement it:
+
+1. Use a queue to perform BFS.
+2. Use a set to keep track of visited words to avoid cycles.
+3. For each word, generate all possible next words by changing one letter at a time.
+4. If the next word is in the word list and has not been visited, add it to the queue.
+5. If the end word is reached, return the length of the transformation sequence.
+
+Here's the Python implementation:
+
+```python
+from collections import deque
+
+def word_ladder(beginWord, endWord, wordList):
+    word_set = set(wordList)
+    if endWord not in word_set:
+        return 0
+    
+    queue = deque([(beginWord, 1)])
+    visited = set([beginWord])
+
+    while queue:
+        current_word, level = queue.popleft()
+        
+        for i in range(len(current_word)):
+            for c in 'abcdefghijklmnopqrstuvwxyz':
+                next_word = current_word[:i] + c + current_word[i+1:]
+                if next_word == endWord:
+                    return level + 1
+                if next_word in word_set and next_word not in visited:
+                    visited.add(next_word)
+                    queue.append((next_word, level + 1))
+    
+    return 0
+
+# Example usage:
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log","cog"]
+print(word_ladder(beginWord, endWord, wordList))  # Output: 5
+
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log"]
+print(word_ladder(beginWord, endWord, wordList))  # Output: 0
+```
+
+### Explanation:
+1. **Initialize the Word Set:** Convert `wordList` into a set `word_set` for O(1) lookups. If `endWord` is not in `word_set`, return 0 as it's impossible to reach the `endWord`.
+2. **Queue for BFS:** Initialize a queue with a tuple containing `beginWord` and the initial level (1). The level represents the number of transformation steps.
+3. **Visited Set:** Initialize a set `visited` to keep track of visited words to avoid revisiting and creating cycles.
+4. **BFS Loop:** Perform BFS until the queue is empty:
+   - Dequeue the current word and its level.
+   - Generate all possible next words by changing each letter of the current word to every letter from 'a' to 'z'.
+   - If the next word matches `endWord`, return the current level plus 1.
+   - If the next word is in `word_set` and not visited, mark it as visited and enqueue it with the level incremented by 1.
+5. **No Transformation Found:** If the queue is exhausted without finding the `endWord`, return 0.
+
+This approach ensures that the shortest path (in terms of the number of transformations) is found using BFS, with a time complexity of \(O(N \times M \times 26)\), where \(N\) is the length of each word and \(M\) is the total number of words in the list. The space complexity is \(O(N \times M)\) for the queue and visited set.
+
+To solve the "Number of Islands" problem, you can use Depth-First Search (DFS) or Breadth-First Search (BFS) to traverse the grid. The idea is to explore every piece of land (`'1'`) and mark it as visited by changing it to water (`'0'`). Each DFS/BFS traversal from an unvisited piece of land represents a new island.
+
+Here's a Python implementation using DFS:
+
+```python
+def num_islands(grid):
+    if not grid:
+        return 0
+    
+    rows, cols = len(grid), len(grid[0])
+    num_islands = 0
+    
+    def dfs(r, c):
+        if r < 0 or c < 0 or r >= rows or c >= cols or grid[r][c] == '0':
+            return
+        grid[r][c] = '0'  # Mark as visited
+        # Explore all 4 directions
+        dfs(r - 1, c)  # Up
+        dfs(r + 1, c)  # Down
+        dfs(r, c - 1)  # Left
+        dfs(r, c + 1)  # Right
+    
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == '1':
+                num_islands += 1
+                dfs(r, c)  # Start DFS from the current land piece
+    
+    return num_islands
+
+# Example usage:
+grid = [
+    ["1", "1", "0", "0", "0"],
+    ["1", "1", "0", "0", "0"],
+    ["0", "0", "1", "0", "0"],
+    ["0", "0", "0", "1", "1"]
+]
+print(num_islands(grid))  # Output: 3
+```
+
+### Explanation:
+1. **Initialization:**
+   - Check if the grid is empty. If it is, return 0.
+   - Initialize `rows` and `cols` to store the dimensions of the grid.
+   - Initialize `num_islands` to count the number of islands.
+
+2. **DFS Function:**
+   - Define a helper function `dfs(r, c)` to perform DFS. This function marks the current cell as visited (change `'1'` to `'0'`) and recursively visits all adjacent land cells (up, down, left, right).
+
+3. **Iterate Through the Grid:**
+   - Loop through each cell in the grid.
+   - When a land cell (`'1'`) is found, increment `num_islands` and call `dfs` to mark all connected land cells as visited.
+
+4. **Return the Result:**
+   - After traversing the entire grid, return the count of `num_islands`.
+
+This approach ensures that each cell is visited once, resulting in a time complexity of \(O(m \times n)\), where \(m\) is the number of rows and \(n\) is the number of columns. The space complexity is \(O(m \times n)\) in the worst case due to the recursion stack. 
+
+Alternatively, you can use BFS for the traversal if you prefer an iterative approach. The logic remains similar but uses a queue to explore the grid level by level.
+
+To determine if all courses can be finished given the prerequisites, you can model this problem as a graph and check for the presence of cycles. If there's a cycle in the graph, it means that there are circular dependencies, and it is not possible to finish all courses. This can be checked using Depth-First Search (DFS) for cycle detection or using Kahn's algorithm for topological sorting.
+
+Here's the Python implementation using Kahn's algorithm (topological sorting):
+
+```python
+from collections import deque, defaultdict
+
+def can_finish(numCourses, prerequisites):
+    # Initialize the graph and in-degree count
+    graph = defaultdict(list)
+    in_degree = [0] * numCourses
+
+    # Build the graph and update in-degrees
+    for course, prereq in prerequisites:
+        graph[prereq].append(course)
+        in_degree[course] += 1
+
+    # Initialize the queue with courses that have no prerequisites
+    queue = deque([i for i in range(numCourses) if in_degree[i] == 0])
+    count = 0
+
+    # Process the courses in topological order
+    while queue:
+        current = queue.popleft()
+        count += 1
+
+        for neighbor in graph[current]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+
+    # If we processed all courses, return True
+    return count == numCourses
+
+# Example usage:
+numCourses = 2
+prerequisites = [[1, 0]]
+print(can_finish(numCourses, prerequisites))  # Output: True
+
+numCourses = 2
+prerequisites = [[1, 0], [0, 1]]
+print(can_finish(numCourses, prerequisites))  # Output: False
+```
+
+### Explanation:
+1. **Graph and In-degree Initialization:**
+   - Use a defaultdict `graph` to store the adjacency list of the graph.
+   - Use a list `in_degree` to store the number of prerequisites (in-degrees) for each course.
+
+2. **Build the Graph:**
+   - For each pair `[course, prereq]` in prerequisites, add an edge from `prereq` to `course` in the graph.
+   - Increment the in-degree of `course` by 1.
+
+3. **Queue Initialization:**
+   - Initialize a queue with all courses that have an in-degree of 0 (no prerequisites).
+
+4. **Topological Sorting:**
+   - Process each course in the queue by removing it and decrementing the in-degree of its neighbors.
+   - If a neighbor’s in-degree becomes 0, add it to the queue.
+   - Keep a count of processed courses.
+
+5. **Check Completion:**
+   - If the count of processed courses equals `numCourses`, it means all courses can be completed. Return `True`.
+   - Otherwise, return `False`.
+
+This approach ensures that you correctly determine if all courses can be finished by checking for cycles using topological sorting. The time complexity is \(O(V + E)\), where \(V\) is the number of courses and \(E\) is the number of prerequisites. The space complexity is also \(O(V + E)\) due to the graph representation and the in-degree list.
+
+To reconstruct the itinerary from the given list of airline tickets, you can use Depth-First Search (DFS) with backtracking. The idea is to build a graph where each node represents an airport and each edge represents a flight. To ensure the smallest lexical order, use a priority queue or a sorted list for neighbors.
+
+Here's the Python implementation of the solution:
+
+```python
+from collections import defaultdict, deque
+
+def find_itinerary(tickets):
+    # Build the graph
+    graph = defaultdict(list)
+    for src, dst in sorted(tickets, key=lambda x: x[1]):
+        graph[src].append(dst)
+    
+    # Use deque as a stack for the itinerary
+    itinerary = deque()
+    
+    def dfs(airport):
+        while graph[airport]:
+            next_airport = graph[airport].pop(0)
+            dfs(next_airport)
+        itinerary.appendleft(airport)
+    
+    # Start the DFS from 'JFK'
+    dfs('JFK')
+    
+    return list(itinerary)
+
+# Example usage:
+tickets = [["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]]
+print(find_itinerary(tickets))  # Output: ["JFK", "MUC", "LHR", "SFO", "SJC"]
+
+tickets = [["JFK", "SFO"], ["JFK", "ATL"], ["SFO", "ATL"], ["ATL", "JFK"], ["ATL", "SFO"]]
+print(find_itinerary(tickets))  # Output: ["JFK", "ATL", "JFK", "SFO", "ATL", "SFO"]
+```
+
+### Explanation:
+1. **Build the Graph:**
+   - Use a `defaultdict` to build the adjacency list for the graph.
+   - Sort the tickets based on the destination airport in lexicographical order to ensure the smallest lexical order is considered first.
+   - Append the destination airports to the adjacency list for each source airport.
+
+2. **DFS Traversal:**
+   - Define a `dfs` function that performs Depth-First Search.
+   - While there are remaining flights from the current airport, pop the next airport from the adjacency list and recursively call `dfs` on it.
+   - Once all flights from the current airport are exhausted, append the airport to the left of the deque (this ensures the itinerary is constructed in reverse order).
+
+3. **Construct the Itinerary:**
+   - Start the DFS from "JFK".
+   - Convert the deque to a list and return it as the final itinerary.
+
+### Key Points:
+- The graph is built such that each airport points to a list of destination airports in lexicographical order.
+- The DFS ensures that all flights are used exactly once by removing the used flights from the adjacency list.
+- By appending airports to the left of the deque during the backtracking phase, the final itinerary is constructed in the correct order.
+
+To solve the problem of finding all possible letter combinations that a given digit string could represent on a phone keypad, you can use backtracking. This approach allows you to explore all possible combinations recursively.
+
+Here’s a Python implementation of the solution:
+
+```python
+def letter_combinations(digits):
+    if not digits:
+        return []
+    
+    # Mapping of digits to letters
+    phone_map = {
+        '2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl',
+        '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'
+    }
+
+    def backtrack(index, path):
+        if index == len(digits):
+            combinations.append("".join(path))
+            return
+        possible_letters = phone_map[digits[index]]
+        for letter in possible_letters:
+            path.append(letter)
+            backtrack(index + 1, path)
+            path.pop()
+
+    combinations = []
+    backtrack(0, [])
+    return combinations
+
+# Example usage:
+digits = "23"
+print(letter_combinations(digits))  # Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]
+```
+
+### Explanation:
+1. **Base Case:** If the input `digits` is empty, return an empty list.
+2. **Mapping:** Create a dictionary `phone_map` that maps each digit to its corresponding letters.
+3. **Backtracking Function:**
+   - `backtrack(index, path)`: A helper function that uses backtracking to generate combinations.
+   - `index` keeps track of the current position in the `digits` string.
+   - `path` is a list that stores the current combination of letters.
+   - If `index` is equal to the length of `digits`, it means a complete combination has been formed, so join `path` into a string and add it to `combinations`.
+   - Otherwise, get the possible letters for the current digit and iterate through them. For each letter, append it to `path` and recursively call `backtrack` for the next digit. After returning from the recursion, remove the last letter from `path` (backtrack).
+4. **Initialize and Call Backtrack:** Initialize the `combinations` list to store all possible combinations. Call `backtrack(0, [])` to start the recursion from the first digit.
+5. **Return the Result:** After all combinations are generated, return the `combinations` list.
+
+This approach ensures that all possible combinations are explored using a depth-first search (DFS) method with backtracking, and the result is generated efficiently.
+
+To generate all combinations of well-formed parentheses for `n` pairs, you can use a backtracking approach. This method allows you to explore all possible combinations of parentheses while ensuring that the generated strings are valid.
+
+Here's a Python implementation of the solution:
+
+```python
+def generate_parentheses(n):
+    def backtrack(s, left, right):
+        if len(s) == 2 * n:
+            result.append(s)
+            return
+        if left < n:
+            backtrack(s + '(', left + 1, right)
+        if right < left:
+            backtrack(s + ')', left, right + 1)
+
+    result = []
+    backtrack('', 0, 0)
+    return result
+
+# Example usage:
+n = 3
+print(generate_parentheses(n))  # Output: ["((()))", "(()())", "(())()", "()(())", "()()()"]
+```
+
+### Explanation:
+1. **Backtracking Function:**
+   - `backtrack(s, left, right)`: A helper function that uses backtracking to generate valid combinations of parentheses.
+   - `s` is the current string being built.
+   - `left` is the count of '(' used so far.
+   - `right` is the count of ')' used so far.
+   - If the length of `s` is equal to `2 * n`, it means a valid combination of `n` pairs of parentheses has been formed. Append this combination to the `result` list.
+   - If `left` is less than `n`, add a '(' to `s` and recursively call `backtrack`.
+   - If `right` is less than `left`, add a ')' to `s` and recursively call `backtrack`.
+
+2. **Initialize and Call Backtrack:**
+   - Initialize an empty list `result` to store all valid combinations.
+   - Call `backtrack('', 0, 0)` to start the recursion with an empty string and zero counts for both left and right parentheses.
+
+3. **Return the Result:**
+   - After all valid combinations are generated, return the `result` list.
+
+This approach ensures that all valid combinations of well-formed parentheses are generated using a depth-first search (DFS) method with backtracking. The time complexity is \(O(4^n / \sqrt{n})\) and the space complexity is \(O(4^n / \sqrt{n})\), where \(n\) is the number of pairs of parentheses.
+
+To solve the "Combination Sum" problem, you can use a backtracking approach to explore all possible combinations of the given candidates that sum up to the target. Since the same number can be chosen multiple times, you need to ensure that each combination is unique by properly managing the order and frequency of chosen numbers.
+
+Here's a Python implementation of the solution:
+
+```python
+def combination_sum(candidates, target):
+    def backtrack(start, path, target):
+        if target == 0:
+            result.append(list(path))
+            return
+        elif target < 0:
+            return
+        for i in range(start, len(candidates)):
+            path.append(candidates[i])
+            backtrack(i, path, target - candidates[i])
+            path.pop()
+
+    result = []
+    backtrack(0, [], target)
+    return result
+
+# Example usage:
+candidates = [2, 3, 6, 7]
+target = 7
+print(combination_sum(candidates, target))  # Output: [[2, 2, 3], [7]]
+
+candidates = [2, 3, 5]
+target = 8
+print(combination_sum(candidates, target))  # Output: [[2, 2, 2, 2], [2, 3, 3], [3, 5]]
+```
+
+### Explanation:
+1. **Backtracking Function:**
+   - `backtrack(start, path, target)`: A helper function that uses backtracking to find all combinations.
+   - `start` is the index in `candidates` from which to consider elements to avoid duplicate combinations.
+   - `path` is the current combination being built.
+   - `target` is the remaining sum needed to reach the original target.
+   - If `target` is 0, a valid combination is found, so append a copy of `path` to `result`.
+   - If `target` is less than 0, return as this path is invalid.
+   - Iterate over the candidates starting from `start`, append the current candidate to `path`, and recursively call `backtrack` with the updated target. After recursion, remove the last element from `path` (backtrack).
+
+2. **Initialize and Call Backtrack:**
+   - Initialize an empty list `result` to store all valid combinations.
+   - Call `backtrack(0, [], target)` to start the recursion with an empty combination and the full target.
+
+3. **Return the Result:**
+   - After exploring all combinations, return the `result` list containing all unique combinations that sum to the target.
+
+This approach ensures that all valid combinations are explored using a depth-first search (DFS) method with backtracking, avoiding duplicates by controlling the starting index of the candidate list. The time complexity is generally exponential \(O(2^n)\) depending on the input, but given the constraint that the number of unique combinations is less than 150, it works efficiently for the problem requirements.
+
+To solve the problem of regular expression matching with the support for `.` and `*`, you can use dynamic programming. The idea is to create a 2D table where `dp[i][j]` indicates whether the first `i` characters of the input string `s` match the first `j` characters of the pattern `p`.
+
+Here’s a Python implementation of the solution:
+
+```python
+def is_match(s, p):
+    m, n = len(s), len(p)
+    # dp[i][j] will be True if the first i characters in s match the first j characters in p
+    dp = [[False] * (n + 1) for _ in range(m + 1)]
+    # An empty string and an empty pattern are a match
+    dp[0][0] = True
+
+    # Populate dp for patterns that can match an empty string
+    for j in range(2, n + 1):
+        if p[j - 1] == '*':
+            dp[0][j] = dp[0][j - 2]
+
+    # Fill the dp table
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if p[j - 1] == '*':
+                dp[i][j] = dp[i][j - 2] or (dp[i - 1][j] and (s[i - 1] == p[j - 2] or p[j - 2] == '.'))
+            else:
+                dp[i][j] = dp[i - 1][j - 1] and (s[i - 1] == p[j - 1] or p[j - 1] == '.')
+
+    return dp[m][n]
+
+# Example usage:
+s = "aab"
+p = "c*a*b"
+print(is_match(s, p))  # Output: True
+
+s = "mississippi"
+p = "mis*is*p*."
+print(is_match(s, p))  # Output: False
+```
+
+### Explanation:
+1. **Initialization:**
+   - `dp[i][j]` represents whether the first `i` characters of `s` match the first `j` characters of `p`.
+   - `dp[0][0]` is `True` because an empty string matches an empty pattern.
+   - Initialize the `dp` table with `False`.
+
+2. **Pattern Matching with Empty String:**
+   - Fill the `dp` table for patterns that can match an empty string. A pattern like `a*` can match an empty string, so you need to look back two characters (i.e., `dp[0][j] = dp[0][j-2]`).
+
+3. **Filling the DP Table:**
+   - Iterate over each character of `s` and `p`.
+   - If the current pattern character is `*`, it can match zero or more of the preceding element:
+     - `dp[i][j] = dp[i][j-2]` if `*` matches zero preceding elements.
+     - `dp[i][j] = dp[i-1][j]` if the preceding element matches the current character of `s` (i.e., `s[i-1] == p[j-2]` or `p[j-2] == '.'`).
+   - If the current pattern character is not `*`, it must match the current character of `s` directly or be a `.`:
+     - `dp[i][j] = dp[i-1][j-1]` if the characters match (i.e., `s[i-1] == p[j-1]` or `p[j-1] == '.'`).
+
+4. **Return the Result:**
+   - The result is stored in `dp[m][n]`, indicating whether the entire string `s` matches the entire pattern `p`.
+
+This approach ensures that the matching process is efficient with a time complexity of \(O(m \times n)\) and a space complexity of \(O(m \times n)\), where \(m\) is the length of the input string `s` and \(n\) is the length of the pattern `p`.
+
+To solve the problem of merging overlapping intervals, you can follow these steps:
+
+1. Sort the intervals based on the starting times.
+2. Initialize a list to store the merged intervals.
+3. Iterate through the sorted intervals and merge them if they overlap; otherwise, add the current interval to the merged list.
+
+Here's a Python implementation of the solution:
+
+```python
+def merge_intervals(intervals):
+    if not intervals:
+        return []
+
+    # Sort the intervals based on the starting times
+    intervals.sort(key=lambda x: x[0])
+    
+    merged = []
+    for interval in intervals:
+        # If the merged list is empty or there is no overlap, append the interval
+        if not merged or merged[-1][1] < interval[0]:
+            merged.append(interval)
+        else:
+            # Otherwise, there is overlap, so merge the intervals
+            merged[-1][1] = max(merged[-1][1], interval[1])
+    
+    return merged
+
+# Example usage:
+intervals = [[1,3], [2,6], [8,10], [15,18]]
+print(merge_intervals(intervals))  # Output: [[1, 6], [8, 10], [15, 18]]
+
+intervals = [[1,4], [4,5]]
+print(merge_intervals(intervals))  # Output: [[1, 5]]
+```
+
+### Explanation:
+1. **Sort Intervals:** Sort the intervals based on their starting times. This ensures that any overlapping intervals are adjacent in the sorted list.
+2. **Initialize Merged List:** Create an empty list `merged` to store the merged intervals.
+3. **Iterate and Merge:**
+   - Iterate through each interval in the sorted list.
+   - If `merged` is empty or the current interval does not overlap with the last interval in `merged`, append the current interval to `merged`.
+   - If there is an overlap (i.e., the end of the last interval in `merged` is greater than or equal to the start of the current interval), merge the current interval with the last interval in `merged` by updating the end time of the last interval to the maximum end time of both intervals.
+4. **Return Merged Intervals:** After iterating through all intervals, return the `merged` list.
+
+This approach ensures that the intervals are merged efficiently with a time complexity of \(O(n \log n)\) due to the sorting step, where \(n\) is the number of intervals. The subsequent merging process has a time complexity of \(O(n)\), making the overall time complexity \(O(n \log n)\). The space complexity is \(O(n)\) for storing the merged intervals.
+
+To determine if a person can attend all meetings given an array of meeting time intervals, you need to check if any of the meetings overlap. If none of the meetings overlap, then the person can attend all meetings. The solution involves sorting the intervals by their start times and then checking for any overlap between consecutive intervals.
+
+Here's the Python implementation of the solution:
+
+```python
+def can_attend_meetings(intervals):
+    if not intervals:
+        return True
+
+    # Sort intervals by their start times
+    intervals.sort(key=lambda x: x[0])
+
+    for i in range(1, len(intervals)):
+        # Check if there is an overlap
+        if intervals[i][0] < intervals[i - 1][1]:
+            return False
+
+    return True
+
+# Example usage:
+intervals = [[0, 30], [5, 10], [15, 20]]
+print(can_attend_meetings(intervals))  # Output: False
+
+intervals = [[7, 10], [2, 4]]
+print(can_attend_meetings(intervals))  # Output: True
+```
+
+### Explanation:
+1. **Check for Empty Intervals:**
+   - If the input `intervals` list is empty, return `True` since there are no meetings to attend.
+
+2. **Sort Intervals:**
+   - Sort the intervals based on their start times. This helps in easily checking for overlaps.
+
+3. **Check for Overlaps:**
+   - Iterate through the sorted intervals starting from the second interval.
+   - For each interval, check if the start time of the current interval is less than the end time of the previous interval.
+   - If an overlap is found (i.e., `intervals[i][0] < intervals[i - 1][1]`), return `False`.
+
+4. **Return Result:**
+   - If no overlaps are found after checking all intervals, return `True`.
+
+This approach ensures that the intervals are checked efficiently for overlaps with a time complexity of \(O(n \log n)\) due to the sorting step, where \(n\) is the number of intervals. The subsequent check for overlaps has a time complexity of \(O(n)\), making the overall time complexity \(O(n \log n)\). The space complexity is \(O(1)\) for the in-place operations.
+
+To determine the minimum number of conference rooms required for a given array of meeting time intervals, you can use a priority queue (min-heap) to track the end times of meetings currently occupying conference rooms. This approach allows you to efficiently find the next available room.
+
+Here's the Python implementation of the solution:
+
+```python
+import heapq
+
+def min_meeting_rooms(intervals):
+    if not intervals:
+        return 0
+
+    # Sort intervals by start time
+    intervals.sort(key=lambda x: x[0])
+
+    # Initialize a min-heap to keep track of end times of meetings
+    heap = []
+
+    # Add the end time of the first meeting
+    heapq.heappush(heap, intervals[0][1])
+
+    for i in range(1, len(intervals)):
+        # If the room is free (i.e., the earliest meeting has ended), remove it from the heap
+        if intervals[i][0] >= heap[0]:
+            heapq.heappop(heap)
+
+        # Add the current meeting's end time to the heap
+        heapq.heappush(heap, intervals[i][1])
+
+    # The size of the heap is the number of rooms required
+    return len(heap)
+
+# Example usage:
+intervals = [[0, 30], [5, 10], [15, 20]]
+print(min_meeting_rooms(intervals))  # Output: 2
+
+intervals = [[7, 10], [2, 4]]
+print(min_meeting_rooms(intervals))  # Output: 1
+```
+
+### Explanation:
+1. **Sort Intervals:**
+   - Sort the intervals based on their start times. This ensures that you process the meetings in the order they start.
+
+2. **Min-Heap Initialization:**
+   - Initialize a min-heap to keep track of the end times of meetings currently occupying conference rooms. The heap helps efficiently manage the end times and find the next available room.
+
+3. **Process Meetings:**
+   - Iterate through the sorted intervals starting from the second meeting:
+     - If the current meeting's start time is greater than or equal to the earliest end time in the heap, it means a room has been freed up. Remove the earliest end time from the heap.
+     - Add the current meeting's end time to the heap.
+   
+4. **Determine Room Count:**
+   - The size of the heap at the end of the iteration represents the minimum number of conference rooms required, as it indicates the maximum number of concurrent meetings.
+
+This approach ensures that the intervals are processed efficiently with a time complexity of \(O(n \log n)\) due to the sorting step and the operations on the heap. The space complexity is \(O(n)\) for storing the end times in the heap.
+
+To implement the function `pickIndex()` that randomly picks an index with the given weights, you can use the prefix sum array and binary search. Here's how you can do it:
+
+1. **Prefix Sum Array:** Create a prefix sum array where each element at index `i` represents the sum of weights from the beginning to index `i` in the original array `w`.
+
+2. **Binary Search:** When picking an index, generate a random number in the range `[1, sum(w)]` and use binary search to find the corresponding index in the prefix sum array.
+
+Here’s the Python implementation:
+
+```python
+import random
+import bisect
+
+class Solution:
+    def __init__(self, w):
+        self.prefix_sums = []
+        prefix_sum = 0
+        for weight in w:
+            prefix_sum += weight
+            self.prefix_sums.append(prefix_sum)
+        self.total_sum = prefix_sum
+
+    def pickIndex(self):
+        target = random.randint(1, self.total_sum)
+        # Find the smallest index such that prefix_sums[index] >= target
+        index = bisect.bisect_left(self.prefix_sums, target)
+        return index
+
+# Example usage:
+w = [1, 3]
+solution = Solution(w)
+print(solution.pickIndex())  # Output will vary based on randomness
+```
+
+### Explanation:
+1. **Constructor (`__init__` method):**
+   - Calculate the prefix sum array. This array helps in determining the ranges for each index based on the weights.
+   - `self.prefix_sums` holds the prefix sums, and `self.total_sum` stores the total sum of weights.
+
+2. **Pick Index (`pickIndex` method):**
+   - Generate a random number `target` in the range `[1, self.total_sum]`. The `random.randint(1, self.total_sum)` function ensures the range is inclusive.
+   - Use `bisect.bisect_left(self.prefix_sums, target)` to find the position where `target` fits in the prefix sum array. This function returns the index of the first element that is greater than or equal to `target`.
+   - Return the index found.
+
+### Key Points:
+- **Prefix Sum Array:** This array helps map the random number to the correct index based on the weights.
+- **Binary Search:** Efficiently find the correct index corresponding to the random number using binary search, which operates in \(O(\log n)\) time.
+- **Random Number Generation:** Ensure that the random number generation is inclusive of both bounds to cover the entire range.
+
+This approach ensures that the function `pickIndex` operates efficiently with a time complexity of \(O(\log n)\) due to the binary search, and the constructor has a time complexity of \(O(n)\) for creating the prefix sum array.
+
+To solve the problem of finding the maximum value in each sliding window of size `k` in an array `nums`, you can use a deque (double-ended queue) to maintain the indices of the elements in the current window. This allows you to efficiently find the maximum value in \(O(n)\) time complexity, where \(n\) is the length of the array.
+
+Here's a Python implementation of the solution:
+
+```python
+from collections import deque
+
+def max_sliding_window(nums, k):
+    if not nums:
+        return []
+    
+    n = len(nums)
+    if k == 1:
+        return nums
+    
+    # Initialize deque and result list
+    deq = deque()
+    result = []
+
+    for i in range(n):
+        # Remove indices that are out of the bounds of the current window
+        if deq and deq[0] == i - k:
+            deq.popleft()
+        
+        # Remove elements from the deque that are smaller than the current element
+        while deq and nums[deq[-1]] < nums[i]:
+            deq.pop()
+        
+        # Add the current element's index to the deque
+        deq.append(i)
+        
+        # Add the maximum element of the current window to the result list
+        if i >= k - 1:
+            result.append(nums[deq[0]])
+    
+    return result
+
+# Example usage:
+nums = [1,3,-1,-3,5,3,6,7]
+k = 3
+print(max_sliding_window(nums, k))  # Output: [3, 3, 5, 5, 6, 7]
+
+nums = [9, 11]
+k = 2
+print(max_sliding_window(nums, k))  # Output: [11]
+```
+
+### Explanation:
+1. **Initialization:**
+   - Use a deque `deq` to store indices of elements in `nums`. The deque will help maintain the indices of the maximum elements in the current window.
+   - Initialize a list `result` to store the maximum values of each window.
+
+2. **Iterate through the array:**
+   - For each element `nums[i]`, remove indices from the front of the deque if they are out of the bounds of the current window (i.e., `deq[0] == i - k`).
+   - Remove elements from the back of the deque while the elements they point to are smaller than the current element `nums[i]`. This ensures that the deque contains indices of elements in descending order.
+   - Append the current index `i` to the deque.
+   - If the current index `i` is greater than or equal to `k - 1`, append the maximum value of the current window (which is `nums[deq[0]]`) to the `result` list.
+
+3. **Return the result:**
+   - After iterating through the array, `result` will contain the maximum values for each sliding window.
+
+This approach ensures that the maximum value for each window is found efficiently with a time complexity of \(O(n)\), as each element is added and removed from the deque at most once. The space complexity is \(O(k)\) for storing the indices in the deque.
+
+To solve the problem of finding the k most frequent elements in an array `nums`, you can use a combination of a hash map and a heap (priority queue). The hash map will help count the frequency of each element, and the heap will help efficiently find the top k frequent elements.
+
+Here's a Python implementation of the solution:
+
+```python
+import heapq
+from collections import Counter
+
+def top_k_frequent(nums, k):
+    if not nums:
+        return []
+    
+    # Build a frequency map
+    frequency_map = Counter(nums)
+    
+    # Use a min-heap to keep the top k frequent elements
+    heap = []
+    
+    for num, freq in frequency_map.items():
+        heapq.heappush(heap, (freq, num))
+        if len(heap) > k:
+            heapq.heappop(heap)
+    
+    # Extract the elements from the heap
+    top_k_elements = [num for freq, num in heap]
+    
+    return top_k_elements
+
+# Example usage:
+nums = [1, 1, 1, 2, 2, 3]
+k = 2
+print(top_k_frequent(nums, k))  # Output: [1, 2]
+
+nums = [1]
+k = 1
+print(top_k_frequent(nums, k))  # Output: [1]
+```
+
+### Explanation:
+1. **Frequency Map:**
+   - Use `Counter` from the `collections` module to build a frequency map that counts the occurrences of each element in the array `nums`.
+
+2. **Heap Initialization:**
+   - Use a min-heap to keep track of the top k elements based on their frequencies. The heap will store tuples of the form `(frequency, element)`.
+
+3. **Heap Operations:**
+   - Iterate through the frequency map. For each element and its frequency, push the tuple `(frequency, element)` into the heap using `heapq.heappush`.
+   - If the size of the heap exceeds k, pop the smallest element from the heap using `heapq.heappop`. This ensures that the heap always contains the k most frequent elements.
+
+4. **Extract Results:**
+   - After processing all elements, extract the elements from the heap. The heap contains the k most frequent elements.
+
+5. **Return the Result:**
+   - Return the list of top k frequent elements.
+
+This approach ensures that the most frequent elements are found efficiently with a time complexity of \(O(n \log k)\), where \(n\) is the number of elements in the array and \(k\) is the number of most frequent elements to find. The space complexity is \(O(n + k)\), where \(n\) is for the frequency map and \(k\) is for the heap.
+
+To solve the problem of finding the k most frequent words in an array and returning them sorted by frequency and then by lexicographical order, you can use a combination of a hash map and a heap (priority queue). The hash map will count the frequencies, and the heap will help efficiently retrieve the top k frequent words. 
+
+Here's the Python implementation of the solution:
+
+```python
+import heapq
+from collections import Counter
+
+def top_k_frequent(words, k):
+    # Count the frequency of each word
+    frequency_map = Counter(words)
+    
+    # Use a min-heap to keep the top k frequent words
+    heap = []
+    
+    # Iterate over the frequency map and use a heap to keep track of the k most frequent words
+    for word, freq in frequency_map.items():
+        heapq.heappush(heap, (-freq, word))  # Push the negative frequency to sort by max frequency
+        if len(heap) > k:
+            heapq.heappop(heap)
+    
+    # Extract the elements from the heap and sort by frequency and then lexicographical order
+    result = []
+    while heap:
+        result.append(heapq.heappop(heap)[1])
+    
+    result.reverse()  # To get the highest frequency first
+    
+    return result
+
+# Example usage:
+words = ["i", "love", "leetcode", "i", "love", "coding"]
+k = 2
+print(top_k_frequent(words, k))  # Output: ["i", "love"]
+
+words = ["the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"]
+k = 4
+print(top_k_frequent(words, k))  # Output: ["the", "is", "sunny", "day"]
+```
+
+### Explanation:
+1. **Frequency Map:**
+   - Use `Counter` from the `collections` module to build a frequency map that counts the occurrences of each word in the array `words`.
+
+2. **Heap Initialization:**
+   - Use a min-heap to keep track of the top k elements based on their frequencies and lexicographical order. Store tuples in the heap as `(-frequency, word)` so that the heap sorts by maximum frequency and by lexicographical order for words with the same frequency.
+
+3. **Heap Operations:**
+   - Iterate through the frequency map. For each word and its frequency, push the tuple `(-frequency, word)` into the heap using `heapq.heappush`.
+   - If the size of the heap exceeds k, pop the smallest element from the heap using `heapq.heappop`. This ensures that the heap always contains the k most frequent words.
+
+4. **Extract Results:**
+   - After processing all elements, extract the words from the heap. The heap contains the k most frequent words. Since we need the highest frequency first, we reverse the result.
+
+5. **Return the Result:**
+   - Return the list of top k frequent words sorted by frequency and then by lexicographical order.
+
+This approach ensures that the most frequent words are found and sorted efficiently with a time complexity of \(O(n \log k)\), where \(n\) is the number of elements in the array and \(k\) is the number of most frequent words to find. The space complexity is \(O(n + k)\), where \(n\) is for the frequency map and \(k\) is for the heap.
+
+To find the longest palindromic substring in a given string `s`, you can use dynamic programming or expand around center. The expand around center approach is more efficient with a time complexity of \(O(n^2)\) and is easier to implement.
+
+Here's the Python implementation of the solution using the expand around center approach:
+
+```python
+def longest_palindrome(s):
+    if not s:
+        return ""
+    
+    start, end = 0, 0
+    
+    def expand_around_center(left, right):
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return left + 1, right - 1
+
+    for i in range(len(s)):
+        # Odd length palindromes
+        left1, right1 = expand_around_center(i, i)
+        # Even length palindromes
+        left2, right2 = expand_around_center(i, i + 1)
+        
+        if right1 - left1 > end - start:
+            start, end = left1, right1
+        if right2 - left2 > end - start:
+            start, end = left2, right2
+    
+    return s[start:end + 1]
+
+# Example usage:
+s = "babad"
+print(longest_palindrome(s))  # Output: "bab" or "aba"
+
+s = "cbbd"
+print(longest_palindrome(s))  # Output: "bb"
+```
+
+### Explanation:
+1. **Helper Function:**
+   - `expand_around_center(left, right)`: Expands around the given center and returns the start and end indices of the longest palindrome found. It expands as long as the characters on both sides are equal.
+   
+2. **Initialization:**
+   - `start` and `end` are initialized to keep track of the start and end indices of the longest palindromic substring found so far.
+
+3. **Iterate Through the String:**
+   - For each character in the string, consider it as the center and expand around it to find the longest odd-length palindrome.
+   - Also consider the character and the next character as the center to find the longest even-length palindrome.
+   - Compare the length of the found palindromes with the current longest palindrome and update `start` and `end` if a longer palindrome is found.
+
+4. **Return the Result:**
+   - After iterating through the string, return the substring from `start` to `end` + 1, which is the longest palindromic substring.
+
+This approach ensures that all potential centers (both single characters and pairs of characters) are considered, resulting in the longest palindromic substring being found efficiently. The time complexity is \(O(n^2)\) and the space complexity is \(O(1)\) since no additional data structures proportional to the input size are used.
+
+To find the subarray with the largest sum in an array of integers `nums`, you can use Kadane's algorithm. This algorithm efficiently computes the maximum sum subarray in linear time \(O(n)\).
+
+Here's the Python implementation of the solution using Kadane's algorithm:
+
+```python
+def max_subarray(nums):
+    if not nums:
+        return 0
+    
+    max_current = max_global = nums[0]
+    
+    for num in nums[1:]:
+        max_current = max(num, max_current + num)
+        if max_current > max_global:
+            max_global = max_current
+    
+    return max_global
+
+# Example usage:
+nums = [-2,1,-3,4,-1,2,1,-5,4]
+print(max_subarray(nums))  # Output: 6
+
+nums = [1]
+print(max_subarray(nums))  # Output: 1
+
+nums = [5,4,-1,7,8]
+print(max_subarray(nums))  # Output: 23
+```
+
+### Explanation:
+1. **Initialization:**
+   - Initialize `max_current` and `max_global` with the first element of the array. `max_current` keeps track of the maximum sum of the subarray ending at the current position, while `max_global` keeps track of the overall maximum sum found so far.
+
+2. **Iterate Through the Array:**
+   - Starting from the second element, iterate through the array.
+   - For each element `num`, update `max_current` to be the maximum of `num` and `max_current + num`. This step decides whether to start a new subarray at the current position or to extend the existing subarray.
+   - Update `max_global` if `max_current` is greater than `max_global`.
+
+3. **Return the Result:**
+   - After iterating through the array, `max_global` contains the maximum sum of any subarray in the array.
+
+This approach ensures that the maximum subarray sum is found efficiently in linear time \(O(n)\) and uses constant space \(O(1)\).
+
+To solve the problem of finding the best time to buy and sell stock to maximize profit, you can use a single pass approach to track the minimum price and the maximum profit efficiently.
+
+Here's the Python implementation:
+
+```python
+def max_profit(prices):
+    if not prices:
+        return 0
+    
+    min_price = float('inf')
+    max_profit = 0
+    
+    for price in prices:
+        if price < min_price:
+            min_price = price
+        elif price - min_price > max_profit:
+            max_profit = price - min_price
+    
+    return max_profit
+
+# Example usage:
+prices = [7, 1, 5, 3, 6, 4]
+print(max_profit(prices))  # Output: 5
+
+prices = [7, 6, 4, 3, 1]
+print(max_profit(prices))  # Output: 0
+```
+
+### Explanation:
+1. **Initialization:**
+   - Initialize `min_price` to a very high value (`float('inf')`) to ensure any price encountered will be less than this initial value.
+   - Initialize `max_profit` to 0, since the minimum profit possible is 0.
+
+2. **Iterate Through Prices:**
+   - For each price in the array, check if it is less than `min_price`. If it is, update `min_price` to this price.
+   - Otherwise, calculate the potential profit by subtracting `min_price` from the current price. If this potential profit is greater than `max_profit`, update `max_profit` with this new value.
+
+3. **Return the Result:**
+   - After iterating through the entire array, `max_profit` will contain the maximum profit that can be achieved.
+
+This approach ensures that the maximum profit is found efficiently with a time complexity of \(O(n)\), where \(n\) is the number of elements in the array. The space complexity is \(O(1)\), as it uses only a constant amount of extra space.
+
+To solve the Word Break problem, you can use dynamic programming. The idea is to use a boolean array `dp` where `dp[i]` indicates whether the substring `s[0:i]` can be segmented into a sequence of one or more dictionary words.
+
+Here's a Python implementation of the solution:
+
+```python
+def word_break(s, wordDict):
+    word_set = set(wordDict)
+    dp = [False] * (len(s) + 1)
+    dp[0] = True
+
+    for i in range(1, len(s) + 1):
+        for j in range(i):
+            if dp[j] and s[j:i] in word_set:
+                dp[i] = True
+                break
+
+    return dp[len(s)]
+
+# Example usage:
+s = "leetcode"
+wordDict = ["leet", "code"]
+print(word_break(s, wordDict))  # Output: True
+
+s = "applepenapple"
+wordDict = ["apple", "pen"]
+print(word_break(s, wordDict))  # Output: True
+
+s = "catsandog"
+wordDict = ["cats", "dog", "sand", "and", "cat"]
+print(word_break(s, wordDict))  # Output: False
+```
+
+### Explanation:
+1. **Initialization:**
+   - Convert `wordDict` to a set `word_set` for O(1) lookups.
+   - Initialize a boolean array `dp` of length `len(s) + 1` with all elements set to `False`. Set `dp[0]` to `True` because an empty string can always be segmented.
+
+2. **Dynamic Programming:**
+   - Iterate over the positions `i` from 1 to `len(s)`.
+   - For each position `i`, check every possible substring `s[j:i]` where `0 <= j < i`.
+   - If `dp[j]` is `True` and `s[j:i]` is in `word_set`, then set `dp[i]` to `True` and break out of the inner loop because you have found a valid segmentation up to position `i`.
+
+3. **Result:**
+   - The value of `dp[len(s)]` will be `True` if the entire string `s` can be segmented into words from the dictionary, otherwise it will be `False`.
+
+This approach ensures that you efficiently check all possible segmentations of the string `s` with a time complexity of \(O(n^2)\) and a space complexity of \(O(n)\), where \(n\) is the length of the string `s`.
+
+To find the subarray with the largest product in an integer array `nums`, you can use a dynamic programming approach. The key is to keep track of the maximum and minimum products up to the current position because a negative number can turn a small product into a large one when multiplied by another negative number.
+
+Here's the Python implementation of the solution:
+
+```python
+def max_product(nums):
+    if not nums:
+        return 0
+    
+    max_prod = min_prod = result = nums[0]
+    
+    for num in nums[1:]:
+        if num < 0:
+            max_prod, min_prod = min_prod, max_prod
+        
+        max_prod = max(num, max_prod * num)
+        min_prod = min(num, min_prod * num)
+        
+        result = max(result, max_prod)
+    
+    return result
+
+# Example usage:
+nums = [2, 3, -2, 4]
+print(max_product(nums))  # Output: 6
+
+nums = [-2, 0, -1]
+print(max_product(nums))  # Output: 0
+```
+
+### Explanation:
+1. **Initialization:**
+   - Initialize `max_prod`, `min_prod`, and `result` to the first element of the array `nums[0]`. `max_prod` keeps track of the maximum product up to the current position, `min_prod` keeps track of the minimum product up to the current position, and `result` stores the global maximum product found so far.
+
+2. **Iterate Through the Array:**
+   - Iterate over the array starting from the second element.
+   - If the current number `num` is negative, swap `max_prod` and `min_prod`. This is because multiplying a negative number by `min_prod` (which could be a large negative number) could result in a new maximum product.
+   - Update `max_prod` to be the maximum of the current number and `max_prod * num`.
+   - Update `min_prod` to be the minimum of the current number and `min_prod * num`.
+   - Update `result` to be the maximum of `result` and `max_prod`.
+
+3. **Return the Result:**
+   - After iterating through the array, `result` will contain the maximum product of any subarray in `nums`.
+
+This approach ensures that the maximum product subarray is found efficiently with a time complexity of \(O(n)\) and a space complexity of \(O(1)\), where \(n\) is the number of elements in the array.
+
+To find the largest square containing only 1's in a given m x n binary matrix, you can use dynamic programming. The idea is to use a 2D DP array where `dp[i][j]` represents the side length of the largest square whose bottom-right corner is the cell (i, j). The value of `dp[i][j]` is determined by the minimum value of the neighboring cells to the left, top, and top-left.
+
+Here's a Python implementation of the solution:
+
+```python
+def maximal_square(matrix):
+    if not matrix:
+        return 0
+    
+    rows, cols = len(matrix), len(matrix[0])
+    dp = [[0] * cols for _ in range(rows)]
+    max_side = 0
+    
+    for i in range(rows):
+        for j in range(cols):
+            if matrix[i][j] == '1':
+                if i == 0 or j == 0:
+                    dp[i][j] = 1
+                else:
+                    dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+                max_side = max(max_side, dp[i][j])
+    
+    return max_side * max_side
+
+# Example usage:
+matrix = [
+    ["1","0","1","0","0"],
+    ["1","0","1","1","1"],
+    ["1","1","1","1","1"],
+    ["1","0","0","1","0"]
+]
+print(maximal_square(matrix))  # Output: 4
+
+matrix = [
+    ["0","1"],
+    ["1","0"]
+]
+print(maximal_square(matrix))  # Output: 1
+
+matrix = [
+    ["0"]
+]
+print(maximal_square(matrix))  # Output: 0
+```
+
+### Explanation:
+1. **Initialization:**
+   - Initialize `rows` and `cols` to the dimensions of the matrix.
+   - Create a 2D DP array `dp` with the same dimensions as the matrix, initialized to 0.
+   - Initialize `max_side` to keep track of the maximum side length of the square found.
+
+2. **Iterate Through the Matrix:**
+   - For each cell `(i, j)` in the matrix:
+     - If the cell contains '1':
+       - If the cell is in the first row or the first column, the maximum square ending at `(i, j)` is just 1x1 (i.e., `dp[i][j] = 1`).
+       - Otherwise, calculate `dp[i][j]` as the minimum of the three neighboring cells (`dp[i-1][j]`, `dp[i][j-1]`, `dp[i-1][j-1]`) plus 1.
+     - Update `max_side` to the maximum of `max_side` and `dp[i][j]`.
+
+3. **Return the Area:**
+   - The area of the largest square is `max_side * max_side`.
+
+This approach ensures that you efficiently find the largest square containing only 1's with a time complexity of \(O(m \times n)\) and a space complexity of \(O(m \times n)\), where \(m\) and \(n\) are the dimensions of the matrix.
+
+To solve the problem of fitting a sentence on a screen with a given number of rows and columns, you can simulate the placement of words on the screen and track how many times the sentence is fully placed on the screen.
+
+Here's a Python implementation of the solution:
+
+```python
+def words_typing(sentence, rows, cols):
+    # Join the sentence into a single string with spaces
+    sentence_str = ' '.join(sentence) + ' '
+    n = len(sentence_str)
+    
+    # Track the position of the cursor in the string
+    pos = 0
+
+    for _ in range(rows):
+        # Move cursor forward by the number of columns
+        pos += cols
+        
+        # If the cursor is at a space, it means the word can fit
+        if sentence_str[pos % n] == ' ':
+            pos += 1  # Move past the space to start a new word
+        else:
+            # Move back to the beginning of the word
+            while pos > 0 and sentence_str[(pos-1) % n] != ' ':
+                pos -= 1
+
+    return pos // n
+
+# Example usage:
+sentence = ["hello", "world"]
+rows = 2
+cols = 8
+print(words_typing(sentence, rows, cols))  # Output: 1
+
+sentence = ["a", "bcd", "e"]
+rows = 3
+cols = 6
+print(words_typing(sentence, rows, cols))  # Output: 2
+
+sentence = ["i", "had", "apple", "pie"]
+rows = 4
+cols = 5
+print(words_typing(sentence, rows, cols))  # Output: 1
+```
+
+### Explanation:
+1. **Prepare the Sentence String:**
+   - Join the sentence into a single string with spaces between words, and add an extra space at the end to handle the space after the last word. This makes it easier to simulate the screen fitting.
+   - Calculate the length of this sentence string.
+
+2. **Track the Cursor Position:**
+   - Initialize a variable `pos` to track the position of the cursor in the sentence string.
+   - For each row, move the cursor forward by the number of columns `cols`.
+
+3. **Adjust for Word Boundaries:**
+   - If the cursor lands on a space, it means the last word fits perfectly, so move the cursor forward by one to start with the next word.
+   - If the cursor does not land on a space, it means the last word was cut off, so move the cursor backward to the beginning of the word.
+
+4. **Calculate the Result:**
+   - After processing all rows, the number of times the sentence fits on the screen is given by the integer division of the cursor position `pos` by the length of the sentence string `n`.
+
+This approach ensures that the sentence fitting is handled efficiently with a time complexity of \(O(rows \times cols)\) and a space complexity of \(O(n)\), where \(n\) is the length of the sentence string.
+
+To implement an LRU (Least Recently Used) Cache that supports \(O(1)\) operations for both `get` and `put`, you can use a combination of a doubly linked list and a hash map.
+
+Here's a Python implementation of the `LRUCache` class:
+
+```python
+class Node:
+    def __init__(self, key=None, value=None):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = Node()  # dummy head
+        self.tail = Node()  # dummy tail
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _add_node(self, node: Node):
+        """Add node right after head."""
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _remove_node(self, node: Node):
+        """Remove an existing node from the linked list."""
+        prev = node.prev
+        next = node.next
+        prev.next = next
+        next.prev = prev
+
+    def _move_to_head(self, node: Node):
+        """Move certain node to the head."""
+        self._remove_node(node)
+        self._add_node(node)
+
+    def _pop_tail(self) -> Node:
+        """Pop the current tail."""
+        res = self.tail.prev
+        self._remove_node(res)
+        return res
+
+    def get(self, key: int) -> int:
+        node = self.cache.get(key, None)
+        if not node:
+            return -1
+        # Move the accessed node to the head
+        self._move_to_head(node)
+        return node.value
+
+    def put(self, key: int, value: int) -> None:
+        node = self.cache.get(key)
+
+        if not node:
+            new_node = Node(key, value)
+            self.cache[key] = new_node
+            self._add_node(new_node)
+
+            if len(self.cache) > self.capacity:
+                # Pop the tail
+                tail = self._pop_tail()
+                del self.cache[tail.key]
+        else:
+            # Update the value
+            node.value = value
+            self._move_to_head(node)
+
+# Example usage:
+lru_cache = LRUCache(2)
+lru_cache.put(1, 1)
+lru_cache.put(2, 2)
+print(lru_cache.get(1))  # Output: 1
+lru_cache.put(3, 3)  # Evicts key 2
+print(lru_cache.get(2))  # Output: -1
+lru_cache.put(4, 4)  # Evicts key 1
+print(lru_cache.get(1))  # Output: -1
+print(lru_cache.get(3))  # Output: 3
+print(lru_cache.get(4))  # Output: 4
+```
+
+### Explanation:
+1. **Node Class:**
+   - A helper class `Node` is used to create nodes for the doubly linked list, storing `key`, `value`, and pointers to `prev` and `next` nodes.
+
+2. **LRUCache Class:**
+   - **Initialization:** Initializes the cache with a given capacity. It uses a hash map `cache` to store key-node pairs and a doubly linked list with dummy head and tail nodes to maintain the order of the nodes.
+   - **_add_node:** Adds a node right after the dummy head.
+   - **_remove_node:** Removes a node from the doubly linked list.
+   - **_move_to_head:** Moves a node to the head (most recently used position).
+   - **_pop_tail:** Removes the least recently used node (node right before the dummy tail) and returns it.
+   - **get:** If the key exists in the cache, moves the corresponding node to the head and returns its value. Otherwise, returns -1.
+   - **put:** Adds a new key-value pair to the cache. If the key already exists, updates the value and moves the node to the head. If the cache exceeds its capacity, removes the least recently used node.
+
+This implementation ensures that both `get` and `put` operations run in \(O(1)\) time complexity on average.
+
+To implement a logger system that receives a stream of messages and ensures that each unique message is printed at most every 10 seconds, you can use a hash map (dictionary) to store the last printed timestamp for each message. 
+
+Here's the Python implementation of the `Logger` class:
+
+```python
+class Logger:
+
+    def __init__(self):
+        """
+        Initialize the logger object.
+        """
+        self.message_timestamp = {}
+
+    def shouldPrintMessage(self, timestamp: int, message: str) -> bool:
+        """
+        Returns true if the message should be printed in the given timestamp,
+        otherwise returns false.
+        """
+        if message not in self.message_timestamp:
+            self.message_timestamp[message] = timestamp
+            return True
+        elif timestamp - self.message_timestamp[message] >= 10:
+            self.message_timestamp[message] = timestamp
+            return True
+        else:
+            return False
+
+# Example usage:
+logger = Logger()
+
+# Logging string "foo" at timestamp 1
+print(logger.shouldPrintMessage(1, "foo"))  # Output: True
+
+# Logging string "bar" at timestamp 2
+print(logger.shouldPrintMessage(2, "bar"))  # Output: True
+
+# Logging string "foo" at timestamp 3
+print(logger.shouldPrintMessage(3, "foo"))  # Output: False
+
+# Logging string "bar" at timestamp 8
+print(logger.shouldPrintMessage(8, "bar"))  # Output: False
+
+# Logging string "foo" at timestamp 10
+print(logger.shouldPrintMessage(10, "foo"))  # Output: False
+
+# Logging string "foo" at timestamp 11
+print(logger.shouldPrintMessage(11, "foo"))  # Output: True
+```
+
+### Explanation:
+1. **Initialization:**
+   - `__init__`: Initializes the logger object with an empty dictionary `message_timestamp` to store the last printed timestamp for each message.
+
+2. **shouldPrintMessage Method:**
+   - Checks if the message exists in the dictionary:
+     - If the message is not in the dictionary, it means it has not been printed before. In this case, store the current timestamp for the message and return `True` to indicate that the message should be printed.
+     - If the message exists in the dictionary, check the time difference between the current timestamp and the last printed timestamp stored in the dictionary.
+       - If the time difference is 10 seconds or more, update the last printed timestamp to the current timestamp and return `True`.
+       - Otherwise, return `False` to indicate that the message should not be printed yet.
+
+This approach ensures that the `shouldPrintMessage` function runs in \(O(1)\) time complexity on average for each message, making it efficient for real-time logging systems.
+
+To implement the `RandomizedSet` class with `insert`, `remove`, and `getRandom` operations in average \(O(1)\) time complexity, you can use a combination of a dictionary and a list. The dictionary will provide \(O(1)\) time complexity for `insert` and `remove` operations, and the list will provide \(O(1)\) time complexity for the `getRandom` operation.
+
+Here's the Python implementation of the `RandomizedSet` class:
+
+```python
+import random
+
+class RandomizedSet:
+
+    def __init__(self):
+        """
+        Initialize the RandomizedSet object.
+        """
+        self.dict = {}
+        self.list = []
+
+    def insert(self, val: int) -> bool:
+        """
+        Inserts an item val into the set if not present.
+        Returns true if the item was not present, false otherwise.
+        """
+        if val in self.dict:
+            return False
+        self.dict[val] = len(self.list)
+        self.list.append(val)
+        return True
+
+    def remove(self, val: int) -> bool:
+        """
+        Removes an item val from the set if present.
+        Returns true if the item was present, false otherwise.
+        """
+        if val not in self.dict:
+            return False
+        last_element = self.list[-1]
+        idx_to_remove = self.dict[val]
+        self.list[idx_to_remove] = last_element
+        self.dict[last_element] = idx_to_remove
+        self.list.pop()
+        del self.dict[val]
+        return True
+
+    def getRandom(self) -> int:
+        """
+        Returns a random element from the current set of elements.
+        """
+        return random.choice(self.list)
+
+# Example usage:
+randomized_set = RandomizedSet()
+print(randomized_set.insert(1))  # Output: True
+print(randomized_set.remove(2))  # Output: False
+print(randomized_set.insert(2))  # Output: True
+print(randomized_set.getRandom())  # Output: 1 or 2
+print(randomized_set.remove(1))  # Output: True
+print(randomized_set.insert(2))  # Output: False
+print(randomized_set.getRandom())  # Output: 2
+```
+
+### Explanation:
+1. **Initialization:**
+   - `__init__`: Initializes the `RandomizedSet` object with an empty dictionary `dict` and an empty list `list`.
+
+2. **Insert Method:**
+   - `insert(val)`: Checks if the value `val` is already in the dictionary.
+     - If it is, returns `False`.
+     - Otherwise, adds `val` to the dictionary with the current length of the list as its value, and appends `val` to the list. Returns `True`.
+
+3. **Remove Method:**
+   - `remove(val)`: Checks if the value `val` is in the dictionary.
+     - If it is not, returns `False`.
+     - Otherwise, retrieves the index of `val` from the dictionary and the last element in the list.
+     - Replaces the element at `val`'s index in the list with the last element.
+     - Updates the dictionary entry for the last element to point to the index where `val` was.
+     - Removes the last element from the list and deletes `val` from the dictionary. Returns `True`.
+
+4. **GetRandom Method:**
+   - `getRandom()`: Uses the `random.choice` method to return a random element from the list.
+
+This approach ensures that `insert`, `remove`, and `getRandom` operations all work in average \(O(1)\) time complexity. The dictionary provides fast lookups for `insert` and `remove`, while the list allows for efficient random access.
+
+To determine if four given points form a valid square, you need to check if the points satisfy the properties of a square:
+
+1. Four sides are of equal length.
+2. Two diagonals are of equal length.
+
+Here's how you can approach the problem:
+
+1. Calculate the squared distances between all pairs of points (squared distances avoid floating-point precision issues).
+2. Sort the distances and check:
+   - The first four distances (sides of the square) should be equal.
+   - The last two distances (diagonals of the square) should be equal and greater than the side lengths.
+
+Here's the Python implementation of the solution:
+
+```python
+def distance_squared(p1, p2):
+    return (p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2
+
+def valid_square(p1, p2, p3, p4):
+    points = [p1, p2, p3, p4]
+    distances = []
+
+    # Calculate all pairwise squared distances
+    for i in range(len(points)):
+        for j in range(i + 1, len(points)):
+            distances.append(distance_squared(points[i], points[j]))
+
+    # Sort the distances
+    distances.sort()
+
+    # Check the first four distances are the same (sides of the square)
+    # and the last two distances are the same (diagonals of the square)
+    return distances[0] > 0 and \
+           distances[0] == distances[1] == distances[2] == distances[3] and \
+           distances[4] == distances[5]
+
+# Example usage:
+p1 = [0, 0]
+p2 = [1, 1]
+p3 = [1, 0]
+p4 = [0, 1]
+print(valid_square(p1, p2, p3, p4))  # Output: True
+
+p1 = [0, 0]
+p2 = [1, 1]
+p3 = [1, 0]
+p4 = [2, 1]
+print(valid_square(p1, p2, p3, p4))  # Output: False
+```
+
+### Explanation:
+1. **Distance Calculation:**
+   - `distance_squared(p1, p2)`: Calculates the squared distance between two points `p1` and `p2` using the formula \((x_2 - x_1)^2 + (y_2 - y_1)^2\).
+
+2. **Valid Square Check:**
+   - `valid_square(p1, p2, p3, p4)`: Checks if the four points form a valid square.
+   - Calculate the squared distances between all pairs of points and store them in the `distances` list.
+   - Sort the `distances` list.
+   - Check if the first four distances are equal and positive (these represent the sides of the square).
+   - Check if the last two distances are equal (these represent the diagonals of the square).
+
+This approach ensures that you efficiently check if the given points form a valid square, with a time complexity of \(O(1)\) since the number of points is fixed and the operations are constant.
+
+To convert a non-negative integer to its English words representation, you need to handle different ranges of numbers (units, tens, hundreds, thousands, etc.) and correctly combine the words for each part. The problem can be broken down into smaller subproblems where you convert chunks of three digits at a time and then combine them with the appropriate scale (thousand, million, billion).
+
+Here's a comprehensive solution in Python:
+
+```python
+class Solution:
+    def __init__(self):
+        self.below_20 = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
+                         "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen",
+                         "Eighteen", "Nineteen"]
+        self.tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]
+        self.thousands = ["", "Thousand", "Million", "Billion"]
+    
+    def numberToWords(self, num: int) -> str:
+        if num == 0:
+            return "Zero"
+        
+        res = ""
+        for i in range(len(self.thousands)):
+            if num % 1000 != 0:
+                res = self.helper(num % 1000) + self.thousands[i] + " " + res
+            num //= 1000
+        
+        return res.strip()
+    
+    def helper(self, num: int) -> str:
+        if num == 0:
+            return ""
+        elif num < 20:
+            return self.below_20[num] + " "
+        elif num < 100:
+            return self.tens[num // 10] + " " + self.helper(num % 10)
+        else:
+            return self.below_20[num // 100] + " Hundred " + self.helper(num % 100)
+
+# Example usage:
+solution = Solution()
+print(solution.numberToWords(123))  # Output: "One Hundred Twenty Three"
+print(solution.numberToWords(12345))  # Output: "Twelve Thousand Three Hundred Forty Five"
+print(solution.numberToWords(1234567))  # Output: "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+print(solution.numberToWords(1234567891))  # Output: "One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One"
+```
+
+### Explanation:
+1. **Initialization:**
+   - `self.below_20`: List of English words for numbers from 0 to 19.
+   - `self.tens`: List of English words for tens multiples from 20 to 90.
+   - `self.thousands`: List of English words for thousands, millions, billions, etc.
+
+2. **numberToWords Method:**
+   - This method handles the conversion for the entire number by processing three-digit chunks and appending the appropriate scale (thousand, million, billion) to each chunk.
+   - Iterate through the scales (`self.thousands`) and for each scale, if the current chunk (`num % 1000`) is not zero, convert it to words and append the corresponding scale to the result.
+   - Divide the number by 1000 to move to the next chunk.
+
+3. **helper Method:**
+   - This method handles the conversion of numbers less than 1000.
+   - If the number is less than 20, return the corresponding word from `self.below_20`.
+   - If the number is less than 100, return the corresponding word from `self.tens` and recursively process the remainder.
+   - If the number is 100 or more, return the word for the hundreds place and recursively process the remainder.
+
+### Usage:
+- Create an instance of the `Solution` class.
+- Call the `numberToWords` method with the integer you want to convert.
+
+This approach ensures that the number is broken down and converted into its English word representation correctly and efficiently.

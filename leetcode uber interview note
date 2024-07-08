@@ -1,0 +1,1288 @@
+https://leetcode.com/explore/interview/card/uber/291/others/1698/
+
+现在的要求， 不仅仅是看懂，明白，而且还需要打印下来。
+
+Here's a solution to the Two Sum problem using Python:
+
+```python
+def two_sum(nums, target):
+    # Create a dictionary to store the indices of the elements
+    num_to_index = {}
+    
+    # Iterate through the list
+    for i, num in enumerate(nums):
+        # Calculate the complement of the current number
+        complement = target - num
+        
+        # Check if the complement is in the dictionary
+        if complement in num_to_index:
+            # If found, return the indices of the complement and the current number
+            return [num_to_index[complement], i]
+        
+        # If not found, add the current number and its index to the dictionary
+        num_to_index[num] = i
+
+# Example usage:
+nums = [2, 7, 11, 15]
+target = 9
+print(two_sum(nums, target))  # Output: [0, 1]
+```
+
+### Explanation:
+1. **Dictionary Initialization:** A dictionary `num_to_index` is initialized to store the indices of the elements as we iterate through the list.
+2. **Iteration:** We iterate through the list using `enumerate`, which gives us both the index `i` and the value `num` of each element.
+3. **Complement Calculation:** For each element, we calculate its complement by subtracting the element from the target (`complement = target - num`).
+4. **Complement Check:** We check if the complement is already in the dictionary.
+   - If it is, we return the index of the complement (retrieved from the dictionary) and the current index `i`.
+   - If it is not, we add the current number and its index to the dictionary.
+5. **Return Indices:** The function returns the indices of the two numbers that add up to the target.
+
+This solution has a time complexity of O(n), where n is the number of elements in the list, because we only iterate through the list once. The space complexity is also O(n) because of the additional space used by the dictionary.
+
+To find the first and last positions of a given target value in a sorted array with \(O(\log n)\) runtime complexity, you can use binary search. Here's the implementation in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        def find_first_position(nums, target):
+            left, right = 0, len(nums) - 1
+            first_pos = -1
+            while left <= right:
+                mid = (left + right) // 2
+                if nums[mid] < target:
+                    left = mid + 1
+                elif nums[mid] > target:
+                    right = mid - 1
+                else:
+                    first_pos = mid
+                    right = mid - 1  # keep searching in the left half
+            return first_pos
+
+        def find_last_position(nums, target):
+            left, right = 0, len(nums) - 1
+            last_pos = -1
+            while left <= right:
+                mid = (left + right) // 2
+                if nums[mid] < target:
+                    left = mid + 1
+                elif nums[mid] > target:
+                    right = mid - 1
+                else:
+                    last_pos = mid
+                    left = mid + 1  # keep searching in the right half
+            return last_pos
+
+        first_pos = find_first_position(nums, target)
+        last_pos = find_last_position(nums, target)
+
+        return [first_pos, last_pos]
+
+# Example usage:
+solution = Solution()
+nums = [5, 7, 7, 8, 8, 10]
+target = 8
+print(solution.searchRange(nums, target))  # Output: [3, 4]
+```
+
+### Explanation:
+
+1. **Binary Search for First Position:** 
+   - Initialize `left` and `right` pointers to the start and end of the array.
+   - Use a while loop to perform binary search. Calculate `mid`.
+   - If `nums[mid]` is less than `target`, move the `left` pointer to `mid + 1`.
+   - If `nums[mid]` is greater than `target`, move the `right` pointer to `mid - 1`.
+   - If `nums[mid]` is equal to `target`, update `first_pos` to `mid` and continue searching in the left half by updating `right` to `mid - 1`.
+
+2. **Binary Search for Last Position:**
+   - The process is similar to finding the first position, but if `nums[mid]` is equal to `target`, update `last_pos` to `mid` and continue searching in the right half by updating `left` to `mid + 1`.
+
+3. **Return Result:**
+   - After performing both searches, return the `first_pos` and `last_pos` in a list.
+
+This algorithm ensures an \(O(\log n)\) runtime complexity due to the use of binary search.
+
+To group anagrams together from an array of strings, we can use a dictionary where the keys are sorted tuples of the strings, and the values are lists of strings that match those sorted tuples. Here's a Python implementation for this problem:
+
+```python
+from collections import defaultdict
+from typing import List
+
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        anagram_map = defaultdict(list)
+        
+        for s in strs:
+            # Sort the string and use it as a key
+            sorted_str = tuple(sorted(s))
+            anagram_map[sorted_str].append(s)
+        
+        # Return the values of the dictionary as a list of lists
+        return list(anagram_map.values())
+
+# Example usage:
+solution = Solution()
+strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+print(solution.groupAnagrams(strs))
+# Output: [['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']]
+```
+
+### Explanation:
+
+1. **Default Dictionary Initialization:**
+   - Use `defaultdict` from the `collections` module to create a dictionary `anagram_map` where each key maps to a list.
+
+2. **Iterate Over Each String:**
+   - For each string `s` in the input list `strs`, sort the string and convert it to a tuple to use it as a key (`sorted_str = tuple(sorted(s))`). Tuples are hashable and can be used as dictionary keys.
+
+3. **Group Anagrams:**
+   - Append the original string `s` to the list corresponding to the key `sorted_str` in `anagram_map`.
+
+4. **Return Result:**
+   - Convert the values of `anagram_map` (which are lists of anagrams) to a list and return it.
+
+This solution groups the anagrams together efficiently and works well for the given problem constraints.
+
+Here's a complete Python solution for the text justification problem that adheres to the specified constraints:
+
+```python
+from typing import List
+
+class Solution:
+    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+        def justify_line(line_words, maxWidth, is_last_line):
+            if is_last_line or len(line_words) == 1:
+                return ' '.join(line_words).ljust(maxWidth)
+            
+            total_length = sum(len(word) for word in line_words)
+            total_spaces = maxWidth - total_length
+            space_slots = len(line_words) - 1
+            
+            even_space = total_spaces // space_slots
+            extra_space = total_spaces % space_slots
+            
+            justified_line = ''
+            for i in range(space_slots):
+                justified_line += line_words[i] + ' ' * (even_space + (1 if i < extra_space else 0))
+            justified_line += line_words[-1]
+            
+            return justified_line
+
+        res, current_line, current_length = [], [], 0
+        
+        for word in words:
+            if current_length + len(word) + len(current_line) > maxWidth:
+                res.append(justify_line(current_line, maxWidth, False))
+                current_line, current_length = [], 0
+            current_line.append(word)
+            current_length += len(word)
+        
+        res.append(justify_line(current_line, maxWidth, True))
+        
+        return res
+
+# Example usage:
+solution = Solution()
+words = ["This", "is", "an", "example", "of", "text", "justification."]
+maxWidth = 16
+print(solution.fullJustify(words, maxWidth))
+# Output: ['This    is    an', 'example  of text', 'justification.  ']
+```
+
+### Explanation:
+
+1. **Helper Function `justify_line`:**
+   - This function formats a single line by distributing spaces between words.
+   - If it's the last line or there's only one word, the line is left-justified and padded with spaces to `maxWidth`.
+   - Otherwise, spaces are distributed evenly between words, with any extra spaces added to the leftmost slots.
+
+2. **Main Function `fullJustify`:**
+   - We iterate through the list of words, maintaining a `current_line` list and its `current_length`.
+   - If adding the next word exceeds `maxWidth`, we use `justify_line` to format the current line and reset `current_line` and `current_length`.
+   - After the loop, the last line is added with left justification using `justify_line`.
+
+3. **Final Output:**
+   - The function returns a list of justified text lines, each with exactly `maxWidth` characters.
+
+This solution ensures that each line is properly formatted according to the requirements, including the even distribution of spaces and handling of the last line differently.
+
+Here's a Python solution to print a binary tree in a formatted layout as described:
+
+```python
+from typing import Optional, List
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val: int = 0, left: Optional['TreeNode'] = None, right: Optional['TreeNode'] = None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def get_height(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return -1
+        return 1 + max(self.get_height(root.left), self.get_height(root.right))
+    
+    def fill(self, res: List[List[str]], root: Optional[TreeNode], r: int, c: int, height: int):
+        if not root:
+            return
+        res[r][c] = str(root.val)
+        if root.left:
+            self.fill(res, root.left, r + 1, c - 2**(height - r - 1), height)
+        if root.right:
+            self.fill(res, root.right, r + 1, c + 2**(height - r - 1), height)
+
+    def printTree(self, root: Optional[TreeNode]) -> List[List[str]]:
+        height = self.get_height(root)
+        m = height + 1
+        n = 2**(height + 1) - 1
+        res = [["" for _ in range(n)] for _ in range(m)]
+        self.fill(res, root, 0, (n - 1) // 2, height)
+        return res
+
+# Example usage:
+# Constructing the binary tree:
+#      1
+#     / \
+#    2   3
+#     \
+#      4
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.right = TreeNode(4)
+
+solution = Solution()
+result = solution.printTree(root)
+for row in result:
+    print(row)
+```
+
+### Explanation:
+
+1. **Calculate Tree Height:**
+   - The `get_height` function calculates the height of the tree recursively.
+
+2. **Initialize Result Matrix:**
+   - The `printTree` function initializes the result matrix `res` with the dimensions \( m \times n \), where \( m \) is the height of the tree plus one, and \( n \) is \( 2^{\text{height} + 1} - 1 \).
+
+3. **Fill Matrix:**
+   - The `fill` function places the node values in the appropriate positions in the matrix. It starts by placing the root node in the middle of the top row.
+   - For each node, its left child is placed at `res[r+1][c-2^{\text{height} - r - 1}]`, and its right child is placed at `res[r+1][c+2^{\text{height} - r - 1}]`.
+
+4. **Example Usage:**
+   - The example constructs a binary tree and prints the formatted matrix layout of the tree.
+
+This solution ensures that the tree is printed in a formatted manner according to the given rules, filling the matrix with node values and leaving empty cells as empty strings.
+
+Here's a solution for the Task Scheduler problem in Python:
+
+```python
+from collections import Counter
+import heapq
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        # Count the frequency of each task
+        task_counts = Counter(tasks)
+        
+        # Create a max heap with negative counts because Python has a min heap by default
+        max_heap = [-count for count in task_counts.values()]
+        heapq.heapify(max_heap)
+        
+        time = 0
+        queue = []
+        
+        # While there are tasks to process
+        while max_heap or queue:
+            time += 1
+            
+            if max_heap:
+                # Pop the most frequent task
+                current_task = heapq.heappop(max_heap)
+                # If there's still some count left for this task, add it to the cooldown queue
+                if current_task + 1 < 0:
+                    queue.append((current_task + 1, time + n))
+            
+            # If the front of the queue has cooled down, push it back into the heap
+            if queue and queue[0][1] == time:
+                heapq.heappush(max_heap, queue.pop(0)[0])
+        
+        return time
+
+# Example usage:
+solution = Solution()
+tasks = ["A", "A", "A", "B", "B", "B"]
+n = 2
+print(solution.leastInterval(tasks, n))  # Output: 8
+```
+
+### Explanation:
+
+1. **Task Frequency Count:**
+   - Use `Counter` from the `collections` module to count the frequency of each task.
+
+2. **Max Heap Creation:**
+   - Convert the task counts to a max heap by storing negative counts because Python's `heapq` is a min heap by default.
+
+3. **Simulation of Task Execution:**
+   - Use a variable `time` to track the total intervals.
+   - Use a queue to manage the cooling period for tasks that cannot be executed immediately.
+
+4. **Process Tasks:**
+   - In each interval, increment `time`.
+   - If there are tasks in the max heap, pop the most frequent task, decrement its count, and if it still has remaining executions, add it to the cooldown queue with its cooldown time.
+   - Check the queue to see if any task has cooled down and is ready to be pushed back into the max heap.
+
+5. **Return Total Time:**
+   - Once all tasks are processed, the total `time` is the answer.
+
+This approach ensures that tasks are executed optimally while respecting the cooling time, and it provides the minimum number of intervals required to complete all tasks.
+
+Here's a Python solution to calculate the exclusive time of each function from the given logs:
+
+```python
+from typing import List
+
+class Solution:
+    def exclusiveTime(self, n: int, logs: List[str]) -> List[int]:
+        result = [0] * n
+        stack = []
+        prev_time = 0
+        
+        for log in logs:
+            func_id, type, timestamp = log.split(":")
+            func_id, timestamp = int(func_id), int(timestamp)
+            
+            if type == "start":
+                if stack:
+                    result[stack[-1]] += timestamp - prev_time
+                stack.append(func_id)
+                prev_time = timestamp
+            else:  # type == "end"
+                result[stack.pop()] += timestamp - prev_time + 1
+                prev_time = timestamp + 1
+        
+        return result
+
+# Example usage:
+solution = Solution()
+logs = [
+    "0:start:0",
+    "1:start:2",
+    "1:end:5",
+    "0:end:6"
+]
+n = 2
+print(solution.exclusiveTime(n, logs))  # Output: [3, 4]
+```
+
+### Explanation:
+
+1. **Initialize Variables:**
+   - `result`: A list to store the exclusive time of each function.
+   - `stack`: A stack to keep track of the function calls.
+   - `prev_time`: A variable to keep track of the previous timestamp.
+
+2. **Process Each Log:**
+   - Split each log into `func_id`, `type`, and `timestamp`.
+   - Convert `func_id` and `timestamp` to integers.
+   - Depending on whether the log indicates a start or an end:
+     - **Start:**
+       - If the stack is not empty, update the result of the function at the top of the stack with the time difference (`timestamp - prev_time`).
+       - Push the current function ID onto the stack.
+       - Update `prev_time` to the current timestamp.
+     - **End:**
+       - Pop the function ID from the stack and update its result with the time difference plus one (`timestamp - prev_time + 1`).
+       - Update `prev_time` to `timestamp + 1` to account for the end of the current timestamp.
+
+3. **Return the Result:**
+   - After processing all logs, return the `result` list containing the exclusive times for each function.
+
+This solution ensures that the exclusive time for each function is calculated accurately by tracking the start and end times using a stack and updating the times accordingly.
+
+To solve the Employee Free Time problem, we need to find common intervals where all employees are free. Here's a detailed Python solution:
+
+```python
+from typing import List
+import heapq
+
+# Definition for an interval.
+class Interval:
+    def __init__(self, start: int, end: int):
+        self.start = start
+        self.end = end
+
+    def __lt__(self, other):
+        return self.start < other.start
+
+class Solution:
+    def employeeFreeTime(self, schedule: List[List[Interval]]) -> List[Interval]:
+        # Create a min-heap to keep track of all intervals
+        heap = []
+        
+        for emp_intervals in schedule:
+            for interval in emp_intervals:
+                heapq.heappush(heap, interval)
+        
+        # Merge intervals and find the gaps
+        merged = []
+        while heap:
+            interval = heapq.heappop(heap)
+            if not merged or merged[-1].end < interval.start:
+                merged.append(interval)
+            else:
+                merged[-1].end = max(merged[-1].end, interval.end)
+        
+        # Find the gaps between merged intervals
+        free_times = []
+        for i in range(1, len(merged)):
+            if merged[i].start > merged[i - 1].end:
+                free_times.append(Interval(merged[i - 1].end, merged[i].start))
+        
+        return free_times
+
+# Example usage:
+# Convert nested list of lists to list of list of Interval objects
+schedule = [
+    [Interval(1, 2), Interval(5, 6)],
+    [Interval(1, 3)],
+    [Interval(4, 10)]
+]
+
+solution = Solution()
+free_times = solution.employeeFreeTime(schedule)
+for interval in free_times:
+    print(f"Free time: [{interval.start}, {interval.end}]")
+# Output: Free time: [3, 4]
+```
+
+### Explanation:
+
+1. **Heap Initialization:**
+   - We initialize a min-heap to store all intervals from all employees. This helps in efficiently merging intervals.
+   - We push all intervals from the schedule into the heap.
+
+2. **Merge Intervals:**
+   - We initialize an empty list `merged` to store merged intervals.
+   - While the heap is not empty, we pop intervals one by one and merge them if they overlap or are adjacent.
+   - If the current interval does not overlap with the last merged interval, we add it to `merged`.
+   - Otherwise, we update the end of the last merged interval to the maximum end time of both intervals.
+
+3. **Find Free Times:**
+   - After merging all intervals, we look for gaps between consecutive intervals in `merged`.
+   - If there is a gap between the end of one interval and the start of the next, we add it to `free_times`.
+
+4. **Return Free Times:**
+   - We return the list of free intervals found in the previous step.
+
+This approach ensures that we efficiently find all common free intervals by leveraging a min-heap and merging intervals in a single pass.
+
+Here's a solution to the "Walls and Gates" problem using Breadth-First Search (BFS) in Python:
+
+```python
+from collections import deque
+from typing import List
+
+class Solution:
+    def wallsAndGates(self, rooms: List[List[int]]) -> None:
+        if not rooms or not rooms[0]:
+            return
+        
+        m, n = len(rooms), len(rooms[0])
+        INF = 2147483647
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        
+        queue = deque()
+        
+        # Initialize the queue with all gates
+        for i in range(m):
+            for j in range(n):
+                if rooms[i][j] == 0:
+                    queue.append((i, j))
+        
+        # Perform BFS from each gate
+        while queue:
+            x, y = queue.popleft()
+            for dx, dy in directions:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < m and 0 <= ny < n and rooms[nx][ny] == INF:
+                    rooms[nx][ny] = rooms[x][y] + 1
+                    queue.append((nx, ny))
+
+# Example usage:
+solution = Solution()
+rooms = [
+    [2147483647, -1, 0, 2147483647],
+    [2147483647, 2147483647, 2147483647, -1],
+    [2147483647, -1, 2147483647, -1],
+    [0, -1, 2147483647, 2147483647]
+]
+solution.wallsAndGates(rooms)
+for row in rooms:
+    print(row)
+# Output should show the distances from each room to the nearest gate
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - We first check if the grid is empty or if the first row is empty.
+   - We determine the number of rows `m` and columns `n` in the grid.
+   - We define `INF` as 2147483647 and the possible directions of movement (up, down, left, right).
+
+2. **Queue Initialization:**
+   - We initialize a deque `queue` to perform BFS.
+   - We iterate through the grid to find all the gates (cells with value 0) and add their coordinates to the queue.
+
+3. **BFS from Gates:**
+   - While the queue is not empty, we pop the front element (current cell coordinates).
+   - For each direction, we calculate the new coordinates.
+   - If the new coordinates are within bounds and point to an empty room (`INF`), we update the distance of the empty room to the current cell's distance plus one.
+   - We then add the new coordinates to the queue for further processing.
+
+4. **Update Grid:**
+   - The BFS ensures that each room is updated with the shortest distance to the nearest gate.
+
+This approach efficiently updates the distances in the grid by exploring from all gates simultaneously using BFS, ensuring that the shortest path to a gate is found for each room.
+
+To solve the 24 Game problem, we need to try all possible combinations of the four given numbers with all possible arithmetic operations and parentheses. This involves a significant amount of backtracking and recursion. Here's a Python solution using a recursive approach:
+
+```python
+from typing import List
+import itertools
+
+class Solution:
+    def judgePoint24(self, cards: List[int]) -> bool:
+        def calculate(a, b, op):
+            if op == '+':
+                return a + b
+            elif op == '-':
+                return a - b
+            elif op == '*':
+                return a * b
+            elif op == '/':
+                if b == 0:
+                    return float('inf')
+                return a / b
+
+        def dfs(nums):
+            if len(nums) == 1:
+                return abs(nums[0] - 24) < 1e-6
+
+            for i in range(len(nums)):
+                for j in range(len(nums)):
+                    if i != j:
+                        newNums = []
+                        for k in range(len(nums)):
+                            if k != i and k != j:
+                                newNums.append(nums[k])
+                        
+                        for op in ['+', '-', '*', '/']:
+                            if (op == '+' or op == '*') and i > j:
+                                continue
+                            if op == '/' and nums[j] == 0:
+                                continue
+
+                            newNums.append(calculate(nums[i], nums[j], op))
+                            if dfs(newNums):
+                                return True
+                            newNums.pop()
+            return False
+
+        return dfs(cards)
+
+# Example usage:
+solution = Solution()
+cards = [4, 1, 8, 7]
+print(solution.judgePoint24(cards))  # Output: True
+```
+
+### Explanation:
+
+1. **Calculate Function:**
+   - The `calculate` function takes two numbers and an operator, performs the operation, and returns the result. It also handles division by zero.
+
+2. **DFS Function:**
+   - The `dfs` function performs depth-first search to explore all possible ways to combine the numbers.
+   - If there's only one number left in the list and it's close enough to 24, it returns `True`.
+   - Otherwise, it tries all pairs of numbers and all possible operations between them.
+   - It creates a new list of numbers for each combination and recursively checks if it's possible to reach 24 with the new list.
+
+3. **Main Function:**
+   - The `judgePoint24` function initializes the process by calling `dfs` with the initial list of numbers.
+
+4. **Pruning:**
+   - The solution includes optimizations to avoid redundant calculations:
+     - It avoids repeating the same operations in reverse order for commutative operations (`+` and `*`).
+     - It skips division by zero.
+   
+This recursive approach explores all possible ways to combine the numbers with arithmetic operations and parentheses, checking if any combination results in the value 24.
+
+To find the maximum area of an island in a binary matrix, we can use Depth-First Search (DFS) to explore and calculate the area of each island. Here's a Python solution:
+
+```python
+from typing import List
+
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        if not grid or not grid[0]:
+            return 0
+        
+        m, n = len(grid), len(grid[0])
+        max_area = 0
+        
+        def dfs(i, j):
+            if i < 0 or i >= m or j < 0 or j >= n or grid[i][j] == 0:
+                return 0
+            grid[i][j] = 0  # Mark the cell as visited
+            area = 1
+            # Explore all 4 possible directions
+            area += dfs(i + 1, j)
+            area += dfs(i - 1, j)
+            area += dfs(i, j + 1)
+            area += dfs(i, j - 1)
+            return area
+        
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    max_area = max(max_area, dfs(i, j))
+        
+        return max_area
+
+# Example usage:
+solution = Solution()
+grid = [
+    [0,0,1,0,0,0,0,1,0,0,0,0,0],
+    [0,0,0,0,0,0,0,1,1,1,0,0,0],
+    [0,1,1,0,1,0,0,0,0,0,0,0,0],
+    [0,1,0,0,1,1,0,0,1,0,1,0,0],
+    [0,1,0,0,1,1,0,0,1,1,1,0,0],
+    [0,0,0,0,0,0,0,0,0,0,1,0,0],
+    [0,0,0,0,0,0,0,1,1,1,0,0,0],
+    [0,0,0,0,0,0,0,1,1,0,0,0,0]
+]
+print(solution.maxAreaOfIsland(grid))  # Output: 6
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - We check if the grid is empty or if the first row is empty. If so, return 0.
+   - Initialize `m` and `n` to the dimensions of the grid and `max_area` to track the largest island found.
+
+2. **DFS Function:**
+   - The `dfs` function takes the current cell's coordinates and explores the island by marking visited cells as 0 to avoid counting them multiple times.
+   - It recursively checks all 4 possible directions (up, down, left, right) and sums up the area of the island.
+
+3. **Main Loop:**
+   - Iterate over each cell in the grid. If a cell contains a 1, it's the start of a new island. Call the `dfs` function to compute the area of this island and update `max_area` if the computed area is larger.
+
+4. **Return Result:**
+   - After processing all cells, return `max_area`.
+
+This solution efficiently explores each island and calculates its area using DFS, ensuring that all islands are counted and the largest one is identified.
+
+To solve the "Shortest Bridge" problem, we can use Depth-First Search (DFS) to identify and mark the two islands, and then Breadth-First Search (BFS) to find the shortest path of 0's between the two islands. Here's the Python solution:
+
+```python
+from typing import List
+from collections import deque
+
+class Solution:
+    def shortestBridge(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        
+        def dfs(i, j, visited, island):
+            if i < 0 or i >= n or j < 0 or j >= n or grid[i][j] != 1 or (i, j) in visited:
+                return
+            visited.add((i, j))
+            island.append((i, j))
+            for x, y in [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]:
+                dfs(x, y, visited, island)
+        
+        def bfs(queue, visited):
+            steps = 0
+            while queue:
+                for _ in range(len(queue)):
+                    i, j = queue.popleft()
+                    for x, y in [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]:
+                        if 0 <= x < n and 0 <= y < n and (x, y) not in visited:
+                            if grid[x][y] == 1:
+                                return steps
+                            queue.append((x, y))
+                            visited.add((x, y))
+                steps += 1
+            return steps
+        
+        visited = set()
+        islands = []
+        
+        # Find the two islands using DFS
+        for i in range(n):
+            for j in range(n):
+                if grid[i][j] == 1 and (i, j) not in visited:
+                    island = []
+                    dfs(i, j, visited, island)
+                    islands.append(island)
+                    if len(islands) == 2:
+                        break
+            if len(islands) == 2:
+                break
+        
+        # Perform BFS from all points in the first island
+        queue = deque(islands[0])
+        visited = set(islands[0])
+        return bfs(queue, visited)
+
+# Example usage:
+solution = Solution()
+grid = [
+    [0, 1, 0, 0, 0],
+    [0, 1, 0, 1, 1],
+    [0, 0, 0, 1, 0],
+    [1, 1, 0, 0, 0],
+    [1, 0, 0, 0, 0]
+]
+print(solution.shortestBridge(grid))  # Output: 1
+```
+
+### Explanation:
+
+1. **DFS to Identify Islands:**
+   - Use DFS to traverse and mark all cells of the first island, and collect their coordinates.
+   - Store the coordinates of the first island in a list.
+   - Repeat the process for the second island.
+
+2. **BFS to Find Shortest Bridge:**
+   - Initialize a queue with all coordinates of the first island.
+   - Perform BFS to find the shortest path to any cell of the second island.
+   - For each cell processed in BFS, check all 4 possible directions (up, down, left, right).
+   - If an adjacent cell is part of the second island, return the current number of steps.
+   - If it's water (0), add it to the queue and mark it as visited.
+
+3. **Return Result:**
+   - The BFS function returns the number of steps required to connect the two islands.
+
+This solution ensures that we find the shortest path of 0's between the two islands efficiently using a combination of DFS and BFS.
+
+To solve the "Maximum Vacation Days" problem, we can use dynamic programming (DP) to keep track of the maximum number of vacation days we can take up to each week in each city.
+
+Here is a step-by-step approach:
+
+1. **Initialization:**
+   - Create a DP table where `dp[week][city]` represents the maximum number of vacation days we can have by the end of `week` in `city`.
+
+2. **Base Case:**
+   - At week 0, we are in city 0. So, we initialize `dp[0][0]` with the number of vacation days in city 0 for week 0, and other cities with `-inf` (since we can't start in any other city).
+
+3. **DP Transition:**
+   - For each week and each city, check all possible cities we can come from (either the same city or via a flight).
+   - Update the DP table by considering the maximum vacation days achievable by flying from any city to the current city and adding the vacation days of the current city for the current week.
+
+4. **Final Result:**
+   - The answer will be the maximum value in the last week across all cities.
+
+### Python Implementation:
+
+```python
+from typing import List
+
+class Solution:
+    def maxVacationDays(self, flights: List[List[int]], days: List[List[int]]) -> int:
+        n = len(flights)
+        k = len(days[0])
+        
+        # Initialize dp table
+        dp = [[-float('inf')] * n for _ in range(k)]
+        
+        # Base case: Initial city (city 0) on week 0
+        dp[0][0] = days[0][0]
+        
+        # Fill the dp table
+        for week in range(1, k):
+            for city in range(n):
+                for prev_city in range(n):
+                    if city == prev_city or flights[prev_city][city] == 1:
+                        dp[week][city] = max(dp[week][city], dp[week - 1][prev_city] + days[city][week])
+        
+        # The answer will be the maximum vacation days achievable in the last week across all cities
+        return max(dp[k - 1])
+
+# Example usage:
+solution = Solution()
+flights = [
+    [0,1,1],
+    [1,0,1],
+    [1,1,0]
+]
+days = [
+    [1,3,1],
+    [6,0,3],
+    [3,3,3]
+]
+print(solution.maxVacationDays(flights, days))  # Output: 12
+```
+
+### Explanation:
+
+1. **Initialization of `dp`:**
+   - `dp[week][city]` is initialized to `-inf` for all weeks and cities except for the starting point at `dp[0][0]` which is initialized to `days[0][0]`.
+
+2. **Dynamic Programming Transition:**
+   - For each week and each city, we consider staying in the same city or flying from any other city where a flight is available (`flights[prev_city][city] == 1`).
+   - We update `dp[week][city]` by adding the vacation days of the current city for the current week to the maximum vacation days achievable in the previous week from any possible city.
+
+3. **Result Extraction:**
+   - The maximum vacation days achievable after all weeks is the maximum value in the last row of the `dp` table.
+
+This approach efficiently calculates the maximum vacation days by considering all possible transitions between cities each week using dynamic programming.
+
+To solve the "Cherry Pickup" problem, we need to find the maximum number of cherries that can be collected on a round trip from the top-left corner (0,0) to the bottom-right corner (n-1,n-1) and back. This problem can be broken down into a dynamic programming approach where we consider two people moving simultaneously through the grid.
+
+### Explanation:
+
+1. **Dynamic Programming Approach:**
+   - We use a 3D DP array `dp` where `dp[r1][c1][c2]` represents the maximum number of cherries that can be collected when one person is at `(r1, c1)` and the other person is at `(r2, c2)` with `r2` being derived from `r1 + c1 - c2`.
+   - The two people move from the start to the end and then simulate the return by combining the forward and backward paths into a single DP state.
+
+2. **Transition:**
+   - For each possible move, we update the DP state by considering all combinations of moves (down or right for both people).
+   - If both people are in a valid cell, collect the cherries from both positions if they are the same cell only once.
+   - Consider the maximum cherries collected from all valid previous states.
+
+3. **Initialization:**
+   - Initialize the DP array with negative infinity to signify unreachable states.
+   - Set the starting position `dp[0][0][0]` to the value of the starting cell.
+
+4. **Final Answer:**
+   - The result will be stored in `dp[n-1][n-1][n-1]`, which represents both people reaching the end of the grid.
+
+### Python Code:
+
+```python
+from typing import List
+
+class Solution:
+    def cherryPickup(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        # Initializing the dp array with -inf
+        dp = [[[-float('inf')] * n for _ in range(n)] for _ in range(n)]
+        
+        # Base case
+        dp[0][0][0] = grid[0][0]
+        
+        # Traverse the grid
+        for r1 in range(n):
+            for c1 in range(n):
+                for c2 in range(n):
+                    r2 = r1 + c1 - c2
+                    if r2 < 0 or r2 >= n or grid[r1][c1] == -1 or grid[r2][c2] == -1:
+                        continue
+                    
+                    # Collect cherries
+                    cherries = grid[r1][c1]
+                    if r1 != r2 or c1 != c2:
+                        cherries += grid[r2][c2]
+                    
+                    # Update dp state
+                    if r1 > 0:
+                        dp[r1][c1][c2] = max(dp[r1][c1][c2], dp[r1 - 1][c1][c2] + cherries)
+                    if c1 > 0:
+                        dp[r1][c1][c2] = max(dp[r1][c1][c2], dp[r1][c1 - 1][c2] + cherries)
+                    if r2 > 0:
+                        dp[r1][c1][c2] = max(dp[r1][c1][c2], dp[r1][c1][c2 - 1] + cherries)
+                    if c2 > 0:
+                        dp[r1][c1][c2] = max(dp[r1][c1][c2], dp[r1][c1 - 1][c2 - 1] + cherries)
+        
+        return max(0, dp[n - 1][n - 1][n - 1])
+
+# Example usage:
+solution = Solution()
+grid = [
+    [0, 1, -1],
+    [1, 0, -1],
+    [1, 1,  1]
+]
+print(solution.cherryPickup(grid))  # Output: 5
+```
+
+### Explanation of Example:
+
+- The grid represents a field of cherries and thorns.
+- The solution uses dynamic programming to calculate the maximum cherries collected by simulating two people moving through the grid simultaneously.
+- The answer for the given example is `5`, meaning the maximum cherries that can be collected on a round trip from (0,0) to (2,2) and back to (0,0) is `5`.
+
+This approach efficiently finds the maximum cherries that can be collected by considering all possible paths and ensuring the maximum number of cherries are collected on both forward and return trips.
+
+To implement an LRU Cache, we can use a combination of a doubly linked list and a hash map. The doubly linked list will allow us to maintain the order of access efficiently, and the hash map will provide O(1) access to the cache items.
+
+Here is the detailed implementation of the `LRUCache` class:
+
+### Python Implementation:
+
+```python
+class Node:
+    def __init__(self, key: int, value: int):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = Node(0, 0)  # Dummy head
+        self.tail = Node(0, 0)  # Dummy tail
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _remove(self, node: Node):
+        prev_node = node.prev
+        next_node = node.next
+        prev_node.next = next_node
+        next_node.prev = prev_node
+
+    def _add(self, node: Node):
+        prev_node = self.tail.prev
+        prev_node.next = node
+        node.prev = prev_node
+        node.next = self.tail
+        self.tail.prev = node
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+            self._add(node)
+            return node.value
+        return -1
+
+    def put(self, key: int, value: int):
+        if key in self.cache:
+            self._remove(self.cache[key])
+        node = Node(key, value)
+        self._add(node)
+        self.cache[key] = node
+        if len(self.cache) > self.capacity:
+            lru_node = self.head.next
+            self._remove(lru_node)
+            del self.cache[lru_node.key]
+
+# Example usage:
+lru_cache = LRUCache(2)
+lru_cache.put(1, 1)  # cache is {1=1}
+lru_cache.put(2, 2)  # cache is {1=1, 2=2}
+print(lru_cache.get(1))  # returns 1
+lru_cache.put(3, 3)  # evicts key 2, cache is {1=1, 3=3}
+print(lru_cache.get(2))  # returns -1 (not found)
+lru_cache.put(4, 4)  # evicts key 1, cache is {4=4, 3=3}
+print(lru_cache.get(1))  # returns -1 (not found)
+print(lru_cache.get(3))  # returns 3
+print(lru_cache.get(4))  # returns 4
+```
+
+### Explanation:
+
+1. **Node Class:**
+   - The `Node` class is used to represent each element in the doubly linked list. It contains the key, value, and pointers to the previous and next nodes.
+
+2. **LRUCache Class:**
+   - The `LRUCache` class initializes the cache with a given capacity and sets up a dummy head and tail for the doubly linked list.
+   - The `cache` dictionary stores the key-node pairs for O(1) access.
+
+3. **Internal Methods:**
+   - `_remove(node)`: Removes a node from the doubly linked list.
+   - `_add(node)`: Adds a
+
+To implement the `MovingAverage` class that calculates the moving average of integers in a sliding window, we can use a queue to store the values in the window and maintain the current sum of the values in the window to calculate the average efficiently.
+
+Here's a Python implementation:
+
+### Python Implementation:
+
+```python
+from collections import deque
+
+class MovingAverage:
+    def __init__(self, size: int):
+        self.size = size
+        self.queue = deque()
+        self.sum = 0
+
+    def next(self, val: int) -> float:
+        # Add the new value to the queue and update the sum
+        self.queue.append(val)
+        self.sum += val
+        
+        # If the queue size exceeds the specified window size, remove the oldest value
+        if len(self.queue) > self.size:
+            self.sum -= self.queue.popleft()
+        
+        # Calculate and return the moving average
+        return self.sum / len(self.queue)
+
+# Example usage:
+moving_average = MovingAverage(3)
+print(moving_average.next(1))  # Output: 1.0
+print(moving_average.next(10)) # Output: 5.5
+print(moving_average.next(3))  # Output: 4.66667
+print(moving_average.next(5))  # Output: 6.0
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - The `MovingAverage` class is initialized with the specified window size.
+   - A `deque` is used to store the values in the window, and a variable `sum` is maintained to keep track of the sum of the values in the current window.
+
+2. **Adding New Values:**
+   - The `next` method is called with a new value `val`.
+   - The new value is added to the queue, and the sum is updated by adding this value.
+   - If the queue size exceeds the window size, the oldest value is removed from the queue, and the sum is updated by subtracting this value.
+
+3. **Calculating the Moving Average:**
+   - The moving average is calculated by dividing the sum of the values in the current window by the number of values in the queue.
+   - This ensures that the average is computed in O(1) time complexity for each new value.
+
+This implementation efficiently calculates the moving average of the last `size` values in the data stream using a deque to handle the sliding window and a variable to maintain the sum of the values.
+
+To design a Snake game, we need to keep track of the snake's position, handle movements, check for collisions (with walls or itself), and manage the food items. We can use a deque to efficiently manage the snake's body and a set to quickly check for collisions with itself.
+
+Here's the implementation:
+
+### Python Implementation:
+
+```python
+from collections import deque
+from typing import List
+
+class SnakeGame:
+    def __init__(self, width: int, height: int, food: List[List[int]]):
+        self.width = width
+        self.height = height
+        self.food = deque(food)
+        self.snake = deque([(0, 0)])
+        self.snake_set = set([(0, 0)])
+        self.score = 0
+        self.directions = {
+            "U": (-1, 0),
+            "L": (0, -1),
+            "R": (0, 1),
+            "D": (1, 0)
+        }
+
+    def move(self, direction: str) -> int:
+        if direction not in self.directions:
+            return -1
+        
+        # Get the new head position
+        current_head = self.snake[0]
+        move_x, move_y = self.directions[direction]
+        new_head = (current_head[0] + move_x, current_head[1] + move_y)
+
+        # Check for wall collisions
+        if not (0 <= new_head[0] < self.height and 0 <= new_head[1] < self.width):
+            return -1
+
+        # Check for self collisions (ignoring the tail as it will move)
+        if new_head in self.snake_set and new_head != self.snake[-1]:
+            return -1
+
+        # Add the new head to the snake
+        self.snake.appendleft(new_head)
+        self.snake_set.add(new_head)
+
+        # Check if we've found food
+        if self.food and list(new_head) == self.food[0]:
+            self.food.popleft()
+            self.score += 1
+        else:
+            # Remove the tail
+            tail = self.snake.pop()
+            self.snake_set.remove(tail)
+
+        return self.score
+
+# Example usage:
+snake_game = SnakeGame(3, 2, [[1, 2], [0, 1]])
+print(snake_game.move("R"))  # Output: 0
+print(snake_game.move("D"))  # Output: 0
+print(snake_game.move("R"))  # Output: 1
+print(snake_game.move("U"))  # Output: 1
+print(snake_game.move("L"))  # Output: 2
+print(snake_game.move("U"))  # Output: -1 (Game over)
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - `__init__`: Initializes the game with the given width, height, and food positions. Sets the initial position of the snake at `(0, 0)` with a score of 0. Prepares the direction mappings for movement.
+
+2. **Move Method:**
+   - `move`: Handles the movement of the snake in the given direction.
+   - **Calculate New Head Position:** Determine the new head position based on the current head and the direction.
+   - **Wall Collision Check:** Ensure the new head position is within the boundaries of the grid.
+   - **Self Collision Check:** Ensure the new head position does not collide with the snake's body (ignoring the current tail position as it will move).
+   - **Add New Head:** Add the new head to the snake's deque and set.
+   - **Food Check:** If the new head position matches the position of the next food item, increase the score and remove the food item. If not, remove the tail of the snake.
+   - Return the current score if the move is valid or `-1` if the game is over.
+
+This implementation ensures that the snake moves efficiently, checks for collisions, and updates the game state correctly with each move.
+
+To design a Logger Rate Limiter, we need to keep track of the last printed timestamp for each unique message. We can use a dictionary to store these timestamps and check if a message can be printed based on the 10-second rule.
+
+Here’s the implementation:
+
+### Python Implementation:
+
+```python
+class Logger:
+    def __init__(self):
+        # Initialize a dictionary to store message timestamps
+        self.message_timestamps = {}
+
+    def shouldPrintMessage(self, timestamp: int, message: str) -> bool:
+        # If the message is not in the dictionary or the last printed timestamp
+        # is more than 10 seconds ago, update the timestamp and return True
+        if message not in self.message_timestamps or timestamp >= self.message_timestamps[message] + 10:
+            self.message_timestamps[message] = timestamp
+            return True
+        # Otherwise, return False
+        return False
+
+# Example usage:
+logger = Logger()
+print(logger.shouldPrintMessage(1, "foo"))  # Output: True
+print(logger.shouldPrintMessage(2, "bar"))  # Output: True
+print(logger.shouldPrintMessage(3, "foo"))  # Output: False
+print(logger.shouldPrintMessage(8, "bar"))  # Output: False
+print(logger.shouldPrintMessage(10, "foo")) # Output: False
+print(logger.shouldPrintMessage(11, "foo")) # Output: True
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - `__init__`: Initializes an empty dictionary `message_timestamps` to store the last printed timestamp for each message.
+
+2. **Should Print Message Method:**
+   - `shouldPrintMessage`: This method checks if a message should be printed based on the current timestamp.
+   - **Condition Check:** If the message is not in the dictionary or the current timestamp is at least 10 seconds greater than the last printed timestamp, update the dictionary with the current timestamp and return `True`.
+   - **Otherwise, Return False:** If the message was printed within the last 10 seconds, return `False`.
+
+This implementation ensures that each message is printed at most once every 10 seconds, and it operates efficiently with an average time complexity of O(1) for both the `shouldPrintMessage` method and dictionary operations.
+
+To design a Hit Counter that counts the number of hits received in the past 5 minutes, we can use a queue to store the timestamps of the hits. This way, we can efficiently add new hits and count the hits within the last 300 seconds.
+
+Here’s the implementation:
+
+### Python Implementation:
+
+```python
+from collections import deque
+
+class HitCounter:
+    def __init__(self):
+        # Initialize a deque to store the timestamps of hits
+        self.hits = deque()
+
+    def hit(self, timestamp: int) -> None:
+        # Record a hit at the given timestamp
+        self.hits.append(timestamp)
+
+    def getHits(self, timestamp: int) -> int:
+        # Remove hits that are older than 300 seconds from the current timestamp
+        while self.hits and self.hits[0] <= timestamp - 300:
+            self.hits.popleft()
+        # Return the number of hits in the last 300 seconds
+        return len(self.hits)
+
+# Example usage:
+hit_counter = HitCounter()
+hit_counter.hit(1)
+hit_counter.hit(2)
+hit_counter.hit(3)
+print(hit_counter.getHits(4))  # Output: 3
+hit_counter.hit(300)
+print(hit_counter.getHits(300))  # Output: 4
+print(hit_counter.getHits(301))  # Output: 3
+```
+
+### Explanation:
+
+1. **Initialization:**
+   - `__init__`: Initializes a deque `hits` to store the timestamps of the hits.
+
+2. **Record a Hit:**
+   - `hit`: This method records a hit at the given timestamp by appending the timestamp to the deque.
+
+3. **Get Hits in the Last 5 Minutes:**
+   - `getHits`: This method returns the number of hits in the last 300 seconds (5 minutes) from the given timestamp.
+   - **Remove Old Hits:** While the deque is not empty and the oldest hit is older than 300 seconds from the current timestamp, remove it from the deque.
+   - **Count Hits:** The length of the deque represents the number of hits in the last 300 seconds.
+
+This implementation ensures that hits are recorded and counted efficiently, with the `hit` method operating in O(1) time complexity and the `getHits` method operating in O(n) time complexity in the worst case, where n is the number of hits recorded. However, the average time complexity for `getHits` is expected to be much lower due to the regular removal of outdated hits.
+
+To implement the `Random Pick with Weight` solution, we can use a prefix sum array and binary search. The key idea is to transform the weights into a cumulative sum array, where each element at index `i` represents the sum of weights from the start up to index `i`. This way, we can map the random value to the correct index based on the weights.
+
+### Steps:
+
+1. **Create a Prefix Sum Array:**
+   - Construct an array where each element at index `i` is the sum of all weights up to index `i`.
+
+2. **Pick a Random Index:**
+   - Generate a random number in the range [0, total_sum), where `total_sum` is the sum of all weights.
+   - Use binary search to find the first index in the prefix sum array that is greater than the generated random number.
+
+Here's the Python implementation:
+
+### Python Implementation:
+
+```python
+import random
+from bisect import bisect_left
+from typing import List
+
+class Solution:
+    def __init__(self, w: List[int]):
+        self.prefix_sums = []
+        self.total_sum = 0
+        
+        for weight in w:
+            self.total_sum += weight
+            self.prefix_sums.append(self.total_sum)
+
+    def pickIndex(self) -> int:
+        target = random.randint(1, self.total_sum)
+        # Find the first index where prefix_sums[i] is greater than or equal to target
+        return bisect_left(self.prefix_sums, target)
+
+# Example usage:
+w = [1, 3]
+solution = Solution(w)
+print(solution.pickIndex())  # Output: 0 with probability 0.25 and 1 with probability 0.75
+```
+
+### Explanation:
+
+1. **Initialization (`__init__` method):**
+   - The constructor initializes the `prefix_sums` array and calculates the `total_sum` of weights.
+   - For each weight in `w`, it updates the `total_sum` and appends it to the `prefix_sums` array.
+
+2. **Pick Index (`pickIndex` method):**
+   - Generate a random integer `target` in the range [1, total_sum].
+   - Use the `bisect_left` function to find the first index in the `prefix_sums` array that is greater than or equal to `target`.
+
+### Example:
+
+- Given `w = [1, 3]`, the `prefix_sums` array will be `[1, 4]`.
+- If `target` is 1, `bisect_left` will return 0.
+- If `target` is 2, 3, or 4, `bisect_left` will return 1.
+
+This approach ensures that the probability of picking each index is proportional to its weight, achieving the desired weighted random selection efficiently.
+

@@ -1,0 +1,430 @@
+https://docs.oracle.com/javase/tutorial/networking/sockets/index.html
+
+What Is a Socket?
+Normally, a server runs on a specific computer and has a socket that is bound to a specific port number. The server just waits, listening to the socket for a client to make a connection request.
+On the client-side: The client knows the hostname of the machine on which the server is running and the port number on which the server is listening. To make a connection request, the client tries to rendezvous with the server on the server's machine and port. The client also needs to identify itself to the server so it binds to a local port number that it will use during this connection. This is usually assigned by the system.
+
+If everything goes well, the server accepts the connection. Upon acceptance, the server gets a new socket bound to the same local port and also has its remote endpoint set to the address and port of the client. It needs a new socket so that it can continue to listen to the original socket for connection requests while tending to the needs of the connected client.
+
+On the client side, if the connection is accepted, a socket is successfully created and the client can use the socket to communicate with the server.
+The client and server can now communicate by writing to or reading from their sockets.
+
+Definition: 
+A socket is one endpoint of a two-way communication link between two programs running on the network. A socket is bound to a port number so that the TCP layer can identify the application that data is destined to be sent to.
+
+An endpoint is a combination of an IP address and a port number. Every TCP connection can be uniquely identified by its two endpoints. That way you can have multiple connections between your host and the server.
+The java.net package in the Java platform provides a class, Socket, that implements one side of a two-way connection between your Java program and another program on the network. The Socket class sits on top of a platform-dependent implementation, hiding the details of any particular system from your Java program. By using the java.net.Socket class instead of relying on native code, your Java programs can communicate over the network in a platform-independent fashion.
+Additionally, java.net includes the ServerSocket class, which implements a socket that servers can use to listen for and accept connections to clients. This lesson shows you how to use the Socket and ServerSocket classes.
+If you are trying to connect to the Web, the URL class and related classes (URLConnection, URLEncoder) are probably more appropriate than the socket classes. In fact, URLs are a relatively high-level connection to the Web and use sockets as part of the underlying implementation. See Working with URLs for information about connecting to the Web via URLs.
+Reading from and writing to a socket are fundamental operations in socket programming, enabling data exchange between a client and a server. Here's a detailed guide on how to perform these operations, both in blocking and non-blocking modes.
+
+### Writing to a Socket
+
+When you write to a socket, you're sending data from one process to another, typically from a client to a server or vice versa. The `send()` or `sendall()` methods are used for this purpose.
+
+#### Blocking Mode
+
+In blocking mode, the `send()` or `sendall()` method will block the execution of the program until the data is successfully sent. Here's an example:
+
+```python
+import socket
+
+# Create a socket object
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect to a server
+client_socket.connect(('localhost', 10000))
+
+# Data to send
+message = b'Hello, Server!'
+
+# Send data to the server
+client_socket.sendall(message)
+
+# Close the socket
+client_socket.close()
+```
+
+- **`send()`**: Sends data through the socket. It might send only part of the data in one call, so you might need to call it multiple times in a loop until all data is sent.
+- **`sendall()`**: Ensures that all data is sent by repeatedly calling `send()` internally until all data has been transmitted.
+
+#### Non-Blocking Mode
+
+In non-blocking mode, `send()` returns immediately, even if not all data has been sent. This means you need to handle the partial sending of data:
+
+```python
+import socket
+
+# Create a non-blocking socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.setblocking(False)
+
+# Connect to the server (this might raise BlockingIOError in non-blocking mode)
+try:
+    client_socket.connect(('localhost', 10000))
+except BlockingIOError:
+    pass
+
+# Data to send
+message = b'Hello, Server!'
+
+# Attempt to send data
+totalsent = 0
+while totalsent < len(message):
+    try:
+        sent = client_socket.send(message[totalsent:])
+        totalsent += sent
+    except BlockingIOError:
+        # Handle the situation where the socket is not ready for sending
+        print("Socket not ready for sending, trying again...")
+```
+
+### Reading from a Socket
+
+Reading from a socket is how you receive data sent by another process. The `recv()` method is typically used for this purpose.
+
+#### Blocking Mode
+
+In blocking mode, `recv()` will wait until some data is available to be read. Here's an example of reading data from a socket:
+
+```python
+import socket
+
+# Create a socket object
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Bind to an address and port
+server_socket.bind(('localhost', 10000))
+
+# Listen for incoming connections
+server_socket.listen(1)
+
+# Accept a connection
+connection, client_address = server_socket.accept()
+
+# Receive data
+data = connection.recv(1024)  # 1024 is the buffer size
+print(f"Received: {data.decode()}")
+
+# Close the connection
+connection.close()
+```
+
+- **`recv()`**: Receives data from the socket. The argument specifies the maximum amount of data to be received at once (buffer size). In blocking mode, `recv()` will wait until at least one byte of data is available.
+
+#### Non-Blocking Mode
+
+In non-blocking mode, `recv()` will return immediately, potentially with no data if the socket is not ready. You need to handle this situation:
+
+```python
+import socket
+
+# Create a non-blocking socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.setblocking(False)
+
+# Bind and listen
+server_socket.bind(('localhost', 10000))
+server_socket.listen(1)
+
+# Accept a connection (might raise BlockingIOError)
+try:
+    connection, client_address = server_socket.accept()
+    connection.setblocking(False)
+except BlockingIOError:
+    pass
+
+# Attempt to receive data
+try:
+    data = connection.recv(1024)
+    if data:
+        print(f"Received: {data.decode()}")
+    else:
+        print("Connection closed by the client.")
+except BlockingIOError:
+    # Handle the situation where no data is ready to be read
+    print("No data available to read yet.")
+```
+
+### Considerations for Reading and Writing
+
+1. **Partial Data**: In both blocking and non-blocking modes, you may not send or receive all the data in one call. You need to manage this by keeping track of how much data has been sent or received and looping until all data is handled.
+   
+2. **Buffer Size**: The buffer size in `recv()` determines how much data you read at a time. If the message size is larger than the buffer size, you will need to call `recv()` multiple times to receive the entire message.
+
+3. **Error Handling**: Always include error handling when working with sockets, especially in non-blocking mode, where operations might raise exceptions like `BlockingIOError`.
+
+4. **End of Stream**: When `recv()` returns an empty byte string (`b''`), it indicates that the connection has been closed by the other side.
+
+### Summary
+
+- **Writing to a Socket**: Use `send()` or `sendall()` to transmit data. In non-blocking mode, be prepared to handle partial sends.
+- **Reading from a Socket**: Use `recv()` to receive data. In non-blocking mode, handle the possibility of no data being available yet.
+- **Blocking vs. Non-Blocking**: Blocking mode is simpler but can cause your program to pause, while non-blocking mode provides more control and concurrency at the cost of increased complexity.
+- **Looping for Completion**: When sending or receiving data, always ensure you loop until the entire data is processed to handle partial sends/receives.
+
+These techniques are foundational for developing robust and efficient networked applications using sockets.
+Writing the server side of a socket involves creating a socket that listens for incoming client connections, accepts those connections, and then communicates with the clients. Below is a step-by-step guide to creating a simple TCP server in Python using sockets.
+
+### Step 1: Import the Necessary Modules
+
+You need to import the `socket` module, which provides the necessary functions to create and manage sockets.
+
+```python
+import socket
+```
+
+### Step 2: Create a Socket
+
+Create a TCP/IP socket using the `socket()` function. You need to specify the address family (`AF_INET` for IPv4) and the socket type (`SOCK_STREAM` for TCP).
+
+```python
+# Create a TCP/IP socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+```
+
+### Step 3: Bind the Socket to an Address and Port
+
+Bind the socket to a specific IP address and port so it can listen for incoming connections. Typically, you’ll bind to `'localhost'` or `''` (empty string) for the server to accept connections on all available interfaces.
+
+```python
+# Bind the socket to the address and port
+server_address = ('localhost', 10000)  # Replace with your desired IP address and port
+server_socket.bind(server_address)
+```
+
+### Step 4: Listen for Incoming Connections
+
+Put the socket into listening mode, which allows it to accept incoming connection requests. The argument to `listen()` specifies the number of unaccepted connections that the system will allow before refusing new connections.
+
+```python
+# Listen for incoming connections
+server_socket.listen(5)  # Listen for up to 5 connections
+```
+
+### Step 5: Accept Connections
+
+The server needs to accept incoming connections. When a client connects, `accept()` returns a new socket object representing the connection and the address of the client.
+
+```python
+print('Waiting for a connection...')
+connection, client_address = server_socket.accept()
+print(f'Connection from {client_address}')
+```
+
+### Step 6: Communicate with the Client
+
+Now that the server is connected to the client, it can send and receive data. You typically use `sendall()` to send data and `recv()` to receive data.
+
+```python
+try:
+    while True:
+        data = connection.recv(1024)
+        if data:
+            print(f'Received: {data.decode()}')
+            connection.sendall(data)  # Echo the data back to the client
+        else:
+            print('No more data from', client_address)
+            break
+finally:
+    # Clean up the connection
+    connection.close()
+```
+
+### Step 7: Close the Socket
+
+Once the communication is done, make sure to close the connection and the server socket.
+
+```python
+server_socket.close()
+```
+
+### Example: Complete Server Code
+
+Here’s the complete code for a simple echo server, which reads data from the client and sends it back (echoes it):
+
+```python
+import socket
+
+def start_server():
+    # Create a TCP/IP socket
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Bind the socket to the address and port
+    server_address = ('localhost', 10000)
+    server_socket.bind(server_address)
+
+    # Listen for incoming connections
+    server_socket.listen(5)
+    print('Waiting for a connection...')
+
+    while True:
+        # Accept a connection
+        connection, client_address = server_socket.accept()
+        try:
+            print(f'Connection from {client_address}')
+
+            # Communicate with the client
+            while True:
+                data = connection.recv(1024)
+                if data:
+                    print(f'Received: {data.decode()}')
+                    connection.sendall(data)  # Echo the data back to the client
+                else:
+                    print(f'Connection closed by {client_address}')
+                    break
+        finally:
+            # Clean up the connection
+            connection.close()
+
+if __name__ == "__main__":
+    start_server()
+```
+
+### How the Server Works
+
+1. **Create and Bind**: The server creates a socket and binds it to a specific address and port.
+2. **Listen**: The server listens for incoming connections.
+3. **Accept**: When a client connects, the server accepts the connection.
+4. **Communicate**: The server receives data from the client, processes it (in this case, it just echoes it back), and sends a response.
+5. **Close**: After the communication is done or the client disconnects, the server closes the connection.
+
+### Additional Considerations
+
+- **Concurrent Clients**: The example above handles one client at a time. To handle multiple clients concurrently, you can use threading, multiprocessing, or asynchronous I/O (`asyncio`).
+- **Error Handling**: For production code, add more robust error handling, such as catching exceptions related to socket errors.
+- **Security**: Ensure that your server is secure, especially when dealing with untrusted clients over the internet. Consider using SSL/TLS for encrypted communication.
+
+This example provides a basic foundation for building more complex server applications, including handling multiple clients, implementing protocols, and managing server state.
+
+A "Knock Knock" server is a simple server that demonstrates basic networking concepts by implementing a simple protocol where the client sends a "knock knock" message and the server responds with a joke. It's a fun way to learn about server-client communication. Below is an example of how to implement a Knock Knock server in Python.
+
+### Knock Knock Protocol
+The protocol might look like this:
+1. **Client**: Sends "Knock knock".
+2. **Server**: Responds with "Who's there?".
+3. **Client**: Sends a response (e.g., "Orange").
+4. **Server**: Responds with "Orange who?".
+5. **Client**: Sends the punchline (e.g., "Orange you glad I didn't say banana?").
+6. **Server**: Responds with a final message (e.g., "Haha, good one!").
+
+### Server Code
+
+```python
+import socket
+
+def start_knock_knock_server():
+    # Define the jokes as a dictionary
+    jokes = {
+        "orange": "Orange you glad I didn't say banana?",
+        "lettuce": "Lettuce in, it's cold out here!",
+        "boo": "Boo who? Don't cry, it's just a joke!"
+    }
+
+    # Create a TCP/IP socket
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Bind the socket to the address and port
+    server_address = ('localhost', 65432)
+    server_socket.bind(server_address)
+
+    # Listen for incoming connections
+    server_socket.listen(1)
+    print('Knock Knock server is waiting for a connection...')
+
+    while True:
+        # Accept a connection
+        connection, client_address = server_socket.accept()
+        try:
+            print(f'Connection from {client_address}')
+
+            # Step 1: Client sends "Knock knock"
+            data = connection.recv(1024).decode().strip().lower()
+            if data == "knock knock":
+                connection.sendall(b"Who's there?\n")
+
+                # Step 2: Client sends a response (e.g., "Orange")
+                data = connection.recv(1024).decode().strip().lower()
+                if data in jokes:
+                    connection.sendall(f"{data.capitalize()} who?\n".encode())
+
+                    # Step 3: Client sends the punchline
+                    data = connection.recv(1024).decode().strip().lower()
+                    if data == jokes[data]:
+                        connection.sendall(b"Haha, good one!\n")
+                    else:
+                        connection.sendall(b"That's not how the joke goes...\n")
+                else:
+                    connection.sendall(b"I don't know that one...\n")
+            else:
+                connection.sendall(b"You're supposed to say 'Knock knock'!\n")
+        finally:
+            # Clean up the connection
+            connection.close()
+
+if __name__ == "__main__":
+    start_knock_knock_server()
+```
+
+### Client Code
+
+Here's an example client that can interact with the Knock Knock server:
+
+```python
+import socket
+
+def knock_knock_client():
+    # Create a TCP/IP socket
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Connect to the server
+    server_address = ('localhost', 65432)
+    client_socket.connect(server_address)
+
+    try:
+        # Step 1: Send "Knock knock"
+        client_socket.sendall(b"Knock knock\n")
+
+        # Receive and print the response from the server
+        data = client_socket.recv(1024)
+        print(f'Server: {data.decode()}')
+
+        # Step 2: Send a response (e.g., "Orange")
+        client_socket.sendall(b"orange\n")
+
+        # Receive and print the response from the server
+        data = client_socket.recv(1024)
+        print(f'Server: {data.decode()}')
+
+        # Step 3: Send the punchline
+        client_socket.sendall(b"Orange you glad I didn't say banana?\n")
+
+        # Receive and print the final response from the server
+        data = client_socket.recv(1024)
+        print(f'Server: {data.decode()}')
+    finally:
+        # Clean up the connection
+        client_socket.close()
+
+if __name__ == "__main__":
+    knock_knock_client()
+```
+
+### How the Knock Knock Server Works
+
+1. **Server Initialization**: The server starts by creating a socket and binding it to a specified address and port. It then listens for incoming connections.
+2. **Client Connection**: When a client connects, the server enters a loop to handle the Knock Knock joke protocol.
+3. **Protocol Execution**:
+   - The server waits for the client to send "Knock knock".
+   - It responds with "Who's there?" and waits for the client's response.
+   - Based on the client's response, it either continues the joke or handles unexpected inputs.
+4. **Jokes Handling**: The server has a predefined set of jokes, and it checks the client's response against these. If the client completes the joke correctly, the server acknowledges it with a laugh; otherwise, it provides feedback.
+5. **Connection Handling**: The server can handle one connection at a time, and it cleans up after the interaction by closing the connection.
+
+### Additional Considerations
+
+- **Multiple Clients**: This example handles one client at a time. To handle multiple clients simultaneously, you can use threading, multiprocessing, or asynchronous I/O.
+- **Error Handling**: For simplicity, error handling is minimal. In a production environment, you’d want to add robust error handling for cases like invalid inputs, disconnections, etc.
+- **Extending the Protocol**: You can easily extend this example by adding more jokes, supporting different types of interactions, or adding state to track multiple interactions with the same client.
+
+The Knock Knock server is a fun and educational example that demonstrates basic networking concepts and how to implement a simple protocol using sockets.

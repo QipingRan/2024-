@@ -1,0 +1,267 @@
+https://www.geeksforgeeks.org/socket-programming-in-java/?fbclid=IwY2xjawExHlxleHRuA2FlbQIxMQABHQD1TCtNv5xBVYetenVO08oeESHQ9aovVA4RmzCPHYoc5-ZOhfuFDp5ZWQ_aem_aTgO76CTzmTCctiUhWYVJw
+
+Socket programming is a way of enabling communication between two nodes over a network, where one socket (node) listens on a particular port at an IP address while another socket reaches out to it. The two sockets can then send and receive data, enabling network communication.
+
+### Key Concepts of Socket Programming
+
+1. **Sockets**:
+   - A socket is one endpoint of a two-way communication link between two programs running on the network.
+   - A socket is bound to a port number so that the Transmission Control Protocol (TCP) layer can identify the application that data is destined to.
+
+2. **Server and Client Model**:
+   - **Server**: The server socket listens for incoming connections on a specific IP address and port. Once a connection is established, the server can receive data from the client and send data back.
+   - **Client**: The client socket initiates a connection to the server by specifying the server’s IP address and port. Once connected, the client can send and receive data.
+
+3. **Types of Sockets**:
+   - **Stream Sockets (TCP)**: Provide reliable, connection-oriented communication. Data is sent and received in a continuous stream.
+   - **Datagram Sockets (UDP)**: Provide connectionless communication. Data is sent as individual packets (datagrams), which may arrive out of order, be duplicated, or not arrive at all.
+
+4. **Address Family**:
+   - **IPv4 (AF_INET)**: The most commonly used address family, which uses 32-bit IP addresses.
+   - **IPv6 (AF_INET6)**: An address family that uses 128-bit IP addresses to support a larger number of devices.
+
+### How Socket Programming Works
+
+#### 1. **Creating a Socket**:
+   Both the server and the client need to create a socket using the `socket()` function, which specifies the address family and the socket type.
+
+   ```python
+   import socket
+   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # IPv4 and TCP
+   ```
+
+#### 2. **Binding (Server Side)**:
+   The server binds the socket to an IP address and a port number using the `bind()` function. This tells the operating system to reserve that port for listening.
+
+   ```python
+   server_socket.bind(('localhost', 12345))
+   ```
+
+#### 3. **Listening (Server Side)**:
+   The server then listens for incoming connections using the `listen()` function. This function also specifies the maximum number of queued connections.
+
+   ```python
+   server_socket.listen(5)
+   ```
+
+#### 4. **Accepting Connections (Server Side)**:
+   The server accepts a connection using the `accept()` function, which returns a new socket object that can be used to communicate with the client, and the address of the client.
+
+   ```python
+   connection, client_address = server_socket.accept()
+   ```
+
+#### 5. **Connecting to the Server (Client Side)**:
+   The client initiates a connection to the server using the `connect()` function, specifying the server’s IP address and port number.
+
+   ```python
+   client_socket.connect(('localhost', 12345))
+   ```
+
+#### 6. **Sending and Receiving Data**:
+   Once the connection is established, both the server and client can send data to and receive data from each other using the `send()`, `sendall()`, and `recv()` functions.
+
+   - **Sending**: The `send()` and `sendall()` functions are used to transmit data.
+   - **Receiving**: The `recv()` function is used to read incoming data.
+
+   ```python
+   # Client sending data
+   client_socket.sendall(b'Hello, Server!')
+
+   # Server receiving data
+   data = connection.recv(1024)  # 1024 is the buffer size
+   ```
+
+#### 7. **Closing the Connection**:
+   Once the communication is complete, both the server and client should close their sockets to free up resources.
+
+   ```python
+   client_socket.close()
+   server_socket.close()
+   ```
+
+### Example of a Simple TCP Server-Client Program
+
+#### Server Code:
+```python
+import socket
+
+# Create a TCP/IP socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Bind the socket to the address and port
+server_socket.bind(('localhost', 65432))
+
+# Listen for incoming connections
+server_socket.listen(1)
+
+print('Waiting for a connection...')
+connection, client_address = server_socket.accept()
+
+try:
+    print(f'Connection from {client_address}')
+
+    while True:
+        data = connection.recv(1024)
+        if data:
+            print(f'Received: {data.decode()}')
+            connection.sendall(data)  # Echo the data back to the client
+        else:
+            print('No more data from', client_address)
+            break
+finally:
+    connection.close()
+    server_socket.close()
+```
+
+#### Client Code:
+```python
+import socket
+
+# Create a TCP/IP socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect to the server
+client_socket.connect(('localhost', 65432))
+
+try:
+    # Send data
+    message = b'Hello, Server!'
+    client_socket.sendall(message)
+
+    # Receive response
+    data = client_socket.recv(1024)
+    print(f'Received: {data.decode()}')
+finally:
+    client_socket.close()
+```
+
+### Applications of Socket Programming
+
+- **Web Servers and Browsers**: Sockets are the underlying technology for communication between web servers and web browsers.
+- **Chat Applications**: Instant messaging apps use sockets to exchange messages between clients and the server.
+- **File Transfer**: Protocols like FTP use sockets to transfer files between clients and servers.
+- **Remote Administration Tools**: Tools like SSH and Telnet use sockets to allow remote access to systems.
+
+### Summary
+
+Socket programming is the foundation of network communication in computing, enabling the creation of distributed systems, client-server applications, and real-time network services. It involves creating sockets, establishing connections, sending and receiving data, and finally closing the connections. Understanding socket programming is essential for developing networked applications.
+
+The C program you provided is a client-side implementation for demonstrating socket programming. It connects to a server, sends a message ("Hello from client"), and then reads and prints the response from the server. Below is a detailed explanation of the code.
+
+### Explanation of the Code
+
+#### 1. **Including Headers**
+```c
+#include <arpa/inet.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <unistd.h>
+```
+These headers are necessary for socket programming:
+- `arpa/inet.h`: Provides definitions for internet operations, such as converting IP addresses.
+- `stdio.h`: Provides functionalities for input/output, such as `printf`.
+- `string.h`: Includes string handling functions like `strlen`.
+- `sys/socket.h`: Defines socket functions and structures.
+- `unistd.h`: Provides access to the POSIX operating system API, including `close`.
+
+#### 2. **Defining the Port**
+```c
+#define PORT 8080
+```
+Defines the port number that the client will connect to on the server. In this case, it's set to `8080`.
+
+#### 3. **Main Function**
+```c
+int main(int argc, char const* argv[])
+{
+```
+This is the entry point of the program. The `argc` and `argv` parameters allow you to pass command-line arguments to the program, though they aren't used in this example.
+
+#### 4. **Socket Creation**
+```c
+int status, valread, client_fd;
+struct sockaddr_in serv_addr;
+char* hello = "Hello from client";
+char buffer[1024] = { 0 };
+
+if ((client_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+    printf("\n Socket creation error \n");
+    return -1;
+}
+```
+- `client_fd`: File descriptor for the socket.
+- `struct sockaddr_in serv_addr`: Structure to hold the server address.
+- `socket(AF_INET, SOCK_STREAM, 0)`: Creates a socket using IPv4 (`AF_INET`), TCP (`SOCK_STREAM`).
+- The code checks if `socket()` returns a negative value, indicating a failure to create the socket.
+
+#### 5. **Server Address Setup**
+```c
+serv_addr.sin_family = AF_INET;
+serv_addr.sin_port = htons(PORT);
+
+// Convert IPv4 and IPv6 addresses from text to binary form
+if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0) {
+    printf("\nInvalid address/ Address not supported \n");
+    return -1;
+}
+```
+- `serv_addr.sin_family = AF_INET`: Specifies the address family (IPv4).
+- `serv_addr.sin_port = htons(PORT)`: Converts the port number to network byte order.
+- `inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)`: Converts the IP address from text to binary form. `127.0.0.1` is the loopback address, meaning the client will connect to a server running on the same machine.
+
+#### 6. **Connecting to the Server**
+```c
+if ((status = connect(client_fd, (struct sockaddr*)&serv_addr, sizeof(serv_addr))) < 0) {
+    printf("\nConnection Failed \n");
+    return -1;
+}
+```
+- `connect()`: Attempts to establish a connection to the server. It returns `0` on success or `-1` on failure.
+
+#### 7. **Sending Data**
+```c
+send(client_fd, hello, strlen(hello), 0);
+printf("Hello message sent\n");
+```
+- `send()`: Sends data to the server. The parameters are the socket file descriptor, the data to send (`hello`), the length of the data, and flags (set to `0` here).
+- `printf("Hello message sent\n")`: Confirms that the message was sent.
+
+#### 8. **Receiving Data**
+```c
+valread = read(client_fd, buffer, 1024 - 1);
+printf("%s\n", buffer);
+```
+- `read()`: Reads data from the server into the `buffer`. The `1024 - 1` accounts for the null terminator (`\0`) at the end of the string.
+- `printf("%s\n", buffer)`: Prints the received message.
+
+#### 9. **Closing the Socket**
+```c
+close(client_fd);
+```
+- `close()`: Closes the socket, freeing up resources.
+
+### Summary
+
+This C program is a simple demonstration of a TCP client. It creates a socket, connects to a server running on `localhost` at port `8080`, sends a message, and then reads and prints the server's response before closing the connection. 
+
+### Steps to Compile and Run the Program
+
+1. **Compile the Program**:
+   Use the following command to compile the program:
+   ```bash
+   gcc -o client client.c
+   ```
+   This will produce an executable file named `client`.
+
+2. **Run the Program**:
+   To run the client program, execute the following command:
+   ```bash
+   ./client
+   ```
+
+   Ensure that there is a server running on `localhost` at port `8080` that can accept the connection and respond to the client's message.
+
+### Note
+For this client program to work, a server must be running on `localhost` at port `8080`. The server should be set up to accept a TCP connection, read the message sent by the client, and send a response back to the client.
